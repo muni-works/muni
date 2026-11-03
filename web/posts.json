@@ -19,5 +19,16 @@
     "root": "../paper/zero-context-memory",
     "source": "zero-context-memory.typ",
     "cover": "pinned-rows"
+  },
+  {
+    "slug": "ribt",
+    "title": "RIBT",
+    "subtitle": "A small streaming voice, trained in one tensor IR",
+    "date": "2026-11-03",
+    "author": "Cam Pedersen",
+    "description": "RIBT is a 54M-parameter streaming English TTS system whose networks are tang tensor-IR programs running on Metal, CUDA and WebGPU. It produces first audio 17.6 ms after receiving text on an M4 Max, against 349 ms for Kokoro-82M. Its voice is distilled from Kokoro's af_heart.",
+    "root": "../paper/ribt",
+    "source": "ribt.typ",
+    "cover": "ridgelines"
   }
 ]

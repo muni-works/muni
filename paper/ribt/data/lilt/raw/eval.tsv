@@ -1,0 +1,247 @@
+arm	id	word	category	sim	sim_prompted	hyp
+before	f00	zorbing	coinage	0.857	0.857	We went sorbing down the hill.
+before	f01	fluffernutter	coinage	0.400	0.400	She packed up for lunch.
+before	f02	skibidi	coinage	0.545	0.545	The kids kept saying all day.
+before	f03	rizz	coinage	0.000	0.000	He has a lot of.
+before	f04	bamboozlement	coinage	1.000	1.000	The bamboozlement was complete.
+before	f05	flibbertigibbet	coinage	0.933	0.933	Stop acting like a Flibberty gibbet.
+before	f06	snollygoster	coinage	0.917	0.917	The senator was a snallygoster.
+before	f07	kerfuffle	coinage	1.000	1.000	There was a small kerfuffle at the door.
+before	f08	discombobulated	coinage	1.000	1.000	I feel discombobulated this morning.
+before	f09	gobbledygook	coinage	1.000	1.000	The manual was pure gobbledygook.
+before	f10	hullabaloo	coinage	1.000	1.000	What is all this hullabaloo about?
+before	f11	bumbershoot	coinage	1.000	1.000	Grab your Bumbershoot, it is raining.
+before	f12	cattywampus	coinage	0.333	0.333	The picture hangs.
+before	f13	lollygag	coinage	1.000	1.000	Do not lollygag on the way home.
+before	f14	brouhaha	coinage	1.000	1.000	The brouhaha died down by noon.
+before	f15	yeet	coinage	1.000	1.000	He tried to yeet the ball over the fence.
+before	f16	Theo	name	0.857	0.857	will meet us at the station.
+before	f17	Olivia	name	0.353	0.353	Wrote the first draft.
+before	f18	Luis	name	0.500	0.500	brought the coffee
+before	f19	Siobhan	name	0.375	0.375	Is running late
+before	f20	Nguyen	name	0.571	0.571	Doctor will see you now.
+before	f21	Saoirse	name	0.429	0.429	Play the lead.
+before	f22	Joaquin	name	0.429	0.429	Fix the bike.
+before	f23	Xochitl	name	0.364	0.364	Send a postcard.
+before	f24	Kokoro	name	1.000	1.000	Kokoro was the teacher model.
+before	f25	Pedersen	name	1.000	1.000	Cam Pedersen built the robot.
+before	f26	Hobson	log	0.400	0.400	And Dewey went home.
+before	f27	Conti	log	0.545	0.545	that was there.
+before	f28	Martelli	log	0.364	0.364	Open the shop.
+before	f29	Lacheneur	log	0.235	0.235	Road North
+before	f30	Servadac	log	0.286	0.286	Captain looked up.
+before	f31	Wylder	log	0.462	0.462	Kept the letters.
+before	f32	gayety	log	0.462	0.462	They have the evening faded.
+before	f33	companionless	log	0.316	0.316	He walked on.
+before	f34	Apaturia	log	0.444	0.444	The Feast of Cayman Autumn
+before	f35	Critias	log	0.308	0.308	Spoke Next
+before	f36	Vocos	tech	1.000	1.000	VOCOS is a fast vocoder.
+before	f37	iSTFTNet	tech	0.364	0.364	The iDecoder runs on the GPU.
+before	f38	Kubernetes	tech	0.300	0.300	We deploy it on.
+before	f39	PyTorch	tech	1.000	1.000	The reference code is in PyTorch.
+before	f40	LLaMA	tech	0.667	1.000	LIMA is a language model.
+before	f41	Frigate	tech	1.000	1.000	Frigate records the garage camera.
+before	f42	nginx	tech	0.571	0.571	Put in front of the server.
+before	f43	sudo	tech	0.286	0.286	Run it with...
+before	f44	grep	tech	1.000	1.000	Use grep to find the line.
+before	f45	kubectl	tech	0.400	0.400	Check the pods with.
+before	f46	GIF	tech	1.000	1.000	Send me a gif of the robot.
+before	f47	logits	tech	0.444	0.444	The come out of the last layer.
+before	f48	softmax	tech	1.000	1.000	Apply a softmax to the scores.
+before	f49	worktree	tech	1.000	1.000	Make a new work tree for the branch.
+before	f50	safetensors	tech	1.000	1.000	Save the weights as safe tensors.
+before	f51	WavLM	tech	1.000	1.000	Wave LM scores the speaker likeness.
+before	f52	talketh	archaic	0.375	0.375	He too much
+before	f53	whilst	archaic	1.000	1.000	Wait here whilst I check.
+before	f54	thou	archaic	1.000	1.000	Thou shalt not pass.
+before	f55	forsooth	archaic	1.000	1.000	For Sooth, the king is dead.
+before	f56	betwixt	archaic	1.000	1.000	The cat sat betwixt the dogs.
+before	f57	doth	archaic	0.667	0.667	The lady death protest too much.
+before	f58	servo	robot	1.000	1.000	The servo is overheating.
+before	f59	actuator	robot	1.000	1.000	Replace the knee actuator.
+before	f60	odometry	robot	1.000	1.000	The odometry drifted a meter.
+before	f61	teleop	robot	1.000	1.000	Switch the robot to teleop.
+before	f62	sysid	robot	0.800	1.000	Run Sisit on the ankle.
+before	f63	IMU	robot	1.000	1.000	The IMU reads the tilt.
+before	f64	mujoco	robot	0.333	0.333	The policy was trained in.
+before	f65	Worcestershire	place	1.000	1.000	Add a dash of Worcestershire sauce.
+before	f66	Llanfair	place	0.308	0.308	We drove through.
+before	f67	Ouagadougou	place	1.000	1.000	The flight lands in Ouagadougou.
+before	f68	Poughkeepsie	place	1.000	1.000	She grew up in Poughkeepsie.
+before	f69	Reykjavik	place	1.000	1.000	It was cold in Reykjavik.
+before	f70	4:15	time	1.000	1.000	Meet me at 4.15 by the door.
+before	f71	8:30	time	1.000	1.000	The train leaves at 8.30.
+before	f72	12:00	time	1.000	0.800	Lunch is at 12.00 p.m.
+before	f73	3D	number	1.000	1.000	We printed a 3D model.
+before	f74	1990s	number	1.000	1.000	It was popular in the 1990s.
+before	f75	2nd	number	1.000	1.000	She came in second place.
+before	f76	v2.1	number	1.000	1.000	Upgrade to V21 tonight.
+before	f77	x86	number	1.000	1.000	It only runs on x86.
+before	f78	B2B	number	1.000	1.000	They sell B2B software.
+before	f79	cam@ipse.dev	address	0.667	0.750	Write to CAM at ipsy for access.
+before	f80	https://ribt.dev/docs	address	0.522	0.522	The docs live at docs today.
+before	f81	@campedersen	address	0.400	0.400	Follow it for updates.
+after	f00	zorbing	coinage	0.857	0.857	We went sorbing down the hill.
+after	f01	fluffernutter	coinage	0.600	0.600	She packed a fluff for a netter for lunch.
+after	f02	skibidi	coinage	0.600	0.600	The kids kept saying ski beauty all day.
+after	f03	rizz	coinage	1.000	1.000	He has a lot of Riz.
+after	f04	bamboozlement	coinage	1.000	1.000	The bamboozlement was complete.
+after	f05	flibbertigibbet	coinage	0.933	0.933	Stop acting like a Flibberty gibbet.
+after	f06	snollygoster	coinage	0.917	0.917	The senator was a snallygoster.
+after	f07	kerfuffle	coinage	1.000	1.000	There was a small kerfuffle at the door.
+after	f08	discombobulated	coinage	1.000	1.000	I feel discombobulated this morning.
+after	f09	gobbledygook	coinage	1.000	1.000	The manual was pure gobbledygook.
+after	f10	hullabaloo	coinage	1.000	1.000	What is all this hullabaloo about?
+after	f11	bumbershoot	coinage	1.000	1.000	Grab your Bumbershoot, it is raining.
+after	f12	cattywampus	coinage	0.857	0.857	The picture hangs catawampus.
+after	f13	lollygag	coinage	1.000	1.000	Do not lollygag on the way home.
+after	f14	brouhaha	coinage	1.000	1.000	The brouhaha died down by noon.
+after	f15	yeet	coinage	1.000	1.000	He tried to yeet the ball over the fence.
+after	f16	Theo	name	1.000	1.000	Theo will meet us at the station.
+after	f17	Olivia	name	1.000	1.000	Olivia wrote the first draft.
+after	f18	Luis	name	0.889	0.889	Louis brought the coffee.
+after	f19	Siobhan	name	0.615	0.429	Shobin is running late.
+after	f20	Nguyen	name	0.727	0.727	Dr. Ngyan will see you now.
+after	f21	Saoirse	name	0.667	0.667	Shars played the lead.
+after	f22	Joaquin	name	0.615	1.000	Jokwin Fix The Bike
+after	f23	Xochitl	name	0.308	1.000	Csiksz
+after	f24	Kokoro	name	1.000	1.000	Kokoro was the teacher model.
+after	f25	Pedersen	name	1.000	1.000	Cam Pedersen built the robot.
+after	f26	Hobson	log	1.000	1.000	Hobson and Dewey went home.
+after	f27	Conti	log	0.571	0.571	The abacuntie was there.
+after	f28	Martelli	log	1.000	1.000	Martelli opened the shop.
+after	f29	Lacheneur	log	0.571	0.500	Lanier Road North
+after	f30	Servadac	log	0.625	1.000	Captain Cervadek looked up.
+after	f31	Wylder	log	1.000	1.000	Wilder kept the letters.
+after	f32	gayety	log	0.800	1.000	The gay-eighty of the evening faded.
+after	f33	companionless	log	1.000	1.000	He walked on companionless.
+after	f34	Apaturia	log	0.588	1.000	The Feast of Apacharya came in autumn.
+after	f35	Critias	log	0.571	1.000	Krisha spoke next.
+after	f36	Vocos	tech	1.000	1.000	VOCOS is a fast vocoder.
+after	f37	iSTFTNet	tech	0.875	1.000	The ISDFT-NET decoder runs on the GPU.
+after	f38	Kubernetes	tech	1.000	1.000	We deploy it on Kubernetes.
+after	f39	PyTorch	tech	1.000	1.000	The reference code is in PyTorch.
+after	f40	LLaMA	tech	0.667	1.000	LIMA is a language model.
+after	f41	Frigate	tech	1.000	1.000	Frigate records the garage camera.
+after	f42	nginx	tech	0.571	0.571	Put onks in front of the server.
+after	f43	sudo	tech	1.000	1.000	Run it with sudo.
+after	f44	grep	tech	1.000	1.000	Use grep to find the line.
+after	f45	kubectl	tech	0.533	1.000	Check the pods with Cabactyl.
+after	f46	GIF	tech	1.000	1.000	Send me a gif of the robot.
+after	f47	logits	tech	1.000	1.000	The logits come out of the last layer.
+after	f48	softmax	tech	1.000	1.000	Apply a softmax to the scores.
+after	f49	worktree	tech	1.000	1.000	Make a new work tree for the branch.
+after	f50	safetensors	tech	1.000	1.000	Save the weights as safe tensors.
+after	f51	WavLM	tech	1.000	1.000	Wave LM scores the speaker likeness.
+after	f52	talketh	archaic	1.000	1.000	He talketh too much.
+after	f53	whilst	archaic	1.000	1.000	Wait here whilst I check.
+after	f54	thou	archaic	1.000	1.000	Thou shalt not pass.
+after	f55	forsooth	archaic	1.000	1.000	For Sooth, the king is dead.
+after	f56	betwixt	archaic	1.000	1.000	The cat sat betwixt the dogs.
+after	f57	doth	archaic	0.667	0.667	The lady death protest too much.
+after	f58	servo	robot	1.000	1.000	The servo is overheating.
+after	f59	actuator	robot	1.000	1.000	Replace the knee actuator.
+after	f60	odometry	robot	1.000	1.000	The odometry drifted a meter.
+after	f61	teleop	robot	1.000	1.000	Switch the robot to teleop.
+after	f62	sysid	robot	0.800	1.000	Run Sisit on the ankle.
+after	f63	IMU	robot	1.000	1.000	The IMU reads the tilt.
+after	f64	mujoco	robot	0.833	1.000	The policy was trained in Mujoko.
+after	f65	Worcestershire	place	1.000	1.000	Add a dash of Worcestershire sauce.
+after	f66	Llanfair	place	0.875	1.000	We drove through Landfair.
+after	f67	Ouagadougou	place	1.000	1.000	The flight lands in Ouagadougou.
+after	f68	Poughkeepsie	place	1.000	1.000	She grew up in Poughkeepsie.
+after	f69	Reykjavik	place	1.000	1.000	It was cold in Reykjavik.
+after	f70	4:15	time	1.000	1.000	Meet me at 4.15 by the door.
+after	f71	8:30	time	1.000	1.000	The train leaves at 8.30.
+after	f72	12:00	time	0.667	0.667	Lunch is at 12 o'clock p.m.
+after	f73	3D	number	1.000	1.000	We printed a 3D model.
+after	f74	1990s	number	1.000	1.000	It was popular in the 1990s.
+after	f75	2nd	number	1.000	1.000	She came in second place.
+after	f76	v2.1	number	1.000	1.000	Upgrade to V21 tonight.
+after	f77	x86	number	1.000	1.000	It only runs on x86.
+after	f78	B2B	number	1.000	1.000	They sell B2B software.
+after	f79	cam@ipse.dev	address	0.815	0.909	Write to cam at ipsy.dov for access.
+after	f80	https://ribt.dev/docs	address	0.882	0.882	The docs live at rib.dev slash docs today.
+after	f81	@campedersen	address	0.815	0.889	Follow at Camp Peterson for updates.
+ladder	f00	zorbing	coinage	0.857	0.857	We went sorbing down the hill.
+ladder	f01	fluffernutter	coinage	0.600	0.600	She packed a fluff for a netter for lunch.
+ladder	f02	skibidi	coinage	0.600	0.600	The kids kept saying ski beauty all day.
+ladder	f03	rizz	coinage	1.000	1.000	He has a lot of Riz.
+ladder	f04	bamboozlement	coinage	1.000	1.000	The bamboozlement was complete.
+ladder	f05	flibbertigibbet	coinage	0.933	0.933	Stop acting like a Flibberty gibbet.
+ladder	f06	snollygoster	coinage	0.917	0.917	The senator was a snallygoster.
+ladder	f07	kerfuffle	coinage	1.000	1.000	There was a small kerfuffle at the door.
+ladder	f08	discombobulated	coinage	1.000	1.000	I feel discombobulated this morning.
+ladder	f09	gobbledygook	coinage	1.000	1.000	The manual was pure gobbledygook.
+ladder	f10	hullabaloo	coinage	1.000	1.000	What is all this hullabaloo about?
+ladder	f11	bumbershoot	coinage	1.000	1.000	Grab your Bumbershoot, it is raining.
+ladder	f12	cattywampus	coinage	0.857	0.857	The picture hangs catawampus.
+ladder	f13	lollygag	coinage	1.000	1.000	Do not lollygag on the way home.
+ladder	f14	brouhaha	coinage	1.000	1.000	The brouhaha died down by noon.
+ladder	f15	yeet	coinage	1.000	1.000	He tried to yeet the ball over the fence.
+ladder	f16	Theo	name	1.000	1.000	Theo will meet us at the station.
+ladder	f17	Olivia	name	1.000	1.000	Olivia wrote the first draft.
+ladder	f18	Luis	name	0.889	0.889	Louis brought the coffee.
+ladder	f19	Siobhan	name	0.615	0.429	Shobin is running late.
+ladder	f20	Nguyen	name	0.727	0.727	Dr. Ngyan will see you now.
+ladder	f21	Saoirse	name	0.667	0.667	Shars played the lead.
+ladder	f22	Joaquin	name	0.615	1.000	Jokwin Fix The Bike
+ladder	f23	Xochitl	name	0.308	1.000	Csiksz
+ladder	f24	Kokoro	name	1.000	1.000	Kokoro was the teacher model.
+ladder	f25	Pedersen	name	1.000	1.000	Cam Pedersen built the robot.
+ladder	f26	Hobson	log	1.000	1.000	Hobson and Dewey went home.
+ladder	f27	Conti	log	0.571	0.571	The abacuntie was there.
+ladder	f28	Martelli	log	1.000	1.000	Martelli opened the shop.
+ladder	f29	Lacheneur	log	0.571	0.500	Lanier Road North
+ladder	f30	Servadac	log	0.625	1.000	Captain Cervadek looked up.
+ladder	f31	Wylder	log	1.000	1.000	Wilder kept the letters.
+ladder	f32	gayety	log	0.800	1.000	The gay-eighty of the evening faded.
+ladder	f33	companionless	log	1.000	1.000	He walked on companionless.
+ladder	f34	Apaturia	log	0.588	1.000	The Feast of Apacharya came in autumn.
+ladder	f35	Critias	log	0.571	1.000	Krisha spoke next.
+ladder	f36	Vocos	tech	1.000	1.000	Vocos is a fast vocoder.
+ladder	f37	iSTFTNet	tech	0.875	1.000	The ISDFT-NET decoder runs on the GPU.
+ladder	f38	Kubernetes	tech	1.000	1.000	We deploy it on Kubernetes.
+ladder	f39	PyTorch	tech	0.923	0.923	The reference code is in Ptorch.
+ladder	f40	LLaMA	tech	0.667	1.000	LIMA is a language model.
+ladder	f41	Frigate	tech	1.000	1.000	Frigate records the garage camera.
+ladder	f42	nginx	tech	0.571	0.571	Put onks in front of the server.
+ladder	f43	sudo	tech	1.000	1.000	Run it with sudo.
+ladder	f44	grep	tech	1.000	1.000	Use grep to find the line.
+ladder	f45	kubectl	tech	0.533	1.000	Check the pods with Cabactyl.
+ladder	f46	GIF	tech	1.000	1.000	Send me a gif of the robot.
+ladder	f47	logits	tech	1.000	1.000	The logits come out of the last layer.
+ladder	f48	softmax	tech	1.000	1.000	Apply a softmax to the scores.
+ladder	f49	worktree	tech	1.000	1.000	Make a new work tree for the branch.
+ladder	f50	safetensors	tech	1.000	1.000	Save the weights as safe tensors.
+ladder	f51	WavLM	tech	1.000	1.000	WaveLM scores the speaker likeness.
+ladder	f52	talketh	archaic	1.000	1.000	He talketh too much.
+ladder	f53	whilst	archaic	1.000	1.000	Wait here whilst I check.
+ladder	f54	thou	archaic	1.000	1.000	Thou shalt not pass.
+ladder	f55	forsooth	archaic	1.000	1.000	For Sooth, the king is dead.
+ladder	f56	betwixt	archaic	1.000	1.000	The cat sat betwixt the dogs.
+ladder	f57	doth	archaic	0.667	0.667	The lady death protest too much.
+ladder	f58	servo	robot	1.000	1.000	The servo is overheating.
+ladder	f59	actuator	robot	1.000	1.000	Replace the knee actuator.
+ladder	f60	odometry	robot	1.000	1.000	The odometry drifted a meter.
+ladder	f61	teleop	robot	0.727	0.909	Switch the robot to TELIP.
+ladder	f62	sysid	robot	0.800	1.000	Run Sisit on the ankle.
+ladder	f63	IMU	robot	0.400	1.000	The EM reads the TELT.
+ladder	f64	mujoco	robot	0.833	1.000	The policy was trained in Mujoko.
+ladder	f65	Worcestershire	place	1.000	1.000	Add a dash of Worcestershire sauce.
+ladder	f66	Llanfair	place	0.875	1.000	We drove through Landfair.
+ladder	f67	Ouagadougou	place	1.000	1.000	The flight lands in Ouagadougou.
+ladder	f68	Poughkeepsie	place	1.000	1.000	She grew up in Poughkeepsie.
+ladder	f69	Reykjavik	place	1.000	1.000	It was cold in Reykjavik.
+ladder	f70	4:15	time	1.000	1.000	Meet me at 4.15 by the door.
+ladder	f71	8:30	time	1.000	1.000	The train leaves at 8.30.
+ladder	f72	12:00	time	0.667	0.667	Lunch is at 12 o'clock p.m.
+ladder	f73	3D	number	1.000	1.000	We printed a 3D model.
+ladder	f74	1990s	number	1.000	1.000	It was popular in the 1990s.
+ladder	f75	2nd	number	1.000	1.000	She came in second place.
+ladder	f76	v2.1	number	1.000	1.000	Upgrade to V21 tonight.
+ladder	f77	x86	number	1.000	1.000	It only runs on x86.
+ladder	f78	B2B	number	1.000	1.000	They sell B2B software.
+ladder	f79	cam@ipse.dev	address	0.846	0.857	Write to cam at ips.dov for access.
+ladder	f80	https://ribt.dev/docs	address	0.882	0.882	The docs live at rib.dev slash docs today.
+ladder	f81	@campedersen	address	0.815	0.889	Follow at Camp Peterson for updates.

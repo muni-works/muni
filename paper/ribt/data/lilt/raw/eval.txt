@@ -1,0 +1,280 @@
+before	f00	zorbing	0.86	0.86	We went sorbing down the hill.
+before	f01	fluffernutter	0.40	0.40	She packed up for lunch.
+before	f02	skibidi	0.55	0.55	The kids kept saying all day.
+before	f03	rizz	0.00	0.00	He has a lot of.
+before	f04	bamboozlement	1.00	1.00	The bamboozlement was complete.
+before	f05	flibbertigibbet	0.93	0.93	Stop acting like a Flibberty gibbet.
+before	f06	snollygoster	0.92	0.92	The senator was a snallygoster.
+before	f07	kerfuffle	1.00	1.00	There was a small kerfuffle at the door.
+before	f08	discombobulated	1.00	1.00	I feel discombobulated this morning.
+before	f09	gobbledygook	1.00	1.00	The manual was pure gobbledygook.
+before	f10	hullabaloo	1.00	1.00	What is all this hullabaloo about?
+before	f11	bumbershoot	1.00	1.00	Grab your Bumbershoot, it is raining.
+before	f12	cattywampus	0.33	0.33	The picture hangs.
+before	f13	lollygag	1.00	1.00	Do not lollygag on the way home.
+before	f14	brouhaha	1.00	1.00	The brouhaha died down by noon.
+before	f15	yeet	1.00	1.00	He tried to yeet the ball over the fence.
+before	f16	Theo	0.86	0.86	will meet us at the station.
+before	f17	Olivia	0.35	0.35	Wrote the first draft.
+before	f18	Luis	0.50	0.50	brought the coffee
+before	f19	Siobhan	0.38	0.38	Is running late
+before	f20	Nguyen	0.57	0.57	Doctor will see you now.
+before	f21	Saoirse	0.43	0.43	Play the lead.
+before	f22	Joaquin	0.43	0.43	Fix the bike.
+before	f23	Xochitl	0.36	0.36	Send a postcard.
+before	f24	Kokoro	1.00	1.00	Kokoro was the teacher model.
+before	f25	Pedersen	1.00	1.00	Cam Pedersen built the robot.
+before	f26	Hobson	0.40	0.40	And Dewey went home.
+before	f27	Conti	0.55	0.55	that was there.
+before	f28	Martelli	0.36	0.36	Open the shop.
+before	f29	Lacheneur	0.24	0.24	Road North
+before	f30	Servadac	0.29	0.29	Captain looked up.
+before	f31	Wylder	0.46	0.46	Kept the letters.
+before	f32	gayety	0.46	0.46	They have the evening faded.
+before	f33	companionless	0.32	0.32	He walked on.
+before	f34	Apaturia	0.44	0.44	The Feast of Cayman Autumn
+before	f35	Critias	0.31	0.31	Spoke Next
+before	f36	Vocos	1.00	1.00	VOCOS is a fast vocoder.
+before	f37	iSTFTNet	0.36	0.36	The iDecoder runs on the GPU.
+before	f38	Kubernetes	0.30	0.30	We deploy it on.
+before	f39	PyTorch	1.00	1.00	The reference code is in PyTorch.
+before	f40	LLaMA	0.67	1.00	LIMA is a language model.
+before	f41	Frigate	1.00	1.00	Frigate records the garage camera.
+before	f42	nginx	0.57	0.57	Put in front of the server.
+before	f43	sudo	0.29	0.29	Run it with...
+before	f44	grep	1.00	1.00	Use grep to find the line.
+before	f45	kubectl	0.40	0.40	Check the pods with.
+before	f46	GIF	1.00	1.00	Send me a gif of the robot.
+before	f47	logits	0.44	0.44	The come out of the last layer.
+before	f48	softmax	1.00	1.00	Apply a softmax to the scores.
+before	f49	worktree	1.00	1.00	Make a new work tree for the branch.
+before	f50	safetensors	1.00	1.00	Save the weights as safe tensors.
+before	f51	WavLM	1.00	1.00	Wave LM scores the speaker likeness.
+before	f52	talketh	0.38	0.38	He too much
+before	f53	whilst	1.00	1.00	Wait here whilst I check.
+before	f54	thou	1.00	1.00	Thou shalt not pass.
+before	f55	forsooth	1.00	1.00	For Sooth, the king is dead.
+before	f56	betwixt	1.00	1.00	The cat sat betwixt the dogs.
+before	f57	doth	0.67	0.67	The lady death protest too much.
+before	f58	servo	1.00	1.00	The servo is overheating.
+before	f59	actuator	1.00	1.00	Replace the knee actuator.
+before	f60	odometry	1.00	1.00	The odometry drifted a meter.
+before	f61	teleop	1.00	1.00	Switch the robot to teleop.
+before	f62	sysid	0.80	1.00	Run Sisit on the ankle.
+before	f63	IMU	1.00	1.00	The IMU reads the tilt.
+before	f64	mujoco	0.33	0.33	The policy was trained in.
+before	f65	Worcestershire	1.00	1.00	Add a dash of Worcestershire sauce.
+before	f66	Llanfair	0.31	0.31	We drove through.
+before	f67	Ouagadougou	1.00	1.00	The flight lands in Ouagadougou.
+before	f68	Poughkeepsie	1.00	1.00	She grew up in Poughkeepsie.
+before	f69	Reykjavik	1.00	1.00	It was cold in Reykjavik.
+before	f70	4:15	1.00	1.00	Meet me at 4.15 by the door.
+before	f71	8:30	1.00	1.00	The train leaves at 8.30.
+before	f72	12:00	1.00	0.80	Lunch is at 12.00 p.m.
+before	f73	3D	1.00	1.00	We printed a 3D model.
+before	f74	1990s	1.00	1.00	It was popular in the 1990s.
+before	f75	2nd	1.00	1.00	She came in second place.
+before	f76	v2.1	1.00	1.00	Upgrade to V21 tonight.
+before	f77	x86	1.00	1.00	It only runs on x86.
+before	f78	B2B	1.00	1.00	They sell B2B software.
+before	f79	cam@ipse.dev	0.67	0.75	Write to CAM at ipsy for access.
+before	f80	https://ribt.dev/docs	0.52	0.52	The docs live at docs today.
+before	f81	@campedersen	0.40	0.40	Follow it for updates.
+after	f00	zorbing	0.86	0.86	We went sorbing down the hill.
+after	f01	fluffernutter	0.60	0.60	She packed a fluff for a netter for lunch.
+after	f02	skibidi	0.60	0.60	The kids kept saying ski beauty all day.
+after	f03	rizz	1.00	1.00	He has a lot of Riz.
+after	f04	bamboozlement	1.00	1.00	The bamboozlement was complete.
+after	f05	flibbertigibbet	0.93	0.93	Stop acting like a Flibberty gibbet.
+after	f06	snollygoster	0.92	0.92	The senator was a snallygoster.
+after	f07	kerfuffle	1.00	1.00	There was a small kerfuffle at the door.
+after	f08	discombobulated	1.00	1.00	I feel discombobulated this morning.
+after	f09	gobbledygook	1.00	1.00	The manual was pure gobbledygook.
+after	f10	hullabaloo	1.00	1.00	What is all this hullabaloo about?
+after	f11	bumbershoot	1.00	1.00	Grab your Bumbershoot, it is raining.
+after	f12	cattywampus	0.86	0.86	The picture hangs catawampus.
+after	f13	lollygag	1.00	1.00	Do not lollygag on the way home.
+after	f14	brouhaha	1.00	1.00	The brouhaha died down by noon.
+after	f15	yeet	1.00	1.00	He tried to yeet the ball over the fence.
+after	f16	Theo	1.00	1.00	Theo will meet us at the station.
+after	f17	Olivia	1.00	1.00	Olivia wrote the first draft.
+after	f18	Luis	0.89	0.89	Louis brought the coffee.
+after	f19	Siobhan	0.62	0.43	Shobin is running late.
+after	f20	Nguyen	0.73	0.73	Dr. Ngyan will see you now.
+after	f21	Saoirse	0.67	0.67	Shars played the lead.
+after	f22	Joaquin	0.62	1.00	Jokwin Fix The Bike
+after	f23	Xochitl	0.31	1.00	Csiksz
+after	f24	Kokoro	1.00	1.00	Kokoro was the teacher model.
+after	f25	Pedersen	1.00	1.00	Cam Pedersen built the robot.
+after	f26	Hobson	1.00	1.00	Hobson and Dewey went home.
+after	f27	Conti	0.57	0.57	The abacuntie was there.
+after	f28	Martelli	1.00	1.00	Martelli opened the shop.
+after	f29	Lacheneur	0.57	0.50	Lanier Road North
+after	f30	Servadac	0.62	1.00	Captain Cervadek looked up.
+after	f31	Wylder	1.00	1.00	Wilder kept the letters.
+after	f32	gayety	0.80	1.00	The gay-eighty of the evening faded.
+after	f33	companionless	1.00	1.00	He walked on companionless.
+after	f34	Apaturia	0.59	1.00	The Feast of Apacharya came in autumn.
+after	f35	Critias	0.57	1.00	Krisha spoke next.
+after	f36	Vocos	1.00	1.00	VOCOS is a fast vocoder.
+after	f37	iSTFTNet	0.88	1.00	The ISDFT-NET decoder runs on the GPU.
+after	f38	Kubernetes	1.00	1.00	We deploy it on Kubernetes.
+after	f39	PyTorch	1.00	1.00	The reference code is in PyTorch.
+after	f40	LLaMA	0.67	1.00	LIMA is a language model.
+after	f41	Frigate	1.00	1.00	Frigate records the garage camera.
+after	f42	nginx	0.57	0.57	Put onks in front of the server.
+after	f43	sudo	1.00	1.00	Run it with sudo.
+after	f44	grep	1.00	1.00	Use grep to find the line.
+after	f45	kubectl	0.53	1.00	Check the pods with Cabactyl.
+after	f46	GIF	1.00	1.00	Send me a gif of the robot.
+after	f47	logits	1.00	1.00	The logits come out of the last layer.
+after	f48	softmax	1.00	1.00	Apply a softmax to the scores.
+after	f49	worktree	1.00	1.00	Make a new work tree for the branch.
+after	f50	safetensors	1.00	1.00	Save the weights as safe tensors.
+after	f51	WavLM	1.00	1.00	Wave LM scores the speaker likeness.
+after	f52	talketh	1.00	1.00	He talketh too much.
+after	f53	whilst	1.00	1.00	Wait here whilst I check.
+after	f54	thou	1.00	1.00	Thou shalt not pass.
+after	f55	forsooth	1.00	1.00	For Sooth, the king is dead.
+after	f56	betwixt	1.00	1.00	The cat sat betwixt the dogs.
+after	f57	doth	0.67	0.67	The lady death protest too much.
+after	f58	servo	1.00	1.00	The servo is overheating.
+after	f59	actuator	1.00	1.00	Replace the knee actuator.
+after	f60	odometry	1.00	1.00	The odometry drifted a meter.
+after	f61	teleop	1.00	1.00	Switch the robot to teleop.
+after	f62	sysid	0.80	1.00	Run Sisit on the ankle.
+after	f63	IMU	1.00	1.00	The IMU reads the tilt.
+after	f64	mujoco	0.83	1.00	The policy was trained in Mujoko.
+after	f65	Worcestershire	1.00	1.00	Add a dash of Worcestershire sauce.
+after	f66	Llanfair	0.88	1.00	We drove through Landfair.
+after	f67	Ouagadougou	1.00	1.00	The flight lands in Ouagadougou.
+after	f68	Poughkeepsie	1.00	1.00	She grew up in Poughkeepsie.
+after	f69	Reykjavik	1.00	1.00	It was cold in Reykjavik.
+after	f70	4:15	1.00	1.00	Meet me at 4.15 by the door.
+after	f71	8:30	1.00	1.00	The train leaves at 8.30.
+after	f72	12:00	0.67	0.67	Lunch is at 12 o'clock p.m.
+after	f73	3D	1.00	1.00	We printed a 3D model.
+after	f74	1990s	1.00	1.00	It was popular in the 1990s.
+after	f75	2nd	1.00	1.00	She came in second place.
+after	f76	v2.1	1.00	1.00	Upgrade to V21 tonight.
+after	f77	x86	1.00	1.00	It only runs on x86.
+after	f78	B2B	1.00	1.00	They sell B2B software.
+after	f79	cam@ipse.dev	0.81	0.91	Write to cam at ipsy.dov for access.
+after	f80	https://ribt.dev/docs	0.88	0.88	The docs live at rib.dev slash docs today.
+after	f81	@campedersen	0.81	0.89	Follow at Camp Peterson for updates.
+ladder	f00	zorbing	0.86	0.86	We went sorbing down the hill.
+ladder	f01	fluffernutter	0.60	0.60	She packed a fluff for a netter for lunch.
+ladder	f02	skibidi	0.60	0.60	The kids kept saying ski beauty all day.
+ladder	f03	rizz	1.00	1.00	He has a lot of Riz.
+ladder	f04	bamboozlement	1.00	1.00	The bamboozlement was complete.
+ladder	f05	flibbertigibbet	0.93	0.93	Stop acting like a Flibberty gibbet.
+ladder	f06	snollygoster	0.92	0.92	The senator was a snallygoster.
+ladder	f07	kerfuffle	1.00	1.00	There was a small kerfuffle at the door.
+ladder	f08	discombobulated	1.00	1.00	I feel discombobulated this morning.
+ladder	f09	gobbledygook	1.00	1.00	The manual was pure gobbledygook.
+ladder	f10	hullabaloo	1.00	1.00	What is all this hullabaloo about?
+ladder	f11	bumbershoot	1.00	1.00	Grab your Bumbershoot, it is raining.
+ladder	f12	cattywampus	0.86	0.86	The picture hangs catawampus.
+ladder	f13	lollygag	1.00	1.00	Do not lollygag on the way home.
+ladder	f14	brouhaha	1.00	1.00	The brouhaha died down by noon.
+ladder	f15	yeet	1.00	1.00	He tried to yeet the ball over the fence.
+ladder	f16	Theo	1.00	1.00	Theo will meet us at the station.
+ladder	f17	Olivia	1.00	1.00	Olivia wrote the first draft.
+ladder	f18	Luis	0.89	0.89	Louis brought the coffee.
+ladder	f19	Siobhan	0.62	0.43	Shobin is running late.
+ladder	f20	Nguyen	0.73	0.73	Dr. Ngyan will see you now.
+ladder	f21	Saoirse	0.67	0.67	Shars played the lead.
+ladder	f22	Joaquin	0.62	1.00	Jokwin Fix The Bike
+ladder	f23	Xochitl	0.31	1.00	Csiksz
+ladder	f24	Kokoro	1.00	1.00	Kokoro was the teacher model.
+ladder	f25	Pedersen	1.00	1.00	Cam Pedersen built the robot.
+ladder	f26	Hobson	1.00	1.00	Hobson and Dewey went home.
+ladder	f27	Conti	0.57	0.57	The abacuntie was there.
+ladder	f28	Martelli	1.00	1.00	Martelli opened the shop.
+ladder	f29	Lacheneur	0.57	0.50	Lanier Road North
+ladder	f30	Servadac	0.62	1.00	Captain Cervadek looked up.
+ladder	f31	Wylder	1.00	1.00	Wilder kept the letters.
+ladder	f32	gayety	0.80	1.00	The gay-eighty of the evening faded.
+ladder	f33	companionless	1.00	1.00	He walked on companionless.
+ladder	f34	Apaturia	0.59	1.00	The Feast of Apacharya came in autumn.
+ladder	f35	Critias	0.57	1.00	Krisha spoke next.
+ladder	f36	Vocos	1.00	1.00	Vocos is a fast vocoder.
+ladder	f37	iSTFTNet	0.88	1.00	The ISDFT-NET decoder runs on the GPU.
+ladder	f38	Kubernetes	1.00	1.00	We deploy it on Kubernetes.
+ladder	f39	PyTorch	0.92	0.92	The reference code is in Ptorch.
+ladder	f40	LLaMA	0.67	1.00	LIMA is a language model.
+ladder	f41	Frigate	1.00	1.00	Frigate records the garage camera.
+ladder	f42	nginx	0.57	0.57	Put onks in front of the server.
+ladder	f43	sudo	1.00	1.00	Run it with sudo.
+ladder	f44	grep	1.00	1.00	Use grep to find the line.
+ladder	f45	kubectl	0.53	1.00	Check the pods with Cabactyl.
+ladder	f46	GIF	1.00	1.00	Send me a gif of the robot.
+ladder	f47	logits	1.00	1.00	The logits come out of the last layer.
+ladder	f48	softmax	1.00	1.00	Apply a softmax to the scores.
+ladder	f49	worktree	1.00	1.00	Make a new work tree for the branch.
+ladder	f50	safetensors	1.00	1.00	Save the weights as safe tensors.
+ladder	f51	WavLM	1.00	1.00	WaveLM scores the speaker likeness.
+ladder	f52	talketh	1.00	1.00	He talketh too much.
+ladder	f53	whilst	1.00	1.00	Wait here whilst I check.
+ladder	f54	thou	1.00	1.00	Thou shalt not pass.
+ladder	f55	forsooth	1.00	1.00	For Sooth, the king is dead.
+ladder	f56	betwixt	1.00	1.00	The cat sat betwixt the dogs.
+ladder	f57	doth	0.67	0.67	The lady death protest too much.
+ladder	f58	servo	1.00	1.00	The servo is overheating.
+ladder	f59	actuator	1.00	1.00	Replace the knee actuator.
+ladder	f60	odometry	1.00	1.00	The odometry drifted a meter.
+ladder	f61	teleop	0.73	0.91	Switch the robot to TELIP.
+ladder	f62	sysid	0.80	1.00	Run Sisit on the ankle.
+ladder	f63	IMU	0.40	1.00	The EM reads the TELT.
+ladder	f64	mujoco	0.83	1.00	The policy was trained in Mujoko.
+ladder	f65	Worcestershire	1.00	1.00	Add a dash of Worcestershire sauce.
+ladder	f66	Llanfair	0.88	1.00	We drove through Landfair.
+ladder	f67	Ouagadougou	1.00	1.00	The flight lands in Ouagadougou.
+ladder	f68	Poughkeepsie	1.00	1.00	She grew up in Poughkeepsie.
+ladder	f69	Reykjavik	1.00	1.00	It was cold in Reykjavik.
+ladder	f70	4:15	1.00	1.00	Meet me at 4.15 by the door.
+ladder	f71	8:30	1.00	1.00	The train leaves at 8.30.
+ladder	f72	12:00	0.67	0.67	Lunch is at 12 o'clock p.m.
+ladder	f73	3D	1.00	1.00	We printed a 3D model.
+ladder	f74	1990s	1.00	1.00	It was popular in the 1990s.
+ladder	f75	2nd	1.00	1.00	She came in second place.
+ladder	f76	v2.1	1.00	1.00	Upgrade to V21 tonight.
+ladder	f77	x86	1.00	1.00	It only runs on x86.
+ladder	f78	B2B	1.00	1.00	They sell B2B software.
+ladder	f79	cam@ipse.dev	0.85	0.86	Write to cam at ips.dov for access.
+ladder	f80	https://ribt.dev/docs	0.88	0.88	The docs live at rib.dev slash docs today.
+ladder	f81	@campedersen	0.81	0.89	Follow at Camp Peterson for updates.
+
+before: said (sim>=0.6) 50/82   prompted 50/82   exact-ish (>=0.85) 46/82
+    address  1/3  prompted 1/3
+    archaic  5/6  prompted 5/6
+    coinage  12/16  prompted 12/16
+    log      0/10  prompted 0/10
+    name     3/10  prompted 3/10
+    number   6/6  prompted 6/6
+    place    4/5  prompted 4/5
+    robot    6/7  prompted 6/7
+    tech     10/16  prompted 10/16
+    time     3/3  prompted 3/3
+after: said (sim>=0.6) 75/82   prompted 78/82   exact-ish (>=0.85) 60/82
+    address  3/3  prompted 3/3
+    archaic  6/6  prompted 6/6
+    coinage  16/16  prompted 16/16
+    log      6/10  prompted 8/10
+    name     9/10  prompted 9/10
+    number   6/6  prompted 6/6
+    place    5/5  prompted 5/5
+    robot    7/7  prompted 7/7
+    tech     14/16  prompted 15/16
+    time     3/3  prompted 3/3
+ladder: said (sim>=0.6) 74/82   prompted 78/82   exact-ish (>=0.85) 58/82
+    address  3/3  prompted 3/3
+    archaic  6/6  prompted 6/6
+    coinage  16/16  prompted 16/16
+    log      6/10  prompted 8/10
+    name     9/10  prompted 9/10
+    number   6/6  prompted 6/6
+    place    5/5  prompted 5/5
+    robot    6/7  prompted 7/7
+    tech     14/16  prompted 15/16
+    time     3/3  prompted 3/3

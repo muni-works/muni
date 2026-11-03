@@ -1,0 +1,1 @@
+summary n=10: TTFA median 17.6 ms p90 27.5 max 27.5; first-chunk compute median 17.6 max 27.5; RTF mean 0.027; utts with underruns 0; max chunk 12.6 ms

@@ -1,0 +1,4 @@
+fit on 165178 words (min 1, ±5 letters, 12 EM iters): 203416 nodes in 13.3 s
+held-out 8806 words: exact 58.35%  exact-no-stress 67.70%  PER 9.03%  5.34 us/word
+wrote /home/cam/runs/ribt-oov/render/g2p_refit.bin: 215571 nodes, 2156670 bytes (fit on all 173984 words)
+refit == embedded g2p.bin

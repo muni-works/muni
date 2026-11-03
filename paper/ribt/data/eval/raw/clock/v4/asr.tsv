@@ -1,0 +1,7 @@
+kind	name	speaker	utmos	ref	hyp
+tts	base	ref	nan	the meeting moved to march 3rd 2027 at 4 15 in the afternoon	the meeting moved to march 3 2027 at 4.15 in the afternoon
+tts	spelled	ref	nan	the meeting moved to march 3rd 2027 at 415 in the afternoon	the meeting moved to march 3 2027 at 4.15 in the afternoon
+tts	hyphen	ref	nan	the meeting moved to march 3rd 2027 at 415 in the afternoon	the meeting moved to march 3 2027 at 4.15 in the afternoon
+tts	comma	ref	nan	the meeting moved to march 3rd 2027 at 415 in the afternoon	the meeting moved to march 3 2027 at 4 15 in the afternoon
+tts	after	ref	nan	the meeting moved to march 3rd 2027 at 4 15 in the afternoon	the meeting moved to march 3 2027 at 4.15 in the afternoon
+tts	short	ref	nan	the meeting is at 4 15	the meeting is at 4.15

@@ -1,0 +1,27 @@
+== imp-s1 wer50
+tts: n=50  WER 2.71%  CER 0.77%  UTMOS 4.409  (whisper small.en)
+== imp-s1 listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.375  (whisper small.en)
+== imp-s1 held50
+tts: n=50  WER 2.02%  CER 0.56%  UTMOS 4.320  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/imp-s1/wer50	sv 0.9865	min 0.9749	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/imp-s1/listen10	sv 0.9801	min 0.9404	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/imp-s1/held50	sv 0.9715	min 0.8513	p>0.86 0.98	n 50
+== imp-s2 wer50
+tts: n=50  WER 2.71%  CER 0.75%  UTMOS 4.403  (whisper small.en)
+== imp-s2 listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.353  (whisper small.en)
+== imp-s2 held50
+tts: n=50  WER 11.53%  CER 10.40%  UTMOS 4.302  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/imp-s2/wer50	sv 0.9862	min 0.9701	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/imp-s2/listen10	sv 0.9808	min 0.9490	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/imp-s2/held50	sv 0.9708	min 0.8198	p>0.86 0.98	n 50
+== imp-s3 wer50
+tts: n=50  WER 2.71%  CER 0.75%  UTMOS 4.384  (whisper small.en)
+== imp-s3 listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.251  (whisper small.en)
+== imp-s3 held50
+tts: n=50  WER 2.16%  CER 0.62%  UTMOS 4.337  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/imp-s3/wer50	sv 0.9868	min 0.9730	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/imp-s3/listen10	sv 0.9799	min 0.9486	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/imp-s3/held50	sv 0.9697	min 0.8127	p>0.86 0.98	n 50

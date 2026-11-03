@@ -1,0 +1,11 @@
+name	speaker	text	phonemes	tokens	frames	seconds	enc_ms	dec_ms	voc_ms	flow_ms	nfe
+question	ref	Could you tell me where the charging station is?	kˌʊd ju tˈɛl mˌi wˌɛɹ ðə ʧˈɑɹʤɪŋ stˈAʃən ɪz?	46	260	2.77	4.7	12.5	6.0	21.6	1
+date	ref	The meeting moved to March 3rd, 2027, at 4:15 in the afternoon.	ðə mˈiTɪŋ mˈuvd tə mˈɑɹʧ θˈɜɹd, twˈɛnti twˈɛnti sˈɛvən, æt fˈɔɹ fˌɪftˈin ɪn ði ˌæftəɹnˈun.	92	504	5.38	6.2	20.8	10.2	34.5	1
+name	ref	Elizabeth told Doctor Wilson that she would call back on Tuesday.	əlˈɪzəbəθ tˈOːld dˈɑktəɹ wˈɪlsᵊn ðæt ʃi wʊd kˈɔl bˈæk ˌɔn tˈuzdˌA.	68	405	4.32	6.1	18.5	8.8	30.7	1
+long	ref	When the rain finally stopped, we walked down to the harbor, watched the fishing boats come in one by one, and talked about everything we had planned for the summer.	wˌɛn ðə ɹˈAn fˈInᵊli stˈɑpt, wi wˈɔkt dˌWn tə ðə hˈɑɹbəɹ, wˈɑʧt ðə fˈɪʃɪŋ bˈOːts kˈʌm ɪn wˈʌn bI wˈʌn, ænd tˈɔkt əbˈWt ˈɛvəɹiθˌɪŋ wi hæd plˈænd fɔɹ ðə sˈʌməɹ.	160	850	9.07	6.2	35.9	17.7	58.6	1
+exclaim	ref	Wow, that was absolutely incredible!	wˈW, ðæt wʌz ˈæbsəlˌutli ɪnkɹˈɛdəbᵊl!	39	251	2.68	4.5	10.4	5.8	18.1	1
+robot	ref	I'm a little warm after that walk.	ˌIm ɐ lˈɪTᵊl wˈɔɹm ˈæftəɹ ðˈæt wˈɔk.	38	218	2.33	4.7	10.4	5.1	18.3	1
+knees	ref	Please keep your hands away from my knees while I'm standing up.	plˈiz kˈip jʊɹ hˈændz əwˈA fɹʌm mI nˈiz wˌIl ˌIm stˈændɪŋ ˌʌp.	64	351	3.74	4.8	16.6	8.0	27.2	1
+numbers	ref	The package weighs 3.7 kilograms and costs $12.50.	ðə pˈækɪʤ wˈAz θɹˈi pYnt sˈɛvən kˈɪləɡɹˌæmz ænd kˈɔsts twˈɛlv dˈɑləɹz ænd fˈɪfti sˈɛnts.	90	533	5.69	6.1	23.7	10.8	37.7	1
+honest	ref	Honestly, I didn't expect you to be home so early.	ˈɑnəstli, ˌI dˈɪdᵊnt ɪkspˈɛkt ju tə bi hˈOːm sˌOː ˈɜɹli.	58	337	3.59	4.7	16.3	6.7	27.0	1
+snow	ref	Is it going to snow in Chicago this weekend, or is that just a rumor?	ˌɪz ɪt ɡˈOːɪŋ tə snˈOː ɪn ʃɪkˈɑɡOː ðɪs wˈikˌɛnd, ɔɹ ɪz ðˈæt ʤˈʌst ɐ ɹˈuməɹ?	77	454	4.84	6.1	21.6	11.5	34.0	1

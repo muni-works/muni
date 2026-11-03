@@ -1,0 +1,11 @@
+name	speaker	text	phonemes	tokens	frames	seconds	enc_ms	dec_ms	voc_ms	flow_ms	nfe
+question	afheart	Could you tell me where the charging station is?	kˌʊd ju tˈɛl mˌi wˌɛɹ ðə ʧˈɑɹʤɪŋ stˈAʃən ɪz?	46	261	2.78	6.4	16.5	6.4	34.8	1
+date	afheart	The meeting moved to March 3rd, 2027, at 4:15 in the afternoon.	ðə mˈiTɪŋ mˈuvd tə mˈɑɹʧ θˈɜɹd, twˈɛnti twˈɛnti sˈɛvən, æt fˈɔɹ fˌɪftˈin ɪn ði ˌæftəɹnˈun.	92	506	5.40	10.8	34.9	12.1	41.8	1
+name	afheart	Elizabeth told Doctor Wilson that she would call back on Tuesday.	əlˈɪzəbəθ tˈOld dˈɑktəɹ wˈɪlsᵊn ðæt ʃi wʊd kˈɔl bˈæk ˌɔn tˈuzdˌA.	67	395	4.21	8.9	22.9	16.5	37.0	1
+long	afheart	When the rain finally stopped, we walked down to the harbor, watched the fishing boats come in one by one, and talked about everything we had planned for the summer.	wˌɛn ðə ɹˈAn fˈInᵊli stˈɑpt, wi wˈɔkt dˌWn tə ðə hˈɑɹbəɹ, wˈɑʧt ðə fˈɪʃɪŋ bˈOts kˈʌm ɪn wˈʌn bI wˈʌn, ænd tˈɔkt əbˈWt ˈɛvəɹiθˌɪŋ wi hæd plˈænd fɔɹ ðə sˈʌməɹ.	159	869	9.27	8.7	50.9	18.7	68.2	1
+exclaim	afheart	Wow, that was absolutely incredible!	wˈW, ðæt wʌz ˈæbsəlˌutli ɪnkɹˈɛdəbᵊl!	39	249	2.66	7.5	13.8	6.9	24.0	1
+robot	afheart	I'm a little warm after that walk.	ˌIm ɐ lˈɪTᵊl wˈɔɹm ˈæftəɹ ðˈæt wˈɔk.	38	214	2.28	4.7	13.7	5.7	21.2	1
+knees	afheart	Please keep your hands away from my knees while I'm standing up.	plˈiz kˈip jʊɹ hˈændz əwˈA fɹʌm mI nˈiz wˌIl ˌIm stˈændɪŋ ˌʌp.	64	348	3.71	7.0	20.4	10.3	41.4	1
+numbers	afheart	The package weighs 3.7 kilograms and costs $12.50.	ðə pˈækɪʤ wˈAz θɹˈi pYnt sˈɛvən kˈɪləɡɹˌæmz ænd kˈɔsts twˈɛlv dˈɑləɹz ænd fˈɪfti sˈɛnts.	90	526	5.61	6.6	30.0	16.0	69.4	1
+honest	afheart	Honestly, I didn't expect you to be home so early.	ˈɑnəstli, ˌI dˈɪdᵊnt ɪkspˈɛkt ju tə bi hˈOm sˌO ˈɜɹli.	56	328	3.50	4.8	20.7	8.9	34.5	1
+snow	afheart	Is it going to snow in Chicago this weekend, or is that just a rumor?	ˌɪz ɪt ɡˈOɪŋ tə snˈO ɪn ʃɪkˈɑɡO ðɪs wˈikˌɛnd, ɔɹ ɪz ðˈæt ʤˈʌst ɐ ɹˈuməɹ?	74	431	4.60	9.1	22.8	10.6	37.2	1

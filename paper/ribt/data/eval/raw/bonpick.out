@@ -1,0 +1,26 @@
+wer50	N 1	UTMOS picked 4.394	mean draw 4.394	WER 2.71%	seeds used [0]
+wer50	N 2	UTMOS picked 4.435	mean draw 4.401	WER 2.71%	seeds used [0, 1]
+wer50	N 4	UTMOS picked 4.467	mean draw 4.397	WER 2.61%	seeds used [0, 1, 2, 3]
+wer50	N 8	UTMOS picked 4.475	mean draw 4.392	WER 2.61%	seeds used [0, 1, 2, 3, 4, 5, 6, 7]
+listen10	N 1	UTMOS picked 4.336	mean draw 4.336	WER 2.44%	seeds used [0]
+listen10	N 2	UTMOS picked 4.411	mean draw 4.356	WER 2.44%	seeds used [0, 1]
+listen10	N 4	UTMOS picked 4.426	mean draw 4.329	WER 2.44%	seeds used [0, 1, 2, 3]
+listen10	N 8	UTMOS picked 4.452	mean draw 4.343	WER 2.44%	seeds used [0, 1, 2, 4, 5, 6, 7]
+held50	N 1	UTMOS picked 4.304	mean draw 4.304	WER 1.73%	seeds used [0]
+held50	N 2	UTMOS picked 4.358	mean draw 4.312	WER 1.87%	seeds used [0, 1]
+held50	N 4	UTMOS picked 4.399	mean draw 4.316	WER 2.16%	seeds used [0, 1, 2, 3]
+held50	N 8	UTMOS picked 4.422	mean draw 4.322	WER 2.02%	seeds used [0, 1, 2, 3, 4, 5, 6, 7]
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon1/wer50	sv 0.9868	min 0.9729	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon1/listen10	sv 0.9800	min 0.9335	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon1/held50	sv 0.9700	min 0.7890	p>0.86 0.98	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon2/wer50	sv 0.9867	min 0.9731	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon2/listen10	sv 0.9792	min 0.9404	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon2/held50	sv 0.9710	min 0.8513	p>0.86 0.98	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon4/wer50	sv 0.9863	min 0.9701	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon4/listen10	sv 0.9801	min 0.9486	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon4/held50	sv 0.9694	min 0.8127	p>0.86 0.98	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon8/wer50	sv 0.9863	min 0.9728	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon8/listen10	sv 0.9789	min 0.9297	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon8/held50	sv 0.9700	min 0.8127	p>0.86 0.98	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon1/held50	DNSMOS sig 3.580 bak 4.180 ovrl 3.370 p808 3.961	NISQA-TTS 4.026	n 50
+/home/cam/runs/ribt-utmos/eval/imp-bon/bon8/held50	DNSMOS sig 3.575 bak 4.180 ovrl 3.364 p808 3.952	NISQA-TTS 4.060	n 50

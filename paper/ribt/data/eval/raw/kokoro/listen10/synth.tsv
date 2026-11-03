@@ -1,0 +1,11 @@
+name	speaker	text	phonemes	tokens	frames	seconds	enc_ms	dec_ms	voc_ms	flow_ms	nfe
+question	af_heart	Could you tell me where the charging station is?		0	0	2.975	0	0	0	0	0
+date	af_heart	The meeting moved to March 3rd, 2027, at 4:15 in the afternoon.		0	0	5.725	0	0	0	0	0
+name	af_heart	Elizabeth told Doctor Wilson that she would call back on Tuesday.		0	0	4.300	0	0	0	0	0
+long	af_heart	When the rain finally stopped, we walked down to the harbor, watched the fishing boats come in one by one, and talked about everything we had planned for the summer.		0	0	9.325	0	0	0	0	0
+exclaim	af_heart	Wow, that was absolutely incredible!		0	0	2.775	0	0	0	0	0
+robot	af_heart	I'm a little warm after that walk.		0	0	2.400	0	0	0	0	0
+knees	af_heart	Please keep your hands away from my knees while I'm standing up.		0	0	3.775	0	0	0	0	0
+numbers	af_heart	The package weighs 3.7 kilograms and costs $12.50.		0	0	5.375	0	0	0	0	0
+honest	af_heart	Honestly, I didn't expect you to be home so early.		0	0	3.425	0	0	0	0	0
+snow	af_heart	Is it going to snow in Chicago this weekend, or is that just a rumor?		0	0	4.600	0	0	0	0	0

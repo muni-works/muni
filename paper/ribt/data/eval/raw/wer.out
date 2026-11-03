@@ -1,0 +1,24 @@
+== impL wer50
+tts: n=50  WER 2.71%  CER 0.73%  UTMOS 4.394  (whisper small.en)
+== impL listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.336  (whisper small.en)
+== impL held50
+tts: n=50  WER 1.73%  CER 0.44%  UTMOS 4.310  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/impL/wer50	sv 0.9868	min 0.9729	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/impL/listen10	sv 0.9800	min 0.9335	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/impL/held50	sv 0.9702	min 0.7890	p>0.86 0.98	n 50
+== impLnoO wer50
+tts: n=50  WER 2.50%  CER 0.75%  UTMOS 4.383  (whisper small.en)
+== impLnoO listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.396  (whisper small.en)
+== impLnoO held50
+tts: n=50  WER 1.73%  CER 0.44%  UTMOS 4.347  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/impLnoO/wer50	sv 0.9870	min 0.9729	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/impLnoO/listen10	sv 0.9806	min 0.9335	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/impLnoO/held50	sv 0.9673	min 0.7588	p>0.86 0.96	n 50
+base	      8 the meeting moved to march 3 2027 at 4.15 in the afternoon;
+spelled	      8 the meeting moved to march 3 2027 at 4.15 in the afternoon;
+hyphen	      8 the meeting moved to march 3 2027 at 4.15 in the afternoon;
+comma	      8 the meeting moved to march 3 2027 at 4 15 in the afternoon;
+after	      8 the meeting moved to march 3 2027 at 4.15 in the afternoon;
+short	      8 the meeting is at 4.15;

@@ -1,0 +1,11 @@
+name	speaker	text	phonemes	tokens	frames	seconds	ttfa_ms	first_compute_ms	compute_ms	rtf	chunks	underruns	stall_ms	max_chunk_ms	full_ms
+question	ref	Could you tell me where the charging station is?	kˌʊd ju tˈɛl mˌi wˌɛɹ ðə ʧˈɑɹʤɪŋ stˈAʃən ɪz? 	47	265	2.83	27.5	27.5	86.2	0.0305	6	0	0.0	12.0	0.0
+date	ref	The meeting moved to March 3rd, 2027, at 4:15 in the afternoon.	ðə mˈiTɪŋ mˈuvd tə mˈɑɹʧ θˈɜɹd, twˈɛnti twˈɛnti sˈɛvən, æt fˈɔɹ fˌɪftˈin ɪn ði ˌæftəɹnˈun. 	93	484	5.16	15.9	15.9	136.9	0.0265	11	0	0.0	12.4	0.0
+name	ref	Elizabeth told Doctor Wilson that she would call back on Tuesday.	əlˈɪzəbəθ tˈOld dˈɑktəɹ wˈɪlsᵊn ðæt ʃi wʊd kˈɔl bˈæk ˌɔn tˈuzdˌA. 	68	393	4.19	17.5	17.5	120.5	0.0288	9	0	0.0	12.5	0.0
+long	ref	When the rain finally stopped, we walked down to the harbor, watched the fishing boats come in one by one, and talked about everything we had planned for the summer.	wˌɛn ðə ɹˈAn fˈInᵊli stˈɑpt, wi wˈɔkt dˌWn tə ðə hˈɑɹbəɹ, wˈɑʧt ðə fˈɪʃɪŋ bˈOts kˈʌm ɪn wˈʌn bI wˈʌn, ænd tˈɔkt əbˈWt ˈɛvəɹiθˌɪŋ wi hæd plˈænd fɔɹ ðə sˈʌməɹ. 	160	806	8.60	17.7	17.7	238.4	0.0277	17	0	0.0	12.6	0.0
+exclaim	ref	Wow, that was absolutely incredible!	wˈW, ðæt wʌz ˈæbsəlˌutli ɪnkɹˈɛdəbᵊl! 	40	241	2.57	17.0	17.0	70.8	0.0275	6	0	0.0	11.9	0.0
+robot	ref	I'm a little warm after that walk.	ˌIm ɐ lˈɪTᵊl wˈɔɹm ˈæftəɹ ðˈæt wˈɔk. 	39	217	2.31	17.6	17.6	60.7	0.0262	5	0	0.0	12.0	0.0
+knees	ref	Please keep your hands away from my knees while I'm standing up.	plˈiz kˈip jʊɹ hˈændz əwˈA fɹʌm mI nˈiz wˌIl ˌIm stˈændɪŋ ˌʌp. 	65	366	3.90	16.3	16.3	111.4	0.0285	8	0	0.0	12.2	0.0
+numbers	ref	The package weighs 3.7 kilograms and costs $12.50.	ðə pˈækɪʤ wˈAz θɹˈi pYnt sˈɛvən kˈɪləɡɹˌæmz ænd kˈɔsts twˈɛlv dˈɑləɹz ænd fˈɪfti sˈɛnts. 	91	515	5.49	17.7	17.7	133.5	0.0243	11	0	0.0	12.1	0.0
+honest	ref	Honestly, I didn't expect you to be home so early.	ˈɑnəstli, ˌI dˈɪdᵊnt ɪkspˈɛkt ju tə bi hˈOm sˌO ˈɜɹli. 	57	317	3.38	14.8	14.8	90.1	0.0267	7	0	0.0	12.3	0.0
+snow	ref	Is it going to snow in Chicago this weekend, or is that just a rumor?	ˌɪz ɪt ɡˈOɪŋ tə snˈO ɪn ʃɪkˈɑɡO ðɪs wˈikˌɛnd, ɔɹ ɪz ðˈæt ʤˈʌst ɐ ɹˈuməɹ? 	75	426	4.54	19.2	19.2	120.5	0.0265	9	0	0.0	12.3	0.0

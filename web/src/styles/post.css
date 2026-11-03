@@ -423,6 +423,9 @@ html.post-rail-on::-webkit-scrollbar { display: none; }
 .post-rail.is-awake .post-rail-now { opacity: 1; transform: translate(0, -50%); }
 .post-rail:hover .post-rail-now { opacity: 0; }
 /* the gate rail (pinned-rows cover): g = 0.9 at the top, g = 1 in fault red at the end, as in Fig 2 */
+.post-rail.is-voice .post-rail-end { text-transform: none; letter-spacing: 0.04em; white-space: nowrap; }
+.post-rail.is-voice .post-rail-earth { color: var(--p-label); }
+.post-rail.is-voice .post-rail-sun { color: #ff5f00; opacity: 0.9; }
 .post-rail.is-gate .post-rail-end { text-transform: none; letter-spacing: 0.04em; white-space: nowrap; }
 .post-rail.is-gate .post-rail-earth { color: var(--p-label); }
 .post-rail.is-gate .post-rail-sun { color: #ff2052; opacity: 0.9; }

@@ -1,0 +1,7 @@
+name	speaker	text	phonemes	tokens	frames	seconds	enc_ms	dec_ms	voc_ms	flow_ms	nfe
+base	ref	The meeting moved to March 3rd, 2027, at 4:15 in the afternoon.	ðə mˈiTɪŋ mˈuvd tə mˈɑɹʧ θˈɜɹd, twˈɛnti twˈɛnti sˈɛvən, æt fˈɔɹ fˌɪftˈin ɪn ði ˌæftəɹnˈun.	92	594	6.34	6.4	24.9	3.4	40.9	1
+spelled	ref	The meeting moved to March 3rd, 2027, at four fifteen in the afternoon.	ðə mˈiTɪŋ mˈuvd tə mˈɑɹʧ θˈɜɹd, twˈɛnti twˈɛnti sˈɛvən, æt fˈɔɹ fˌɪftˈin ɪn ði ˌæftəɹnˈun.	92	594	6.34	6.4	24.5	3.4	40.5	1
+hyphen	ref	The meeting moved to March 3rd, 2027, at four-fifteen in the afternoon.	ðə mˈiTɪŋ mˈuvd tə mˈɑɹʧ θˈɜɹd, twˈɛnti twˈɛnti sˈɛvən, æt fˌɔɹfˌɪftˈin ɪn ði ˌæftəɹnˈun.	91	590	6.29	6.4	24.7	3.2	40.8	1
+comma	ref	The meeting moved to March 3rd, 2027, at four, fifteen in the afternoon.	ðə mˈiTɪŋ mˈuvd tə mˈɑɹʧ θˈɜɹd, twˈɛnti twˈɛnti sˈɛvən, æt fˈɔɹ, fˌɪftˈin ɪn ði ˌæftəɹnˈun.	93	619	6.60	6.1	23.2	3.2	37.7	1
+after	ref	The meeting moved to March 3rd, 2027, at 4:15, in the afternoon.	ðə mˈiTɪŋ mˈuvd tə mˈɑɹʧ θˈɜɹd, twˈɛnti twˈɛnti sˈɛvən, æt fˈɔɹ fˌɪftˈin, ɪn ði ˌæftəɹnˈun.	93	610	6.51	6.1	23.8	3.2	38.0	1
+short	ref	The meeting is at 4:15.	ðə mˈiTɪŋ ɪz æt fˈɔɹ fˌɪftˈin.	32	232	2.47	3.3	11.0	2.6	17.6	1

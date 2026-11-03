@@ -1,0 +1,20 @@
+== imp wer50
+tts: n=50  WER 2.71%  CER 0.73%  UTMOS 4.394  (whisper small.en)
+== imp listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.336  (whisper small.en)
+== imp held50
+tts: n=50  WER 1.73%  CER 0.47%  UTMOS 4.304  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/imp/wer50	sv 0.9868	min 0.9729	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/imp/listen10	sv 0.9800	min 0.9335	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/imp/held50	sv 0.9700	min 0.7890	p>0.86 0.98	n 50
+/home/cam/runs/ribt-utmos/eval/imp/held50	DNSMOS sig 3.580 bak 4.180 ovrl 3.370 p808 3.961	NISQA-TTS 4.026	n 50
+== ship wer50
+tts: n=50  WER 2.71%  CER 0.77%  UTMOS 4.098  (whisper small.en)
+== ship listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.082  (whisper small.en)
+== ship held50
+tts: n=50  WER 1.73%  CER 0.47%  UTMOS 4.136  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/ship/wer50	sv 0.9888	min 0.9757	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/ship/listen10	sv 0.9824	min 0.9577	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/ship/held50	sv 0.9724	min 0.8567	p>0.86 0.98	n 50
+/home/cam/runs/ribt-utmos/eval/ship/held50	DNSMOS sig 3.567 bak 4.177 ovrl 3.356 p808 3.967	NISQA-TTS 4.007	n 50
