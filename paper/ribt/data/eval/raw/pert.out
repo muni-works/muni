@@ -1,0 +1,15 @@
+Using cache found in /home/cam/.cache/torch/hub/tarepan_SpeechMOS_v1.2.0
+/home/cam/venvs/voice-eval/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+eval/imp-bon/bon1/held50	utmos 4.304	p10 3.884	n 50
+pert/bon1	utmos 4.327	p10 4.048	n 50
+eval/imp-bon/bon8/held50	utmos 4.422	p10 4.357	n 50
+pert/bon8	utmos 4.409	p10 4.322	n 50
+eval/imp-bon/bon1/wer50	utmos 4.394	p10 4.057	n 50
+pert/bon1w	utmos 4.402	p10 4.079	n 50
+eval/imp-bon/bon8/wer50	utmos 4.475	p10 4.425	n 50
+pert/bon8w	utmos 4.457	p10 4.400	n 50
+Using cache found in /home/cam/.cache/torch/hub/tarepan_SpeechMOS_v1.2.0
+/home/cam/venvs/voice-eval/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+cpu utmos s per clip 0.17089619636535644 audio s per clip 5.210133333333333

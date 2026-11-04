@@ -1,0 +1,92 @@
+# RIBT release manifest: files, checksums, synthesis defaults, training corpus and evaluation.
+#
+# Provenance: the voice is distilled from Kokoro-82M (hexgrad/Kokoro-82M, voice af_heart, Apache-2.0
+# weights; kokoro 0.9.4, misaki 0.9.4), from about 135 h of af_heart renders. Kokoro's own training data
+# included synthetic audio from closed commercial TTS providers it does not name. No Kokoro weights are
+# included: every network was trained by us, starting from an earlier licence-clean checkpoint trained
+# only on LibriTTS-R (CC BY 4.0). The vocoder is the public Vocos checkpoint (MIT).
+name = "ribt"
+date = "2026-10-17"
+provenance = "distilled from Kokoro-82M af_heart (kokoro 0.9.4, misaki 0.9.4); Kokoro training data includes closed commercial TTS output"
+
+[synth]
+# ribt-tts synth --ckpt acoustic_af_bon.safetensors --flow flow_student_af.safetensors --nfe 1 --shortcut \
+#   --temp 0.3 --voc vocoder_vocos_import.safetensors --ref ref_afheart.wav --seed 0 --pitch 1 \
+#   --accent minnesota [--rate R] --text "..."
+flow_nfe = 1
+flow_temp = 0.3
+seed = 0
+pitch_st = 1           # +1 semitone over the predicted pitch
+accent = "minnesota"   # Upper Midwest: /æ/ raised before /ɡ/, held long o, "Ope!" / "Oh geez!" interjections
+rate = 1.0
+
+[corpus]
+hours = 135.2
+utterances = 92050
+book = { n = 52000, hours = 75.6, source = "LibriTTS-R train-clean-100/360 + train-other-500 normalized transcripts (texts only)" }
+conversational = { n = 40000, hours = 59.5, source = "templated robot/conversation lines (scripts/afheart/texts.py, seed 0)" }
+held_out = "50 texts (test), 460 dev; evaluation texts (WER-50, listen-10, LibriTTS-R test-clean) excluded from training"
+loudness = "-18.2 LUFS integrated (LibriTTS-R train-clean-100 median), peak-limited to 0.98 by gain"
+phonemes = "Kokoro's own misaki phonemes (exactly what was rendered)"
+
+[[component]]
+role = "acoustic model (default): af_heart fine-tune, then 4k steps on best-of-N teacher renders + 750 domain lines"
+file = "acoustic_af_bon.safetensors"
+sha256 = "cdf219271797495796da739bd52221c2a7b34fb53b7651c00eaa71d337f7b71f"
+norm = { file = "acoustic_norm.txt", sha256 = "2caa07fe6ecbbfd256b56deba9959ff8cbddb3ee75ad0ffba71b89ceb840006d" }
+eval = { wer50 = { utmos = 4.180, wer = 3.55, sv = 0.988 }, listen10 = { utmos = 4.145, wer = 2.44, sv = 0.982 }, held50 = { utmos = 4.177, wer = 2.59, sv = 0.972 }, note = "with the earlier own vocoder, no pitch/accent" }
+
+[[component]]
+role = "acoustic model (earlier checkpoint, not the default): af_heart fine-tune, 20k steps from the licence-clean checkpoint; 96% af_heart + 4% LibriTTS-R replay"
+file = "acoustic_af_step0020000.safetensors"
+sha256 = "ce725e1b58fb9b96a6dbb955a1748843bd57609a5a18066c7472306f2bd0a56d"
+norm = { file = "acoustic_norm.txt", sha256 = "2caa07fe6ecbbfd256b56deba9959ff8cbddb3ee75ad0ffba71b89ceb840006d" }
+
+[[component]]
+role = "flow decoder: 1-step shortcut student (4096 teacher pairs, pair τ 0.3, 3000 steps) distilled from the af_heart-fine-tuned flow-matching teacher"
+file = "flow_student_af.safetensors"
+sha256 = "1ca2fb824a8b4a66c1ec3e0123ddad0edd9ca8791a9262c669c649a70d898fe1"
+norm = { file = "flow_norm.txt", sha256 = "5b50240542f6d61fd580a1ebde2011b2ed29551d5608f9d5310c23a2b165ea88" }
+
+[[component]]
+role = "vocoder (default): pretrained Vocos 24 kHz, imported into our generator by weight renaming (tanh GELU)"
+file = "vocoder_vocos_import.safetensors"
+source = "charactr/vocos-mel-24khz (MIT, LibriTTS-trained), converted by scripts/utmos/vocos_import.py"
+licence = "MIT (charactr/vocos); attribution: Vocos, Siuzdak 2023"
+sha256 = "a91e8da6dc6a93b40171657c857007d42f288f403b6039e400c3fb5f60206ad0"
+eval = { wer50 = { utmos = 4.394, wer = 2.71, sv = 0.987 }, listen10 = { utmos = 4.336, wer = 2.44, sv = 0.980 }, held50 = { utmos = 4.304, wer = 1.73, sv = 0.970 }, seeds0_7_mean_utmos = [4.392, 4.343, 4.322], note = "full default chain (pitch 1, minnesota), seed 0" }
+
+[[component]]
+role = "vocoder (earlier, not the default): our own Vocos-shaped GAN vocoder, fine-tuned 12k steps on af_heart"
+file = "vocoder_af_step0012000.safetensors"
+sha256 = "3965a14a63d0ccd1478115351d466f6d98d391f177d30313ac1ff919267d74db"
+
+[[component]]
+role = "speaker reference (af_heart corpus clip, 8.1 s)"
+file = "ref_afheart.wav"
+sha256 = "589471b3415cdfda6b82d7b780e5e39564a7ad90155cdee15674680bd039d867"
+
+# Evaluation of the chain as first trained (20k acoustic, own vocoder, no pitch/accent), seed 0.
+# Whisper small.en WER; UTMOS = UTMOS22-strong; sv = WavLM-base-plus-SV cosine to the centroid of 121
+# held af_heart clips. The default chain's numbers are in the vocoder component above.
+[eval.wer50]
+utmos = 4.156
+wer = 3.23
+sv = 0.988
+licence_clean_zero_shot = { utmos = 3.789, wer = 3.13, sv = 0.918 }
+kokoro_af_heart = { utmos = 4.521, wer = 2.61, sv = 0.990 }
+[eval.listen10]
+utmos = 4.096
+wer = 2.44
+sv = 0.983
+licence_clean_zero_shot = { utmos = 3.691, wer = 2.44, sv = 0.891 }
+kokoro_af_heart = { utmos = 4.497, wer = 0.81, sv = 0.982 }
+[eval.held50]
+utmos = 4.157
+wer = 2.31
+sv = 0.971
+licence_clean_zero_shot = { utmos = 3.711, wer = 2.74, sv = 0.877 }
+kokoro_af_heart = { utmos = 4.464, wer = 1.73 }
+[eval.latency_m4]
+ribt_stream = { ttfa_ms_median = 17.6, ttfa_ms_p90 = 27.5, rtf = 0.027 }
+kokoro_cpu = { first_segment_ms_median = 349, rtf = 0.093, note = "KPipeline, non-streaming; MPS was slower (815 ms, RTF 0.22)" }

@@ -1,0 +1,51 @@
+name	speaker	text	phonemes	tokens	frames	seconds	enc_ms	dec_ms	voc_ms	flow_ms	nfe
+bk_2393_144496_000074_000001	ref	But why do I ask?	bˌʌt wˌI dˈu ˌI ˈæsk?	23	158	1.69	3.1	8.5	2.4	14.0	1
+bk_4965_27767_000023_000004	ref	The boy was being pushed forward.	ðə bˈY wʌz bˈiɪŋ pˈʊʃt fˈɔɹwəɹd.	34	213	2.27	4.5	10.9	2.5	17.3	1
+bk_5756_305214_000019_000003	ref	It was only necessary to offer some living creatures in sacrifice to the demons whom he worshipped and success would be certain.	ˌɪt wʌz ˈOːnli nˈɛsəsˌɛɹi tʊ ˈɔfəɹ sˌʌm lˈɪvɪŋ kɹˈiʧəɹz ɪn sˈækɹəfˌIs tə ðə dˈimənz hˈum hi wˈɜɹʃəpt ænd səksˈɛs wʊd bi sˈɜɹtn.	129	726	7.74	6.2	30.9	4.4	51.1	1
+bk_8643_298549_000056_000000	ref	"And yourself, captain?"	“ˌænd jəɹsˈɛlf, kˈæptᵊn?”	27	176	1.88	3.3	8.3	2.3	14.7	1
+bk_3990_31915_000018_000008	ref	God be praised!	ɡˈɑd bi pɹˈAzd!	17	169	1.80	3.1	8.8	2.5	14.0	1
+bk_5012_80192_000032_000002	ref	The officers bade me accompany them in their search.	ði ˈɔfəsəɹz bˈAd mˌi əkˈʌmpᵊni ðˌɛm ɪn ðɛɹ sˈɜɹʧ.	51	304	3.24	4.5	12.5	2.7	20.6	1
+bk_6087_63229_000041_000002	ref	I hope you won't mind my troubling you.	ˌI hˈOːp ju wOːnt mˈInd mI tɹˈʌbᵊlɪŋ ju.	42	235	2.51	4.5	10.7	2.8	17.9	1
+bk_3681_111567_000020_000001	ref	As he grows he needs a larger house, and so leaves the tight shell and pops his tail into a bigger one, generally a whelk shell.	ˌæz hi ɡɹˈOːz hi nˈidz ɐ lˈɑɹʤəɹ hˈWs, ænd sˌOː lˈivz ðə tˈIt ʃˈɛl ænd pˈɑps hɪz tˈAl ˈɪntu ɐ bˈɪɡəɹ wˈʌn, ʤˈɛnəɹəli ɐ wˈɛlk ʃˈɛl.	132	768	8.19	6.2	31.7	4.2	50.2	1
+bk_5968_55202_000039_000000	ref	Three crimson faced men sprang to their feet.	θɹˈi kɹˈɪmzᵊn fˈAst mˈɛn spɹˈæŋ tə ðɛɹ fˈit.	46	287	3.06	4.2	11.7	2.7	20.2	1
+bk_3179_7153_000041_000001	ref	But she was not solely dependent on it.	bˌʌt ʃi wʌz nˌɑt sˈOːlli dəpˈɛndᵊnt ˌɔn ɪt.	45	252	2.69	4.4	10.0	2.6	16.7	1
+bk_3567_7277_000001_000009	ref	I loitered on the path to the bath houses in the daytime, and when the sun had fallen behind the forest I crept along the jasmine hedges of the women's courtyard.	ˌI lˈYTəɹd ˌɔn ðə pˈæθ tə ðə bˈæθ hˈWsᵻz ɪn ðə dˈAtˌIm, ænd wˌɛn ðə sˈʌn hæd fˈɔlən bəhˈInd ðə fˈɔɹəst ˌI kɹˈɛpt əlˈɔŋ ðə ʤˈæzmən hˈɛʤᵻz ʌv ðə wˈɪmənz kˈɔɹtjˌɑɹd.	164	867	9.25	8.2	35.9	4.9	57.3	1
+bk_8419_286667_000013_000002	ref	As she stalked off toward the pond, she passed him, and she said over her shoulder, "I should think you would be hungry.	ˌæz ʃi stˈɔkt ˈɔf tˈɔɹd ðə pˈɑnd, ʃi pˈæst hˌɪm, ænd ʃi sˈɛd ˈOːvəɹ hɜɹ ʃˈOːldəɹ, “ˌI ʃˌʊd θˈɪŋk ju wʊd bi hˈʌŋɡɹi.	117	645	6.88	6.2	27.6	4.3	44.4	1
+bk_4005_7262_000022_000000	ref	"Yes, take him home," said Hollis, very low, as if debating with himself.	“jˈɛs, tˈAk hˌɪm hˈOːm,“ sˈɛd hˈɑləs, vˈɛɹi lˈOː, æz ɪf dᵻbˈATɪŋ wɪð hɪmsˈɛlf.	80	464	4.95	6.4	21.5	3.2	33.2	1
+bk_4427_12471_000007_000003	ref	And when God had granted him that favor, he took the top of a stick that lay down at his feet, and divided it in the middle, and made the section lengthways.	ˌænd wˌɛn ɡˈɑd hæd ɡɹˈæntᵻd hˌɪm ðæt fˈAvəɹ, hi tˈʊk ðə tˈɑp ʌv ɐ stˈɪk ðæt lˈA dˌWn æt hɪz fˈit, ænd dəvˈIdᵻd ɪt ɪn ðə mˈɪdᵊl, ænd mˌAd ðə sˈɛkʃən lˈɛŋθwˌAz.	160	829	8.84	6.6	33.5	4.8	53.4	1
+bk_8576_300229_000016_000006	ref	In a trice the English sailors were on the Spanish deck with swords out and the rallying cry of 'God and saint George!	ɪn ɐ tɹˈIs ði ˈɪŋɡlɪʃ sˈAləɹz wɜɹ ˌɔn ðə spˈænɪʃ dˈɛk wɪð sˈɔɹdz ˈWt ænd ðə ɹˈæliɪŋ kɹˈI ʌv “ɡˈɑd ænd sˈAnt ʤˈɔɹʤ!	116	652	6.95	6.2	28.2	4.0	44.4	1
+bk_4295_39940_000014_000007	ref	Just in front of him a butler started to carve a duck with a long, sharp knife.	ʤˈʌst ɪn fɹˈʌnt ʌv hˌɪm ɐ bˈʌtləɹ stˈɑɹTᵻd tə kˈɑɹv ɐ dˈʌk wɪð ɐ lˈɔŋ, ʃˈɑɹp nˈIf.	84	442	4.71	5.8	19.1	3.2	30.7	1
+bk_6081_42010_000032_000004	ref	She swore that she had been misunderstood, that her words had been misconstrued; and vowed on her mother's memory, that she had never heard the name of Lacheneur before.	ʃˌi swˈɔɹ ðæt ʃi hæd bɪn mˌɪsˌʌndəɹstˈʊd, ðæt hɜɹ wˈɜɹdz hæd bɪn mˌɪskənstɹˈud; ænd vˈWd ˌɔn hɜɹ mˈʌðəɹz mˈɛməɹi, ðæt ʃi hæd nˈɛvəɹ hˈɜɹd ðə nˈAm ʌv lˌæənˈɜɹ bəfˈɔɹ.	167	873	9.31	8.2	36.1	4.6	57.2	1
+bk_1474_128276_000028_000000	ref	Everything among them talketh, everything is betrayed.	ˈɛvəɹiθˌɪŋ əmˈʌŋ ðˌɛm tˈɔkɪθ, ˈɛvəɹiθˌɪŋ ɪz bətɹˈAd.	54	326	3.48	4.3	16.3	2.7	27.3	1
+bk_49_121052_000001_000000	ref	In his whole life, perhaps, Franz had never before experienced so sudden an impression, so rapid a transition from gayety to sadness, as in this moment.	ɪn hɪz hˈOːl lˈIf, pəɹhˈæps, fɹˈænts hæd nˈɛvəɹ bəfˈɔɹ ɪkspˈɪɹiənst sˌOː sˈʌdᵊn ɐn ɪmpɹˈɛʃən, sˌOː ɹˈæpəd ɐ tɹænzˈɪʃən fɹʌm ɡˈAˌɛTi tə sˈædnəs, æz ɪn ðɪs mˈOːmᵊnt.	165	942	10.05	8.2	38.2	5.1	61.1	1
+bk_6707_73028_000027_000001	ref	"There is no comfort now, I believe, in anything.	“ðˌɛɹ ɪz nˈOː kˈʌmfəɹt nˈW, ˌI bəlˈiv, ɪn ˈɛniθˌɪŋ.	53	303	3.23	4.7	13.1	2.7	20.4	1
+bk_7597_101859_000002_000000	ref	Five oaks awoke to a new existence on the first morning after the arrival of its guests from New York-an existence of wild shouts, gleeful laughter, scampering feet and confusion.	fˈIv ˈOːks əwˈOːk tə ɐ nˈu ɪɡzˈɪstᵊns ˌɔn ðə fˈɜɹst mˈɔɹnɪŋ ˈæftəɹ ði əɹˈIvəl ʌv ɪts ɡˈɛsts fɹʌm nˈu jˈɔɹkɐn ɪɡzˈɪstᵊns ʌv wˈIld ʃˈWts, ɡlˈifᵊl lˈæftəɹ, skˈæmpəɹɪŋ fˈit ænd kənfjˈuʒᵊn.	186	1051	11.21	8.2	41.9	5.2	68.0	1
+bk_6415_116629_000008_000000	ref	"That's all the thanks I get for telling you that you are losing something, and I was just going to make you a present that is worth more than five francs to a fellow like you."	“ðˌæts ˈɔl ðə θˈæŋks ˌI ɡɛt fɔɹ tˈɛlɪŋ ju ðæt ju ɑɹ lˈuzɪŋ sˈʌmθˌɪŋ, ænd ˌI wʌz ʤˈʌst ɡˈOːɪŋ tə mˌAk ju ɐ pɹˈɛzᵊnt ðæt ɪz wˈɜɹθ mˈɔɹ ðən fˈIv fɹˈæŋks tə ɐ fˈɛlOː lˈIk ju.”	173	863	9.21	8.2	35.9	4.6	58.0	1
+bk_5837_39905_000101_000001	ref	He will forgive you, if you ask Him, and you will wait for me till I come.	hˌi wɪl fəɹɡˈɪv ju, ɪf ju ˈæsk hˌɪm, ænd ju wɪl wˈAt fɔɹ mˌi tˈɪl ˌI kˈʌm.	76	401	4.28	6.0	18.1	3.0	28.7	1
+bk_6937_112761_000008_000000	ref	The queen looked out of the window, to see in what direction they would fly, when she saw right under the window an old man, with a beard as white as snow.	ðə kwˈin lˈʊkt ˈWt ʌv ðə wˈɪndOː, tə sˈi ɪn wˌʌt dəɹˈɛkʃən ðA wʊd flˈI, wˌɛn ʃi sˈɔ ɹˈIt ˈʌndəɹ ðə wˈɪndOː ɐn ˈOːld mˈæn, wɪð ɐ bˈɪɹd æz wˈIt æz snˈOː.	153	852	9.09	5.9	35.8	4.6	57.1	1
+bk_1736_142281_000005_000000	ref	But the future must be met, however stern and iron it be.	bˌʌt ðə fjˈuʧəɹ mˈʌst bi mˈɛt, hWˈɛvəɹ stˈɜɹn ænd ˈIəɹn ɪt bˈi.	65	347	3.70	5.9	16.5	3.2	26.5	1
+cv_000000	ref	I put the red cup next to the front door.	ˌI pˌʊt ðə ɹˈɛd kˈʌp nˈɛkst tə ðə fɹˈʌnt dˈɔɹ.	48	245	2.61	4.6	10.4	2.9	17.7	1
+cv_000001	ref	Before we start, let me explain the plan: first we clear the office, then we bring the water bottle over, and finally we test everything slowly so nobody gets hurt.	bəfˈɔɹ wi stˈɑɹt, lˈɛt mˌi ɪksplˈAn ðə plˈæn: fˈɜɹst wi klˈɪɹ ði ˈɔfəs, ðˈɛn wi bɹˈɪŋ ðə wˈɔTəɹ bˈɑTəl ˈOːvəɹ, ænd fˈInᵊli wi tˈɛst ˈɛvəɹiθˌɪŋ slˈOːli sˌOː nˈOːbˌɑdi ɡɛts hˈɜɹt.	179	994	10.60	8.2	40.0	5.1	63.2	1
+cv_000002	ref	Yeah.	jˈɛə.	7	107	1.14	3.3	6.4	2.2	11.2	1
+cv_000003	ref	Which one do you want, Ravi?	wˌɪʧ wˈʌn dˈu ju wˈɑnt, ɹˈɑvi?	32	172	1.83	3.1	8.3	2.3	14.0	1
+cv_000004	ref	Wait, really?	wˈAt, ɹˈiᵊli?	15	139	1.48	3.1	8.3	2.2	15.1	1
+cv_000005	ref	I'm not sure, but I'll check the lab.	ˌIm nˌɑt ʃˈʊɹ, bˌʌt ˌIl ʧˈɛk ðə lˈæb.	39	234	2.50	4.5	11.0	2.6	17.3	1
+cv_000006	ref	Where did you leave your keys?	wˌɛɹ dˈɪd ju lˈiv jʊɹ kˈiz?	29	178	1.90	3.1	8.3	2.3	14.0	1
+cv_000007	ref	I'm not sure, but I'll check the couch.	ˌIm nˌɑt ʃˈʊɹ, bˌʌt ˌIl ʧˈɛk ðə kˈWʧ.	39	234	2.50	4.7	10.4	2.6	17.7	1
+cv_000008	ref	Could you hand me your keys?	kˌʊd ju hˈænd mˌi jʊɹ kˈiz?	29	179	1.91	3.1	9.0	2.3	14.0	1
+cv_000009	ref	It's about 66 percent from here.	ˌɪts əbˈWt sˈɪksti sˈɪks pəɹsˈɛnt fɹʌm hˈɪɹ.	46	243	2.59	4.5	11.5	2.6	17.2	1
+cv_000010	ref	Sure, I'll grab the headphones.	ʃˈʊɹ, ˌIl ɡɹˈæb ðə hˈɛdfˌOːnz.	32	195	2.08	3.1	10.9	2.5	17.4	1
+cv_000011	ref	In 1707, Olivia was born on February 19th.	ɪn sˌɛvəntˈin ˈOː sˈɛvən, ˈɑlˌɪviə wʌz bˈɔɹn ˌɔn fˈɛbjəwˌɛɹi nˌIntˈinθ.	73	430	4.59	6.4	18.5	3.5	31.4	1
+cv_000012	ref	Is this a good time to talk?	ˌɪz ðɪs ɐ ɡˈʊd tˈIm tə tˈɔk?	30	199	2.12	3.3	10.4	2.5	17.7	1
+cv_000013	ref	Hold on.	hˈOːld ˌɔn.	13	143	1.53	3.1	8.3	2.2	14.3	1
+cv_000014	ref	If the battery drops below 11 percent, I'll stop what I'm doing, tell you, and head back to the kitchen to charge for about 87 minutes.	ˌɪf ðə bˈæTəɹi dɹˈɑps bəlˈOː əlˈɛvᵊn pəɹsˈɛnt, ˌIl stˈɑp wˌʌt ˌIm dˈuɪŋ, tˈɛl ju, ænd hˈɛd bˈæk tə ðə kˈɪʧᵊn tə ʧˈɑɹʤ fɔɹ əbˈWt ˈATi sˈɛvən mˈɪnəts.	150	834	8.90	6.7	35.5	4.5	58.3	1
+cv_000015	ref	Okay. I can do that for you, Theo.	ˌOːkˈA. ˌI kæn dˈu ðˈæt fɔɹ ju, θˈiOː.	40	246	2.62	4.2	10.1	2.5	16.7	1
+cv_000016	ref	Is it too loud in the charging dock?	ˌɪz ɪt tˈu lˈWd ɪn ðə ʧˈɑɹʤɪŋ dˈɑk?	37	232	2.47	4.4	10.1	2.6	16.7	1
+cv_000017	ref	Your appointment is at 8:30 AM.	jˌʊɹ əpˈYntmənt ɪz æt ˈAt θˈɜɹTi ˌAˈɛm.	41	243	2.59	4.5	10.7	2.6	17.6	1
+cv_000018	ref	Ouch, that looked painful.	ˈWʧ, ðæt lˈʊkt pˈAnfᵊl.	25	177	1.89	3.1	8.3	2.3	14.3	1
+cv_000019	ref	Where did you leave the remote?	wˌɛɹ dˈɪd ju lˈiv ðə ɹəmˈOːt?	31	185	1.97	3.1	8.3	2.3	14.8	1
+cv_000020	ref	When you get a chance, Luis, could you check whether a towel is still in the charging dock, because I looked there this morning and I'm fairly sure it wasn't where we left it?	wˌɛn ju ɡɛt ɐ ʧˈæns, lˈui, kʊd ju ʧˈɛk wˈɛðəɹ ɐ tˈWᵊl ɪz stˈɪl ɪn ðə ʧˈɑɹʤɪŋ dˈɑk, bəkˈʌz ˌI lˈʊkt ðɛɹ ðɪs mˈɔɹnɪŋ ænd ˌIm fˈɛɹli ʃˈʊɹ ɪt wˈʌzᵊnt wˌɛɹ wi lˈɛft ɪt?	165	866	9.24	8.2	36.2	4.6	56.8	1
+cv_000021	ref	If the battery drops below 22 percent, I'll stop what I'm doing, tell you, and head back to the lab to charge for about 30 minutes.	ˌɪf ðə bˈæTəɹi dɹˈɑps bəlˈOː twˈɛnti tˈu pəɹsˈɛnt, ˌIl stˈɑp wˌʌt ˌIm dˈuɪŋ, tˈɛl ju, ænd hˈɛd bˈæk tə ðə lˈæb tə ʧˈɑɹʤ fɔɹ əbˈWt θˈɜɹTi mˈɪnəts.	147	799	8.52	6.1	31.3	4.2	50.4	1
+cv_000022	ref	Is Theo coming over today?	ˌɪz θˈiOː kˈʌmɪŋ ˈOːvəɹ tədˈA?	32	195	2.08	2.9	9.8	2.3	17.1	1
+cv_000023	ref	We have 2.6 kilometers left.	wˌi hæv tˈu pYnt sˈɪks kəlˈɑməTəɹz lˈɛft.	43	250	2.67	4.2	9.8	2.5	16.4	1
+cv_000024	ref	I'm not sure, but I'll check the living room.	ˌIm nˌɑt ʃˈʊɹ, bˌʌt ˌIl ʧˈɛk ðə lˈɪvɪŋ ɹˈum.	46	271	2.89	4.2	12.4	2.8	19.2	1

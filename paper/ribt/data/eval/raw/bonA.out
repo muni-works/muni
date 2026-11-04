@@ -1,0 +1,27 @@
+== ftA-s1 wer50
+tts: n=50  WER 2.61%  CER 0.75%  UTMOS 4.372  (whisper small.en)
+== ftA-s1 listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.289  (whisper small.en)
+== ftA-s1 held50
+tts: n=50  WER 2.16%  CER 0.53%  UTMOS 4.303  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/ftA-s1/wer50	sv 0.9885	min 0.9779	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/ftA-s1/listen10	sv 0.9825	min 0.9459	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/ftA-s1/held50	sv 0.9720	min 0.7966	p>0.86 0.98	n 50
+== ftA-s2 wer50
+tts: n=50  WER 2.71%  CER 0.75%  UTMOS 4.401  (whisper small.en)
+== ftA-s2 listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.379  (whisper small.en)
+== ftA-s2 held50
+tts: n=50  WER 11.53%  CER 10.40%  UTMOS 4.280  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/ftA-s2/wer50	sv 0.9882	min 0.9724	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/ftA-s2/listen10	sv 0.9825	min 0.9525	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/ftA-s2/held50	sv 0.9739	min 0.8100	p>0.86 0.98	n 50
+== ftA-s3 wer50
+tts: n=50  WER 2.61%  CER 0.73%  UTMOS 4.383  (whisper small.en)
+== ftA-s3 listen10
+tts: n=10  WER 2.44%  CER 0.48%  UTMOS 4.376  (whisper small.en)
+== ftA-s3 held50
+tts: n=50  WER 1.73%  CER 0.47%  UTMOS 4.340  (whisper small.en)
+/home/cam/runs/ribt-utmos/eval/ftA-s3/wer50	sv 0.9895	min 0.9803	p>0.86 1.00	n 50
+/home/cam/runs/ribt-utmos/eval/ftA-s3/listen10	sv 0.9829	min 0.9521	p>0.86 1.00	n 10
+/home/cam/runs/ribt-utmos/eval/ftA-s3/held50	sv 0.9735	min 0.8480	p>0.86 0.98	n 50

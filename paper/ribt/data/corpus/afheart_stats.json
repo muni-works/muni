@@ -1,0 +1,38 @@
+{
+ "rendered": 92050,
+ "kept": 92050,
+ "hours": 135.19865972222223,
+ "rejected": {},
+ "by_kind": {
+  "held": {
+   "n": 50,
+   "hours": 0.064
+  },
+  "book": {
+   "n": 52000,
+   "hours": 75.62
+  },
+  "conv": {
+   "n": 40000,
+   "hours": 59.515
+  }
+ },
+ "by_split": {
+  "train": 91540,
+  "dev": 460,
+  "test": 50
+ },
+ "seconds_p10_p50_p90": [
+  2.22,
+  4.03,
+  9.93
+ ],
+ "peak_p50_p99_max": [
+  0.9189,
+  0.98,
+  0.98
+ ],
+ "peak_limited": 31159,
+ "gain_db_p50": 7.24,
+ "note": "RESEARCH-ONLY: Kokoro-82M af_heart renders; Kokoro's training data included synthetic audio from closed commercial TTS providers. Not licence-clean."
+}
