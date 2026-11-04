@@ -57,4 +57,14 @@ export const PhyzGlyph = () => (
   </svg>
 );
 
-export const glyphs: Record<string, () => React.JSX.Element> = { frog: FrogGlyph, tang: TangGlyph, vcad: VcadGlyph, phyz: PhyzGlyph };
+// ribt speaks: a voice level meter, bars rising and falling out of step, the shape of a sentence.
+const RIBT_BARS = [6, 11, 17, 23, 29, 35, 41, 47, 53, 58];
+export const RibtGlyph = () => (
+  <svg viewBox="0 0 64 32" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+    {RIBT_BARS.map((x, i) => (
+      <line key={x} className="eg-ribt-bar" x1={x} y1={16 - (4 + ((i * 7) % 9))} x2={x} y2={16 + (4 + ((i * 7) % 9))} style={{ "--d": `${-((i * 0.37) % 1.3).toFixed(2)}s` } as React.CSSProperties} />
+    ))}
+  </svg>
+);
+
+export const glyphs: Record<string, () => React.JSX.Element> = { frog: FrogGlyph, tang: TangGlyph, vcad: VcadGlyph, phyz: PhyzGlyph, ribt: RibtGlyph };
