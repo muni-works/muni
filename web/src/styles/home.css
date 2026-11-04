@@ -20,7 +20,7 @@
   justify-content: space-between;
   gap: 1rem;
   box-sizing: border-box;
-  width: min(100%, calc(4 * var(--door-card) + 3 * var(--door-gap)));
+  width: min(100%, calc(5 * var(--door-card) + 4 * var(--door-gap)));
   height: 3rem;
   margin: 2.75rem auto 0;
   padding: 0 0.6rem; /* the cards' own inner edge, so text lines up down the column */
@@ -39,8 +39,8 @@
 /* the cards are a grid exactly as wide as the vision bar, so both share one edge at every size */
 .post-cover-text .home-cta {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  width: min(100%, calc(4 * var(--door-card) + 3 * var(--door-gap)));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  width: min(100%, calc(5 * var(--door-card) + 4 * var(--door-gap)));
   margin: var(--door-gap) auto 0;
 }
 .post-cover-text .home-cta .pcard.home-tile { width: auto; }
@@ -82,8 +82,11 @@
 .eg-phyz-ball { transform-origin: 50% 100%; transform-box: fill-box; animation: eg-phyz-bounce 1.1s infinite; }
 @keyframes eg-phyz-shadow { 0%, 100% { transform: scaleX(0.55); opacity: 0.2; } 50% { transform: scaleX(1.1); opacity: 0.55; } }
 .eg-phyz-shadow ellipse { transform-origin: center; transform-box: fill-box; animation: eg-phyz-shadow 1.1s ease-in-out infinite; }
+/* ribt: a voice level meter, each bar breathing on its own beat, like a sentence being said */
+@keyframes eg-ribt-say { 0%, 100% { transform: scaleY(0.25); } 30% { transform: scaleY(1); } 55% { transform: scaleY(0.45); } 75% { transform: scaleY(0.8); } }
+.eg-ribt-bar { transform-origin: 50% 50%; transform-box: fill-box; animation: eg-ribt-say 1.3s ease-in-out infinite; animation-delay: var(--d); }
 @media (prefers-reduced-motion: reduce) {
-  .eg-frog-line, .eg-frog-line line, .eg-frog-line rect, .eg-tang-wave, .eg-vcad-dim, .eg-vcad-box path, .eg-phyz-ball, .eg-phyz-shadow ellipse { animation: none; stroke-dashoffset: 0; }
+  .eg-frog-line, .eg-frog-line line, .eg-frog-line rect, .eg-tang-wave, .eg-vcad-dim, .eg-vcad-box path, .eg-phyz-ball, .eg-phyz-shadow ellipse, .eg-ribt-bar { animation: none; stroke-dashoffset: 0; }
 }
 .home-tile-cta { margin-top: auto; font-family: var(--p-mono); font-size: 0.66rem; font-weight: 500; }
 
@@ -290,8 +293,11 @@ main { padding-top: 3.5rem; }
    and keeps a band at the bottom for the Earth, instead of clipping the cards */
 .home-one .post-cover { margin: 0; height: auto; min-height: 100svh; padding-bottom: max(26vh, 11rem); box-sizing: border-box; }
 .home-one .post-cover-text { padding-top: clamp(5.5rem, 18vh, 22vh); }
-/* narrow screens: cards go two by two, and the page scrolls so the Earth gets the space under them */
+/* narrow screens: cards go two by two (the fifth centred), and the page scrolls so the Earth gets the space under them */
 @media (max-width: 40rem) {
-  .post-cover-text .home-cta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* two by two on a four-track grid, so an odd last card sits centred under the pair above it */
+  .post-cover-text .home-cta { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .post-cover-text .home-cta .pcard.home-tile { grid-column: span 2; }
+  .post-cover-text .home-cta .pcard.home-tile:last-child:nth-child(odd) { grid-column: 2 / span 2; }
   .home-one .post-cover { padding-bottom: 42vh; }
 }
