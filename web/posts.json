@@ -22,7 +22,7 @@
   },
   {
     "slug": "ribt",
-    "title": "RIBT",
+    "title": "Real-time, In-Body Talk",
     "subtitle": "A small streaming voice, trained in one tensor IR",
     "date": "2026-11-03",
     "author": "Cam Pedersen",

@@ -60,7 +60,7 @@
   }))
 }
 
-#set document(title: "RIBT", author: "Cam Pedersen (Municipal Robotics)")
+#set document(title: "Real-time, In-Body Talk", author: "Cam Pedersen (Municipal Robotics)")
 
 #let hf-out() = { let m = page.margin; let l = if type(m) == dictionary { m.at("left", default: m.at("x", default: 0.75in)) } else { 0.75in }; calc.max(0in, l - 0.7in) }
 
@@ -73,7 +73,7 @@
   numbering: "1",
   header: context {
     if counter(page).get().first() > 1 {
-      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[RIBT], caps[Municipal Robotics]))
+      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Real-time, In-Body Talk], caps[Municipal Robotics]))
     }
   },
   footer: context {
@@ -319,7 +319,7 @@
     caps[“Could you tell me where the charging station is?” · one ridge per frame],
     caps(fill: c-sel)[First audio · 17.6 ms])
   #v(1fr)
-  #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[RIBT])
+  #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[Real-time,\ In-Body Talk])
   #v(0.5em)
   #line(length: 22%, stroke: 2pt + c-label)
   #v(0.7em)
