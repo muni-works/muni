@@ -32,14 +32,16 @@ type Stop = {
   recompute?: boolean;
   pipelined?: boolean;
   layer?: boolean;
+  tuned?: boolean; // placement chosen by search per device; the table shows what it picked
 };
 
 const STOPS: Stop[] = [
   { key: "naive", name: "As written", short: "Written", s: 0, p: 0, cuts: [0, 1] },
   { key: "checkpoint", name: "Checkpointing", short: "Ckpt", s: 0, p: 0, cuts: [0, 1], recompute: true },
-  { key: "fa2", name: "FlashAttention-2", short: "FA2", s: 2, p: 3, cuts: [] },
+  { key: "flash", name: "FlashAttention-2", short: "FA2", s: 2, p: 3, cuts: [] },
   { key: "fa3", name: "FlashAttention-3", short: "FA3", s: 2, p: 3, cuts: [], pipelined: true },
   { key: "megakernel", name: "Megakernel", short: "Mega", s: 2, p: 3, cuts: [], layer: true },
+  { key: "autotune", name: "Autotuned", short: "Tuned", s: 2, p: 3, cuts: [], tuned: true },
 ];
 
 const LEVELS = ["HBM", "L2", "SMEM", "Registers"];
@@ -114,6 +116,7 @@ function Schematic({ stop }: { stop: Stop }) {
         {stop.cuts.length ? `${stop.cuts.length + 1} kernels · dashed = kernel boundary` : stop.layer ? "one persistent kernel for the whole layer" : "one kernel"}
         {stop.recompute ? " · P recomputed in backward" : ""}
         {stop.pipelined ? " · async loads overlap MMA" : ""}
+        {stop.tuned ? " · placement chosen by measured search" : ""}
       </text>
     </svg>
   );
@@ -183,7 +186,7 @@ export function MemoryDial() {
         </tbody>
       </table>
       <figcaption>
-        <span className="fig-label">Interactive</span> Causal attention, d = 64, one graph under five schedules. Only the placement of S and P and the
+        <span className="fig-label">Interactive</span> Causal attention, d = 64, one graph under six schedules. Only the placement of S and P and the
         kernel boundaries change.{" "}
         {rows === null ? "Loading measurements." : rows.length === 0 ? "Measurements pending; cells fill in as runs complete." : null}
         {devices.length > 0 && (
