@@ -362,7 +362,7 @@ export function DeriveLab() {
             </>
           ) : (
             <>
-              On this GPU at this size the graph as written is <b>{(res.derived.ms / res.naive.ms).toFixed(1)}×</b> faster: its scores fit in cache, and parallelism, not memory, is the bottleneck. That is §1's point: the right schedule belongs to the chip and the size, so tang measures rather than assumes.
+              On this GPU at this size the graph as written is <b>{(res.derived.ms / res.naive.ms).toFixed(1)}×</b> faster: its scores fit in cache, and parallelism, not memory, is the bottleneck. As §1 argues, the right schedule depends on the chip and the size, so tang times the candidates instead of guessing.
             </>
           )}
           {backward && res.derived.nxn > 0 && (
