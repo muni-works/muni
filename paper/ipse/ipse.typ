@@ -68,6 +68,8 @@
   header-ascent: 0.45in,
   footer-descent: 0.45in,
   numbering: "1",
+  // DRAFT across every page until released
+  foreground: place(center + horizon, rotate(-32deg, text(font: mono-sb, size: 128pt, tracking: 0.12em, fill: c-sel.transparentize(93%), "DRAFT"))),
   header: context {
     if counter(page).get().first() > 1 {
       pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Interoceptive Predictive Self-Emergence], caps[Municipal Robotics]))
