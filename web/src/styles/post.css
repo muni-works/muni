@@ -533,3 +533,21 @@ html.post-rail-on::-webkit-scrollbar { display: none; }
 .dl-bar.best .track i { background: #ff5f00; }
 .dl-bar.naive .track i { background: rgba(255, 32, 82, 0.6); }
 .dl-bar .ms { font-family: var(--p-mono); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* memory dial (tang): one graph, one schedule decision */
+.post .memory-dial { margin: 2rem 0; font-family: var(--p-sans); }
+.post .memory-dial .md-track { display: flex; justify-content: space-between; gap: 0.5rem; }
+.post .memory-dial .md-track button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.45rem; background: none; border: 0; color: var(--p-label); font-size: 0.72rem; cursor: pointer; padding: 0; }
+.post .memory-dial .md-track .dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--p-line-hi); transition: background .2s, border-color .2s; }
+.post .memory-dial .md-track button.on { color: var(--p-text); }
+.post .memory-dial .md-track button.on .dot { background: var(--p-sel); border-color: var(--p-sel); }
+.post .memory-dial input[type=range] { width: 100%; margin: 0.8rem 0; accent-color: var(--p-sel); }
+.post .memory-dial .md-card { border: 1px solid var(--p-line); border-radius: 4px; padding: 1rem 1.1rem; min-height: 8.5rem; }
+.post .memory-dial .md-where { font-family: var(--p-mono, monospace); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--p-sel); }
+.post .memory-dial .md-what { margin-top: 0.4rem; font-size: 0.85rem; color: var(--p-text); }
+.post .memory-dial .md-stat { margin-top: 0.9rem; font-size: 0.75rem; color: var(--p-label); }
+.post .memory-dial .md-stats { display: flex; flex-wrap: wrap; gap: 1.4rem; margin-top: 0.9rem; }
+.post .memory-dial .md-stats b { display: block; font-weight: 500; color: var(--p-text); font-size: 1rem; }
+.post .memory-dial .md-stats span { font-size: 0.68rem; color: var(--p-label); }
+.post .memory-dial .md-controls { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+.post .memory-dial select { background: transparent; color: var(--p-label); border: 1px solid var(--p-line); border-radius: 3px; font-size: 0.72rem; padding: 0.2rem 0.4rem; }

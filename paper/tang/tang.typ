@@ -557,6 +557,11 @@ The rewrite is not specific to plain attention. Anything that changes the score 
 A comprehension says _what_ to compute. Schedule fields say _how_, and they cannot change the
 math (precision changes rounding, §4):
 
+#if web [
+  The dial below holds the attention graph fixed and moves one schedule decision: where the $n times n$ scores live. Each stop is a schedule tang derives and runs; the familiar algorithms are points on it.
+  #html.elem("div", attrs: (id: "memory-dial", class: "derive-host"))
+]
+
 - `inline`: recompute inside the consumer instead of writing a buffer.
 - `split`: one workgroup per point, with threads striding the reduce space and tree-combining. This
   is valid for any monoid because combine is associative, including online softmax.

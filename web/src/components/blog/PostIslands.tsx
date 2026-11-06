@@ -3,11 +3,13 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { DeriveLab } from "./DeriveLab";
+import { MemoryDial } from "./MemoryDial";
 
 // Interactive pieces inside a Typst-built post. The source leaves an empty element with a
 // known id (web build only); this mounts the matching component into it after hydration.
 const ISLANDS: Record<string, () => ReactNode> = {
   "derive-lab": () => <DeriveLab />,
+  "memory-dial": () => <MemoryDial />,
 };
 
 export function PostIslands() {
