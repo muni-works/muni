@@ -1,6 +1,6 @@
-# tang IR paper: data behind the post
+# tang paper: data behind the post
 
-Snapshots of the two tang files every number in `../tang-ir.typ` comes from, taken from
+Snapshots of the two tang files every number in `../tang.typ` comes from, taken from
 ecto/tang at `b1074e6f` (2026-11-06):
 
 | file | what |

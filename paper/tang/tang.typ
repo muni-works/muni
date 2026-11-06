@@ -3,6 +3,8 @@
 // Build: make (IBM Plex from fonts/, system fonts ignored so builds are reproducible).
 // Every number traces to BENCHMARKS.md or docs/tensor-ir.md in the tang repository.
 
+#let web = sys.inputs.at("target", default: "pdf") == "html"
+#show math.equation: it => if web and it.alt != "in-frame" { html.elem("span", attrs: (class: "math"), html.frame(it)) } else { it }
 #show math.equation: set text(font: "New Computer Modern Math", fallback: true)
 #show math.equation: it => { show regex("[A-Za-z0-9]"): set text(font: "IBM Plex Sans"); it }
 
@@ -23,8 +25,9 @@
 #let brand-names = (("tang", "make"), ("ipse", "mind"), ("frog", "mind"))
 #let fam-color = (make: c-ok, mind: c-sel)
 #let brand-re = regex("(?i)\\b(tang|ipse|frog)\\b")
+#metadata(brand-names) <brand-names>
 #let brand-family(name) = brand-names.find(n => n.at(0) == lower(name)).at(1)
-#show brand-re: it => text(fill: fam-color.at(brand-family(it.text)), it)
+#show brand-re: it => if web { it } else { text(fill: fam-color.at(brand-family(it.text)), it) }
 
 // ---- type -------------------------------------------------------------------
 #let sans    = ("IBM Plex Sans",)
@@ -43,13 +46,14 @@
 #let nb = sym.space.nobreak.narrow
 
 #let caps(body, size: s-xs, fill: c-label, font: mono-m) = text(font: font, size: size, tracking: track, fill: fill, upper(body))
-#let aside(title, body) = pad(left: 0.35in, right: 0.35in, block(width: 100%, inset: (left: 12pt, y: 2pt), stroke: (left: 0.6pt + c-line-hi), above: 2.2em, below: 2.2em, breakable: false, {
+#let aside(title, body) = if web { html.elem("aside", attrs: (class: "aside"), { html.elem("div", attrs: (class: "aside-title"), title); body }) } else { pad(left: 0.35in, right: 0.35in, block(width: 100%, inset: (left: 12pt, y: 2pt), stroke: (left: 0.6pt + c-line-hi), above: 2.2em, below: 2.2em, breakable: false, {
   set text(size: s-sm, fill: c-label)
   set par(spacing: 1.1em, leading: 0.68em)
   show strong: set text(fill: c-text)
   block(below: 0.9em, text(font: mono-m, size: s-xs, fill: c-sel, tracking: track, upper([Aside · ] + title)))
   body
 }))
+}
 
 #let title = [Two Primitives Are Enough]
 #set document(title: "Two Primitives Are Enough", author: "Cam Pedersen (Municipal Robotics)")
@@ -80,22 +84,23 @@
 
 #set text(font: sans, weight: 400, size: body-size, fill: c-text, fallback: false, lang: "en", region: "us", hyphenate: false, costs: (runt: 1000%, widow: 200%, orphan: 200%))
 #set par(justify: false, leading: 0.84em, spacing: 1.4em, linebreaks: "optimized")
-#set heading(numbering: "1.1")
+#let web-num(pattern) = if web { (..n) => html.elem("span", attrs: (class: "sec-num"), numbering(pattern, ..n)) } else { pattern }
+#set heading(numbering: web-num("1.1"))
 #show strong: set text(font: sans-sb)
 #show emph: set text(font: ("IBM Plex Sans",), style: "italic")
 #show link: set text(fill: c-text)
-#show link: it => if type(it.dest) != str { it } else { underline(stroke: 0.5pt + c-label, offset: 2pt, it) }
+#show link: it => if web or type(it.dest) != str { it } else { underline(stroke: 0.5pt + c-label, offset: 2pt, it) }
 #show heading: set text(font: sans, weight: 400, fill: c-text, hyphenate: false)
 #let numlabel(it) = text(font: mono-m, size: s-xs, fill: c-label, tracking: track, counter(heading).display(it.numbering))
-#show heading.where(level: 1): it => block(above: 2.2em, below: 1.1em, sticky: true, width: 100%, {
+#show heading.where(level: 1): it => if web { it } else { block(above: 2.2em, below: 1.1em, sticky: true, width: 100%, {
   if it.numbering != none { place(left, dx: -1.15in, dy: 0.32em, box(width: 1.0in, align(right, numlabel(it)))) }
   text(font: sans-sb, size: s-lg, tracking: -0.01em, it.body)
-})
-#show heading.where(level: 2): it => block(above: 1.65em, below: 0.55em, sticky: true, {
+}) }
+#show heading.where(level: 2): it => if web { it } else { block(above: 1.65em, below: 0.55em, sticky: true, {
   if it.numbering == none { return text(font: sans-m, size: s-md, it.body) }
   place(left, dx: -1.15in, dy: 0.22em, box(width: 1.0in, align(right, numlabel(it))))
   text(font: sans-m, size: s-md, it.body)
-})
+}) }
 #show raw: set text(font: mono, size: 1em)
 #set list(marker: box(baseline: -0.07em, rect(width: 0.36em, height: 0.36em, fill: c-label, stroke: none)), indent: 0em, body-indent: 0.85em, spacing: 1.15em)
 #set enum(indent: 0em, body-indent: 0.85em, spacing: 1.15em, numbering: n => text(font: mono-m, size: s-xs, fill: c-label, str(n)))
@@ -118,10 +123,17 @@
   set par(leading: 0.64em, justify: false)
   set align(left)
   block(width: 100%, text(font: sans, size: s-sm, fill: c-label, hyphenate: false)[
-    #caps(if it.kind == table [Table] else [Fig] + nb + it.counter.display(), font: mono-sb, fill: c-text)#h(0.7em)#it.body
+    #caps(if it.kind == table [Table] else [Fig] + nb + it.counter.display(), font: mono-sb, fill: c-text)#if web [ ] else [#h(0.7em)]#it.body
   ])
 }
 #show cite: set text(fill: c-label)
+// Web figures: drawn bodies become inline SVG via html.frame (as ribt.typ); tables stay <table>s.
+#show figure: it => if web and it.kind != table {
+  let lab = if it.has("label") { str(it.label) } else { "" }
+  let body = html.frame(block(width: 4.8in, fill: c-bg, inset: 6pt, { set math.equation(alt: "in-frame"); it.body }))
+  let cap = if it.caption != none { html.elem("figcaption", [#html.elem("span", attrs: (class: "fig-label"))[Fig #context it.counter.display(it.numbering)] #it.caption.body]) }
+  html.elem("figure", attrs: if lab == "" { (class: "narrow") } else { (id: lab, class: "narrow") }, { body; cap })
+} else { it }
 
 // ---- figures ----------------------------------------------------------------
 #import "@preview/cetz:0.4.2"
@@ -249,7 +261,7 @@
 })
 
 // ---- title page ---------------------------------------------------------------
-#page(margin: (x: 0.75in, top: 0.7in, bottom: 0.65in))[
+#if not web {page(margin: (x: 0.75in, top: 0.7in, bottom: 0.65in))[
   #set par(leading: 0.5em)
   #grid(columns: (auto, 1fr, auto), column-gutter: 0.8em, align: horizon,
     caps(fill: c-text)[Municipal Robotics · Research],
@@ -271,13 +283,9 @@
   #text(size: s-lg, fill: c-label)[Deriving flash attention, its backward pass, and whole-model kernels from affine views and monoid comprehensions]
   #v(0.5in)
   #caps[Cam Pedersen · Municipal Robotics]
-]
+]}
 
-#page(margin: (x: 0.75in, top: 1.1in, bottom: 1.05in))[
-  #block(width: 4.9in)[
-    #heading(outlined: false, numbering: none)[Abstract]
-    #set text(size: 10pt)
-    #set par(leading: 0.8em, spacing: 1.25em)
+#let abstract-text = [
 Deep learning frameworks reach peak speed through hand-written kernels: one per
 operator, per backend, per fusion pattern. Each kernel freezes decisions (what to fuse, where
 data lives, how threads share work) that depend on the model, the shape and the chip. We
@@ -294,8 +302,20 @@ Metal (with simdgroup matrices), OpenCL, GLSL and C. On an RTX 3090 a transforme
 forward pass derived this way runs 1.37× faster than PyTorch with TF32, and a whole Qwen3-8B
 4-bit decode step runs as one IR graph at 55% of memory-bandwidth speed of light. The compiler
 contains no operator-specific code.
-  ]
 ]
+#if web {
+  html.elem("section", attrs: (class: "abstract", id: "abstract"), {
+    html.elem("h2", attrs: (class: "abstract-title"), [Abstract])
+    abstract-text
+  })
+} else {page(margin: (x: 0.75in, top: 1.1in, bottom: 1.05in))[
+  #block(width: 4.9in)[
+    #heading(outlined: false, numbering: none)[Abstract]
+    #set text(size: 10pt)
+    #set par(leading: 0.8em, spacing: 1.25em)
+    #abstract-text
+  ]
+]}
 
 = Introduction
 
