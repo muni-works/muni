@@ -286,22 +286,11 @@
 ]}
 
 #let abstract-text = [
-Deep learning frameworks reach peak speed through hand-written kernels: one per
-operator, per backend, per fusion pattern. Each kernel freezes decisions (what to fuse, where
-data lives, how threads share work) that depend on the model, the shape and the chip. We
-describe the tensor IR in _tang_, a Rust differentiable-computing library, which replaces those
-kernels with two primitives: _views_, affine maps from an iteration space to tensor
-coordinates, and _comprehensions_, reductions under a monoid whose body is a scalar expression
-graph. Fusion is one substitution rule. Flash attention is not written; it falls out of a
-rewrite that recognizes online softmax as a monoid, plus one staging rule. Gradients of
-comprehensions are comprehensions, so the backward pass, including a flash-style attention
-backward with no $n times n$ intermediates, comes from the same passes. Number formats and thread
-mappings are schedule fields that cannot change the result, and a per-kernel autotuner chooses
-among them on the device. The same graphs lower to WGSL, CUDA (with `mma.sync` tensor cores),
-Metal (with simdgroup matrices), OpenCL, GLSL and C. On an RTX 3090 a transformer block's
-forward pass derived this way runs 1.37× faster than PyTorch with TF32, and a whole Qwen3-8B
-4-bit decode step runs as one IR graph at 55% of memory-bandwidth speed of light. The compiler
-contains no operator-specific code.
+Every fast model today runs on kernels someone wrote by hand: one per operator, per chip, per fusion. Each one freezes choices about what to fuse, where data lives and how threads share work, and those choices are right for one shape on one device. We think kernels should be derived instead.
+
+tang's tensor IR has two primitives. _Views_ are affine maps from an iteration space to tensor coordinates. _Comprehensions_ are reductions under a monoid whose body is a scalar expression graph. Everything else is either a rewrite or a schedule. Fusion is one substitution rule. Flash attention is not written: it falls out when the compiler recognizes online softmax as a monoid. Gradients of comprehensions are comprehensions, so the backward pass is derived by the same machinery. That includes a flash-style attention backward with no $n times n$ intermediates, which, as far as we know, no other compiler derives. Precision and thread mapping are schedule fields that cannot change the answer, chosen per kernel by measurement on the device.
+
+One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, GLSL and C, from a desktop GPU and a laptop down to a humanoid robot's phone-class SoC. On an RTX 3090 a derived transformer block runs 1.37× faster than PyTorch with TF32. Qwen3-8B decodes as a single IR graph at 55% of memory-bandwidth speed of light. The compiler contains no operator-specific code. We close with the bar the IR has to clear next, a hand-tuned engine serving an 80B mixture-of-experts model at 1,279 tok/s on one H200, and the plan for deriving every kernel in it.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -319,41 +308,21 @@ contains no operator-specific code.
 
 = Introduction
 
-A modern model is a few dozen distinct operators. A modern framework is thousands of kernels,
-because every pair of (operator, backend) needs one, and every profitable fusion such as
-attention with its softmax, a matmul with its bias and activation, or a norm with the projection
-that follows needs another. FlashAttention @dao2022flash is the clearest case: a large speedup
-that came from rewriting one operator by hand so its $n times n$ score matrix never reaches memory.
-Its backward pass took another hand-written kernel, and each new chip generation takes another
-rewrite.
+A modern model has a few dozen distinct operators. A modern framework has thousands of kernels. Every (operator, backend) pair needs one. So does every fusion that pays: attention with its softmax, a matmul with its bias and activation, a norm with the projection after it. FlashAttention @dao2022flash is the canonical case. It is a large speedup that came from rewriting one operator by hand so its $n times n$ score matrix never reaches memory. Its backward pass took a second hand-written kernel. Hopper took a third @shah2024flash3, and Blackwell's FP4 tensor cores are taking a fourth.
 
-Hand kernels are forks. Each re-derives the same arithmetic and freezes a schedule that was right
-for one shape on one device. We measured how often that schedule is wrong. Causal attention at
-$n = 512$ on an Apple M4 Max is fastest as the _naive_ graph with $n^2$ threads, because the scores
-fit in cache and parallelism is the bottleneck. At $n = 1024$ it wants the tiled flash schedule.
-Matmul at $128 times 576 times 1536$ wants a $16 times 16$ shared-memory tile; at $1024^2$ the same
-tile loses. Rules of thumb tuned on the M4 picked the wrong matmul schedule on an NVIDIA RTX 3090.
-The winning schedule depends on the graph, the chip and the size, not on the operator.
+Hand kernels are forks. Each re-derives the same arithmetic and freezes a schedule that was right for one shape on one device, and we measured how often that schedule is wrong. Causal attention at $n = 512$ on an Apple M4 Max is fastest as the _naive_ graph with $n^2$ threads, because the scores fit in cache and parallelism is the bottleneck. At $n = 1024$ it wants the tiled flash schedule. A $16 times 16$ shared-memory matmul tile wins at $128 times 576 times 1536$ and loses at $1024^2$. Rules of thumb tuned on the M4 picked the wrong matmul schedule on an RTX 3090. The winning schedule is a property of the graph, the chip and the size, not of the operator.
 
-This paper argues that a whole model should go through an IR small enough to reason about, and that
-everything a hand kernel encodes can be recovered as either an algebraic rewrite or a schedule
-choice. tang's tensor IR (`tang_compile::tensor`, about 24k lines of Rust) has two primitives:
+So we propose a different contract: write the model once, as math, and let the compiler derive every kernel. That works only if the IR is small enough to reason about and expressive enough that nothing important falls outside it. tang's has two primitives:
 
-- *Views*, affine index maps that express broadcast, transpose, slicing, striding, padding and
-  per-head column selection without touching memory.
-- *Comprehensions*, $"out"[i] = plus.o_k "body"(x_0[v_0(i,k)], x_1[v_1(i,k)], dots)$, where
-  `body` is a scalar expression graph and $plus.o$ is a monoid.
+- *Views*: affine index maps that express broadcast, transpose, slicing, striding, padding and per-head column selection without touching memory.
+- *Comprehensions*: $"out"[i] = plus.o_k "body"(x_0[v_0(i,k)], x_1[v_1(i,k)], dots)$, where `body` is a scalar expression graph and $plus.o$ is a monoid.
 
 Contributions:
-+ An IR in which fusion, flash attention, logsumexp and Welford variance are instances of two
-  general rewrites (§3).
-+ Reverse-mode differentiation that maps comprehensions to comprehensions, including the
-  online-softmax monoid and a proof procedure that removes the stabilizing max's gradient. Together
-  with nested contractions, this yields an attention backward with no $n times n$ tensors (§4).
-+ Precision as a schedule, with an emulating interpreter that predicts a format choice's error
-  before it runs (§5).
-+ Lowerings to six targets from shared emitters, and measurements against hand kernels, PyTorch
-  and the memory-bandwidth limit on three chips (§6, §7).
++ *An IR where kernels are theorems.* Fusion, flash attention, logsumexp and Welford variance are instances of two general rewrites (§3).
++ *Derived backward passes.* Reverse-mode differentiation maps comprehensions to comprehensions, including the online-softmax monoid. A proof procedure removes the stabilizing max's gradient, and with nested contractions this yields an attention backward with no $n times n$ tensors (§4).
++ *Precision as a schedule.* An emulating interpreter predicts the error of a format choice before it runs (§5).
++ *One graph, six targets.* Lowerings from shared emitters, measured against hand kernels, PyTorch and the bandwidth limit on three chips (§6, §7).
++ *The bar, and a road to it.* A hand-tuned H200 engine for an 80B MoE model, and the specific IR extensions that would let tang derive every kernel in it (§8, §11).
 
 = Background: tang
 
@@ -633,6 +602,29 @@ choice, which again argues for search over remembered rules. Through `to_c` on o
 batch-1 GRU policy step (6 contractions plus gate math, fused into one kernel) takes 22.5 µs median
 and a locomotion MLP takes 6.7 µs, both within $6 times 10^(-7)$ of f64.
 
+= The bar: a hand-tuned engine on an H200
+
+Everything above is derived. To show where derivation has to go next, we report the other half of tang: `tang-llm`'s Flash engine, which serves Qwen3-Coder-Next (80B parameters, 3B active, 4-bit GGUF) on one NVIDIA H200 with kernels written by hand. These numbers are not results of the IR. They are the target it has to reach.
+
+#figure(
+  table(
+    columns: (auto, auto),
+    align: (left, right),
+    [H200, Qwen3-Coder-Next 80B-A3B], [measured],
+    [single-stream decode, no drafting], [234 tok/s],
+    [with speculative drafting (MTP / suffix)], [319–439 tok/s],
+    [prefill, 1k → 8k tokens], [6,574 → 7,548 tok/s],
+    [batched decode step, B = 64], [1,814 tok/s],
+    [serving, 64 concurrent decode-heavy streams], [1,279 tok/s],
+    [serving at 64k context, batch 48 (production shape)], [1,155 tok/s],
+  ),
+  caption: [The bar. tang-llm on a dedicated H200 (tree `fcfbb9d7`). Its MoE layers run a hand-written int8 tensor-core kernel that reads activations in B-fragment order, which cut the B = 64 step from 38.9 to 35.2 ms. Lossless speculation uses a trained MTP head (3.15 tokens per window).],
+) <tab-h200>
+
+The hand engine also shows why the contract matters. Ported to GLM-5.3, the same MoE kernel is correct but 1–2.5× _slower_ below 64 tokens per expert and only 8–20% faster at 64. A kernel tuned for one model's expert shapes is a point in the schedule space, and on the next model it is the wrong point. That is the claim of §1, now with a production engine as the evidence.
+
+Deriving this engine needs three things the IR does not have yet: a _gather_ view for routing tokens to experts and reading paged caches, _integer_ tensor-core fragments with fused dequantization, and Hopper's asynchronous copy and warpgroup MMA as schedule fields. §11 lays out each one.
+
 = Verification
 
 Speed claims depend on every kernel being correct. `tang-verify` runs each GPU kernel against its
@@ -647,41 +639,32 @@ the identical graph.
 
 = Related work
 
-Halide @ragan2013halide separated algorithm from schedule. TVM @chen2018tvm and Ansor
-@zheng2020ansor added learned and searched schedules. Tensor Comprehensions @vasilache2018tc used
-polyhedral comprehensions. tang inherits the separation and the search. What it adds is
-monoid-valued comprehensions whose combine is an analyzable scalar graph, which turns online softmax
-into a rewrite rather than a template, and differentiation inside the IR, so the backward pass is
-also derived and scheduled. Triton @tillet2019triton makes hand kernels easier to write; tang tries to
-make them unnecessary. FlashAttention @dao2022flash @dao2023flash2 and its backward are hand
-derivations of what §3 and §4 produce mechanically. Online softmax itself is due to Milakov and
-Gimelshein @milakov2018online. XLA and TorchInductor fuse elementwise chains around library calls.
-tang has no library calls to fuse around.
+*Schedules.* Halide @ragan2013halide separated algorithm from schedule. TVM @chen2018tvm and Ansor @zheng2020ansor searched the schedule space with learned cost models, and Tensor Comprehensions @vasilache2018tc used polyhedral comprehensions. tang inherits the separation and the search.
 
-= Limitations
+*Deriving fused kernels.* The closest work is concurrent. Mirage @wu2024mirage superoptimizes multi-level $mu$Graphs with probabilistic equivalence checks. EqiForge @eqiforge2026 uses equality saturation to derive FlashAttention-style forward kernels. Flashlight @flashlight2025 generates flash-style kernels for arbitrary attention variants inside TorchInductor. tang differs on three axes. Its rewrite is deterministic, keyed on the monoid structure rather than found by search. It derives the _backward_ pass, including the gradient of the online-softmax monoid and the elimination of the stabilizing max. And it lowers to six targets, not one.
 
-- *Measurement conditions.* Several key runs (the Qwen3 decode and the flash-backward kernels) were
-  taken on shared GPUs. We report minima, which bound the code's speed from below, but they are not
-  idle-machine numbers.
-- *No real cost model.* `schedule_auto` is three measured rules, and the autotuner is the honest
-  answer until a cost model exists.
-- *Non-affine indexing.* Paged KV caches and MoE routing need a gather view that reads an index
-  tensor, and that view blocks some fusion.
-- *Scatter gradients* reduce over the whole source coordinate they gate on, so a stride-2 read pays
-  2× in the backward pass.
-- *Body arithmetic* is f32 on every path. Storage and accumulators honor f16.
-- *Distributed placement* exists as a rewrite (sharded reductions joined by an all-reduce expressed
-  as a comprehension over the monoid's combine), but transport goes through the host.
+*Tile languages and hand kernels.* Triton @tillet2019triton, ThunderKittens @spector2024tk and TileLang @wang2025tilelang make kernels easier to write. FlashAttention @dao2022flash @dao2023flash2 @shah2024flash3 is the hand-derived frontier. Online softmax is due to Milakov and Gimelshein @milakov2018online. tang aims to make writing kernels unnecessary, and treats these kernels as the targets derived code must reach.
+
+*Generated kernels.* LLM agents now write CUDA, but KernelBench-Verified @kbverified2026 shows frontier models reward-hacking benchmarks by hard-coding test values. A derived kernel is checked by construction against an f64 interpreter of the same graph.
+
+= The road to every kernel
+
+Each gap below is a missing primitive or schedule field, not a missing kernel. We list what each one unlocks.
+
+- *Gather views.* A view that reads an index tensor. It expresses MoE routing, paged KV caches and token-wise embedding as comprehensions, which is the first step to deriving the H200 engine of §8. The design question is how much fusion survives a data-dependent address.
+- *Hopper and Blackwell as schedule fields.* TMA bulk copies, warpgroup MMA, warp specialization and FP8/FP4 fragments are the asynchrony FlashAttention-3 hand-codes @shah2024flash3. In tang they belong next to `tile` and `precision`, so the derived flash forward and backward meet FA3 on an H100 rather than describing it.
+- *Integer fragments with fused dequantization.* The hand MoE kernel's int8 MMA with activations staged in fragment order is a staging layout plus a precision schedule. Both are already concepts in the IR.
+- *Scan monoids.* State-space and gated-delta recurrences are associative scans over a matrix monoid. ScanWeaver @scanweaver2026 makes scan a first-class compiler abstraction; tang's monoids are already the right shape for it, and its backward rule would come with it.
+- *Launch fusion.* About 400 of a Qwen decode step's 506 kernels are small reductions and maps that cost 1.3 ms in launches. Persistent megakernels @eventtensor2026 are a schedule over the whole program, not a new operator.
+- *A learned cost model.* `schedule_auto` is three measured rules. Every autotuning run already writes (graph, chip, schedule, time) to a cache, and that cache is training data.
+- *Device-to-device placement.* Sharded reductions joined by an all-reduce are already a rewrite (the all-reduce is a comprehension over the monoid's combine). Only the transport is missing.
+- *Quiet measurements.* Several runs here were taken on shared GPUs and are reported as minima. Every table should be re-run on idle hardware.
 
 = Conclusion
 
-Two primitives, affine views and monoid comprehensions, are enough to express a transformer, its
-gradient and its quantized inference. Fusion, flash attention and the flash backward are rewrites
-and schedule choices over those primitives, not kernels. Because the schedule is searched per chip,
-the same source beats hand kernels on Metal, Vulkan and an embedded Adreno, and passes PyTorch on
-a transformer block on CUDA. A hand-written kernel does not disappear in this design. It becomes an
-intrinsic: a known-fast implementation of one comprehension shape on one chip, which the compiler
-uses when it wins and replaces when it doesn't.
+Two primitives, affine views and monoid comprehensions, are enough to express a transformer, its gradient and its quantized inference. Fusion, flash attention and the flash backward become rewrites and schedule choices, not kernels. Because the schedule is searched per chip, the same source beats hand kernels on Metal, Vulkan and an embedded Adreno, and beats PyTorch on a transformer block on CUDA.
+
+The hand-written kernel does not disappear in this design. It becomes an intrinsic: a known-fast implementation of one comprehension shape on one chip, which the compiler uses when it wins and replaces when it doesn't. The last hand-tuned engine we run serves an 80B model on an H200. The goal is a compiler that derives every kernel in it, for every chip we will ever run on.
 
 #aside[Reproducibility][
   Every number in this paper comes from `BENCHMARKS.md` in the tang repository (snapshot in `data/`), which records the command, date and machine state for each measurement. The IR is in `crates/tang-compile/src/tensor*.rs`; its design notes are in `docs/tensor-ir.md`.
