@@ -133,6 +133,11 @@
   let body = html.frame(block(width: 4.8in, fill: c-bg, inset: 6pt, { set math.equation(alt: "in-frame"); it.body }))
   let cap = if it.caption != none { html.elem("figcaption", [#html.elem("span", attrs: (class: "fig-label"))[Fig #context it.counter.display(it.numbering)] #it.caption.body]) }
   html.elem("figure", attrs: if lab == "" { (class: "narrow") } else { (id: lab, class: "narrow") }, { body; cap })
+} else if web and it.kind == table {
+  // tables: same caption markup as drawn figures, caption above the table
+  let lab = if it.has("label") { str(it.label) } else { "" }
+  let cap = if it.caption != none { html.elem("figcaption", [#html.elem("span", attrs: (class: "fig-label"))[Table #context it.counter.display(it.numbering)] #it.caption.body]) }
+  html.elem("figure", attrs: if lab == "" { (:) } else { (id: lab) }, { cap; it.body })
 } else { it }
 
 // ---- figures ----------------------------------------------------------------
@@ -721,14 +726,14 @@ derived kernels stayed 2.6–7× behind PyTorch. With the CUDA lowering, flash a
   shown to make the trajectory visible.],
 ) <tab-torch>
 
-#figure(fig-trajectory(),
-  caption: [Transformer block forward, seq 512, RTX 3090, log scale. The same derived graph under three generations of lowering; only the last reaches tensor cores. Dashed: PyTorch with TF32.],
-) <fig-trajectory>
-
 On the CUDA path, the derived inference attention kernel alone is 0.032 ms at seq 512, down from 0.178 ms
 before the `mma.sync` rewrite. The seq-512 forward block is 1.37× faster than PyTorch with TF32. Forward plus backward runs 2.2× faster than PyTorch fp32 at seq 128 and 1.17× at seq 512, and a four-layer training step 1.12× faster than PyTorch with fused AdamW. We do not claim a general win over cuBLAS: a lone $1024^2$ matmul on the derived CUDA TF32 tile
 takes 0.150 ms against cuBLAS TF32's 0.079 ms, 1.9× slower. The gain comes from
 fusion across operator boundaries that a library of separately tuned operators cannot do.
+
+#figure(fig-trajectory(),
+  caption: [Transformer block forward, seq 512, RTX 3090, log scale. The same derived graph under three generations of lowering; only the last reaches tensor cores. Dashed: PyTorch with TF32.],
+) <fig-trajectory>
 
 == Attention variants against FlexAttention and FA2
 
@@ -757,12 +762,16 @@ Where a variant changes the score (soft cap, ALiBi), the derived forward is up t
 Qwen3-8B with MLX 4-bit weights runs as one IR graph per decode step, lowered by
 `to_cuda_decode` into 506 kernels and captured as a CUDA graph. Nibble unpacking and the
 $q dot s + b$ dequantization are a map the GEMV reads. That map is inlined and evaluated in
-registers as weights stream in. @fig-qwen-graph shows the graph. @fig-decode shows where the remaining time goes. The KV-cache update is a `select` over a runtime position, which the
-lowering turns into loop bounds, so a step touches only live cache rows.
+registers as weights stream in. @fig-qwen-graph shows the graph.
 
 #figure(fig-qwen-graph(),
   caption: [One Qwen3-8B decode step as a single IR graph. Top: the step, from the token in `state` to the arg-max written back. Bottom: one of the 36 identical layers. Times are each node's share of the 4k-context step on the 3090 (@fig-decode), summed over layers. The lowering emits 506 kernels for the whole step, captured as one CUDA graph.],
 ) <fig-qwen-graph>
+
+The KV-cache update is a `select` over a runtime position, which the lowering turns into loop
+bounds, so a step touches only live cache rows. @tab-qwen gives the result: decode reaches 55% of
+the 3090's bandwidth limit at short context and 54% at 4k, with the model's greedy output matching
+an exact f32 reference token for token.
 
 #figure(
   table(
@@ -776,6 +785,9 @@ lowering turns into loop bounds, so a step touches only live cache rows.
   higher. Teacher-forced on 64 greedy tokens against an exactly dequantized f32 CPU reference: max
   logit error $1.7 times 10^(-4)$, with 64/64 arg-max agreement.],
 ) <tab-qwen>
+
+@fig-decode shows where the rest of the time goes. The weight-streaming GEMVs account for most of
+it, and about 400 small kernels add 1.3 ms of mostly fixed launch cost, the next target for fusion.
 
 #figure(fig-decode(),
   caption: [Where a Qwen3-8B decode step goes at 4k context: the sum of isolated kernel launches (10.3 ms; the captured graph runs in 9.6). The large GEMVs dominate; about 400 small reductions and maps add 1.3 ms of mostly fixed launch cost. Dashed: the time to stream the weights and KV cache once at 936 GB/s.],
