@@ -14,7 +14,7 @@ ipse repo; the paper cites the prereg commit and the result PR.
 
 | part | file | state | source of truth |
 |---|---|---|---|
-| backronym | `ipse.typ` | open (candidates in file) | Cam |
+| name | `ipse.typ` | Interoceptive Predictive Self-Emergence | ipse `IPSE.md` |
 | abstract | `sections/00-abstract.typ` | draft | — |
 | intro | `sections/01-intro.typ` | draft | — |
 | related work | `sections/02-related.typ` | draft, refs from 2026-11-06 arXiv survey | `refs.bib` |
@@ -23,6 +23,7 @@ ipse repo; the paper cites the prereg commit and the result PR.
 | E1 surprise vs detectors | `sections/05-experiments.typ` | not pre-registered | — |
 | E2 sleep A/B | `sections/05-experiments.typ` | not pre-registered; needs ~2 weeks of robot days | — |
 | E3 inheritance | `sections/05-experiments.typ` | not pre-registered; needs first learned organ | — |
+| E0 self-probe | `sections/05-experiments.typ` | not pre-registered; primary claim | ipse `IPSE.md` §3.5 |
 | lesion study | `sections/06-lesion.typ` | not started; replay from tapes | — |
 | discussion | `sections/07-discussion.typ` | draft | — |
 

@@ -1,25 +1,34 @@
 = Architecture
-// Fig. 1: the lifeform diagram (genome, epigenome, body, brainstem, development, life, sleep, offspring).
+// §3 uses the four pillars as headings (IPSE.md §6a). Fig. 1: lifeform diagram.
 
-== One typed bus
-Every inter-organ message type is defined once and carried on latched streams
-(`ipse-pons`). The motor door stays a socket because a lease *is* the connection:
-when the holder dies, the kernel closes it and the grant ends.
-// Status: merged (#753, #756, #774, #779, #789).
+== The scaffold
+Organs today are hand-written: vestibular, memory, hippocampus map, cortex,
+occipital, cerebellum, amygdala, medulla door. Each is a pure step,
+`(state, timestamped inputs) -> (outputs, state)`, on a typed latched bus, behind
+one body interface (K1, G1, tape, sim). This is scaffolding: it lets the robot live
+and record its life before anything is learned, and every organ's recorded inputs
+and outputs are the training set for the network that replaces it.
+// Status: merged (#753–#794); stack test 20/20 on K1 and G1; not yet run on the robot.
 
-== Organs are pure steps
-`(state, timestamped inputs) -> (outputs, state)`; no clock, file or socket inside.
-One runtime drives organs from sockets (live) or tape (deterministic).
-Eight organs: vestibular, memory, hippocampus map, cortex, occipital, cerebellum,
-amygdala, medulla door. // Status: merged (#760–#792).
+== Interoception
+Battery, joint temperature, motor current and IMU are first-class observations.
+Drives are predictions about preferred interoceptive states; there is no drive module.
 
-== The body is one interface
-`describe`, `step(cmd) -> state`, `truth`; implementations for a point body, tape,
-phyz K1/G1 and the real K1. The stack test runs the whole brain on K1 and G1 (20/20).
-// Status: merged (#761, #793); real K1 body in progress.
+== Timescales
+A multi-timescale world model (MTRSSM): a fast latent for sensorimotor dynamics,
+a slow latent for situation and state of being. The slow latent keys episodic memory.
+
+== Workspace
+The slow latent doubles as a capacity-limited broadcast bottleneck @goyal_gw.
+A local language model is inner speech, recruited by the workspace — a faculty,
+not the planner.
+
+== Selfhood
+Not specified. Measured (E0) as the behavior-invariant representation that persists
+while skills are acquired.
 
 == Genome, epigenome, brainstem
-*Genome:* frozen reflex networks, innate drives (pain, hunger, fear of falling), body plan.
-*Epigenome:* shipped organ networks, rewritten by sleep, inherited by new robots.
-*Brainstem:* the tiny innate core (medulla) that keeps the body alive; learned
-organs may ask, never override. A power cut and deadman stay small and verifiable.
+*Genome:* frozen reflexes, priors over preferred interoceptive states
+(temperament), body plan. *Epigenome:* learned networks, rewritten by sleep,
+inheritable. *Brainstem:* the tiny innate core (medulla, deadman, hardware e-stop)
+that keeps the body alive; learned organs may ask, never override.
