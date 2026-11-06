@@ -228,6 +228,90 @@
   }
 })
 
+// Fig: the Qwen3-8B decode step as one IR graph. Top: the whole step. Bottom: one of the 36
+// layers, colored by what each node costs at 4k context (ms from fig-decode, RTX 3090).
+#let fig-qwen-graph() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let h = 0.62
+  let node(x, y, w, body, col, sub: none, dash: none) = {
+    rect((x, y), (x + w, y + h), fill: c-surface, stroke: (paint: col, thickness: 0.6pt, dash: dash))
+    lbl((x + w / 2, y + h / 2 + if sub == none { 0 } else { 0.09 }), body, fill: c-text, font: sans-m, size: s-xs)
+    if sub != none { lbl((x + w / 2, y + 0.13), sub, fill: if col == c-line-hi { c-label } else { col }, size: 5.5pt) }
+  }
+  let arrow(a, b, col: c-line-hi) = line(a, b, stroke: 0.45pt + col, mark: (end: ">", fill: col, size: 0.09))
+  let chain(y, xs, items) = {
+    for (k, (w, body, col, sub)) in items.enumerate() {
+      node(xs.at(k), y, w, body, col, sub: sub)
+      if k < items.len() - 1 { arrow((xs.at(k) + w, y + h / 2), (xs.at(k + 1), y + h / 2)) }
+    }
+  }
+  let place(x0, gap, items) = {
+    let xs = ()
+    let x = x0
+    for (w, ..rest) in items { xs.push(x); x += w + gap }
+    xs
+  }
+  // the step
+  let top = (
+    (1.55, [embed], c-line-hi, [gather]),
+    (2.7, [36 × decoder layer], c-sel, [below]),
+    (1.35, [RMSNorm], c-line-hi, none),
+    (1.55, [LM head], c-sel, [0.56 ms]),
+    (1.5, [arg-max], c-ok, [monoid]),
+    (1.55, [state′], c-ok, [8 bytes back]),
+  )
+  let yt = 4.6
+  let xt = place(0, 0.32, top)
+  chain(yt, xt, top)
+  // the layer, in two rows
+  let r1 = (
+    (1.35, [RMSNorm], c-line-hi, none),
+    (1.6, [q|k|v GEMV], c-sel, [1.25 ms]),
+    (1.75, [q/k norm · rope], c-line-hi, none),
+    (1.65, [cache write], c-ok, [in place]),
+    (1.4, [q · k], c-info, [0.73 ms]),
+    (1.9, [softmax · Σ p v], c-info, [1.13 ms]),
+  )
+  let r2 = (
+    (1.4, [o GEMV], c-sel, [0.75 ms]),
+    (1.0, [\+ x], c-line-hi, none),
+    (1.35, [RMSNorm], c-line-hi, none),
+    (1.75, [gate|up GEMV], c-sel, [2.76 ms]),
+    (1.35, [silu · ×], c-line-hi, none),
+    (1.55, [down GEMV], c-sel, [1.84 ms]),
+    (1.0, [\+ x], c-line-hi, none),
+  )
+  let y1 = 2.55
+  let y2 = 1.1
+  let x1 = place(0, 0.26, r1)
+  let x2 = place(0, 0.26, r2)
+  chain(y1, x1, r1)
+  chain(y2, x2, r2)
+  // wrap from the end of row 1 to the start of row 2
+  let e1 = calc.max(x1.last() + r1.last().at(0), x2.last() + r2.last().at(0))
+  let w1 = x1.last() + r1.last().at(0)
+  line((w1 - 0.4, y1), (w1 - 0.4, y1 - 0.42), (0.7, y1 - 0.42), stroke: 0.45pt + c-line-hi)
+  arrow((0.7, y1 - 0.42), (0.7, y2 + h))
+  // the expansion bracket from the layer node
+  let lx = xt.at(1)
+  rect((-0.2, y2 - 0.25), (e1 + 0.2, y1 + h + 0.3), fill: none, stroke: (paint: c-line, thickness: 0.4pt, dash: "dashed"))
+  line((lx + 0.2, yt), (-0.2, y1 + h + 0.3), stroke: (paint: c-line, thickness: 0.4pt, dash: "dashed"))
+  line((lx + 2.5, yt), (e1 + 0.2, y1 + h + 0.3), stroke: (paint: c-line, thickness: 0.4pt, dash: "dashed"))
+  // legend
+  let leg = (
+    (c-sel, [4-bit GEMV · dequantization inlined]),
+    (c-info, [attention · reads live cache rows only]),
+    (c-ok, [in place / on device]),
+    (c-line-hi, [maps and small reductions]),
+  )
+  for (k, (col, t)) in leg.enumerate() {
+    let lx = calc.rem(k, 2) * 6.4
+    let ly = 0.45 - calc.floor(k / 2) * 0.38
+    rect((lx, ly - 0.09), (lx + 0.3, ly + 0.09), fill: c-surface, stroke: 0.6pt + col)
+    lbl((lx + 0.42, ly), t, anchor: "west", fill: c-text)
+  }
+})
+
 // Fig: where a Qwen3-8B decode step goes at 4k context (sum of isolated launches, RTX 3090).
 #let fig-decode() = cetz.canvas(length: 1cm, {
   import cetz.draw: *
@@ -673,8 +757,12 @@ Where a variant changes the score (soft cap, ALiBi), the derived forward is up t
 Qwen3-8B with MLX 4-bit weights runs as one IR graph per decode step, lowered by
 `to_cuda_decode` into 506 kernels and captured as a CUDA graph. Nibble unpacking and the
 $q dot s + b$ dequantization are a map the GEMV reads. That map is inlined and evaluated in
-registers as weights stream in. @fig-decode shows where the remaining time goes. The KV-cache update is a `select` over a runtime position, which the
+registers as weights stream in. @fig-qwen-graph shows the graph. @fig-decode shows where the remaining time goes. The KV-cache update is a `select` over a runtime position, which the
 lowering turns into loop bounds, so a step touches only live cache rows.
+
+#figure(fig-qwen-graph(),
+  caption: [One Qwen3-8B decode step as a single IR graph. Top: the step, from the token in `state` to the arg-max written back. Bottom: one of the 36 identical layers. Times are each node's share of the 4k-context step on the 3090 (@fig-decode), summed over layers. The lowering emits 506 kernels for the whole step, captured as one CUDA graph.],
+) <fig-qwen-graph>
 
 #figure(
   table(
