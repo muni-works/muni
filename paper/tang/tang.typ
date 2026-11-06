@@ -55,8 +55,8 @@
 }))
 }
 
-#let title = [Two Primitives Are Enough]
-#set document(title: "Two Primitives Are Enough", author: "Cam Pedersen (Municipal Robotics)")
+#let title = [Don't Write Kernels, Derive Them]
+#set document(title: "Don't Write Kernels, Derive Them", author: "Cam Pedersen (Municipal Robotics)")
 
 #let hf-out() = { let m = page.margin; let l = if type(m) == dictionary { m.at("left", default: m.at("x", default: 0.75in)) } else { 0.75in }; calc.max(0in, l - 0.7in) }
 
@@ -332,11 +332,11 @@
     caps[Causal attention, n = 1024 · one square per 32 × 32 tile · nothing n × n written],
     caps(fill: c-sel)[Derived, not written])
   #v(1fr)
-  #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[Two Primitives\ Are Enough])
+  #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[Don't Write Kernels,\ Derive Them])
   #v(0.5em)
   #line(length: 22%, stroke: 2pt + c-label)
   #v(0.7em)
-  #text(size: s-lg, fill: c-label)[Deriving flash attention, its backward pass, and whole-model kernels from affine views and monoid comprehensions]
+  #text(size: s-lg, fill: c-label)[A Tensor IR of Views and Comprehensions]
   #v(0.5in)
   #caps[Cam Pedersen · Municipal Robotics]
 ]}

@@ -33,8 +33,8 @@
   },
   {
     "slug": "tang",
-    "title": "Two Primitives Are Enough",
-    "subtitle": "Deriving flash attention, its backward pass, and whole-model kernels from affine views and monoid comprehensions",
+    "title": "Don't Write Kernels, Derive Them",
+    "subtitle": "A Tensor IR of Views and Comprehensions",
     "date": "2026-11-06",
     "author": "Cam Pedersen",
     "description": "tang's tensor IR has two primitives: affine views and monoid comprehensions. Fusion, flash attention and a flash-style backward pass fall out as rewrites, and the same graphs lower to WGSL, CUDA, Metal, OpenCL, GLSL and C. A derived transformer block runs 1.37x faster than PyTorch with TF32 on an RTX 3090, and Qwen3-8B decodes as one graph at 55% of bandwidth speed of light.",
