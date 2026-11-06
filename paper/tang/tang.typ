@@ -289,7 +289,7 @@
   }
 })
 
-// Fig: the schedules the post's lab timed for causal attention on one machine.
+// Fig: the schedules the web edition's derive lab timed for causal attention on one machine.
 #let fig-schedules() = cetz.canvas(length: 1cm, {
   import cetz.draw: *
   let rows = (
@@ -344,9 +344,9 @@
 #let abstract-text = [
 Every fast model today runs on kernels someone wrote by hand, one per operator, per chip and per fusion. Each one freezes choices about what to fuse, where data lives and how threads share work, and those choices are right for one shape on one device. We think kernels should be derived instead.
 
-tang's tensor IR is built from two constructs. _Views_ are affine maps from an iteration space to tensor coordinates. _Comprehensions_ are reductions under a monoid whose body is a scalar expression graph. Everything else is either a rewrite or a schedule. Fusion is one substitution rule. Nobody writes flash attention. The compiler produces it by recognizing online softmax as a monoid. Gradients of comprehensions are comprehensions, so the same passes derive and optimize the backward pass. That includes a flash-style attention backward that writes no $n times n$ intermediates on any backend (on tensor cores at full speed, and on WGSL and Metal for now at a cost we report). The concurrent superoptimizers we discuss derive only the forward. Precision and thread mapping are schedule fields that cannot change the answer, chosen per kernel by measurement on the device.
+tang's tensor IR is built from two constructs. _Views_ are affine maps from an iteration space to tensor coordinates. _Comprehensions_ are reductions under a monoid whose body is a scalar expression graph. Everything else is either a rewrite or a schedule. Fusion is one substitution rule. Nobody writes flash attention. The compiler produces it by recognizing online softmax as a monoid. Gradients of comprehensions are comprehensions, so the same passes derive and optimize the backward pass. That includes a flash-style attention backward that writes no $n times n$ intermediates on any backend (on tensor cores at full speed, and on WGSL and Metal for now at a cost we report). The concurrent superoptimizers we discuss derive only the forward. Precision and thread mapping are schedule fields that cannot change the math (precision changes only rounding, which we predict), chosen per kernel by measurement on the device.
 
-One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, GLSL and C, from a desktop GPU and a laptop down to a humanoid robot's phone-class SoC. On an RTX 3090 a derived transformer block's forward pass at sequence length 512 runs 1.37× faster than PyTorch with TF32. Qwen3-8B decodes as a single IR graph at 55% of memory-bandwidth speed of light, measured on a shared GPU. There are no per-operator kernels. The one pattern-specific emitter, CUDA's flash kernel, matches the online-softmax monoid, not attention. We then compare the IR with a hand-tuned engine that serves an 80B mixture-of-experts model at 1,279 tok/s on one H200. The first layer we derived from it, the MoE expert GEMMs with int8 tensor cores expressed as schedule fields, runs 1.24× faster than the engine's hand kernels at batch 64 and trails by 8% at batch 1.
+One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, GLSL and C, from a datacenter GPU and a desktop GPU and a laptop down to a humanoid robot's phone-class SoC. On an RTX 3090 a derived transformer block's forward pass at sequence length 512 runs 1.37× faster than PyTorch with TF32. Qwen3-8B decodes as a single IR graph at 55% of memory-bandwidth speed of light, measured on a shared GPU. There are no per-operator kernels. The one pattern-specific emitter, CUDA's flash kernel, matches the online-softmax monoid, not attention. We then compare the IR with a hand-tuned engine that serves an 80B mixture-of-experts model at 1,279 tok/s on one H200. The first layer we derived from it, the MoE expert GEMMs with int8 tensor cores expressed as schedule fields, runs 1.24× faster than the engine's hand kernels at batch 64 and trails by 7% at batch 1.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -366,29 +366,19 @@ One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, G
 
 A modern model has a few dozen distinct operators. A modern framework has thousands of kernels. Every (operator, backend) pair needs one. So does every fusion that pays, such as attention with its softmax, a matmul with its bias and activation, or a norm with the projection after it. FlashAttention @dao2022flash is the best-known case. Its large speedup came from rewriting one operator by hand so its $n times n$ score matrix never reaches memory. Its backward pass took a second hand-written kernel. Hopper took a third @shah2024flash3, and Blackwell's FP4 tensor cores are taking a fourth.
 
-Each hand kernel is a separate copy of the same arithmetic, and each one freezes a schedule that was right for one shape on one device, and we measured how often that schedule is wrong. On an Apple M4 Max, the fastest schedule for causal attention flipped between two runs of the same code. One run had $n = 512$ fastest as the _naive_ graph with $n^2$ threads and $n = 1024$ fastest tiled, and a later run had the reverse (@tab-hand). The naive graph wins when its scores fit in cache and parallelism, not bandwidth, is the bottleneck, which depends on the size and even on the machine's power state. A $16 times 16$ shared-memory matmul tile wins at $128 times 576 times 1536$ and loses at $1024^2$. Rules of thumb tuned on the M4 picked the wrong matmul schedule on an RTX 3090. The winning schedule is a property of the graph, the chip and the size, not of the operator.
+Each hand kernel is a separate copy of the same arithmetic, and each one freezes a schedule that was right for one shape on one device. We measured how often that schedule is wrong: the fastest schedule changes with the size, the chip and even between runs on the same machine (§7.1). The winning schedule is a property of the graph, the chip and the size, not of the operator.
 
-We propose writing the model once, as math, and letting the compiler derive every kernel. That works only if the IR is small enough to reason about and expressive enough that nothing important falls outside it. tang's IR has two constructs.
+We propose writing the model once, as math, and letting the compiler derive every kernel. That works only if the IR is small enough to reason about and expressive enough that nothing important falls outside it. tang is a `no_std` Rust library that started as a geometry and physics math crate. Its `tang-expr` crate traces Rust closures into scalar expression graphs that it can differentiate, simplify and compile, and its tensor IR uses those graphs as its body language. The IR has two constructs.
 
 - *Views*: affine index maps that express broadcast, transpose, slicing, striding, padding and per-head column selection without touching memory.
 - *Comprehensions*: $"out"[i] = plus.o_k "body"(x_0[v_0(i,k)], x_1[v_1(i,k)], dots)$, where `body` is a scalar expression graph and $plus.o$ is a monoid.
 
 Contributions:
-+ *Kernels from rewrites.* Fusion, flash attention, logsumexp and Welford variance are instances of two general rewrites (§3).
-+ *Derived backward passes.* Reverse-mode differentiation maps comprehensions to comprehensions, including the online-softmax monoid. A proof procedure removes the stabilizing max's gradient, and with nested contractions this yields an attention backward with no $n times n$ tensors (§4).
-+ *Precision as a schedule.* An emulating interpreter predicts the error of a format choice before it runs (§5).
-+ *One graph, six targets.* Lowerings from shared emitters, measured against hand kernels, PyTorch and the bandwidth limit on three chips (§6, §7).
-+ *A production target.* A hand-tuned H200 engine for an 80B MoE model, and the specific IR extensions that would let tang derive every kernel in it (§8, §11).
-
-= Background: tang
-
-tang is a `no_std` Rust library that started as a geometry and physics math crate. One `Scalar` trait
-covers `f32`, `f64` and dual numbers, so a simulation written once yields exact derivatives by
-changing a type parameter. `tang-expr` traces Rust closures into a scalar DAG of nine RISC
-operations (add, multiply, negate, reciprocal, square root, sine, atan2, $2^x$, $log_2$, plus a select), which it can differentiate symbolically, simplify and compile. The tensor IR uses that
-scalar DAG as its body language, so every comprehension body can be differentiated, simplified and
-compared structurally. Higher crates (`tang-gpu`, `tang-llm`, `tang-train`) run programs the IR
-produces.
++ *Kernels from rewrites.* Fusion, flash attention, logsumexp and Welford variance are instances of two general rewrites (§2).
++ *Derived backward passes.* Reverse-mode differentiation maps comprehensions to comprehensions, including the online-softmax monoid. A proof procedure removes the stabilizing max's gradient, and with nested contractions this yields an attention backward with no $n times n$ tensors (§3).
++ *Precision as a schedule.* An emulating interpreter predicts the error of a format choice before it runs (§4).
++ *One graph, six targets.* Lowerings from shared emitters, measured against hand kernels, PyTorch and the bandwidth limit on four chips (§5, §7).
++ *A production target.* A hand-tuned H200 engine for an 80B MoE model, and the specific IR extensions that would let tang derive every kernel in it (§8, §10).
 
 = The IR
 
@@ -400,11 +390,11 @@ permutation, slice an offset, stride a coefficient. A form with two terms expres
 columns $64h + 2i$". Views compose by substitution. They are the only way a comprehension reads
 its inputs, so every layout decision is a view and every view can be analyzed.
 
-A view may be _guarded_, so that an out-of-range read returns the monoid's identity (zero) rather than
+A view may be _guarded_, so that an out-of-range read returns the monoid's identity (zero for sum, $-infinity$ for max) rather than
 raising a shape error. Padded, dilated and transposed (polyphase) convolutions and overlap-add are
-guarded reads, with no padding operator. The gradient of a guarded read removes a coordinate
-rather than scattering. For $x[c, t + 3k - 9]$, $partial x[c, tau]$ reads
-$partial y[o, tau - 3k + 9]$ through a guard, so padding contributions never reach $x$.
+guarded reads, with no padding operator. The adjoint of a guarded read is itself a guarded read,
+not a scatter. For $y[o, t] = sum_(c,k) w[o, c, k] x[c, t + 3k - 9]$, $partial x[c, tau]$ reads
+$partial y[o, tau - 3k + 9]$ through the same guard, so out-of-range (padding) terms never reach $x$.
 
 Grouped-query attention's $"head" \/ "heads_per_group"$ is not affine. The IR expresses heads as
 two dimensions, $["groups", "per_group"]$, and the views do the rest. Dimensions can be fixed or
@@ -445,10 +435,10 @@ read once.
 $sum_j g dot exp(s_j - m)$ over the same canonical $s$, with masks and scales allowed, and replaces
 them with one reduction under the online-softmax monoid. The value column of $sum_j p_j v_j$ becomes
 a point dimension of the fused comprehension. Nothing $n times n$ is materialized. Logsumexp,
-Welford variance and top-$k$ are the same rewrite with different monoids. @fig-rewrite shows the attention case.
+Welford variance and top-k are the same rewrite with different monoids. @fig-rewrite shows the attention case.
 
 #figure(fig-rewrite(),
-  caption: [The rewrite that derives flash attention. The naive graph writes the scores and probabilities as $n times n$ buffers (dashed). Fusion splices the maps into their readers; `stabilize_softmax` merges the max and both exponential sums into one reduction whose state is $(m, l, "acc")$. No attention-specific code is involved; scheduling then finds the tiled kernel.],
+  caption: [The rewrite that derives flash attention, schematically (the lab's typed graph also carries mask and scale maps, so the §2.3 counts are higher). The naive graph writes the scores and probabilities as $n times n$ buffers (dashed). Fusion splices the maps into their readers; `stabilize_softmax` merges the max and both exponential sums into one reduction whose state is $(m, l, "acc")$. No attention-specific code is involved; scheduling then finds the tiled kernel.],
 ) <fig-rewrite>
 
 The rewrite is not specific to plain attention. Anything that changes the score or the mask leaves the monoid structure alone, so it derives the same way.
@@ -456,7 +446,7 @@ The rewrite is not specific to plain attention. Anything that changes the score 
   The lab below runs tang's compiler, built to WebAssembly from the same crates as this paper, in your browser. Type a variant: it builds the naive graph, runs the real pass pipeline, then runs both programs on your GPU through WebGPU and checks them against tang's f64 interpreter.
   #html.elem("div", attrs: (id: "derive-lab", class: "derive-host"))
 ] else [
-  @tab-gallery derives six variants.#footnote[The web edition derives these in the reader's browser and runs them through WebGPU: #link("https://muni.works/research/tang")[muni.works/research/tang].]
+  @tab-gallery lists six variants the compiler derives.#footnote[The web edition derives these in the reader's browser and runs them through WebGPU: #link("https://muni.works/research/tang")[muni.works/research/tang].]
   #let gal = csv("data/derive-gallery.csv", row-type: dictionary)
   #figure(
     table(
@@ -469,14 +459,14 @@ The rewrite is not specific to plain attention. Anything that changes the score 
         [#b.naive_kernels · #b.naive_nxn → *#b.derived_kernels · #b.derived_nxn*],
       )).flatten()
     ),
-    caption: [Six attention variants as typed into the lab, $n = 1024$, $d = 64$. Each cell is kernels · $n times n$ buffers, as written → derived (WGSL). The forward always becomes one kernel with nothing $n times n$; with nested contractions (§4) so does the backward, in 7 kernels. Generated by `tang-derive-wasm`'s `gallery` example.],
+    caption: [Six attention variants as typed into the lab, $n = 1024$, $d = 64$. Each cell is kernels · $n times n$ buffers, as written → derived (WGSL). The forward always becomes one kernel with nothing $n times n$; with nested contractions (§3) the backward also writes nothing $n times n$, in 7 kernels. Generated by `tang-derive-wasm`'s `gallery` example.],
   ) <tab-gallery>
 ]
 
 == Schedules
 
 A comprehension says _what_ to compute. Schedule fields say _how_, and they cannot change the
-answer:
+math (precision changes rounding, §4):
 
 - `inline`: recompute inside the consumer instead of writing a buffer.
 - `split`: one workgroup per point, with threads striding the reduce space and tree-combining. This
@@ -485,9 +475,9 @@ answer:
   every address as an affine form over loop variables. Anything that does not depend on the lane
   axis is staged in workgroup memory once per reduce chunk. That covers buffer reads (K and V
   tiles, matmul operand tiles) and inlined sub-computations (the $q dot k$ scores).
-- `precision`: storage and accumulation formats (§5).
+- `precision`: storage and accumulation formats (§4).
 
-`schedule_auto` encodes three rules distilled from measurement. `autotune_kernels` times each
+`schedule_auto` encodes rules of thumb distilled from measurement. `autotune_kernels` times each
 candidate mapping per materialized node on the device, using the graph's real inputs, and caches the
 winner by device and kernel source. With substitution and the online-softmax rewrite, the staging
 rule produces the structure of flash attention: rows × lanes per workgroup, cooperative score
@@ -495,17 +485,17 @@ tiles, and online softmax in registers.
 
 = Gradients are comprehensions
 
-For $y = plus.o_k "body"(x[v(i,k)])$, the gradient with respect to $x$ through a _pick_ view is
+For $y = plus.o_k "body"(x[v(i,k)])$, the gradient with respect to $x$ through a _pick_ view (one whose forms are each a single coordinate) is
 found by renaming coordinates. The coordinates that $v$ picks become $x$'s output dimensions, the
 rest become reduce dimensions, and every other view is pushed through the same renaming. The body is
-differentiated by `tang-expr`'s symbolic `diff`. A dimension read through any other form (an
+differentiated by `tang-expr`'s symbolic `diff`, which covers its nine arithmetic operations (add, multiply, negate, reciprocal, square root, sine, atan2, $2^x$, $log_2$) plus a select. A dimension read through any other form (an
 offset, stride, diagonal or broadcast) stays an output dimension, and `iota`, a node that turns coordinates into values, gates the body by
 $[c = "form"]$. Max gates its term to the
 arg-max. The backward graph is an ordinary graph, so the same passes optimize it. Rotary embedding
 and GQA gradients come from the gated scatter with no special handling.
 
 *The online-softmax monoid* has its own rule. With the forward's $m$ and accumulators read back,
-$partial "acc"_i \/ partial s_j = g_i exp(s_j - m) - "acc"_i [s_j = m]$, so the flash-fused graph
+$partial "acc"_i \/ partial s_(i j) = g_j exp(s_(i j) - m_i) - "acc"_i [s_(i j) = m_i]$, where $g_j$ is key $j$'s value, so the flash-fused graph
 differentiates and its gradients equal the naive graph's.
 
 *A stabilizing max has no gradient.* Softmax is invariant to shifting its scores, so the
@@ -513,17 +503,17 @@ $[s = m]$ terms sum to zero, but only in exact arithmetic. While those terms exi
 materialized and masked tiles cannot be skipped. `backward` drops them when it can prove the loss
 does not depend on $m$. The proof tracks how each node downstream of $m$ scales with $t = exp(-m)$. In softmax, $p_j = exp(s_j - m) = t dot exp(s_j)$ has degree 1 in $t$, so does $l = sum_j p_j$, and so does $"acc" = sum_j p_j v_j$; their ratio $o = "acc" \/ l$ has degree 0, a function of the scores alone. In general a node is either $t^k h$ or $a + kappa m$ with $h, a$ free of $m$, combined by exact identities.#footnote[$t^a t^b = t^(a+b)$; $sum_j t h_j = t sum_j h_j$ when $t$'s row does not depend on $j$; $2^(a + kappa m) = 2^a t^(-kappa ln 2)$.] If every path from $m$ ends at a degree-0 node, $partial L \/ partial m equiv 0$ and the gradient is not built. The f64 evaluation of a training step is unchanged (largest absolute difference $2.7 times 10^(-19)$).
 
-*The flash backward recomputes inside tiles.* `hoist_invariant_factors` distributes sums
+*The flash backward recomputes inside tiles.* `hoist_invariant_factors` factors row-invariant terms out of sums
 ($sum_c tilde(P) dot "dO" dot V -> tilde(P) dot sum_c "dO" dot V$). `schedule_nested_contractions`
 then inlines a short contraction (one reduce dimension of at most 128) into every tile that reads
 it. The attention backward reads $S = Q K^top$ and $"dP" = "dO" V^top$ only through $tilde(P)$ and
 $"dS"$, which the dQ, dK and dV tiles recompute per staged block on tensor cores. On CUDA this removed
 S, $tilde(P)$, dP, the max over S and three correction kernels from a transformer training step,
 reducing 63 kernels to 49 and the summed best-per-kernel time from 1.80 to 1.22 ms at sequence
-length 512 (RTX 3090). WGSL and Metal now nest the same contractions with scalar dot products in workgroup memory, so no backend writes anything $n times n$. For now this costs speed. Forward plus backward runs at 0.64–0.78× the materialized schedule on Metal and 0.22–0.27× under Vulkan on a 3090, until the nested dots are register-blocked the way the `mma` path blocks them.
+length 512 (RTX 3090). WGSL and Metal now nest the same contractions with scalar dot products in workgroup memory, so no GPU backend we measured (CUDA, WGSL, Metal) writes anything $n times n$. For now this costs speed. Forward plus backward runs at 0.64–0.78× the materialized schedule on Metal and 0.22–0.27× under Vulkan on a 3090, until the nested dots are register-blocked the way the `mma` path blocks them.
 
 #figure(fig-backward(),
-  caption: [The attention backward of a training step, before and after. Before, the scores, probabilities and $"dP"$ are written as $n times n$ buffers (dashed) and read by three gradient tiles. After the stabilizing max loses its gradient and sums distribute, the short contractions $S$ and $"dP"$ are recomputed per staged block inside each tile, on tensor cores. CUDA, RTX 3090, seq 512; summed best-per-kernel times.],
+  caption: [The attention backward of a training step, before and after. Before, the scores, probabilities and $"dP"$ are written as $n times n$ buffers (dashed) and read by three gradient tiles. After the stabilizing max loses its gradient and invariant factors leave the sums, the short contractions $S$ and $"dP"$ are recomputed per staged block inside each tile, on tensor cores. CUDA, RTX 3090, seq 512; summed best-per-kernel times.],
 ) <fig-backward>
 
 = Precision is a schedule
@@ -535,10 +525,10 @@ applied to a reduction's running state after each combine. The graph stays exact
 The interpreter predicts the error. `eval` is pure f64. `eval_emulated` rounds every stored value
 and every accumulator step to its scheduled format (round to nearest even, subnormals, overflow),
 with body arithmetic in f64. An `ErrorBudget` accepts or rejects a schedule before it runs.
-Emulation matches the GPU's f16 kernels to 1 ulp when the reduction order is the same. Reduction
-order matters: AdaIN's variance over $T = 2000$ with an f16 accumulator has error
+Emulation matches the GPU's f16 kernels to 1 ulp when the reduction order is the same. Otherwise the
+order is part of the error: AdaIN's variance over $T = 2000$ with an f16 accumulator has error
 $2.8 times 10^(-4)$ under a 256-thread split and $1.3 times 10^(-2)$ with one thread per row, while
-the sequential emulation predicts $7.9 times 10^(-3)$. The reduction order is part of the error. Emulation models a sequential fold, which a tree-combining split beats and one thread per row does slightly worse than.
+the sequential emulation predicts $7.9 times 10^(-3)$. Emulation models one sequential fold; a tree-combining split beats it, and the per-row GPU kernel, though also sequential, comes out somewhat worse, which we attribute to its different accumulation order and fused arithmetic rather than having verified it.
 `tune_precision` lowers buffers to half precision one move at a time and keeps a move only if the
 program stays within budget and gets faster.
 
@@ -549,13 +539,13 @@ epilogue fusion and tuple monoids once. A dialect switch then handles buffer acc
 syntax.
 
 - *WGSL* (portable default, through wgpu on Metal, Vulkan and DX12). f16 storage is packed two per
-  `u32`, because the toolchain rejects `enable f16`.
+  `u32`, because wgpu's shader compiler (naga) rejected `enable f16` on our targets.
 - *CUDA.* Matmul-shaped tiles run on `mma.sync` (TF32 m16n8k8, or f16/bf16 m16n8k16 when the
   operands are half precision) with `cp.async` staging rings. Block shapes are tuning candidates.
   `cuda_flash_kernel` recognizes the online-softmax comprehension and keeps $O$, the row max and the
   partial sums in `mma` registers. The score accumulator is reused as the A operand of $O += P V$
   after permuting keys within each 8-wide step, which is legal because the reduction is
-  associative.
+  commutative and associative.
 - *Metal (MSL).* Native `half` and `bfloat`. Contractions with f16 operands run on
   `simdgroup_half8x8` fragments. Reduce dimensions are flattened, so convolution becomes implicit
   GEMM, with dilated inputs staged once per chunk as a zero-padded, phase-de-interleaved window.
@@ -569,10 +559,22 @@ syntax.
 Kernel sources are canonicalized, so the same kernel at another layer is the same string and
 compiles once.
 
+= Verification
+
+Speed claims depend on every kernel being correct. `tang-verify` runs each GPU kernel against its
+CPU oracle on the same input, starting from the device's own state. Before each kernel runs, it fills
+the kernel's outputs with NaN, so unwritten memory cannot pass as a plausible 0. When a check fails,
+it names the kernel at fault by provenance: which earlier kernel's correct output the failing
+buffer contains. We built it after four structural bugs in a hand-written engine slipped past every unit
+test. One was a byte offset added where a float offset was meant, which wrote k's values over q.
+Derived kernels are less exposed to that class of bug, because addresses come from affine forms
+rather than pointer arithmetic. On the IR path there is a second check, because the f64 interpreter runs
+the same graph as the GPU.
+
 = Evaluation
 
-*Setup.* Apple M4 Max (Metal), NVIDIA RTX 3090 (Vulkan and CUDA 12), and a Qualcomm QCS8550 in a
-Booster K1 humanoid robot (Adreno 740, Cortex-X3). PyTorch 2.10 + cu128 with CUDA events. Unless
+*Setup.* Apple M4 Max (Metal), NVIDIA RTX 3090 (Vulkan and CUDA 12), a Qualcomm QCS8550 in a
+Booster K1 humanoid robot (Adreno 740, Cortex-X3), and, for §8, an NVIDIA H200. PyTorch 2.10 + cu128 with CUDA events. Unless
 stated otherwise, tang times are kernel-only. Several runs shared the GPU with other tenants. We
 mark those, and report minima rather than means, because contention only adds time. Every derived
 result is checked against an f64 interpreter; agreement is $10^(-6)$ to $10^(-4)$ relative,
@@ -581,7 +583,7 @@ depending on format.
 == Derived vs hand-written kernels
 
 tang shipped hand-written WGSL kernels before the IR existed, which makes a controlled comparison
-possible: same runtime, same chip, same inputs. @tab-hand is one consistent run on the M4 Max,
+possible: same runtime, same chip, same inputs. Here "as written" is the unfused graph, one kernel per comprehension; "derived" is any schedule the compiler produces, and the autotuner keeps the as-written graph's naive schedule as one candidate, which is why it can win. On the M4 Max the fastest schedule for causal attention flipped between two runs of the same code: in one run $n = 512$ was fastest naive ($n^2$ threads) and $n = 1024$ tiled, and @tab-hand, a later run, has the reverse. The naive graph wins when its scores fit in cache and parallelism, not bandwidth, is the bottleneck, which depends on the size and the machine's power state. A $16 times 16$ shared-memory matmul tile wins at $128 times 576 times 1536$ and loses at $1024^2$, and rules of thumb tuned on the M4 picked the wrong matmul schedule on an RTX 3090. @tab-hand is one consistent run on the M4 Max,
 including about 1.8 ms of submit and readback per measurement.
 
 #figure(
@@ -604,20 +606,20 @@ Every hand kernel is beaten or matched to within 7% (rmsnorm), leaving aside the
 On the 3090 under Vulkan, the derived transformer block first _lost_ to the hand path. Three
 chip-agnostic fixes followed: cost-aware substitution, keeping reductions schedulable under their
 epilogues, and a bank-conflict-free tile layout. After them, the autotuned block won there too
-(2.5 vs 3.1 ms at seq 128, 6.2 vs 10.4 ms at seq 512).
+(2.5 vs 3.1 ms at seq 128, 6.2 vs 10.4 ms at seq 512, both including about 1.25 ms of submit and readback).
 
-@fig-schedules shows the same thing through WebGPU in a browser on the M4 Max. At $n = 1024$ the graph as written beats every derived schedule, and the derived schedules alone span 29× by thread mapping. A compiler that fixed one schedule would be wrong somewhere, so tang times the candidates and keeps the winner.
+@fig-schedules shows the same thing through WebGPU in a browser on the M4 Max. At $n = 1024$ the graph as written beats every fused schedule, and the fused schedules alone span 29× by thread mapping. A compiler that fixed one schedule would be wrong somewhere, so tang times the candidates and keeps the winner.
 
 #figure(fig-schedules(),
-  caption: [Causal attention, $n = 1024$, $d = 64$: the schedules the post's lab timed through WebGPU in Chrome on an M4 Max (2026-11-06, log scale). Red: the graph as written. All outputs match the f64 interpreter to $1.3 times 10^(-7)$ (checked at $n = 128$).],
+  caption: [Causal attention, $n = 1024$, $d = 64$: the schedules the web edition's derive lab (§2.3) timed through WebGPU in Chrome on an M4 Max (2026-11-06, log scale). Red: the graph as written. All outputs match the f64 interpreter to $1.3 times 10^(-7)$ (checked at $n = 128$).],
 ) <fig-schedules>
 
 == Against PyTorch
 
 @tab-torch tracks a 9-head GQA transformer block ($d = 576$, $"ff" = 1536$, rotary embeddings,
 SwiGLU) on the RTX 3090 as the backends matured. Through WGSL, which has no access to tensor cores,
-derived kernels stayed 2.5–4× behind PyTorch. With the CUDA lowering, flash attention on
-`mma.sync` and the backward passes of §4, the forward block passes PyTorch (@fig-trajectory).
+derived kernels stayed 2.6–7× behind PyTorch. With the CUDA lowering, flash attention on
+`mma.sync` and the backward passes of §3, the forward block passes PyTorch (@fig-trajectory).
 
 #figure(
   table(
@@ -639,14 +641,14 @@ derived kernels stayed 2.5–4× behind PyTorch. With the CUDA lowering, flash a
   caption: [Transformer block forward, seq 512, RTX 3090, log scale. The same derived graph under three generations of lowering; only the last reaches tensor cores. Dashed: PyTorch with TF32.],
 ) <fig-trajectory>
 
-On the CUDA path, the derived inference attention kernel is 0.032 ms at seq 512, down from 0.178 ms
-before the `mma.sync` rewrite. The seq-512 forward block is 1.37× faster than PyTorch with TF32. Forward plus backward runs 2.2× faster than PyTorch fp32 at seq 128 and 1.17× at seq 512, and a four-layer training step 1.12× faster than PyTorch with fused AdamW. We do not claim a general win over cuBLAS: a lone fp32
-matmul at $1024^2$ through WGSL reaches 7.6 TFLOPS against cuBLAS's roughly 19. The gain comes from
+On the CUDA path, the derived inference attention kernel alone is 0.032 ms at seq 512, down from 0.178 ms
+before the `mma.sync` rewrite. The seq-512 forward block is 1.37× faster than PyTorch with TF32. Forward plus backward runs 2.2× faster than PyTorch fp32 at seq 128 and 1.17× at seq 512, and a four-layer training step 1.12× faster than PyTorch with fused AdamW. We do not claim a general win over cuBLAS: a lone $1024^2$ matmul on the derived CUDA TF32 tile
+takes 0.150 ms against cuBLAS TF32's 0.079 ms, 1.9× slower. The gain comes from
 fusion across operator boundaries that a library of separately tuned operators cannot do.
 
 == Attention variants against FlexAttention and FA2
 
-We ran the six attention variants from §3.3 on the RTX 3090 against FlexAttention @flexattention2024 (`torch.compile`, fp32 with TF32 and bf16) and FlashAttention-2 in bf16 where it supports the mask. Flashlight and EqiForge publish no code. Every row was checked against an f64 reference; tang is pure fp32 or TF32.
+We ran the six attention variants from §2.3 on the RTX 3090 against FlexAttention @flexattention2024 (`torch.compile`, fp32 with TF32 and bf16) and FlashAttention-2 in bf16 where it supports the mask. Flashlight and EqiForge publish no code. Every row was checked against an f64 reference; tang is pure fp32 or TF32.
 
 #figure(
   table(
@@ -664,7 +666,7 @@ We ran the six attention variants from §3.3 on the RTX 3090 against FlexAttenti
   caption: [Attention variants on an RTX 3090 (shared; small rows carry up to ±2× noise). FA2 runs only causal and bidirectional masks. The full sweep, d = 64 and 128 with n from 1k to 8k, is in the repository.],
 ) <tab-flex>
 
-Where a variant changes the score (soft cap, ALiBi, prefix LM), the derived forward is 1.4–3.4× faster than FlexAttention in fp32 up to $n = 4"k"$ and beats it in bf16 up to $n = 2"k"$, because the score modifier becomes part of the fused body. tang loses in three places, each a missing schedule rather than missing algebra. FA2 runs bf16 tensor cores where tang's tile is TF32. A sliding window is 25× slower because tang computes masked tiles that FlexAttention's block mask skips. And at $d = 128$ no tensor-core tile is chosen for the forward. From $n = 2"k"$ the backward is 2.5–7× behind FlexAttention bf16, and 50× with a sliding window.
+Where a variant changes the score (soft cap, ALiBi), the derived forward is up to 3.4× faster than FlexAttention in fp32 up to $n = 4"k"$ and beats it in bf16 up to $n = 2"k"$ (the low end of that range is within the noise of a shared GPU), because the score modifier becomes part of the fused body. tang loses in three places, each a missing schedule rather than missing algebra. FA2 runs bf16 tensor cores where tang's tile is TF32. A sliding window is 25× slower because tang computes masked tiles that FlexAttention's block mask skips. And at $d = 128$ no tensor-core tile is chosen for the forward. From $n = 2"k"$ the backward is 2.5–7× behind FlexAttention bf16, and 50× with a sliding window.
 
 == A whole model as one graph
 
@@ -709,14 +711,14 @@ A top-k MoE FFN builds as one graph: router GEMM, top-k as $k$ arg-max rounds, s
     [weights pre-gathered on the host, tiled], [2.89], [3.55],
     [weights pre-gathered, one thread per point], [2.91], [3.77],
   ),
-  caption: [Top-k MoE at T = 8 tokens, D = 2048, E = 128 experts, k = 10, F = 512 (1 GB of weight reads). The data-dependent address costs nothing measurable against the same expert math over weights gathered into contiguous buffers beforehand. 378 GB/s is 40% of the 3090's peak: per-point GEMV reads are uncoalesced, and a warp-per-row schedule for gathered contractions is next.],
+  caption: [Top-k MoE at T = 8 tokens, D = 2048, E = 128 experts, k = 10, F = 512 (1 GB of weight reads). The data-dependent address costs nothing against the same expert math over weights gathered into contiguous buffers beforehand. The gathered graph is even faster; we have not isolated why, and do not claim the gap. 378 GB/s is 40% of the 3090's peak: per-point GEMV reads are uncoalesced, and a warp-per-row schedule for gathered contractions is next.],
 ) <tab-moe>
 
 == Edge hardware
 
 On the K1's Adreno 740, a derived matmul reaches 322 GFLOP/s at $1024^3$, which is 21% of the
-measured fp32 peak, and a full transformer forward pass plus all seven weight gradients runs in
-19.1 ms. Rules tuned for desktop GPUs under-fill the Adreno's six compute units. The best schedule
+measured fp32 peak, and a full transformer forward pass plus all seven weight gradients at seq 128 runs
+in 19.1 ms. Rules tuned for desktop GPUs under-fill the Adreno's six compute units. The best schedule
 there (an $8 times 8$ register tile with 8-deep chunks) is 1.45× better than `schedule_auto`'s
 choice, which again argues for search over remembered rules. Through `to_c` on one Cortex-X3 core, a
 batch-1 GRU policy step (6 contractions plus gate math, fused into one kernel) takes 22.5 µs median
@@ -724,7 +726,7 @@ and a locomotion MLP takes 6.7 µs, both within $6 times 10^(-7)$ of f64.
 
 = A hand-tuned engine, and one derived layer
 
-Every kernel in the sections above is derived. To show where derivation has to go next, we report the other half of tang, `tang-llm`'s Flash engine, which serves Qwen3-Coder-Next (80B parameters, 3B active, 4-bit GGUF) on one NVIDIA H200 with kernels written by hand. @tab-h200's numbers are not results of the IR; they are the target it has to reach.
+Every kernel in the sections above is derived. To show where derivation has to go next, we report the other half of tang: the hand-written serving engine in `tang-llm`, called Flash, which serves Qwen3-Coder-Next (80B parameters, 3B active, 4-bit GGUF) on one NVIDIA H200 with kernels written by hand. @tab-h200's numbers are not results of the IR; they are the target it has to reach.
 
 #figure(
   table(
@@ -738,12 +740,12 @@ Every kernel in the sections above is derived. To show where derivation has to g
     [serving, 64 concurrent decode-heavy streams], [1,279 tok/s],
     [serving at 64k context, batch 48 (production shape)], [1,155 tok/s],
   ),
-  caption: [The bar. tang-llm on a dedicated H200 (tang-llm commit `fcfbb9d7`). Its MoE layers run a hand-written int8 tensor-core kernel that reads activations in B-fragment order, which cut the B = 64 step from 38.9 to 35.2 ms. Lossless speculation uses a trained MTP head (3.15 tokens per window).],
+  caption: [The target: tang-llm on a dedicated H200 (tang-llm commit `fcfbb9d7`). Its MoE layers run a hand-written int8 tensor-core kernel that reads activations in B-fragment order, which cut the B = 64 step from 38.9 to 35.2 ms. Lossless speculation uses a trained MTP head (3.15 tokens per window).],
 ) <tab-h200>
 
-The hand engine also shows why the contract matters. Ported to GLM-5.3, the same MoE kernel is correct but 1–2.5× _slower_ below 64 tokens per expert and only 8–20% faster at 64. A kernel tuned for one model's expert shapes is a point in the schedule space, and on the next model it is the wrong point. It is one data point, but from a production engine, and it is §1's claim.
+The hand engine also shows why the contract matters. Ported to GLM-5.3, the same MoE kernel is correct but 1–2.5× _slower_ than the engine's generic path below 64 tokens per expert and only 8–20% faster at 64. A kernel tuned for one model's expert shapes is a point in the schedule space, and on the next model it is the wrong point. It is one data point, but from a production engine, and it is §1's claim.
 
-Deriving this engine needed three things the IR lacked: a _gather_ view for routing tokens to experts, _integer_ tensor-core fragments with fused dequantization, and Hopper's asynchronous copy and warpgroup MMA as schedule fields. The first two now exist, and with them we derived one full MoE layer of the engine as a single graph: router, top-$k$, expert-sorted gather, the gate|up and down expert GEMMs on GGUF Q4_K/Q5_K weights, SwiGLU and the weighted combine. The int8 path uses schedule fields only, namely GGUF blocks as an input storage format, int8 activations quantized by their writer, and an `IntMma` field that stages activations in fragment order for `m16n8k32` tensor cores. There is no new operator.
+Deriving this engine needed three things the IR lacked: a _gather_ view for routing tokens to experts, _integer_ tensor-core fragments with fused dequantization, and Hopper's asynchronous copy and warpgroup MMA as schedule fields. The first two now exist, and with them we derived one full MoE layer of the engine as a single graph: router, top-k, expert-sorted gather, the gate|up and down expert GEMMs on GGUF Q4_K/Q5_K weights, SwiGLU and the weighted combine. The int8 path uses schedule fields only, namely GGUF blocks as an input storage format, int8 activations quantized by their writer, and an `IntMma` field that stages activations in fragment order for `m16n8k32` tensor cores. There is no new operator.
 
 #figure(
   table(
@@ -760,21 +762,9 @@ Deriving this engine needed three things the IR lacked: a _gather_ view for rout
 
 At batch 8 and 64 the derived kernels beat the hand ones, which took a dedicated tuning effort to push past a ~2 TB/s floor. Fragment-order staging alone is worth about 20% on gate|up. At batch 1 the hand per-pair GEMV still wins, because a narrow one-pair-over-many-warps schedule is not yet expressible. The derived routing is the other gap. Top-$k$ as $k$ arg-max rounds costs 27 small kernels (0.35–0.6 ms) where the engine uses one.
 
-= Verification
-
-Speed claims depend on every kernel being correct. `tang-verify` runs each GPU kernel against its
-CPU oracle on the same input, starting from the device's own state. Before each kernel runs, it fills
-the kernel's outputs with NaN, so unwritten memory cannot pass as a plausible 0. When a check fails,
-it names the responsible kernel by provenance, finding whose correct values ended up in the failing
-buffer. We built it after four structural bugs in a hand-written engine slipped past every unit
-test. One was a byte offset added where a float offset was meant, which wrote k's values over q.
-Derived kernels are less exposed to that class of bug, because addresses come from affine forms
-rather than pointer arithmetic. On the IR path there is a second check, because the f64 interpreter runs
-the same graph as the GPU.
-
 = Related work
 
-*Schedules.* Halide @ragan2013halide separated algorithm from schedule. TVM @chen2018tvm and Ansor @zheng2020ansor searched the schedule space with learned cost models, and Tensor Comprehensions @vasilache2018tc used polyhedral comprehensions. tang inherits the separation and the search.
+*Schedules.* Halide @ragan2013halide separated algorithm from schedule. TVM @chen2018tvm and Ansor @zheng2020ansor searched the schedule space with learned cost models, and Tensor Comprehensions @vasilache2018tc used polyhedral compilation. tang inherits the separation and the search.
 
 *Deriving fused kernels.* The closest work is concurrent. Mirage @wu2024mirage superoptimizes multi-level $mu$Graphs with probabilistic equivalence checks. EqiForge @eqiforge2026 uses equality saturation to derive FlashAttention-style forward kernels. Flashlight @flashlight2025 generates flash-style kernels for arbitrary attention variants inside TorchInductor. tang differs on three axes. Its rewrite is deterministic, keyed on the monoid structure rather than found by search. It derives the _backward_ pass, including the gradient of the online-softmax monoid and the elimination of the stabilizing max. And it lowers to six targets, not one. Neither Flashlight nor EqiForge publishes code, so we measure against FlexAttention and FA2 instead (§7.3).
 
@@ -786,22 +776,22 @@ the same graph as the GPU.
 
 Each gap below is a missing IR construct or schedule field, not a missing kernel.
 
-- *Faster gathers.* Gather views exist (§3, @tab-moe). Gathered contractions still run one thread per point; a warp-per-row schedule, a segmented-sum backward and expert-major dispatch (which needs a scan) are next.
-- *Hopper and Blackwell as schedule fields.* TMA bulk copies, warpgroup MMA, warp specialization and FP8/FP4 fragments are the asynchrony FlashAttention-3 hand-codes @shah2024flash3. In tang they belong next to `tile` and `precision`, so the derived flash forward and backward meet FA3 on Hopper rather than describing it. bf16 tensor-core tiles everywhere, including $d = 128$, come with them.
+- *Faster gathers.* Gather views exist (§2, @tab-moe). Gathered contractions still run one thread per point; a warp-per-row schedule, a segmented-sum backward and expert-major dispatch (which needs a scan) are next.
+- *Hopper and Blackwell as schedule fields.* TMA bulk copies, warpgroup MMA, warp specialization and FP8/FP4 fragments are the asynchrony FlashAttention-3 hand-codes @shah2024flash3. In tang they belong next to `tile` and `precision`, so the derived flash forward and backward can match FA3 on Hopper instead of merely expressing the same algorithm. bf16 tensor-core tiles everywhere, including $d = 128$, come with them.
 - *Mask-aware tile skipping everywhere.* The CUDA flash kernel already skips key tiles an affine mask covers. The WGSL and generic CUDA tiles do not, which is why a sliding window loses 25× (@tab-flex).
-- *Register-blocked nesting.* The scalar nested dots that make the WGSL and Metal backward $n times n$-free (§4) need blocking into small GEMMs, on simdgroup matrices on Metal, to be free.
-- *The rest of the MoE layer.* A warp-level top-$k$ in place of $k$ arg-max rounds, the engine's norm, SiLU and combine fusions, and a narrow batch-1 schedule close the remaining gaps in @tab-moe-h200.
+- *Register-blocked nesting.* The scalar nested dots that make the WGSL and Metal backward $n times n$-free (§3) need blocking into small GEMMs, on simdgroup matrices on Metal, to stop costing speed.
+- *The rest of the MoE layer.* A warp-level top-k in place of $k$ arg-max rounds, the engine's norm, SiLU and combine fusions, and a narrow batch-1 schedule close the remaining gaps in @tab-moe-h200.
 - *Scan monoids.* State-space and gated-delta recurrences are associative scans over a matrix monoid. ScanWeaver @scanweaver2026 makes scan a first-class compiler abstraction; tang's monoids are already the right shape for it, and its backward rule would come with it.
 - *Launch fusion.* About 400 of a Qwen decode step's 506 kernels are small reductions and maps that cost 1.3 ms in launches. Persistent megakernels @eventtensor2026 are a schedule over the whole program, not a new operator.
-- *A learned cost model.* `schedule_auto` is three measured rules. Every autotuning run already writes (graph, chip, schedule, time) to a cache, and that cache is training data.
+- *A learned cost model.* `schedule_auto` is a few rules of thumb. Every autotuning run already writes (graph, chip, schedule, time) to a cache, and that cache is training data.
 - *Device-to-device placement.* Sharded reductions joined by an all-reduce are already a rewrite (the all-reduce is a comprehension over the monoid's combine). Only the transport is missing.
 - *Quiet measurements.* Several runs here were taken on shared GPUs and are reported as minima. Every table should be re-run on idle hardware.
 
 = Conclusion
 
-Two primitives, affine views and monoid comprehensions, are enough to express a transformer, its gradient and its quantized inference. Fusion, flash attention and the flash backward become rewrites and schedule choices, not kernels. Because the schedule is searched per chip, the same source matches or beats hand kernels on Metal and Vulkan, runs on an embedded Adreno, and beats PyTorch on a transformer block's forward pass on CUDA.
+Two primitives, affine views and monoid comprehensions, are enough to express a transformer, its gradient and its quantized inference. Fusion, flash attention and the flash backward become rewrites and schedule choices, not kernels. Because the schedule is searched per chip, the same source matches hand kernels within 7% or beats them on Metal and Vulkan, runs on an embedded Adreno, and beats PyTorch on a transformer block's forward pass on CUDA.
 
-The hand-written kernel does not disappear in this design. It becomes an intrinsic, a fast implementation of one comprehension shape on one chip, which the compiler uses when it wins and replaces when it doesn't. The last hand-tuned engine we run serves an 80B model on an H200, and the first of its layers we derived already beats the kernels written for it. The goal is a compiler that derives every kernel in that engine, on every chip tang targets.
+The hand-written kernel does not disappear in this design. It becomes an intrinsic, a fast implementation of one comprehension shape on one chip, which the compiler uses when it wins and replaces when it doesn't. The last hand-tuned engine we run serves an 80B model on an H200, and the expert GEMMs of the first layer we derived already beat the kernels written for them at batch 8 and 64. The goal is a compiler that derives every kernel in that engine, on every chip tang targets.
 
 #aside[Reproducibility][
   Every number in this paper comes from `BENCHMARKS.md` in the tang repository (snapshot in `data/`), which records the command, date and machine state for each measurement. The IR is in `crates/tang-compile/src/tensor*.rs`; its design notes are in `docs/tensor-ir.md`.
