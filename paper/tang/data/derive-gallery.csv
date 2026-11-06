@@ -1,0 +1,13 @@
+variant,score,mask,pass,naive_kernels,naive_nxn,derived_kernels,derived_nxn
+Causal,s,j <= i,fwd,11,5,1,0
+Causal,s,j <= i,fwd+bwd,30,11,9,2
+Sliding window,s,j <= i && i - j < 128,fwd,11,5,1,0
+Sliding window,s,j <= i && i - j < 128,fwd+bwd,30,11,9,2
+ALiBi,s - 0.0625*(i - j),j <= i,fwd,11,5,1,0
+ALiBi,s - 0.0625*(i - j),j <= i,fwd+bwd,30,11,9,2
+Soft cap,30*tanh(s/30),j <= i,fwd,11,5,1,0
+Soft cap,30*tanh(s/30),j <= i,fwd+bwd,30,11,9,2
+Prefix LM,s,j <= i || j < 64,fwd,11,5,1,0
+Prefix LM,s,j <= i || j < 64,fwd+bwd,30,11,9,2
+Bidirectional,s,,fwd,10,4,1,0
+Bidirectional,s,,fwd+bwd,28,9,9,2
