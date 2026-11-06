@@ -1,4 +1,3 @@
-#heading(numbering: none)[Abstract]
 A mind that is grown is more robust and more individual than one that is
 configured. IPSE (Interoceptive Predictive Self-Emergence; Latin _ipse_, "itself")
 is a developmental scaffold for growing one on a Booster K1 humanoid. The body's
