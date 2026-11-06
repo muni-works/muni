@@ -366,7 +366,7 @@ export function DeriveLab() {
             </>
           )}
           {backward && res.derived.nxn > 0 && (
-            <span className="dl-note"> The WebGPU backward still writes {res.derived.nxn} n × n buffers; on CUDA, nested contractions remove them (§4).</span>
+            <span className="dl-note"> This build of the compiler predates tang PR #150, which removes these {res.derived.nxn} n × n buffers on WebGPU too (§4).</span>
           )}
         </div>
       )}
