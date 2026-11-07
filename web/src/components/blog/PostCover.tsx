@@ -4,11 +4,11 @@ import { coverFor } from "./covers";
 // the scroll cue. Each post picks its art by `cover` in posts.json; the default
 // is the solar system.
 export function PostCover({ title, subtitle, children, scrollTo, cover }: { title: string; subtitle: string; children?: React.ReactNode; scrollTo?: string; cover?: string }) {
-  const { Art } = coverFor(cover);
+  const { Art, textClass } = coverFor(cover);
   return (
     <header className="post-cover">
       <Art />
-      <div className="post-cover-text">
+      <div className={textClass ? `post-cover-text ${textClass}` : "post-cover-text"}>
         <h1>{title}</h1>
         <p className="post-subtitle">{subtitle}</p>
         {children}
