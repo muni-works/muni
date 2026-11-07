@@ -211,6 +211,55 @@
   lbl((4.8, 0.45), [forward and replay share the eval pipelines])
 })
 
+
+// The hero: the shared benchmark's plate as irys renders it, with vcad's frozen mesh and, at
+// every node that moves with the bore, its screen velocity coloured by its share of dL/dtheta.
+// Every mark is data from `rose_brep` (HERO=data/hero); nothing is drawn by hand.
+#let hero-tsv(name) = read("data/hero/" + name).split("\n").filter(l => l != "").map(l => l.split("\t").map(float))
+#let fig-hero(width: 17.0) = {
+  // crop to the part (the render's frame is the benchmark's camera, kept so the data are its own)
+  let (ox, oy, cw, ch) = hero-tsv("crop.tsv").at(0)
+  let k = width / cw
+  let height = ch * k
+  let edges = hero-tsv("edges.tsv")
+  let nodes = hero-tsv("nodes.tsv")
+  let cmax = calc.max(..nodes.map(n => calc.abs(n.at(4))))
+  let xs = nodes.map(n => n.at(0))
+  let ys = nodes.map(n => n.at(1))
+  let (cx, cy) = ((calc.min(..xs) + calc.max(..xs)) / 2, (calc.min(..ys) + calc.max(..ys)) / 2)
+  let rx = (calc.max(..xs) - calc.min(..xs)) / 2
+  // the mesh fades in from left to right across the part: pixels, then the frozen plan
+  let fade(x) = { let t = calc.clamp(((x - ox) / cw - 0.30) / 0.45, 0.0, 1.0); t * t * (3 - 2 * t) }
+  let P(x, y) = ((x - ox) * k, height - (y - oy) * k)
+  cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+    content((0, 0), anchor: "south-west", image("data/hero/beauty-crop.png", width: width * 1cm))
+    for e in edges {
+      let a = fade((e.at(0) + e.at(2)) / 2)
+      if a > 0.01 {
+        line(P(e.at(0), e.at(1)), P(e.at(2), e.at(3)), stroke: 0.22pt + c-label.transparentize(100% - 70% * a))
+      }
+    }
+    // each moving node: a tick along its screen velocity, as long as its share of dL/dtheta
+    for n in nodes {
+      let s = calc.abs(n.at(4)) / cmax
+      if s > 0.03 {
+        let col = if n.at(4) > 0 { c-sel } else { c-info }
+        let v = calc.sqrt(n.at(2) * n.at(2) + n.at(3) * n.at(3))
+        let len = 26.0 * s / v
+        line(P(n.at(0), n.at(1)), P(n.at(0) + n.at(2) * len, n.at(1) + n.at(3) * len),
+          stroke: (paint: col.transparentize(100% - (35% + 65% * s)), thickness: 0.4pt, cap: "round"))
+      }
+    }
+    // the parameter, dimensioned across the bore's image
+    let (l0, l1) = (P(cx - rx, cy), P(cx + rx, cy))
+    line(l0, l1, stroke: 0.4pt + c-text, mark: (start: ">", end: ">", size: 0.11, fill: c-text))
+    let lab = P(cx, cy)
+    content((lab.at(0), lab.at(1) + 0.32), anchor: "south", text(font: mono-m, size: s-sm, fill: c-text)[Ø#nb\49.000#nb\mm#h(0.6em)#text(fill: c-label)[θ]])
+    content((lab.at(0), lab.at(1) - 0.32), anchor: "north", text(font: mono-m, size: s-sm, fill: c-sel)[$partial cal(L) \/ partial theta$ = +#F("brep.pull", 2)])
+  })
+}
+
 // ---- title page -----------------------------------------------------------------
 #if not web {page(margin: (x: 0.75in, top: 0.7in, bottom: 0.65in))[
   #set par(leading: 0.5em)
@@ -221,12 +270,13 @@
   #v(1.6em)
   #image("images/muni-logo.svg", width: 0.95in)
   #v(0.35in)
-  #align(center, image("images/phase2d-rose.png", width: 5.2in))
+  #align(center, fig-hero(width: 17.0))
   #v(0.1in)
   #grid(columns: (1fr, auto), align: (left, right),
-    caps[rose full, read from its own CAD · 2.4 M triangles · 256 spp],
-    caps(fill: c-sel)[the same renderer differentiates it])
+    caps[rose's shoulder plate · vcad's frozen mesh · each node's share of the gradient],
+    caps(fill: c-sel)[pixels to a CAD dimension])
   #v(1fr)
+  #v(0.25in)
   #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[Bit-Exact Path Replay\ for CAD Scenes])
   #v(0.5em)
   #line(length: 22%, stroke: 2pt + c-label)
