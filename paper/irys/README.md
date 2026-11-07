@@ -16,11 +16,12 @@ that introduced it and the test or example that measures it. `data/env.tsv` pins
 
 ## Open items before submission
 
-- **Regenerate every row in one pass on one recorded machine** (`repro/`, not written yet; model it
-  on `paper/vcad/repro`). Today's rows were measured on different days at different commits, on an
+- **Regenerate every row in one pass on one recorded machine:** `IRYS_REV=<rev> repro/repro.sh`
+  (clones irys and rose at pinned commits, runs every gate test and the two rose examples in release,
+  and `repro/collect.py` merges their `PAPER` lines with `data/constants.tsv`). Not run yet. Today's rows were measured on different days at different commits, on an
   M-series Mac whose chip was not recorded. Timings quoted are release builds only; debug-build
   numbers from the design log were left out on purpose.
-- **Bibliography.** Entries marked `verify` in `refs.bib` were written from memory. Replace
+- **Bibliography.** Checked against publisher and author pages on 2026-11-07. Replace
   `pedersen2026vcad` with its arXiv id.
 - **One-run results.** The rose fit (Fig 2) is a single run; convergence over seeds and starts is not
   measured. The 2f secondary term passes its rose check at 64 seeds and misses at 256.

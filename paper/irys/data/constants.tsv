@@ -1,0 +1,8 @@
+fit.true_pitch	-25.78	design.md L719 (truth = arm::TRUE_PHI in degrees)
+fit.true_roll	16.04	design.md L719
+fit.true_elbow	-60.16	design.md L719
+fit.init_pitch	-8.6	design.md L719
+fit.init_roll	3.4	design.md L719
+fit.init_elbow	-37.2	design.md L719
+fit.tris	2.4	design.md L683-688 (millions of triangles, whole robot)
+basin.deg	5	design.md L1008 (elbow basin half-width)

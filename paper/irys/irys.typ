@@ -313,7 +313,7 @@ Path replay backpropagation @vicini2021prb made physically based differentiable 
 
 This paper describes irys, the renderer behind vcad and our other robotics tools. Its contributions are:
 
-- *One BSDF source, two lowerings, two tiers.* Materials are tang tensor graphs. The compiler emits an evaluation program and an adjoint program, in WGSL for the GPU and in f64 for the CPU reference. Only the path logic is hand-written (@sec:ir).
+- *One BSDF source, two lowerings, two tiers.* Materials are tang tensor graphs. tang lowers each one to an evaluation program and an adjoint program, emitting WGSL kernels for the GPU and running the same graph in its f64 interpreter for the CPU reference. The path logic (ray generation, traversal, bounce, accumulation) is hand-written (@sec:ir).
 - *PRB on a wavefront with hero wavelengths and NEE.* Four wavelengths per path, next-event estimation with multiple importance sampling, and the light-sampled lanes folded into the same graph batch (@sec:prb).
 - *Bit-exact replay by construction.* An integer RNG that is exact on both tiers, fixed-order reductions with no float atomics, and a BVH walk that depends only on the ray (@sec:det).
 - *Pose gradients through instanced CAD meshes.* Primary edge sampling with crease ownership and visibility-aware importance, an interior term by forward-mode duals with attached frames, and secondary edge sampling for moving shadows and reflections (@sec:pose).
@@ -347,7 +347,7 @@ This paper describes irys, the renderer behind vcad and our other robotics tools
 
 The differentiable material has parameters $theta = (alpha, F_0^(450), F_0^(550), F_0^(650))$: GGX roughness with height-correlated Smith masking, and a Schlick Fresnel whose $F_0$ is interpolated between three spectral hats. It is written once as a tang `TensorGraph` whose inputs are per-lane columns (the cosines at a vertex and the hero wavelength's hat weights) and whose $theta$ is broadcast. tang lowers it two ways. The *eval* program returns $f$ and its pdf. The *adjoint* program is the backward pass of $sum_j delta f_j dot f_j$, so the batch sum over lanes is the reduction to $delta theta$. Each program is emitted as WGSL, one kernel per materialised comprehension, or as compiled C in f32 and an interpreter in f64 for the CPU. The interpreter matches a hand-written f64 GGX to $10^(-12)$, and the compiled C matches the interpreter to #E("p1.c_vs_interp") in the worst relative error.
 
-Only the path logic is hand-written: ray generation, bounce, the throughput update, the final splat and accumulation, and later the device-side loss scoring. Sampling the GGX visible normals is detached, since it needs no derivative under PRB, and the divisor pdf is the sampler's, which we test against the graph's pdf to $10^(-9)$.
+The path logic is hand-written, in WGSL for the GPU and in Rust for the CPU reference: ray generation, BVH traversal, bounce, the throughput update, the final splat and accumulation, and the device-side loss scoring. tang's comprehensions are straight-line bodies over fixed shapes, so data-dependent path loops and a traversal stack cannot be expressed in them today. Sampling the GGX visible normals is detached, since it needs no derivative under PRB, and the divisor pdf is the sampler's, which we test against the graph's pdf to $10^(-9)$.
 
 = Path replay on a wavefront <sec:prb>
 
