@@ -546,7 +546,7 @@ html.post-rail-on::-webkit-scrollbar { display: none; }
 .post .memory-dial .md-tl { fill: var(--p-text); font: 12px var(--p-mono, monospace); text-anchor: middle; dominant-baseline: central; }
 .post .memory-dial .md-cut { stroke: var(--p-label); stroke-width: 1; stroke-dasharray: 2 3; transition: opacity .35s; }
 .post .memory-dial .md-note { fill: var(--p-label); font: 12px var(--p-mono, monospace); text-anchor: start; }
-.post .memory-dial .md-axis { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--p-line-hi); margin-top: .9rem; }
+.post .memory-dial .md-axis { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--p-line-hi); margin-top: .9rem; }
 .post .memory-dial .md-axis button { position: relative; background: none; border: 0; padding: .7rem 0 .2rem; color: var(--p-label); font: 10px var(--p-mono, monospace); letter-spacing: .04em; cursor: pointer; }
 .post .memory-dial .md-axis button::before { content: ""; position: absolute; top: -1px; left: 50%; width: 1px; height: 6px; background: var(--p-line-hi); }
 .post .memory-dial .md-axis button.on { color: var(--p-sel); }

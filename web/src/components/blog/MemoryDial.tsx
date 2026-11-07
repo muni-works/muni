@@ -19,6 +19,7 @@ type Row = {
   nxn_buffers: number | null;
   correct: boolean | null;
   reason?: string;
+  schedule?: string; // autotune rows: picked placement, e.g. "Smem/Recompute/Hbm/Fuse" (S/P/…)
 };
 
 type Level = 0 | 1 | 2 | 3; // HBM, L2, SMEM, registers
@@ -33,7 +34,19 @@ type Stop = {
   pipelined?: boolean;
   layer?: boolean;
   tuned?: boolean; // placement chosen by search per device; the table shows what it picked
+  kernels?: number; // measured kernel count, when the drawing is derived from a row
 };
+
+// The autotuned stop is drawn from what the search picked on the selected device and size.
+const LEVEL: Record<string, Level> = { Hbm: 0, Smem: 2, Reg: 3, Recompute: 3 };
+function tunedStop(base: Stop, row: Row | undefined): Stop {
+  const [s, p] = (row?.schedule ?? "").split("/");
+  if (!(s in LEVEL) || !(p in LEVEL)) return base;
+  const sl = LEVEL[s];
+  const pl = LEVEL[p];
+  const cuts = [...(sl === 0 ? [0] : []), ...(pl === 0 ? [1] : [])];
+  return { ...base, s: sl, p: pl, cuts, recompute: p === "Recompute", kernels: row?.kernels ?? undefined };
+}
 
 const STOPS: Stop[] = [
   { key: "naive", name: "As written", short: "Written", s: 0, p: 0, cuts: [0, 1] },
@@ -113,10 +126,10 @@ function Schematic({ stop }: { stop: Stop }) {
         />
       ))}
       <text x={LX} y={h - 8} className="md-note">
-        {stop.cuts.length ? `${stop.cuts.length + 1} kernels · dashed = kernel boundary` : stop.layer ? "one persistent kernel for the whole layer" : "one kernel"}
-        {stop.recompute ? " · P recomputed in backward" : ""}
+        {stop.kernels != null ? `${stop.kernels} kernel${stop.kernels === 1 ? "" : "s"} measured${stop.cuts.length ? " · dashed = kernel boundary" : ""}` : stop.cuts.length ? `${stop.cuts.length + 1} kernels · dashed = kernel boundary` : stop.layer ? "one persistent kernel for the whole layer" : "one kernel"}
+        {stop.recompute ? (stop.tuned ? " · P recomputed, not stored" : " · P recomputed in backward") : ""}
         {stop.pipelined ? " · async loads overlap MMA" : ""}
-        {stop.tuned ? " · placement chosen by measured search" : ""}
+        {stop.tuned ? " · picked by search" : ""}
       </text>
     </svg>
   );
@@ -153,7 +166,7 @@ export function MemoryDial() {
 
   return (
     <figure className="memory-dial">
-      <Schematic stop={STOPS[stop]} />
+      <Schematic stop={STOPS[stop].tuned ? tunedStop(STOPS[stop], cell("autotune")) : STOPS[stop]} />
       <div className="md-axis" role="radiogroup" aria-label="Schedule">
         {STOPS.map((t, i) => (
           <button key={t.key} role="radio" aria-checked={i === stop} className={i === stop ? "on" : ""} onClick={() => setStop(i)} title={t.name}>

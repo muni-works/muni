@@ -435,7 +435,7 @@ Every fast model today runs on kernels someone wrote by hand, one per operator, 
 
 tang's tensor IR is built from two constructs. _Views_ are affine maps from an iteration space to tensor coordinates. _Comprehensions_ are reductions under a monoid whose body is a scalar expression graph. Everything else is either a rewrite or a schedule. Fusion is one substitution rule. Nobody writes flash attention. The compiler produces it by recognizing online softmax as a monoid. Gradients of comprehensions are comprehensions, so the same passes derive and optimize the backward pass. That includes a flash-style attention backward that writes no $n times n$ intermediates on any backend (on tensor cores at full speed, and on WGSL and Metal for now at a cost we report). The concurrent superoptimizers we discuss derive only the forward. Precision and thread mapping are schedule fields that cannot change the math (precision changes only rounding, which we predict), chosen per kernel by measurement on the device.
 
-One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, GLSL and C, from a datacenter GPU and a desktop GPU and a laptop down to a humanoid robot's phone-class SoC. On an RTX 3090 a derived transformer block's forward pass at sequence length 512 runs 1.37× faster than PyTorch with TF32. Qwen3-8B decodes as a single IR graph at 55% of memory-bandwidth speed of light, measured on a shared GPU. There are no per-operator kernels. The one pattern-specific emitter, CUDA's flash kernel, matches the online-softmax monoid, not attention. We then compare the IR with a hand-tuned engine that serves an 80B mixture-of-experts model at 1,279 tok/s on one H200. The first layer we derived from it, the MoE expert GEMMs with int8 tensor cores expressed as schedule fields, runs 1.24× faster than the engine's hand kernels at batch 64 and trails by 7% at batch 1.
+One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, GLSL and C, from a datacenter GPU and a desktop GPU and a laptop down to a humanoid robot's phone-class SoC. On an RTX 3090 a derived transformer block's forward pass at sequence length 512 runs 1.37× faster than PyTorch with TF32. Qwen3-8B decodes as a single IR graph at 148.7 tok/s, tied with llama.cpp at short context and at 92% of it at 4k. There are no per-operator kernels. The one pattern-specific emitter, CUDA's flash kernel, matches the online-softmax monoid, not attention. We then derive the kernels of a hand-tuned engine that serves an 80B mixture-of-experts model on one H200. The derived MoE expert layer beats the engine's hand kernels at every batch size from 1 to 64. The derived head-dim-256 attention and the derived gated-delta scan replace hand kernels in the engine's prefill, which cuts the time to first token at 44k tokens from 8.33 s to 5.54 s.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -467,7 +467,7 @@ Contributions:
 + *Derived backward passes.* Reverse-mode differentiation maps comprehensions to comprehensions, including the online-softmax monoid. A proof procedure removes the stabilizing max's gradient, and with nested contractions this yields an attention backward with no $n times n$ tensors (§3).
 + *Precision as a schedule.* An emulating interpreter predicts the error of a format choice before it runs (§4).
 + *One graph, six targets.* Lowerings from shared emitters, measured against hand kernels, PyTorch and the bandwidth limit on four chips (§5, §7).
-+ *A production target.* A hand-tuned H200 engine for an 80B MoE model, and the specific IR extensions that would let tang derive every kernel in it (§8, §10).
++ *A production engine, derived.* Top-$k$ routing as one monoid, integer tensor-core and narrow GEMV schedules, a segmented-sum gather backward, chunked scans, and Hopper attention schedules. With them, derived kernels replace hand kernels in an 80B MoE engine on an H200 (§8, §10).
 
 = The IR
 
@@ -765,37 +765,49 @@ Where a variant changes the score (soft cap, ALiBi), the derived forward is up t
 == A whole model as one graph
 
 Qwen3-8B with MLX 4-bit weights runs as one IR graph per decode step, lowered by
-`to_cuda_decode` into 506 kernels and captured as a CUDA graph. Nibble unpacking and the
+`to_cuda_decode` into 584 kernels and captured as a CUDA graph. Nibble unpacking and the
 $q dot s + b$ dequantization are a map the GEMV reads. That map is inlined and evaluated in
 registers as weights stream in. @fig-qwen-graph shows the graph.
 
 #figure(fig-qwen-graph(),
-  caption: [One Qwen3-8B decode step as a single IR graph. Top: the step, from the token in `state` to the arg-max written back. Bottom: one of the 36 identical layers. Times are each node's share of the 4k-context step on the 3090 (@fig-decode), summed over layers. The lowering emits 506 kernels for the whole step, captured as one CUDA graph.],
+  caption: [One Qwen3-8B decode step as a single IR graph. Top: the step, from the token in `state` to the arg-max written back. Bottom: one of the 36 identical layers. Times are each node's share of the 4k-context step on the 3090 (@fig-decode), summed over layers. The lowering emits 584 kernels for the whole step, captured as one CUDA graph. Times are from the first build (@fig-decode).],
 ) <fig-qwen-graph>
 
 The KV-cache update is a `select` over a runtime position, which the lowering turns into loop
-bounds, so a step touches only live cache rows. @tab-qwen gives the result: decode reaches 55% of
-the 3090's bandwidth limit at short context and 54% at 4k, with the model's greedy output matching
-an exact f32 reference token for token.
+bounds, so a step touches only live cache rows. @tab-qwen compares it with llama.cpp on the same card,
+run back to back on the same weights. The model's greedy output matches an exact f32 reference token
+for token.
 
 #figure(
   table(
     columns: (auto, auto, auto, auto),
     align: (left, right, right, right),
-    [Qwen3-8B, 3090], [decode, short ctx], [decode, 4k ctx], [prefill 512],
-    [speed of light (936 GB/s)], [220 tok/s], [192 tok/s], [—],
-    [tang IR, device step], [*122 tok/s* (55%)], [*104 tok/s* (54%)], [*774 tok/s*],
+    [Qwen3-8B, 3090], [short ctx], [1k ctx], [4k ctx],
+    [speed of light (936 GB/s)], [220 tok/s], [—], [192 tok/s],
+    [llama.cpp, Q4_0 GGUF], [149.4], [145.3], [134.9],
+    [tang IR, device step], [*148.7*], [*141.4*], [*124.2*],
+    [tang IR, first build (shared GPU)], [122], [—], [104],
   ),
-  caption: [Measured while another job held about 98% of SM time, so the true numbers are likely
-  higher. Teacher-forced on 64 greedy tokens against an exactly dequantized f32 CPU reference: max
-  logit error $1.7 times 10^(-4)$, with 64/64 arg-max agreement.],
+  caption: [Decode, one stream. llama.cpp runs `llama-bench -n 128 -fa on` on a Q4_0 GGUF of the same weights. Teacher-forced on 31 greedy tokens against an exactly dequantized f32 CPU reference: 31/31 arg-max agreement.],
 ) <tab-qwen>
 
-@fig-decode shows where the rest of the time goes. The weight-streaming GEMVs account for most of
-it, and about 400 small kernels add 1.3 ms of mostly fixed launch cost, the next target for fusion.
+Every change between the first build and the current one is a schedule or a lowering rule, not a
+kernel. Norms are materialized once instead of recomputed in every GEMV lane. 4-bit GEMVs under 16k
+rows are split along $k$. The attention score kernel stops at the runtime length. A load-bytes model
+picks the register dimension, so P·V shares the probabilities across the 4 GQA heads instead of
+re-reading them. A cooperative lowering computes a small reduction (RMSNorm's sum of squares, the
+per-head q/k-norm statistics) into shared memory once per block and evaluates the map that reads it
+from there, which takes the step from 729 to 584 kernels.
+
+Removing launches turned out to cost nothing and to save nothing. Inside a CUDA graph on sm_86, a
+dependent launch costs what a grid barrier costs (0.77 vs 0.81 µs), so 145 fewer kernels is
+time-neutral, and a persistent megakernel that runs the whole step as one launch with 437 phases is
+correct but 19% slower, because one register budget for every stage spills the largest GEMV. The
+gap to llama.cpp at 4k is in the kernels: the 4-bit GEMVs run at 60–82% of bandwidth, and attention
+reads K and V about twice.
 
 #figure(fig-decode(),
-  caption: [Where a Qwen3-8B decode step goes at 4k context: the sum of isolated kernel launches (10.3 ms; the captured graph runs in 9.6). The large GEMVs dominate; about 400 small reductions and maps add 1.3 ms of mostly fixed launch cost. Dashed: the time to stream the weights and KV cache once at 936 GB/s.],
+  caption: [Where a Qwen3-8B decode step went at 4k context in the first build: the sum of isolated kernel launches (10.3 ms; the captured graph ran in 9.6). The current build takes 8.05 ms. Dashed: the time to stream the weights and KV cache once at 936 GB/s.],
 ) <fig-decode>
 
 The same graph builder lowers to Metal. There, prefill and decode programs share one copy of the
@@ -805,7 +817,7 @@ reads back 8 bytes per token.
 
 == Data-dependent addressing
 
-A top-k MoE FFN builds as one graph: router GEMM, top-k as $k$ arg-max rounds, softmax weights, SwiGLU experts reading $W["sel"[t,k]]$ through gather views, then the weighted combine. Top-k is exact, and outputs match the f64 interpreter to $4 times 10^(-6)$ on Metal and $4 times 10^(-5)$ on CUDA (the router runs as a TF32 tile).
+A top-k MoE FFN builds as one graph: router GEMM, top-k, softmax weights, SwiGLU experts reading $W["sel"[t,k]]$ through gather views, then the weighted combine. Top-k is exact, and outputs match the f64 interpreter to $4 times 10^(-6)$ on Metal and $4 times 10^(-5)$ on CUDA (the router runs as a TF32 tile).
 
 #figure(
   table(
@@ -816,7 +828,7 @@ A top-k MoE FFN builds as one graph: router GEMM, top-k as $k$ arg-max rounds, s
     [weights pre-gathered on the host, tiled], [2.89], [3.55],
     [weights pre-gathered, one thread per point], [2.91], [3.77],
   ),
-  caption: [Top-k MoE at T = 8 tokens, D = 2048, E = 128 experts, k = 10, F = 512 (1 GB of weight reads). The data-dependent address costs nothing against the same expert math over weights gathered into contiguous buffers beforehand. The gathered graph is even faster; we have not isolated why, and do not claim the gap. 378 GB/s is 40% of the 3090's peak: per-point GEMV reads are uncoalesced, and a warp-per-row schedule for gathered contractions is next.],
+  caption: [Top-k MoE at T = 8 tokens, D = 2048, E = 128 experts, k = 10, F = 512 (1 GB of weight reads). The data-dependent address costs nothing against the same expert math over weights gathered into contiguous buffers beforehand. The gathered graph is even faster; we have not isolated why, and do not claim the gap. 378 GB/s is 40% of the 3090's peak: per-point GEMV reads are uncoalesced. §8 adds the narrow GEMV schedule for gathered contractions.],
 ) <tab-moe>
 
 == Edge hardware
@@ -829,7 +841,7 @@ choice, which again argues for search over remembered rules. Through `to_c` on o
 batch-1 GRU policy step (6 contractions plus gate math, fused into one kernel) takes 22.5 µs median
 and a locomotion MLP takes 6.7 µs, both within $6 times 10^(-7)$ of f64.
 
-= A hand-tuned engine, and one derived layer
+= Deriving a production engine
 
 Every kernel in the sections above is derived. To show where derivation has to go next, we report the other half of tang: the hand-written serving engine in `tang-llm`, called Flash, which serves Qwen3-Coder-Next (80B parameters, 3B active, 4-bit GGUF) on one NVIDIA H200 with kernels written by hand. @tab-h200's numbers are not results of the IR; they are the target it has to reach.
 
@@ -850,22 +862,71 @@ Every kernel in the sections above is derived. To show where derivation has to g
 
 The hand engine also shows why the contract matters. Ported to GLM-5.3, the same MoE kernel is correct but 1–2.5× _slower_ than the engine's generic path below 64 tokens per expert and only 8–20% faster at 64. A kernel tuned for one model's expert shapes is a point in the schedule space, and on the next model it is the wrong point. It is one data point, but from a production engine, and it is §1's claim.
 
-Deriving this engine needed three things the IR lacked: a _gather_ view for routing tokens to experts, _integer_ tensor-core fragments with fused dequantization, and Hopper's asynchronous copy and warpgroup MMA as schedule fields. The first two now exist, and with them we derived one full MoE layer of the engine as a single graph: router, top-k, expert-sorted gather, the gate|up and down expert GEMMs on GGUF Q4_K/Q5_K weights, SwiGLU and the weighted combine. The int8 path uses schedule fields only, namely GGUF blocks as an input storage format, int8 activations quantized by their writer, and an `IntMma` field that stages activations in fragment order for `m16n8k32` tensor cores. There is no new operator.
+Deriving this engine needed constructs the IR lacked: a _gather_ view for routing tokens to experts, _integer_ tensor-core fragments with fused dequantization, a top-$k$ reduction, scans, and Hopper's asynchronous copies and warpgroup MMA as schedule fields. Each now exists, and each replaced hand kernels in the engine, measured against them on the same bytes.
+
+== The MoE layer
+
+One full MoE layer of the engine builds as a single graph: router, top-$k$, expert-sorted gather, the gate|up and down expert GEMMs on GGUF Q4_K/Q5_K weights, SwiGLU and the weighted combine. The int8 path uses schedule fields only: GGUF blocks as an input storage format, int8 activations quantized by their writer, and an `IntMma` field that stages activations in fragment order for `m16n8k32` tensor cores. There is no new operator.
+
+Routing is one reduction. `Monoid::topk(k)` keeps the $k$ best (index, value) pairs, sorted, with ties to the smaller index. Its combine is a merge of two sorted lists ($k^2 slash 2$ compare-selects), which is associative, so split and subgroup trees give the same answer. Top-10 over 512 experts is one 0.013 ms kernel where $k$ arg-max rounds took 0.23 ms, and a whole layer at batch 1 drops from 32 kernels and 0.199 ms to 13 kernels and 0.103 ms.
+
+Batch 1 needs a different schedule. `Stage::Gemv` computes one dot per (position, row) on `dp4a`, with 16-byte loads of half super-blocks and partial sums combined by shuffles. Its producers fuse: the $x -> "Q8"$ and $"SwiGLU" -> "Q8"$ nodes are marked inline, and the GEMV computes and quantizes its operand row into shared memory in its prologue, rounding exactly as the writer did.
 
 #figure(
   table(
     columns: (auto, auto, auto),
     align: (left, right, right),
     [expert half of one layer, H200], [derived from the IR], [engine, hand-written],
-    [batch 1], [0.048 ms], [*0.045 ms*],
-    [batch 8], [*0.098*], [0.126],
-    [batch 64], [*0.270*], [0.336],
+    [batch 1], [*0.036 ms*], [0.044 ms],
+    [batch 4], [*0.076*], [0.086],
+    [batch 8], [*0.099*], [0.126],
+    [batch 64], [*0.269*], [0.336],
     [batch 64, gate|up / down], [*0.158* / *0.089*], [0.180 / 0.124],
   ),
-  caption: [One Qwen3-Coder-Next MoE layer (hidden 2048, 512 experts, top-10, FFN 512), derived vs the engine's own kernels on the same bytes, on an idle H200. Medians of 100 launches with L2 flushed. Outputs agree to $3 times 10^(-7)$. Weights are random valid k-quant blocks.],
+  caption: [One Qwen3-Coder-Next MoE layer (hidden 2048, 512 experts, top-10, FFN 512), derived vs the engine's own kernels on the same bytes, on an idle H200. Medians of 100 launches with L2 flushed. Outputs agree to $3 times 10^(-7)$ and top-$k$ is exact. Batch 1 and 4 use the fused GEMV stage; 8 and 64 the int8 MMA. The engine's combine also adds the residual and runs the next norm, so its column includes work ours does not. Weights are random valid k-quant blocks.],
 ) <tab-moe-h200>
 
-At batch 8 and 64 the derived kernels beat the hand ones, which took a dedicated tuning effort to push past a ~2 TB/s floor. Fragment-order staging alone is worth about 20% on gate|up. At batch 1 the hand per-pair GEMV still wins, because a narrow one-pair-over-many-warps schedule is not yet expressible. The derived routing is the other gap. Top-$k$ as $k$ arg-max rounds costs 27 small kernels (0.35–0.6 ms) where the engine uses one.
+Fragment-order staging alone is worth about 20% on gate|up at batch 64. The hand MoE kernels took a dedicated tuning effort to push past a floor of about 2 TB/s. The derived ones are a schedule search.
+
+The backward of a gathered contraction was dense: every expert's weight gradient summed over every pair under a $["key" = e]$ gate, $E$ times the needed work. Declaring the key index sorted (`set_sorted`) tags that reduction with a segment, and the point loop binary-searches each key's run and sums only over it. The gate stays in the body, so a lowering that ignores the tag is still correct. The expert-weight gradient (E = 512) drops from 8.27 to 3.89 ms on the H200, 16.3 to 2.67 ms on the 3090 and 39.7 to 2.65 ms on the M4, with identical error.
+
+== Attention and scans in prefill
+
+The engine's model alternates gated-delta (GDN) layers with full attention at head dimension 256, and prefill is where both cost. At $d = 256$ the old schedule left the online-softmax reduction untiled, and the score stayed an $n times n$ buffer at 2.8 TFLOP/s. Allowing the tile up to 256 lanes lets the score inline, and the Hopper flash shape takes over without a line of attention-specific code (@tab-d256).
+
+#figure(
+  table(
+    columns: (auto, auto, auto, auto),
+    align: (left, right, right, right),
+    [$d = 256$ forward, H200], [N = 1k], [4k], [16k],
+    [tang, non-causal], [*318*], [*398*], [*422*],
+    [SDPA, non-causal], [306], [323], [318],
+    [tang, causal], [220], [*310*], [*391*],
+    [SDPA, causal], [*251*], [285], [295],
+  ),
+  caption: [TFLOP/s, bf16, 16k tokens per configuration, against PyTorch SDPA on the same idle H200; rel. error $2$–$3 times 10^(-3)$ against f64.],
+) <tab-d256>
+
+Gated delta rules, Mamba-2's SSD and linear attention are associative scans over an affine monoid on a matrix state. A `delta_scan` comprehension lowers by a chunked plan: a WY transform per chunk, a sequential state scan, and a parallel readout. Its backward is the derived reverse scan at chunk granularity. On the 3090 it matches fla's Triton kernels within 6% forward and beats mamba_ssm's SSD forward 1.3–1.8×. Against the engine's hand recurrence (a warp per state column, token by token), the chunked scan is 4.0–4.3× faster on the H200 and 2.1× on the 3090.
+
+Both went into the engine behind switches, gated on the engine's own accuracy checks: KL divergence against the reference at 3k and 8k tokens with int8 and bf16 KV caches, equal greedy output, bitwise-identical batched decode, and a cached-prefix continuation equal to a cold one.
+
+#figure(
+  table(
+    columns: (auto, auto, auto),
+    align: (left, right, right),
+    [Qwen3-Coder-Next prefill, H200], [TTFT, 44k tokens], [8k tokens],
+    [engine, hand kernels], [8.33 s], [7,300 tok/s],
+    [+ derived GDN scan], [7.70 s], [8,200 tok/s],
+    [+ derived $d = 256$ attention], [6.17 s], [—],
+    [+ both], [*5.54 s*], [—],
+  ),
+  caption: [Time to first token with the int8 KV cache, warm. The derived attention alone cuts attention's GPU time over two 45k prefills from 5,566 to 1,107 ms. With the bf16 KV cache the derived attention takes 45k prefill from 6.67 to 5.79 s.],
+) <tab-prefill>
+
+== Attention backward on Hopper
+
+Training needs the backward. The derived attention backward was nine kernels that round-tripped P and dS through memory, at 13–25 TFLOP/s. A lowering now recognizes the pattern the gradient pass produces (a tuple reduction over queries whose operands are pointwise maps of two short contractions) and emits one kernel per key block. dK and dV stay in registers, and dQ is added with Hopper's bulk asynchronous reduce. Variants on `mma.sync`, on `wgmma` with two consumer warpgroups, and with a producer warpgroup are all derived from the same match, and the autotuner picks per shape. The fused kernel reaches 0.81–0.96× of SDPA's backward at $d = 128$ and 0.79–1.03× at $d = 256$, and the whole program is 4–8× faster than the nine kernels.
 
 = Related work
 
@@ -879,24 +940,32 @@ At batch 8 and 64 the derived kernels beat the hand ones, which took a dedicated
 
 = Deriving every kernel
 
-Each gap below is a missing IR construct or schedule field, not a missing kernel.
+The first version of this paper ended with a list of IR constructs that tang would need to derive a production engine. Each item is now built, and each is measured above.
 
-- *Faster gathers.* Gather views exist (§2, @tab-moe). Gathered contractions still run one thread per point; a warp-per-row schedule, a segmented-sum backward and expert-major dispatch (which needs a scan) are next.
-- *Hopper and Blackwell as schedule fields.* TMA bulk copies, warpgroup MMA, warp specialization and FP8/FP4 fragments are the asynchrony FlashAttention-3 hand-codes @shah2024flash3. In tang they belong next to `tile` and `precision`, so the derived flash forward and backward can match FA3 on Hopper instead of merely expressing the same algorithm. bf16 tensor-core tiles everywhere, including $d = 128$, come with them.
-- *Mask-aware tile skipping everywhere.* The CUDA flash kernel already skips key tiles an affine mask covers. The WGSL and generic CUDA tiles do not, which is why a sliding window loses 25× (@tab-flex).
-- *Register-blocked nesting.* The scalar nested dots that make the WGSL and Metal backward $n times n$-free (§3) need blocking into small GEMMs, on simdgroup matrices on Metal, to stop costing speed.
-- *The rest of the MoE layer.* A warp-level top-k in place of $k$ arg-max rounds, the engine's norm, SiLU and combine fusions, and a narrow batch-1 schedule close the remaining gaps in @tab-moe-h200.
-- *Scan monoids.* State-space and gated-delta recurrences are associative scans over a matrix monoid. ScanWeaver @scanweaver2026 makes scan a first-class compiler abstraction; tang's monoids are already the right shape for it, and its backward rule would come with it.
-- *Launch fusion.* About 400 of a Qwen decode step's 506 kernels are small reductions and maps that cost 1.3 ms in launches. Persistent megakernels @eventtensor2026 are a schedule over the whole program, not a new operator.
-- *A learned cost model.* `schedule_auto` is a few rules of thumb. Every autotuning run already writes (graph, chip, schedule, time) to a cache, and that cache is training data.
-- *Device-to-device placement.* Sharded reductions joined by an all-reduce are already a rewrite (the all-reduce is a comprehension over the monoid's combine). Only the transport is missing.
-- *Quiet measurements.* Several runs here were taken on shared GPUs and are reported as minima. Every table should be re-run on idle hardware.
+#figure(
+  table(
+    columns: (auto, auto, auto),
+    align: (left, left, left),
+    [gap], [construct], [result],
+    [MoE routing], [`Monoid::topk`], [10 arg-max rounds → 1 kernel; layer 0.199 → 0.103 ms],
+    [batch-1 gathers], [`Stage::Gemv`, fused producers], [beats the hand kernels at batch 1 (@tab-moe-h200)],
+    [gather backward], [sorted-key segments], [2.1–15× on the expert gradient],
+    [recurrences], [scan monoid, chunked plan], [4× the hand recurrence; ties fla on the 3090],
+    [$d = 256$ attention], [tile width in `schedule_auto`], [2.8 → 422 TFLOP/s; 45k prefill −28%],
+    [Hopper backward], [recognized fused kernel, `wgmma`, warp specialization], [9 kernels → 1; 0.8–1.0× SDPA],
+    [launch fusion], [cooperative staged maps, megakernels], [729 → 584 kernels; time-neutral on sm_86],
+    [decode], [split GEMVs, load-bytes register model], [122 → 148.7 tok/s; ties llama.cpp],
+  ),
+  caption: [The roadmap of the first version, and what closed each item. None of these is an attention or MoE kernel. Each is a monoid, a schedule field or a lowering rule that any graph of the same shape gets.],
+) <tab-roadmap>
+
+What remains is measured too. The derived Hopper forward runs at 0.42–0.60× of FlashAttention-3, and the fused backward kernel at about 0.4× of FA3's backward: FA3 overlaps the softmax of one block with the GEMMs of the next, and loads through TMA from a producer warpgroup, and our consumers still issue their own copies. On the H200, fla's scans are 1.2–2.4× ahead at long sequences, because our state scan runs sequentially over chunks; the affine monoid is associative at any granularity, so a two-level scan is a schedule change. The WGSL flash tile still runs every key tile under a sliding-window mask (@tab-flex), and the Metal backward's nested dots are not yet blocked onto simdgroup matrices. `schedule_auto` is still rules, while every autotuning run writes (graph, chip, schedule, time) to a cache that can train a cost model. Sharded reductions joined by an all-reduce are already a rewrite, and only the transport is missing. Several earlier tables were taken on shared GPUs; §8's were not.
 
 = Conclusion
 
 Two primitives, affine views and monoid comprehensions, are enough to express a transformer, its gradient and its quantized inference. Fusion, flash attention and the flash backward become rewrites and schedule choices, not kernels. Because the schedule is searched per chip, the same source matches hand kernels within 7% or beats them on Metal and Vulkan, runs on an embedded Adreno, and beats PyTorch on a transformer block's forward pass on CUDA.
 
-The hand-written kernel does not disappear in this design. It becomes an intrinsic, a fast implementation of one comprehension shape on one chip, which the compiler uses when it wins and replaces when it doesn't. The last hand-tuned engine we run serves an 80B model on an H200, and the expert GEMMs of the first layer we derived already beat the kernels written for them at batch 8 and 64. The goal is a compiler that derives every kernel in that engine, on every chip tang targets.
+The hand-written kernel does not disappear in this design. It becomes an intrinsic, a fast implementation of one comprehension shape on one chip, which the compiler uses when it wins and replaces when it doesn't. In the last hand-tuned engine we run, an 80B MoE model on an H200, derived kernels now beat the hand-written MoE kernels at every batch size and cut the time to first token at 44k tokens by a third. The kernels the engine still keeps by hand are the next targets.
 
 #aside[Reproducibility][
   Every number in this paper comes from `BENCHMARKS.md` in the tang repository (snapshot in `data/`), which records the command, date and machine state for each measurement. The IR is in `crates/tang-compile/src/tensor*.rs`; its design notes are in `docs/tensor-ir.md`.
