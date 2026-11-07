@@ -8,7 +8,8 @@
 // except closed forms and the design-note citations marked "vcad docs".
 
 #let web = sys.inputs.at("target", default: "pdf") == "html"
-#show math.equation: it => if web { html.elem("span", attrs: (class: "math"), html.frame(it)) } else { it }
+// inside a drawn figure the equation is already part of an SVG (figures set alt "in-frame"), so leave it alone there
+#show math.equation: it => if web and it.alt != "in-frame" { html.elem("span", attrs: (class: "math"), html.frame(it)) } else { it }
 #show math.equation: set text(font: "New Computer Modern Math", fallback: true)
 #show math.equation: it => { show regex("[A-Za-z0-9]"): set text(font: "IBM Plex Sans"); it }
 
@@ -327,6 +328,328 @@
   lbl((9.5, y2 - 0.2), [dashed: planned], anchor: "west")
 })
 
+// ---- illustrations ----------------------------------------------------------------
+#let c-vcad = rgb("#ff2052")
+#let c-ice = rgb("#ffd9c7")
+#let arrow(a, b, col: c-vcad, w: 0.7pt, dash: none) = cetz.draw.line(a, b, stroke: (paint: col, thickness: w, dash: dash), mark: (end: "stealth", fill: col, scale: 0.6))
+#let pdot(p, col: c-label, r: 0.05) = cetz.draw.circle(p, radius: r, fill: col, stroke: none)
+
+// 1. the three node recipes on a plate with a hole, and the implicit rows at one rim vertex
+#let fig-recipes() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  // left: top view of the plate
+  let s = 2.3
+  let hr = 1.05
+  let n = 24
+  rect((-s, -s), (s, s), stroke: 0.6pt + c-line-hi, fill: c-surface)
+  // a fan of triangles from the plate corners to the rim, the stock planar triangulation in miniature
+  for i in range(n) {
+    let a = 2 * calc.pi * i / n
+    let p = (hr * calc.cos(a), hr * calc.sin(a))
+    let corner = (if calc.cos(a) > 0 { s } else { -s }, if calc.sin(a) > 0 { s } else { -s })
+    line(p, corner, stroke: 0.3pt + c-line)
+  }
+  let rim = range(n + 1).map(i => { let a = 2 * calc.pi * i / n; (hr * calc.cos(a), hr * calc.sin(a)) })
+  line(..rim, stroke: 0.8pt + c-label, fill: c-bg)
+  // plane-interior samples: SurfaceUv on a plane that does not move: zero velocity
+  for (x, y) in ((-1.7, 1.7), (1.7, -1.7), (1.7, 1.7), (-1.7, -1.7), (0, 1.8), (1.8, 0), (0, -1.8), (-1.8, 0)) { pdot((x, y), col: c-label, r: 0.045) }
+  // rim vertices: TopoVertex, velocity radial (dx/dr)
+  for i in range(n) {
+    let a = 2 * calc.pi * i / n
+    let p = (hr * calc.cos(a), hr * calc.sin(a))
+    arrow(p, ((hr + 0.42) * calc.cos(a), (hr + 0.42) * calc.sin(a)), w: 0.6pt)
+    pdot(p, col: c-vcad, r: 0.055)
+  }
+  lbl((0, -s - 0.35), [plate − cylinder(r), top cap], fill: c-text)
+  lbl((0, -s - 0.68), [θ = r · needles are dx/dr])
+  // legend
+  let lx = -s
+  let ly = s + 0.9
+  pdot((lx, ly), col: c-vcad, r: 0.06)
+  lbl((lx + 0.15, ly), [TopoVertex: implicit rows], anchor: "west", fill: c-text)
+  pdot((lx, ly - 0.35), col: c-label, r: 0.05)
+  lbl((lx + 0.15, ly - 0.35), [SurfaceUv: S(u, v; φ(θ)) on duals], anchor: "west")
+  // right: the rows at one rim vertex, in the plane through the axis (the hole's axis is off to the left)
+  let ox = 6.3
+  let oy = 0.2
+  let v = (ox, oy)
+  line((ox - 2.3, oy), (ox, oy), stroke: 0.8pt + c-label)
+  line((ox, oy), (ox, oy - 2.3), stroke: 0.8pt + c-label)
+  lbl((ox - 2.25, oy + 0.2), [cap plane], anchor: "west")
+  lbl((ox - 0.12, oy - 2.1), [hole wall], anchor: "east")
+  line((ox + 0.6, oy), (ox + 0.6, oy - 2.3), stroke: (paint: c-vcad, thickness: 0.6pt, dash: "dashed"))
+  lbl((ox + 0.72, oy - 2.1), [wall at r + δ], anchor: "west", fill: c-vcad)
+  // row gradients
+  arrow(v, (ox, oy + 1.25), col: c-text, w: 0.6pt)
+  lbl((ox + 0.14, oy + 1.15), [$nabla g_"plane" dot dot(x) = 0$], anchor: "west", fill: c-text)
+  arrow(v, (ox + 1.45, oy), col: c-text, w: 0.6pt)
+  lbl((ox + 1.5, oy - 0.3), [$nabla g_"cyl" dot dot(x) = 2r$], anchor: "west", fill: c-text)
+  circle(v, radius: 0.16, stroke: 0.5pt + c-label)
+  pdot(v, col: c-label, r: 0.03)
+  lbl((ox - 0.3, oy + 0.75), [t (into page): frozen], anchor: "east")
+  // solution
+  arrow(v, (ox + 0.6, oy), w: 1.3pt)
+  pdot(v, col: c-vcad, r: 0.07)
+  lbl((ox + 0.6, oy + 0.32), [$dot(x) = hat(r)$], fill: c-vcad, size: s-sm)
+  lbl((ox + 0.3, oy - 2.75), [two rows + a frozen tangent: exactly radial], fill: c-text)
+})
+
+// 2. a fillet radius moves its blend two ways at once, and the tangent line slides along the face
+#let fig-fillet() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let L = 3.2
+  let r = 1.3
+  let d = 0.45
+  let quarter(rr, col, w, dash: none) = {
+    let c = (L - rr, L - rr)
+    let pts = range(17).map(k => { let a = calc.pi / 2 * k / 16; (c.at(0) + rr * calc.cos(a), c.at(1) + rr * calc.sin(a)) })
+    line(..pts, stroke: (paint: col, thickness: w, dash: dash))
+    line((0, L), (L - rr, L), stroke: (paint: col, thickness: w, dash: dash))
+    line((L, 0), (L, L - rr), stroke: (paint: col, thickness: w, dash: dash))
+  }
+  // the material, and the edge before filleting
+  line((0, 0), (0, L), (L - r, L), ..range(17).map(k => { let a = calc.pi / 2 * (16 - k) / 16; (L - r + r * calc.cos(a), L - r + r * calc.sin(a)) }), (L, 0), close: true, fill: c-surface, stroke: none)
+  line((L - 0.6, L), (L, L), (L, L - 0.6), stroke: (paint: c-line-hi, thickness: 0.5pt, dash: "dotted"))
+  lbl((L + 0.1, L - 0.25), [sharp edge], anchor: "west")
+  quarter(r, c-label, 0.9pt)
+  quarter(r + d, c-vcad, 0.7pt, dash: "dashed")
+  // blend axis (center) and its retreat
+  let c0 = (L - r, L - r)
+  let c1 = (L - r - d, L - r - d)
+  pdot(c0, col: c-text, r: 0.05)
+  arrow(c0, c1, w: 0.9pt)
+  lbl((c1.at(0) - 0.1, c1.at(1) - 0.05), [axis retreats (−1, −1)], anchor: "north-east", fill: c-vcad)
+  // radius growth along the bisector
+  let m0 = (c0.at(0) + r * 0.7071, c0.at(1) + r * 0.7071)
+  line(c0, m0, stroke: (paint: c-text, thickness: 0.5pt, dash: "dotted"))
+  lbl(((c0.at(0) + m0.at(0)) / 2 + 0.12, (c0.at(1) + m0.at(1)) / 2 - 0.12), [r, rate +1], anchor: "north-west", fill: c-text)
+  // the tangent point on the top face slides by exactly (−1, 0)
+  let t0 = (L - r, L)
+  let t1 = (L - r - d, L)
+  arrow(t0, t1, w: 1.1pt)
+  pdot(t0, col: c-vcad, r: 0.06)
+  lbl(((t0.at(0) + t1.at(0)) / 2, L + 0.32), [tangent line slides (−1, 0)], fill: c-vcad)
+  let s0 = (L, L - r)
+  let s1 = (L, L - r - d)
+  arrow(s0, s1, w: 1.1pt)
+  pdot(s0, col: c-vcad, r: 0.06)
+  lbl((L + 0.15, (s0.at(1) + s1.at(1)) / 2), [(0, −1)], anchor: "west", fill: c-vcad)
+  lbl((L / 2, -0.4), [section through one blend · solid: r · dashed: r + δ], fill: c-text)
+  // right: the census of one parameter on the cube
+  let ox = 5.6
+  let rows = (([6], [planes], [inset, translate]), ([12], [blend cylinders], [radius + axis retreat]), ([8], [corner spheres], [radius + center retreat]))
+  lbl((ox, L + 0.1), [one θ = fillet r moves], anchor: "west", fill: c-text, font: mono-sb, size: s-sm)
+  for (k, (nn, what, how)) in rows.enumerate() {
+    let y = L - 0.55 - k * 0.72
+    lbl((ox, y), nn, anchor: "west", fill: c-vcad, font: mono-sb, size: s-md)
+    lbl((ox + 0.8, y + 0.1), what, anchor: "west", fill: c-text)
+    lbl((ox + 0.8, y - 0.2), how, anchor: "west")
+  }
+  lbl((ox, L - 2.85), [20 moving surfaces · 836 nodes], anchor: "west", fill: c-text)
+  lbl((ox, L - 3.15), [dV/dr vs FD: #E(K-m4 + "@L132::rel_fd")], anchor: "west", fill: c-vcad)
+})
+
+// 3. the torus's two design velocities, on its own mesh
+#let torus-panel(ox, which, title, sub) = {
+  import cetz.draw: *
+  let R0 = 1.75
+  let r0 = 0.62
+  let pitch = 0.95
+  let cp = calc.cos(pitch)
+  let sp = calc.sin(pitch)
+  let P(x, y, z) = (ox + x, -y * sp * 0.0 + y * cp * 0.0 + (y * sp + z * cp) * 1.0)
+  // simple oblique: screen x = x, screen y = y·sin(p)·0.45 + z
+  let S(x, y, z) = (ox + x, y * 0.42 + z)
+  let front(u, v) = calc.sin(u) * calc.cos(v) * 0.42 - calc.sin(v) * 0 < 0.4
+  let nu = 36
+  let nv = 16
+  for i in range(nu) {
+    let u = 2 * calc.pi * i / nu
+    let pts = range(nv + 1).map(j => { let v = 2 * calc.pi * j / nv; let c = R0 + r0 * calc.cos(v); S(c * calc.cos(u), c * calc.sin(u), r0 * calc.sin(v)) })
+    line(..pts, stroke: 0.3pt + (if calc.sin(u) < 0 { c-label } else { c-line-hi }))
+  }
+  for j in range(nv) {
+    let v = 2 * calc.pi * j / nv
+    let pts = range(nu + 1).map(i => { let u = 2 * calc.pi * i / nu; let c = R0 + r0 * calc.cos(v); S(c * calc.cos(u), c * calc.sin(u), r0 * calc.sin(v)) })
+    line(..pts, stroke: 0.3pt + c-line-hi)
+  }
+  // needles on the near half (sin u < 0 faces the viewer in this oblique)
+  for i in range(0, nu, step: 2) {
+    let u = 2 * calc.pi * i / nu
+    if calc.sin(u) > 0.15 { continue }
+    for j in range(0, nv, step: 2) {
+      let v = 2 * calc.pi * j / nv
+      let n = (calc.cos(v) * calc.cos(u), calc.cos(v) * calc.sin(u), calc.sin(v))
+      let d = if which == "r" { n } else { (calc.cos(u), calc.sin(u), 0) }
+      let outward = d.at(0) * n.at(0) + d.at(1) * n.at(1) + d.at(2) * n.at(2)
+      let c = R0 + r0 * calc.cos(v)
+      let p = (c * calc.cos(u), c * calc.sin(u), r0 * calc.sin(v))
+      let k = 0.38
+      line(S(..p), S(p.at(0) + k * d.at(0), p.at(1) + k * d.at(1), p.at(2) + k * d.at(2)), stroke: 0.7pt + (if outward > 0.05 { c-vcad } else if outward < -0.05 { c-ice } else { c-label }))
+    }
+  }
+  lbl((ox, -1.75), title, fill: c-text, font: mono-sb, size: s-sm)
+  lbl((ox, -2.05), sub)
+}
+#let fig-torus() = cetz.canvas(length: 1cm, {
+  torus-panel(0, "r", [dx/dr: the tube normal], [dV/dr #F("m7_cone_torus::torus_gate@L269::torus minor r::dv", 3) · vs FD #E("m7_cone_torus::torus_gate@L269::torus minor r::rel_fd")])
+  torus-panel(5.4, "R", [dx/dR: away from the axis], [dV/dR #F("m7_cone_torus::torus_gate@L269::torus major R::dv", 3) · vs FD #E("m7_cone_torus::torus_gate@L269::torus major R::rel_fd")])
+  import cetz.draw: *
+  pdot((-1.7, 1.55), col: c-vcad, r: 0.06)
+  lbl((-1.55, 1.55), [wall moves outward], anchor: "west")
+  pdot((1.6, 1.55), col: c-ice, r: 0.06)
+  lbl((1.75, 1.55), [inward: the inner equator gives up volume as R grows], anchor: "west")
+})
+
+// 4. where the frozen plan's derivative exists, and where the seam refuses
+#let fig-wall() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let W = 6.4
+  let H = 3.0
+  let t = 4.2 // plate thickness, in plot x units
+  let X(d) = d / 5.6 * W
+  // V(d): falls linearly while the hole is blind, flat once it breaks through
+  let Y(d) = if d < t { H - 0.42 * d } else { H - 0.42 * t }
+  line((0, 0), (W, 0), stroke: 0.6pt + c-line-hi)
+  line((0, 0), (0, H + 0.4), stroke: 0.6pt + c-line-hi)
+  lbl((W, -0.3), [hole depth d], anchor: "east")
+  lbl((-0.15, H + 0.4), [V], anchor: "east")
+  // the valid neighbourhood of a plan captured at d0
+  let d0 = 2.0
+  rect((X(d0 - 0.9), 0.02), (X(d0 + 0.9), H + 0.3), fill: c-ok.transparentize(93%), stroke: none)
+  lbl((X(d0), H + 0.48), [one topology class: exact dV/dd], fill: c-ok)
+  line(..range(0, 57).map(k => { let d = k / 10; (X(d), Y(d)) }), stroke: 1pt + c-label)
+  // the tangent the seam returns
+  let sl = -0.42 * W / 5.6
+  line((X(d0 - 1.2), Y(d0) - sl * X(1.2) / X(1) * 0 + 0.42 * 1.2), (X(d0 + 1.2), Y(d0) - 0.42 * 1.2), stroke: 0.9pt + c-vcad)
+  pdot((X(d0), Y(d0)), col: c-vcad, r: 0.07)
+  lbl((X(d0) + 0.15, Y(d0) + 0.25), [θ₀], anchor: "west", fill: c-vcad)
+  // the wall
+  line((X(t), 0), (X(t), H + 0.3), stroke: (paint: c-fault, thickness: 0.7pt, dash: "dashed"))
+  lbl((X(t) + 0.1, H - 0.2), [breaks through], anchor: "west", fill: c-fault)
+  lbl((X(t) + 0.1, H - 0.5), [TopologyChanged], anchor: "west", fill: c-fault, font: mono-sb)
+  lbl((X(t) + 0.1, H - 0.8), [an error, not a gradient], anchor: "west")
+  // section sketches: blind and through
+  let sk(ox, through) = {
+    rect((ox, -1.55), (ox + 1.3, -0.95), fill: c-surface, stroke: 0.5pt + c-line-hi)
+    rect((ox + 0.5, if through { -1.55 } else { -1.3 }), (ox + 0.8, -0.95), fill: c-bg, stroke: 0.5pt + c-label)
+  }
+  sk(X(d0) - 0.65, false)
+  lbl((X(d0), -1.8), [blind])
+  sk(X(5.0) - 0.65, true)
+  lbl((X(5.0), -1.8), [through])
+})
+
+// 5. every finite-difference gate on one log axis
+#let fig-ladder() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let rows = (
+    ([extrusion · depth], V(K-m0 + "@L80::rel_fd"), V(K-m0 + "::cmp.max_rel_err")),
+    ([box − cylinder · r], V(K-m2 + "@L119::rel_fd"), V("m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd::cmp.max_rel_err")),
+    ([cylinder · height], V(K-m3b + "@L118::rel_fd"), V(K-m3b + "::cmp.max_rel_err")),
+    ([filleted cube · r], V(K-m4 + "@L132::rel_fd"), V(K-m4 + "::cmp.max_rel_err")),
+    ([filleted cube · a], V(K-m5 + "@L311::rel_a"), none),
+    ([cone · half-angle], V(K-m7a + "@L163::rel_fd"), V(K-m7a + "::cmp.max_rel_err")),
+    ([cone · height], V(K-m7h + "@L208::rel_fd"), V(K-m7h + "::cmp.max_rel_err")),
+    ([torus · r], V("m7_cone_torus::torus_gate@L269::torus minor r::rel_fd"), V("m7_cone_torus::torus_gate::torus minor r::cmp.max_rel_err")),
+    ([torus · R], V("m7_cone_torus::torus_gate@L269::torus major R::rel_fd"), V("m7_cone_torus::torus_gate::torus major R::cmp.max_rel_err")),
+    ([contact rollout · r], V("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel"), none),
+  )
+  let x0 = 3.1
+  let W = 6.6
+  let lo = -13.0
+  let hi = -5.0
+  let X(v) = x0 + W * (calc.log(calc.max(v, 1e-13), base: 10) - lo) / (hi - lo)
+  let n = rows.len()
+  let Y(k) = (n - 1 - k) * 0.42
+  for e in range(int(lo), int(hi) + 1) {
+    line((X(calc.pow(10.0, e)), -0.25), (X(calc.pow(10.0, e)), Y(0) + 0.25), stroke: 0.3pt + c-line)
+    if calc.rem(calc.abs(e), 2) == 1 or e == -6 { lbl((X(calc.pow(10.0, e)), -0.5), [$10^(#str(e))$]) }
+  }
+  // the gate
+  line((X(1e-6), -0.25), (X(1e-6), Y(0) + 0.35), stroke: (paint: c-warn, thickness: 0.7pt, dash: "dashed"))
+  lbl((X(1e-6), Y(0) + 0.55), [gate $10^(-6)$], fill: c-warn)
+  for (k, (name, fdv, nodev)) in rows.enumerate() {
+    let y = Y(k)
+    lbl((x0 - 0.15, y), name, anchor: "east", fill: c-text, size: s-xs)
+    line((x0, y), (X(fdv), y), stroke: 0.3pt + c-line-hi)
+    if nodev != none {
+      circle((X(nodev), y), radius: 0.07, stroke: 0.7pt + c-label, fill: c-bg)
+    }
+    circle((X(fdv), y), radius: 0.075, fill: c-vcad, stroke: none)
+  }
+  circle((x0 + 0.1, -1.0), radius: 0.075, fill: c-vcad, stroke: none)
+  lbl((x0 + 0.25, -1.0), [dV/dθ vs FD of a full rebuild], anchor: "west")
+  circle((x0 + 0.1, -1.35), radius: 0.07, stroke: 0.7pt + c-label, fill: c-bg)
+  lbl((x0 + 0.25, -1.35), [worst node, dx/dθ], anchor: "west")
+})
+
+// 6. the contact co-design case: two channels with opposite signs
+#let fig-contact() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let r = 1.15
+  let c = (0, r - 0.12)
+  // ground and penalty springs at the bottom vertices
+  for x in range(-6, 7) { line((x * 0.4, -0.02), (x * 0.4 - 0.18, -0.24), stroke: 0.4pt + c-line-hi) }
+  let n = 28
+  let poly = range(n + 1).map(i => { let a = 2 * calc.pi * i / n; (c.at(0) + r * calc.cos(a), c.at(1) + r * calc.sin(a)) })
+  line(..poly, stroke: 0.8pt + c-label, fill: c-surface)
+  for i in range(n) {
+    let a = 2 * calc.pi * i / n
+    let p = (c.at(0) + r * calc.cos(a), c.at(1) + r * calc.sin(a))
+    if p.at(1) < 0 {
+      // a vertex below the ground: a penalty force pushes it up, proportional to its depth
+      arrow(p, (p.at(0), p.at(1) + 0.25 - 3 * p.at(1)), col: c-info, w: 0.7pt)
+      pdot(p, col: c-info, r: 0.04)
+    }
+  }
+  line((-2.6, 0), (2.6, 0), stroke: 0.8pt + c-label)
+  // the grown section
+  let poly2 = range(n + 1).map(i => { let a = 2 * calc.pi * i / n; (c.at(0) + (r + 0.28) * calc.cos(a), c.at(1) + 0.28 + (r + 0.28) * calc.sin(a)) })
+  line(..poly2, stroke: (paint: c-vcad, thickness: 0.6pt, dash: "dashed"))
+  pdot(c, col: c-text, r: 0.04)
+  lbl((0, c.at(1) + r + 0.55), [J = settled height of the axis], fill: c-text)
+  lbl((0, -0.5), [phyz penalty f = max(0, kδ − c v), per vertex], fill: c-info)
+  // the two channels
+  let ox = 3.3
+  arrow((ox, 0.9), (ox, 2.3), w: 1.2pt)
+  lbl((ox + 0.2, 2.15), [surface channel], anchor: "west", fill: c-vcad, font: mono-sb, size: s-sm)
+  lbl((ox + 0.2, 1.85), [contact line drops dθ: +1e-3 m per mm], anchor: "west")
+  lbl((ox + 0.2, 1.6), [adjoint ∂J/∂x → seam pullback], anchor: "west")
+  arrow((ox + 0.0, 0.75), (ox, 0.45), col: c-info, w: 1.2pt)
+  lbl((ox + 0.2, 0.7), [mass channel], anchor: "west", fill: c-info, font: mono-sb, size: s-sm)
+  lbl((ox + 0.2, 0.42), [heavier, sinks into the spring: negative], anchor: "west")
+  lbl((ox + 0.2, 0.17), [adjoint ∂J/∂p · seam dp/dθ], anchor: "west")
+  lbl((ox, -0.9), [dJ/dθ = #sci(V("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad"), digits: 3) m/mm · vs FD #E("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel")], anchor: "west", fill: c-text)
+})
+
+// 7. capture, seam and pullback cost against node count
+#let fig-cost() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let segs = ("16", "64", "128")
+  let pts = segs.map(s => (V("m10::timing::" + s, i: 0), V("m10::timing::" + s, i: 1), V("m10::timing::" + s, i: 2), V("m10::timing::" + s, i: 3)))
+  let W = 7.0
+  let H = 3.0
+  let nmax = 7000.0
+  let tmax = 5.0
+  let X(n) = W * n / nmax
+  let Y(t) = H * t / tmax
+  for t in (0, 1, 2, 3, 4, 5) {
+    line((0, Y(t)), (W, Y(t)), stroke: 0.3pt + c-line)
+    lbl((-0.15, Y(t)), [#t], anchor: "east")
+  }
+  for n in (0, 2000, 4000, 6000) { lbl((X(n), -0.3), [#n]) }
+  lbl((W / 2, -0.7), [mesh nodes (filleted cube at 16, 64, 128 segments)])
+  lbl((-0.6, H + 0.3), [ms, median], anchor: "west")
+  let series = ((1, [capture], c-label), (3, [pullback (all parameters)], c-vcad), (2, [seam pass (one parameter)], c-text))
+  for (k, name, col) in series {
+    line(..pts.map(p => (X(p.at(0)), Y(p.at(k)))), stroke: 1pt + col)
+    for p in pts { circle((X(p.at(0)), Y(p.at(k))), radius: 0.06, fill: col, stroke: none) }
+    let last = pts.last()
+    lbl((X(last.at(0)) + 0.15, Y(last.at(k))), name, anchor: "west", fill: col)
+  }
+})
+
 // ---- title page -----------------------------------------------------------------
 #if not web {page(margin: (x: 0.75in, top: 0.7in, bottom: 0.65in))[
   #set par(leading: 0.5em)
@@ -401,6 +724,10 @@ We state the limits first, because they define what the gradients mean.
 - *Round-off agreement is on CPU in f64.* Every gate in this paper runs on CPU in double precision. No GPU result is claimed.
 - *The trajectory adjoint supports single-degree-of-freedom joints* (revolute, prismatic, fixed), open-loop control and objectives on the final state only.
 
+#figure(fig-wall(),
+  caption: [#lead[What the gradient is a gradient of.] Within one topology class the frozen plan's volume is smooth in the parameter and the seam returns its exact derivative (red tangent). When a blind hole breaks through, the plan's topology signature changes and the seam returns `TopologyChanged`; an optimizer treats that as a failed step and shrinks it. Schematic.],
+) <fig:wall>
+
 = Background and related work
 
 *Differentiable rendering and mesh optimization.* Differentiable rasterizers @kato2018nmr @liu2019softras and path tracers @li2018edge compute derivatives of images with respect to mesh vertices. They operate on a mesh whose connectivity is held fixed, as ours is; the difference is where the vertex positions come from. Worchel and Alexa extract a mesh from parametric curves and surfaces and pass it to a differentiable mesh renderer @worchel2023parametric; they report that naive differentiable tessellation is fragile, which our correspondence machinery addresses for BRep solids.
@@ -433,6 +760,10 @@ vcad's kernel represents solids as BReps whose faces carry analytic surfaces (pl
 
 A plan carries a topology signature (a sorted multiset of per-face descriptors, which is invariant to isomorphic reordering) and each node's capture-time position. Re-evaluating at a nearby $theta$ resolves vertices and faces geometrically, by nearest match after transporting the stored $(u, v)$ through the rebuilt surface's frame, and fails with `CorrespondenceLost` when any node lands more than $10^(-3)$ mm from where it should. A changed signature fails with `TopologyChanged`. Both are errors, never a mesh.
 
+#figure(fig-recipes(),
+  caption: [#lead[Node recipes on a Boolean result.] Left: the top cap of a plate minus a cylinder, θ = hole radius. Rim vertices are topology vertices; their velocity comes from the implicit rows and is exactly radial. Plane-interior samples sit on a surface that does not move and have zero velocity. Right: the rows at one rim vertex. The cap plane and the hole wall give two independent rows; the tangent direction is unconstrained and stays frozen, so the rim keeps its angular parameter.],
+) <fig:recipes>
+
 == Surface nodes: the lift bridge
 
 Every analytic surface in the kernel is generic over a scalar type, so it can be evaluated on dual numbers $a + b epsilon$ with $epsilon^2 = 0$ @griewank2008. A parameter is connected to the surfaces it moves by a *seeding*: a map from surface index to field velocities (translate by $bold(v)$, grow the radius at rate $dot(r)$, open the cone at rate $dot(alpha)$, and so on). Seeds compose additively, which matters for fillets: when the fillet radius grows, each blend cylinder's radius grows at rate 1 while its axis retreats from the edge, and each corner sphere does the same in three coordinates. For a SurfaceUv node, the dual part of $S(u, v; phi + dot(phi) epsilon)$ is exactly $d x \/ d theta$.
@@ -446,6 +777,10 @@ $ nabla g dot dot(x) = - (partial g) / (partial theta) . $
 We solve the rows by Gram–Schmidt, carrying the right-hand side. Independent rows fix components of $dot(x)$, dependent rows must agree within tolerance (otherwise the solve fails), and directions no row constrains stay at zero. The last rule is the frozen-branch convention: a node on a circular rim keeps its angular parameter. Three planes at a box corner give a full $3 times 3$ solve; a plane and a cylinder at a hole rim give a rank-2 solve with a frozen tangent.
 
 The rows needed two refinements. Boolean sewing does not always pair the half-edges around a rim, so topological adjacency under-constrains some vertices, and the seam also collects rows by geometric incidence. And a fillet blend touches its support face *tangentially*, so the blend's row is parallel to the plane's and the system is rank-deficient exactly where the corner vertex slides along the face. The missing information is that the vertex must stay on the tangent curve; for a cylinder of axis $a$ tangent to a plane of normal $n$ we add the row $q dot dot(x) = q dot dot(bold(v))_"translate"$ with $q = a times n$, and two such rows for a sphere. With these rows the corner of a filleted cube slides at exactly $(1, 1, 0)$ per unit radius.
+
+#figure(fig-fillet(),
+  caption: [#lead[A fillet radius is a composite seed.] Growing the radius by δ grows each blend cylinder's radius at rate 1 while its axis retreats at $(-1, -1)$ in the section plane; the two motions compose so that the tangent lines slide along the support faces at exactly unit rate. On the all-edges-filleted cube one parameter moves 20 surfaces this way.],
+) <fig:fillet>
 
 = Quantities of interest <sec:qoi>
 
@@ -462,6 +797,10 @@ $ (d^2 V) / (d theta^2) = sum_(i j) (partial^2 V) / (partial x_i partial x_j) do
 Evaluating the volume integral on nested duals $((x, dot(x)), (dot(x), dot.double(x)))$ carries both terms. The work is in the node accelerations $dot.double(x)$. A surface node on a plane, cylinder or sphere is linear in its fields, so its acceleration is the first-order lift fed the field accelerations. Cone and torus points are not linear in their fields ($tan alpha$, the two torus radii), so surface nodes are lifted on nested duals. Vertex and trim nodes solve the implicit system differentiated twice,
 $ nabla g dot dot.double(x) = - ( (partial^2 g) / (partial theta^2) + 2 dot(x)^top nabla_x (partial g) / (partial theta) + dot(x)^top nabla^2 g space dot(x) ) , $
 with the same row gradients as the first-order solve; the cone and torus contribute closed-form curvature terms because their $nabla^2 g$ is not constant. For least-squares objectives $J = sum_q r_q^2$ we also provide the Gauss–Newton Hessian $2 J_r^top J_r$, which drops the residual-curvature term and is therefore exact at zero residual.
+
+#figure(fig-torus(),
+  caption: [#lead[The torus's two design velocities] on its own mesh, front half. Growing the minor radius moves every node along the tube normal. Growing the major radius moves every node away from the axis, so the wall moves outward on the outer equator and inward on the inner one, which is why $d V \/ d R = 2 pi^2 r^2$ is smaller than $d V \/ d r = 4 pi^2 R r$ here. Values are the seam's, on the 24-segment mesh of `make_torus(8, 3)`.],
+) <fig:torus>
 
 = Reverse mode and optimization <sec:reverse>
 
@@ -529,6 +868,10 @@ All results come from vcad's gate tests at commit #raw(env.at("vcad_rev").slice(
 Where a discrete closed form exists the seam meets it to rounding. The hole's mesh cross-section is the inscribed 112-gon, so $d V \/ d r = -N sin(2 pi \/ N) r t$; the seam matches it to #E(K-m2 + "@L111::rel_closed"). The cone's half-angle derivative matches the prismatoid formula to #E(K-m7a + "@L156::rel_closed"), the cylinder-height derivative the N-gon cap area to #E(K-m3b + "@L112::rel_closed"), and the extrusion's $d V \/ d d$ the cross-section area exactly (#E(K-m0 + "@L72::rel_analytic")). The continuum shape derivatives differ by the polygonization error and no more: #E(K-m2 + "@L129::gap") for the hole (bounded by $x^2 \/ 6$ with $x = 2 pi \/ N$), and #fx(100 * V(K-m4 + "@L195::gap"), 1)% for the fillet's Minkowski-sum derivative at 16 segments per quarter-blend.
 
 The mass-property derivatives behave the same way: $d I_(z z) \/ d d$ of the extrusion meets its closed form to #E("m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L63::rel") and FD to #E("m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L80::rel"); the cylinder's inertia derivative with respect to radius meets FD to #E(K-m3m + "@L129::rel").
+
+#figure(fig-ladder(),
+  caption: [#lead[Every first-order gate on one axis.] Filled: the seam's $d V \/ d theta$ (or $d J \/ d theta$ for the contact rollout) against a central difference of a full rebuild. Open: the worst node-wise $d x \/ d theta$. All sit two or more orders below vcad's $10^(-6)$ gate. `data/measured.tsv`.],
+) <fig:ladder>
 
 == Reverse mode, synthesis and second order
 
@@ -598,17 +941,15 @@ A `.vcad` document whose cylinder radius is bound to the named parameter `r` dif
 
 The contact case is the shape-through-contact co-design problem in its smallest form. A CAD cylinder lies on its side on a vertical prismatic joint and settles onto the ground; $J$ is its settled height. Growing the radius moves the contact line down the body by exactly $d theta$, which alone would give $d J \/ d theta = 10^(-3)$ m per mm (the surface channel), and adds mass that sinks the body further into the penalty spring (the mass channel, negative). The two channels have opposite signs. The gradient, #sci(V("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad"), digits: 3), is #fx(100 * (1 - V("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad") / 1e-3), 1)% below the surface channel alone, and matches a rebuild-and-resimulate FD to #E("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel") with no finite difference anywhere in the analytic chain. The test also asserts that doubling the density lowers the gradient, so the mass channel contributes to the result.
 
+#figure(fig-contact(),
+  caption: [#lead[Shape through contact.] A CAD cylinder (θ = radius) rests on its side on phyz's per-vertex penalty springs; $J$ is its settled height. Growing the radius raises the body through the surface channel and sinks it through the mass channel. Both factors are exact, so the chain has no finite difference in it. `data/measured.tsv`.],
+) <fig:contact>
+
 == Cost
 
-#figure(
-  table(
-    columns: (0.8fr, 0.9fr, 1fr, 1fr, 1fr),
-    align: (left, right, right, right, right),
-    table.header([*Segments*], [*Nodes*], [*Capture (ms)*], [*Seam (ms)*], [*Pullback (ms)*]),
-    ..("16", "64", "128").map(s => ([#s], [#F("m10::timing::" + s, 0, i: 0)], [#F("m10::timing::" + s, 2, i: 1)], [#F("m10::timing::" + s, 3, i: 2)], [#F("m10::timing::" + s, 3, i: 3)])).flatten(),
-  ),
-  caption: [#lead[Median per-call cost on the filleted cube] at three blend resolutions, release build. All three phases are linear in the number of nodes. `data/measured.tsv`.],
-) <tab:cost>
+#figure(fig-cost(),
+  caption: [#lead[Per-call cost on the filleted cube] at three blend resolutions, release build, median. Capture, one forward seam pass and one pullback are all linear in the number of mesh nodes; the pullback prices every parameter at once. `data/measured.tsv`.],
+) <fig:cost>
 
 = Discussion <sec:discussion>
 
