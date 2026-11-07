@@ -30,6 +30,8 @@ const CARDS = [
   { slug: "zero-context-memory", out: "og/research/zero-context-memory", still: 9.5, video: { from: 0.4, seconds: 8 } },
   // the probe mid-flight to the Mars flyby, its callout live; the loop is one launch
   { slug: "vision", out: "og/research/vision", still: 4.2, video: { from: 0.2, seconds: 8 } },
+  // the minor-radius field at full swell; the loop is one turn of each radius
+  { slug: "vcad", out: "og/research/vcad", still: 2.6, video: { from: 0, seconds: 10.4 } },
   // mid-write: the key walking down to its row
   { slug: "research", out: "og/research", still: 5.0 },
   { slug: "site", out: "og/site", still: 4.2 },
