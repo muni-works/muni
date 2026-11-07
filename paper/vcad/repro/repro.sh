@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Regenerate every table and figure in diffcad.typ from a fresh vcad clone.
+# Regenerate every table and figure in vcad.typ from a fresh vcad clone.
 #
-#   paper/diffcad/repro/repro.sh [workdir]
+#   paper/vcad/repro/repro.sh [workdir]
 #
 # 1. clones vcad at the pinned commit (its Cargo.lock pins phyz, loon and tang),
 # 2. applies report.patch, which only adds `PAPER<TAB>key<TAB>value` eprintln!s
 #    to the gate tests (see instrument.py), so each gate still asserts its bound,
 # 3. runs the gate tests (release profile, one thread so timings don't contend),
 # 4. collects the printed values into ../data/measured.tsv (collect.py),
-#    which diffcad.typ reads for every number in its tables and figures.
+#    which vcad.typ reads for every number in its tables and figures.
 #
 # Needs: git, a Rust toolchain (rustup picks vcad's rust-toolchain if present), python3.
 # Takes ~30 min on a 24-core box; run it on a build machine, not a laptop.

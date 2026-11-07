@@ -1,15 +1,15 @@
 # Exact Gradients Through a BRep Kernel
 
 Draft preprint on vcad's differentiable seam (`crates/vcad-kernel-diff` and its consumers in
-`vcad-kernel-physics::diff` and `vcad-eval::diff`). Published as `/research/diffcad`.
+`vcad-kernel-physics::diff` and `vcad-eval::diff`). Published as `/research/vcad`.
 
-    make            # diffcad.pdf
+    make            # vcad.pdf
     make png        # out/p*.png, one per page
-    (cd ../../web && npm run posts -- diffcad)   # web post + public/research/diffcad.pdf
+    (cd ../../web && npm run posts -- vcad)   # web post + public/research/vcad.pdf
 
 ## Numbers
 
-Every measured value in `diffcad.typ` is read from `data/measured.tsv`; a missing key is a build
+Every measured value in `vcad.typ` is read from `data/measured.tsv`; a missing key is a build
 error. To regenerate it from scratch (on a build machine, ~30 min):
 
     repro/repro.sh            # clones vcad at the pinned commit into repro/work/

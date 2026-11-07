@@ -426,6 +426,10 @@ html.post-rail-on::-webkit-scrollbar { display: none; }
 .post-rail.is-voice .post-rail-end { text-transform: none; letter-spacing: 0.04em; white-space: nowrap; }
 .post-rail.is-voice .post-rail-earth { color: var(--p-label); }
 .post-rail.is-voice .post-rail-sun { color: #ff5f00; opacity: 0.9; }
+/* the seam rail (vcad cover): θ₀ at the top, θ* in vcad red at the end */
+.post-rail.is-seam .post-rail-end { text-transform: none; letter-spacing: 0.04em; white-space: nowrap; }
+.post-rail.is-seam .post-rail-earth { color: var(--p-label); }
+.post-rail.is-seam .post-rail-sun { color: #ff2052; opacity: 0.9; }
 .post-rail.is-gate .post-rail-end { text-transform: none; letter-spacing: 0.04em; white-space: nowrap; }
 .post-rail.is-gate .post-rail-earth { color: var(--p-label); }
 .post-rail.is-gate .post-rail-sun { color: #ff2052; opacity: 0.9; }

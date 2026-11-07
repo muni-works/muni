@@ -32,13 +32,14 @@
     "cover": "ridgelines"
   },
   {
-    "slug": "diffcad",
+    "slug": "vcad",
     "title": "Exact Gradients Through a BRep Kernel",
     "subtitle": "Differentiating CAD parameters through tessellation, fillets, mass properties and contact",
     "date": "2026-11-06",
     "author": "Cam Pedersen",
     "description": "vcad's differentiable seam freezes the tessellation's topology and differentiates node positions exactly, so a hole radius, a fillet radius or a named document parameter gets an exact gradient of volume, inertia or a simulated rollout with contact. Every derivative is checked against finite differences of a full rebuild; topology changes are reported, not differentiated.",
-    "root": "../paper/diffcad",
-    "source": "diffcad.typ"
+    "root": "../paper/vcad",
+    "source": "vcad.typ",
+    "cover": "seam-field"
   }
 ]

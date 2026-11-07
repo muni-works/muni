@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import { PinnedRows } from "./PinnedRows";
+import { SeamField } from "./SeamField";
 import { Ridgelines } from "./Ridgelines";
 import { SolarSystem } from "./SolarSystem";
 
@@ -13,6 +14,7 @@ export interface Cover {
 export const COVERS: Record<string, Cover> = {
   "solar-system": { Art: SolarSystem, rail: { top: "Earth", bottom: "Sun", variant: "orbit" } },
   ridgelines: { Art: Ridgelines, rail: { top: "Text", bottom: "Audio", variant: "voice" } },
+  "seam-field": { Art: SeamField, rail: { top: "θ₀", bottom: "θ*", variant: "seam" } },
   "pinned-rows": { Art: PinnedRows, rail: { top: "g = 0.9", bottom: "g = 1", variant: "gate" } },
 };
 

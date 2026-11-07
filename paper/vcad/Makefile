@@ -6,16 +6,16 @@ TYPST ?= typst
 TYPST_C = $(TYPST) compile --root $(HERE) --font-path $(HERE)fonts --ignore-system-fonts
 TYPST_W = $(TYPST) watch --root $(HERE) --font-path $(HERE)fonts --ignore-system-fonts
 
-all: diffcad.pdf
+all: vcad.pdf
 
-diffcad.pdf: diffcad.typ refs.bib
-	cd $(HERE) && $(TYPST_C) diffcad.typ
+vcad.pdf: vcad.typ refs.bib
+	cd $(HERE) && $(TYPST_C) vcad.typ
 
-png: diffcad.typ
-	cd $(HERE) && mkdir -p out && rm -f out/p*.png && $(TYPST_C) --ppi 110 diffcad.typ 'out/p{0p}.png'
+png: vcad.typ
+	cd $(HERE) && mkdir -p out && rm -f out/p*.png && $(TYPST_C) --ppi 110 vcad.typ 'out/p{0p}.png'
 
 watch:
-	cd $(HERE) && $(TYPST_W) diffcad.typ
+	cd $(HERE) && $(TYPST_W) vcad.typ
 
 clean:
-	rm -f diffcad.pdf
+	rm -f vcad.pdf
