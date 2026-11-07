@@ -14,6 +14,16 @@ Every measured value in `irys.typ` is read from `data/measured.tsv`; a missing k
 Each row is `key  value  source`, where the source names the irys `docs/design.md` line, the commit
 that introduced it and the test or example that measures it. `data/env.tsv` pins irys, vcad and rose.
 
+## Blind review (2026-11-07) and where each point stands
+
+Verdict: reject. Fixed in the text: Fig 7 rebuilt from data with every configuration named; a
+recovery-examples figure (photos, overlays, a failure); related work on inverse CAD, program
+synthesis, Mitsuba 3 and photogrammetry (all checked); jargon defined or removed; the photo-model
+split stated; Wilson intervals on the recovery table; Fig 1 cut. In other sessions: recovery fit
+through the path tracer; 100+ parts with out-of-grammar ones, error CDFs and calibrated σ; a Mitsuba 3
+baseline; the device edge-sampler bias. Still to do: real photographs (M2), and a separate
+anonymised acmart build for a venue.
+
 ## Open items before submission
 
 The title is a promise; these make it true (Cam, 2026-11-07: "fix the details, aiming for greatness"):

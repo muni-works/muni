@@ -9,5 +9,6 @@
 #import "frames.typ": fig-frames
 #import "secondary.typ": fig-secondary
 #import "recon.typ": fig-recon
-#let figs = (replay: fig-replay, determinism: fig-determinism, edge: fig-edge, frames: fig-frames, secondary: fig-secondary, recon: fig-recon)
+#import "rosefit.typ": fig-rosefit
+#let figs = (replay: fig-replay, determinism: fig-determinism, edge: fig-edge, frames: fig-frames, secondary: fig-secondary, recon: fig-recon, rosefit: fig-rosefit)
 #figs.at(name)()

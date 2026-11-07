@@ -93,3 +93,6 @@ recon.3a.err_med	0.265	same: median
 recon.3a.err1_med	0.320	same: median among parts passing at 1 mm
 recon.3a.s_part	187	same: mean seconds per part (3 photos, CPU)
 recon.3v.s_part	409	docs/recon-v1-3view-report.json @527f046: mean seconds per part with forward-difference AO columns
+recon.3a.p1_ci	0.531	0.888	Wilson 95% interval for 15/20
+recon.3a.p05_ci	0.299	0.701	Wilson 95% interval for 10/20
+recon.1v.p1_ci	0.145	0.519	Wilson 95% interval for 6/20

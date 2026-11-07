@@ -143,6 +143,7 @@
 #import "figures/frames.typ": fig-frames
 #import "figures/secondary.typ": fig-secondary
 #import "figures/recon.typ": fig-recon
+#import "figures/rosefit.typ": fig-rosefit
 // Web figures: drawn bodies become inline SVG via html.frame (as vision.typ); tables stay <table>s.
 #show figure: it => if web and it.kind != table {
   let lab = if it.has("label") { str(it.label) } else { "" }
@@ -323,6 +324,24 @@
   })
 }
 
+// Recovery examples: three of the gate's parts, each from its three photographs (the first shown
+// large), the fit's overlay (model outline on the crop, and the residual), and the programs.
+#let fig-recon-examples() = {
+  let ex = json("data/recon-examples.json")
+  let verdict(e) = if e.p05 { text(fill: c-ok)[PASS · WORST #calc.round(e.max, digits: 2) MM] } else if e.p1 { text(fill: c-ok)[PASS AT 1 MM · #calc.round(e.max, digits: 2) MM] } else if e.topo { text(fill: c-fault)[FAIL · #calc.round(e.max, digits: 2) MM] } else { text(fill: c-fault)[FAIL · WRONG FEATURES] }
+  let mono-s(body, fill: c-label) = text(font: mono, size: 5.6pt, fill: fill, body)
+  align(left, grid(columns: (1fr,), row-gutter: 1.1em, ..ex.map(e => grid(
+    columns: (1.05fr, 0.36fr, 1.9fr), column-gutter: 0.5em, row-gutter: 0.35em,
+    image("images/recon/" + str(e.seed) + "-v0.jpg", width: 100%),
+    stack(spacing: 0.3em, image("images/recon/" + str(e.seed) + "-v1.jpg", width: 100%), image("images/recon/" + str(e.seed) + "-v2.jpg", width: 100%)),
+    image("images/recon/" + str(e.seed) + "-overlay.png", width: 100%),
+    grid.cell(colspan: 3, stack(spacing: 0.35em,
+      text(font: mono-m, size: s-xs, tracking: track)[PART #e.seed #h(0.6em) #verdict(e)],
+      mono-s[TRUTH #h(0.5em) #e.truth],
+      mono-s(fill: c-text)[FOUND #h(0.5em) #e.recovered.split("; pose").at(0)])),
+  ))))
+}
+
 // ---- title page -----------------------------------------------------------------
 #if not web {page(margin: 0in)[
   #set par(leading: 0.5em)
@@ -377,7 +396,7 @@ An instrument has two obligations. It must be *exact*: the same input gives the 
 This paper describes irys, the renderer behind vcad and our robotics tools, and how it meets both obligations. Its contributions are:
 
 - *One BSDF source, two lowerings, two tiers.* Materials are tang tensor graphs. tang lowers each one to an evaluation program and an adjoint program, emitting WGSL kernels for the GPU and running the same graph in its f64 interpreter for the CPU reference. The path logic (ray generation, traversal, bounce, accumulation) is hand-written (@sec:ir).
-- *PRB on a wavefront with hero wavelengths and NEE.* Four wavelengths per path, next-event estimation with multiple importance sampling, and the light-sampled lanes folded into the same graph batch (@sec:prb).
+- *PRB on a deterministic wavefront with hero wavelengths and NEE.* The estimator is Vicini et al.'s with next-event estimation, as in Mitsuba 3; what is new is a wavefront whose replay is bit-identical, with four wavelengths per path and the light-sampled lanes folded into the same graph batch (@sec:prb).
 - *Bit-exact replay by construction.* An integer RNG that is exact on both tiers, fixed-order reductions with no float atomics, and a BVH walk that depends only on the ray (@sec:det).
 - *Pose gradients through instanced CAD meshes.* Primary edge sampling with crease ownership and visibility-aware importance, an interior term by forward-mode duals with attached frames, and secondary edge sampling for moving shadows and reflections (@sec:pose).
 - *Validation at every layer and a fit on a real robot.* Gradients against central differences with common random numbers, GPU against CPU f64, and a joint pose and finish recovery on an arm read from its CAD source (@sec:results).
@@ -402,13 +421,15 @@ This paper describes irys, the renderer behind vcad and our robotics tools, and 
 
 *Compilers for rendering.* SLANG.D adds automatic differentiation to a shading language @bangaru2023slangd and is the closest analogue to writing BSDFs as tang graphs. Laine et al. argue for splitting a path tracer into wavefront kernels @laine2013megakernels, the structure we use.
 
-*Inverse rendering of CAD.* Most inverse rendering optimises meshes, textures or neural fields. For CAD the parameters sit upstream of the mesh, in a BRep kernel; our companion paper differentiates that kernel @pedersen2026vcad, and @sec:brep joins the two.
+*Differentiable rendering systems.* Mitsuba 3 @jakob2022mitsuba3 implements path replay with next-event estimation and multiple importance sampling, projective sampling and reparameterisation on Dr.Jit, and is the closest system to irys's differentiable core. irys differs in what it guarantees rather than in the estimator: a replay that is bit-identical to the forward pass by construction, an f64 reference that runs the same material source, spectral transport with hero wavelengths, and visibility terms adapted to CAD tessellations (coplanar slivers, crease ownership, attached frames).
+
+*Inverse CAD and program synthesis.* Recovering an editable CAD description from observations is usually posed as program synthesis. CSGNet parses shapes into CSG programs with a recurrent network @sharma2018csgnet; InverseCSG converts meshes to compact CSG trees with a solver-based synthesizer @du2018inversecsg; Szalinski rewrites flat CSG into programs with loops by equality saturation @nandi2020szalinski; DeepCAD generates sketch-and-extrude sequences @wu2021deepcad; ShapeAssembly writes part-assembly programs @jones2020shapeassembly; and Point2CAD recovers BRep surfaces from point clouds @liu2024point2cad. Ellis et al. infer graphics programs from images by proposing primitives and synthesizing a program over them @ellis2018graphics, and DreamCoder learns a library of program components alongside the search @ellis2021dreamcoder. These methods take meshes, point clouds or clean drawings as input, or learn a prior from a dataset; ours starts from photographs and scores each candidate program by rendering it, with gradients through the renderer for its dimensions and a description length that weighs residual, parameter cost and program length in one unit. CAD parameters upstream of the mesh are differentiated by our companion paper's BRep kernel @pedersen2026vcad, joined to irys in @sec:brep.
+
+*Measurement from images.* Close-range photogrammetry measures manufactured objects from calibrated images, usually by triangulating targets or features and adjusting the cameras and points together @luhmann2019photogrammetry. Our recovery shares its tools (a calibration target, bundle-adjustment-style least squares, Fisher-information error estimates) but fits a parametric model of the whole part to its pixels rather than to sparse points, so a hole's diameter is read from its outline and shading rather than from markers.
 
 = Materials as compiled graphs <sec:ir>
 
-#figure(fig-pipeline(),
-  caption: [#lead[One BSDF source, two lowerings, two tiers.] The GGX conductor is a tang graph batched over the wavefront. tang lowers it to an evaluation program and an adjoint program; each runs as WGSL on the GPU or in f64 on the CPU reference. The forward and replay passes dispatch the same evaluation pipelines; a uniform alone gates the adjoint's store.],
-) <fig:pipeline>
+
 
 The differentiable material has parameters $theta = (alpha, F_0^(450), F_0^(550), F_0^(650))$: GGX roughness with height-correlated Smith masking, and a Schlick Fresnel whose $F_0$ is interpolated between three spectral hats. It is written once as a tang `TensorGraph` whose inputs are per-lane columns (the cosines at a vertex and the hero wavelength's hat weights) and whose $theta$ is broadcast. tang lowers it two ways. The *eval* program returns $f$ and its pdf. The *adjoint* program is the backward pass of $sum_j delta f_j dot f_j$, so the batch sum over lanes is the reduction to $delta theta$. Each program is emitted as WGSL, one kernel per materialised comprehension, or as compiled C in f32 and an interpreter in f64 for the CPU. The interpreter matches a hand-written f64 GGX to $10^(-12)$, and the compiled C matches the interpreter to #E("p1.c_vs_interp") in the worst relative error.
 
@@ -439,7 +460,7 @@ PRB's replay must redraw the forward pass's paths. irys makes this hold in four 
 - *No float atomics.* The reduction over lanes is tang's monoid reduction, split 256 ways with one workgroup per parameter and a fixed combining tree. Splat accumulation runs in bounce order, loss scoring uses a fixed stride and tree, chunks are summed in order, and the device prefix sum used by edge sampling has a fixed order.
 - *A walk that depends only on the ray.* BVH traversal uses a fixed-size stack, visits the near child first by slab entry with a deterministic tie-break, and culls by the closest hit so far. The walk, and therefore the floating-point sequence, is a function of the ray alone, not of thread scheduling.
 
-The result is that the replay reproduces the forward radiance bit for bit on every lane, #V("gpu.replay_lanes") of #V("gpu.replay_lanes") at depths 2 and 8, with NEE, and through the TLAS and garden scenes; two runs give bitwise-identical loss and $delta theta$. The guarantee holds per device and driver. A different GPU or compiler may round differently, and then agrees with the CPU reference only to f32 precision.
+The result is that the replay reproduces the forward radiance bit for bit on every lane, #V("gpu.replay_lanes") of #V("gpu.replay_lanes") at depths 2 and 8, with NEE, and through the two-level instanced scenes and a garden scene of meshes and Gaussian splats; two runs give bitwise-identical loss and $delta theta$. The guarantee holds per device and driver. A different GPU or compiler may round differently, and then agrees with the CPU reference only to f32 precision.
 
 #figure(fig-determinism(),
   caption: [#lead[Three choices make the replay bit-exact.] (a) SplitMix64 on 16-bit limbs gives the GPU, which has no 64-bit integers, the CPU's exact stream. (b) Lane gradients are summed by a fixed tree, never by float atomics. (c) BVH traversal visits children in an order that depends only on the ray.],
@@ -447,7 +468,7 @@ The result is that the replay reproduces the forward radiance bit for bit on eve
 
 = Pose gradients through instanced CAD <sec:pose>
 
-*Scenes.* A scene is a two-level BVH: one bottom-level tree per CAD part or group, and a top-level tree over instances, each with an object-to-world transform. irys maps rays into an instance's space without renormalising them, so hit distances compare across instances. A pose $phi$, such as joint angles, is a map from parameters to the transforms of the moving instances. The full robot in this paper has 2.4 million triangles, tessellated by vcad from its `.loon` CAD source.
+*Scenes.* A scene is a two-level BVH: one bottom-level tree per CAD part or group, and a top-level tree over instances, each with an object-to-world transform. irys maps rays into an instance's space without renormalising them, so hit distances compare across instances. A pose $phi$, such as joint angles, is a map from parameters to the transforms of the moving instances. The full robot in this paper has 2.4 million triangles, tessellated by vcad from its CAD source (a text format of parametric solids).
 
 *Primary edges.* Moving an instance moves the curves across which the radiance arriving at the camera plane jumps: silhouettes, boundaries and creases between faces that are not coplanar. By Reynolds transport, a pixel's derivative includes
 
@@ -457,7 +478,7 @@ The result is that the replay reproduces the forward radiance bit for bit on eve
 
 $ partial I_p \/ partial phi supset.eq integral_(E inter p) (f(s - epsilon n) - f(s + epsilon n)) v_n (s) dif ell (s) $
 
-over the projected edges $E$, where $n$ is the edge's outward normal and $v_n$ the normal speed of the material point under $phi$ @li2018edge. We sample edges with density proportional to screen length times an importance (1 for silhouettes, a dihedral weight for creases, a small weight for back-facing edges), trace the two sides $10^(-3)$ pixels apart with common random numbers, and require the inner ray to hit the edge's own triangle or a coplanar neighbour. CAD tessellations are full of slivers thinner than $epsilon$, and without that coplanar rule the estimator loses most silhouette samples. A crease between two front faces is owned by the face that meets the eye more squarely, so its jump is counted exactly once. A one-pixel ID buffer demotes edges it shows hidden, which cut variance #F("idbuf.var", 1)× at equal samples. Sampling runs on the device, with a fixed-order prefix sum; it took the edge term on the arm from #V("edge.total_before_ms") ms to #V("edge.total_after_ms") ms per iteration.
+over the projected edges $E$, where $n$ is the edge's outward normal and $v_n$ the normal speed of the material point under $phi$ @li2018edge. We sample edges with density proportional to screen length times an importance (1 for silhouettes, a dihedral weight for creases, a small weight for back-facing edges), trace the two sides $10^(-3)$ pixels apart with common random numbers, and require the inner ray to hit the edge's own triangle or a coplanar neighbour. CAD tessellations are full of slivers thinner than $epsilon$, and without that coplanar rule the estimator loses most silhouette samples. A crease between two front faces is owned by the face that meets the eye more squarely, so its jump is counted exactly once. A low-resolution buffer of which instance each pixel sees lets the sampler demote edges it shows hidden, which cut variance #F("idbuf.var", 1)× at equal samples. Sampling runs on the device, with a fixed-order prefix sum; it took the edge term on the arm from #V("edge.total_before_ms") ms to #V("edge.total_after_ms") ms per iteration.
 
 *Interior term and attached frames.* Away from discontinuities the estimator is smooth in $phi$ at fixed random numbers, and we differentiate it by forward-mode dual numbers through a re-trace of the frame: ray–triangle intersection with the corners as duals, the shading frame, GGX sampling and evaluation, NEE and the MIS weights. The renderer builds a vertex's tangent frame from its normal with a construction that flips sign when the normal crosses a plane, a discontinuity in $phi$ at fixed random numbers that no edge term sees. We instead differentiate the estimator whose frame on a moving instance is rigidly attached, $R(phi) R(phi_0)^T "basis"(n(phi_0))$. At $phi_0$ it is the rendered estimator exactly, and for every $phi$ it is an equally valid estimator of the same image, so its derivative is an unbiased estimate of $partial I \/ partial phi$ from the paths the forward pass already drew. The duals reproduce the forward pass's values to #E("int.dual_vs_fwd").
 
@@ -486,7 +507,7 @@ Unless stated, we check gradients against central differences (CD) of the same e
     table.header([*Check*], [*Configuration*], [*Result*]),
     [CPU f64 PRB vs frozen CD], [BSDF-only, four θ], [#E("p1.cd_frozen_lo")–#E("p1.cd_frozen_hi")],
     [same, hero wavelengths], [4 λ], [≤ #E("hero.cd_frozen")],
-    [same, NEE + MIS], [TLAS pair scene], [≤ #E("nee.cpu_cd_max")],
+    [same, NEE + MIS], [two instanced boxes], [≤ #E("nee.cpu_cd_max")],
     [GPU f32 vs CPU f64, radiance], [median / p99 per lane], [#E("gpu.l_median") / #E("gpu.l_p99")],
     [GPU f32 vs CPU f64, loss], [32×32×4], [#E("gpu.loss_rel")],
     [GPU f32 vs CPU f64, δθ], [worst parameter], [#E("gpu.dtheta_max")],
@@ -498,7 +519,7 @@ Unless stated, we check gradients against central differences (CD) of the same e
 
 == Variance and throughput
 
-At equal samples per pixel, NEE with MIS lowers per-pixel variance #F("nee.var_ratio", 1)× against BSDF sampling alone on the pair scene, with image means agreeing within noise. A gradient of the 96×96, 8 spp frame at depth 4 (#paths-96 paths, four wavelengths each) costs #F("rel.grad_ms", 1) ms on the GPU without NEE and #F("rel.grad_nee_ms", 1) ms with it; the forward pass alone takes #F("rel.fwd_ms", 2) ms, about #fx(mpaths, 0) million paths per second. The same gradient through the compiled-C CPU tier costs #V("rel.cpu_grad_lo")–#V("rel.cpu_grad_hi") ms, so the GPU tier is about #fx(cpu-speedup, 0)× faster end to end. Most of the gradient's time is the replay, because the adjoint's four-parameter reduction is not yet fused and NEE doubles the batch.
+At equal samples per pixel, NEE with MIS lowers per-pixel variance #F("nee.var_ratio", 1)× against BSDF sampling alone on a scene of two instanced boxes, with image means agreeing within noise. A gradient of the 96×96, 8 spp frame at depth 4 (#paths-96 paths, four wavelengths each) costs #F("rel.grad_ms", 1) ms on the GPU without NEE and #F("rel.grad_nee_ms", 1) ms with it; the forward pass alone takes #F("rel.fwd_ms", 2) ms, about #fx(mpaths, 0) million paths per second. The same gradient through the compiled-C CPU tier costs #V("rel.cpu_grad_lo")–#V("rel.cpu_grad_hi") ms, so the GPU tier is about #fx(cpu-speedup, 0)× faster end to end. Most of the gradient's time is the replay, because the adjoint's four-parameter reduction is not yet fused and NEE doubles the batch.
 
 == Pose gradients
 
@@ -506,15 +527,14 @@ On a box against the sky, where the edge term is the whole derivative, edge samp
 
 == Joint pose and finish recovery on a robot arm
 
-#figure(image("images/phase2f-rose-fit.png", width: 100%),
-  caption: [#lead[Recovering three joint angles and a finish from a render.] The left arm of rose full in context, 192×192, 8 spp, depth 5 with NEE, with primary, interior and secondary edge terms. Loss and parameters per iteration. `docs/phase2f-rose-fit.png` in irys.],
-) <fig:rose>
+#figure(fig-rosefit(),
+  caption: [#lead[Recovering three joint angles and a finish from a render.] The left arm of our humanoid robot, in context, 192×192, 8 spp, depth 5 with NEE. (a) The worst of the three joint errors for every configuration we ran: all terms for 600 and for 300 iterations, the arm alone in frame (the control), without secondary edges, and with a coarse-to-fine pyramid schedule; the last two diverge, which is why secondary edges are in and the pyramid is out. (b) The all-terms run's joint angles against the truth (dashed). One run per configuration. `data/rose-fit.csv`, from irys `docs/phase2f-rose-loss.csv`.]) <fig:rose>
 
 The target is the arm at shoulder pitch, shoulder roll and elbow (#V("fit.true_pitch"), #V("fit.true_roll"), #V("fit.true_elbow"))° with a bead-blasted clear-anodised finish $theta = (0.30, 0.86, 0.88, 0.90)$. From (#V("fit.init_pitch"), #V("fit.init_roll"), #V("fit.init_elbow"))° and a default finish, Adam on the image MSE for #V("fit.iters") iterations reaches (#V("fit.phi_pitch"), #V("fit.phi_roll"), #V("fit.phi_elbow"))°, an error of at most #fx(max-deg-err, 2)°, and $theta = (#V("fit.alpha"), #V("fit.f0_450"), #V("fit.f0_550"), #V("fit.f0_650"))$, within #fx(theta-err, 3) of the truth. The final MSE, #E("fit.mse"), equals that of the true parameters re-rendered with fresh noise (#E("fit.mse_truth")), so the fit has converged to the noise floor. An iteration costs #F("fit.ms_theta", 0) ms for the material gradient on the GPU, #F("fit.ms_edge", 0) ms for the primary edge term and #F("fit.ms_intsec", 0) ms for the interior and secondary terms on the CPU; the run takes #V("fit.seconds") s. This is one run. We have not measured convergence over seeds or starting points, and starts outside the elbow's ±#V("basin.deg")° basin fail.
 
 == From pixels to CAD parameters <sec:brep>
 
-The edge sampler's velocity is a projection of the material point's motion, so replacing the pose's velocity with a unit translation per axis yields $partial cal(L) \/ partial x_i$ for every mesh vertex. vcad's differentiable seam @pedersen2026vcad takes exactly that cotangent on the nodes of a frozen tessellation and returns the derivative with respect to a CAD parameter in one reverse pass. The shared benchmark uses rose's left shoulder-pitch output plate, a 3 mm rounded plate with a 49 mm bearing bore and twelve bolt holes, with $theta$ the bore diameter. irys renders vcad's frozen plan (#V("brep.nodes") nodes, #V("brep.tris") triangles) as it is, against the sky at 160×128, under a fixed smooth image loss.
+The edge sampler's velocity is a projection of the material point's motion, so replacing the pose's velocity with a unit translation per axis yields $partial cal(L) \/ partial x_i$ for every mesh vertex. vcad's differentiable seam @pedersen2026vcad takes exactly that cotangent on the nodes of a frozen tessellation and returns the derivative with respect to a CAD parameter in one reverse pass. The shared benchmark uses rose's left shoulder-pitch output plate, a 3 mm rounded plate with a 49 mm bearing bore and twelve bolt holes, with $theta$ the bore diameter. irys renders vcad's frozen tessellation, the mesh whose connectivity the kernel holds fixed while it differentiates node positions (#V("brep.nodes") nodes, #V("brep.tris") triangles) as it is, against the sky at 160×128, under a fixed smooth image loss.
 
 #figure(fig-hero(width: 11.5),
   caption: [#lead[Where the bore's gradient comes from.] irys's render of the benchmark plate with vcad's frozen mesh fading in from left to right. Each tick sits on a node that moves when the bore grows, points the way that node moves on screen, and is as long as its share of $partial cal(L) \/ partial theta$. Only the bore's nodes move with $theta$, so the derivative picks out exactly that feature. Every mark is data from the run in @tab:brep.],
@@ -533,7 +553,7 @@ The edge sampler's velocity is a projection of the material point's motion, so r
   caption: [#lead[The shared rose-arm benchmark] at irys `103e3da`, vcad `d10f279`, rose `832192f`. The pullback's error is the Monte Carlo standard error over 8 edge-sampling seeds of 100 000 samples. The render FD moves the plan's nodes along vcad's FD velocities; it varies by about 0.5% between $h = 0.02$ and $0.1$ mm, so the pullback agrees with it within the FD's own error. The same numbers appear in the companion paper.],
 ) <tab:brep>
 
-A finite difference that rebuilds the part is not a usable reference here. Rebuilding at $theta plus.minus h$ loses node correspondence for $h >= 2 times 10^(-3)$ mm and changes topology at $0.05$ mm, where the bore rim's sag-adaptive segment count drops; below that the render difference is quadrature noise. The pullback has no step size. It is exact for the frozen mesh, and irys's sampling error is the only noise in the result.
+A finite difference that rebuilds the part is not a usable reference here. Rebuilding at $theta plus.minus h$ loses node correspondence for $h >= 2 times 10^(-3)$ mm and changes topology at $0.05$ mm, where the bore rim's segment count, chosen from the circle's size, drops by one; below that the render difference is quadrature noise. The pullback has no step size. It is exact for the frozen mesh, and irys's sampling error is the only noise in the result.
 
 == Dimensions from photographs <sec:recon>
 
@@ -541,13 +561,13 @@ The last reading is the one the title promises: the dimensions of a part from ph
 
 $ "score"("program", theta) = -log p("photos" | "render"("program", theta)) + 1/2 log det F(theta) - log p("program") $
 
-the residual under a robust noise model, a Laplace parameter cost from the Fisher information $F$, and the program's own length under a grammar prior. An edit to the program (add a feature, remove one, turn a hole into a counterbore or a slot, merge holes into a pattern) is kept only if it shortens the description, so the search cannot buy residual with a feature per pixel. Inside each edit, Levenberg–Marquardt fits the continuous parameters with a Jacobian from the edge-sampling estimator of @sec:pose, applied to a deterministic photo model (a G-buffer with closed-form OpenPBR shading, spherical-harmonic light, a fitted key light and ambient occlusion).
+the residual under a robust noise model, a Laplace parameter cost from the Fisher information $F$, and the program's own length under a grammar prior. An edit to the program (add a feature, remove one, turn a hole into a counterbore or a slot, merge holes into a pattern) is kept only if it shortens the description, so the search cannot buy residual with a feature per pixel. Inside each edit, Levenberg–Marquardt fits the continuous parameters with a Jacobian from the edge-sampling estimator of @sec:pose, applied to a deterministic photo model (a G-buffer with closed-form OpenPBR shading, spherical-harmonic light, a fitted key light and ambient occlusion). This photo model is not the path tracer of the preceding sections. A search makes thousands of fits, and the photo model is noise-free and cheap; the path tracer's role here is the estimator the Jacobian uses and the renderer that makes the test photographs, which keeps the model and the data from sharing a bias.
 
 #figure(fig-recon(),
   caption: [#lead[Seeing is measuring.] The recovery edits an editable CAD program, fits each edit's dimensions with irys's edge-sampling Jacobian, scores it in nats, and keeps it only if the description of the photographs gets shorter. A feature has to pay for itself.],
 ) <fig:recon>
 
-A printed tag beside the part fixes the camera's pose, its focal length and the metric scale. The test photographs are synthetic phone photographs: irys's OpenPBR scene kernel renders each part in PLA beside the tag, under a captured or synthetic environment and a key light, then adds defocus, shot and read noise, a tone curve and JPEG compression. The test set is #V("recon.parts") parts drawn from the program grammar, each recovered independently from either one photograph or three photographs from different directions.
+A printed tag beside the part fixes the camera's pose, its focal length and the metric scale. The test photographs are synthetic phone photographs: irys's OpenPBR scene kernel renders each part in PLA beside the tag, under a captured or synthetic environment and a key light, then adds defocus, shot and read noise, a tone curve and JPEG compression. The test set, which we call the evaluation below, is #V("recon.parts") parts drawn from the program grammar, each recovered independently from either one photograph or three photographs from different directions.
 
 #figure(
   table(
@@ -558,10 +578,14 @@ A printed tag beside the part fixes the camera's pose, its focal length and the 
     [every dimension within 1 mm], [#V("recon.1v.p1")/#V("recon.parts")], [#V("recon.3v.p1")/#V("recon.parts")], [*#V("recon.3a.p1")/#V("recon.parts")*],
     [the right features (topology)], [#V("recon.1v.topo")/#V("recon.parts")], [#V("recon.3v.topo")/#V("recon.parts")], [#V("recon.3a.topo")/#V("recon.parts")],
   ),
-  caption: [#lead[Dimensions from synthetic phone photographs], per part, worst dimension, after the plate's quarter-turn symmetry. The last column differentiates the photo model's ambient occlusion (below) and drops its forward-difference columns; there the parts that pass at 0.5 mm have worst-dimension errors from #F("recon.3a.err_lo", 2) to #F("recon.3a.err_hi", 2) mm (median #F("recon.3a.err_med", 2)), and a part takes #V("recon.3a.s_part") s on average against #V("recon.3v.s_part") s. Across all #V("recon.parts") parts the pose on the tag plane is recovered to a median #F("recon.3v.pose_med", 2) mm and yaw within #F("recon.3v.yaw_max", 2)°, and the focal length from EXIF and the tag within #F("recon.3v.focal_max", 1)%. `data/measured.tsv`.],
+  caption: [#lead[Dimensions from synthetic phone photographs], per part, worst dimension, after the plate's quarter-turn symmetry. With #V("recon.parts") parts the counts are coarse: the Wilson 95% interval on #V("recon.3a.p1")/#V("recon.parts") is #calc.round(100 * V("recon.3a.p1_ci"), digits: 0)–#calc.round(100 * V("recon.3a.p1_ci", i: 1), digits: 0)%, against #calc.round(100 * V("recon.1v.p1_ci"), digits: 0)–#calc.round(100 * V("recon.1v.p1_ci", i: 1), digits: 0)% for one photograph. The last column differentiates the photo model's ambient occlusion (below) instead of estimating those Jacobian columns by finite differences; there the parts that pass at 0.5 mm have worst-dimension errors from #F("recon.3a.err_lo", 2) to #F("recon.3a.err_hi", 2) mm (median #F("recon.3a.err_med", 2)), and a part takes #V("recon.3a.s_part") s on average against #V("recon.3v.s_part") s. Across all #V("recon.parts") parts the pose on the tag plane is recovered to a median #F("recon.3v.pose_med", 2) mm and yaw within #F("recon.3v.yaw_max", 2)°, and the focal length from EXIF and the tag within #F("recon.3v.focal_max", 1)%. `data/measured.tsv`.],
 ) <tab:recon>
 
-A single photograph cannot separate a plate's height from a boss's, or see the floor of a counterbore; three photographs mostly can. With three, the main remaining error was a confusion between holes and counterbores. We traced one case: the correct program reached the full-resolution finalists and lost by 27 nats to a counterbore whose depth never moved from its starting value. A counterbore's step shows in a photograph mostly as ambient occlusion, and the photo model's occlusion was a fixed set of 16 rays per point, a step function of the geometry whose derivative is zero almost everywhere. On a flat receiver those 16 directions are fixed in the world, so each is a directional light of weight $1 \/ 16$, and its derivative is the moving-shadow term of @fig:secondary, with the receiver allowed to move too (a counterbore's floor moves with its depth). With that term the Jacobian's column for a counterbore's depth goes from cosine 0.88 against central differences to 0.97, every other column improves or holds, and the gate reaches #V("recon.3a.p1") of #V("recon.parts") parts within 1 mm with no finite differences at all. The photographs here are rendered, so this is the instrument read against a known standard. Printed parts, phone photographs and calipers are the next experiment.
+#figure(fig-recon-examples(),
+  caption: [#lead[Three parts, three photographs each.] Left, the synthetic phone photographs the recovery sees (each beside the printed tag); right, the fit's overlay: the recovered part's outline on the crop, and the residual (red brighter, blue darker than the model). Part 3009 passes at 0.16 mm and 3012, with a four-hole circle and a counterbore, at 0.32 mm. Part 3016 fails: its second hole is read as a counterbore, the confusion the text traces. Programs in millimetres: a plate `base w d h`, then each feature with its centre and radii; FOUND omits the pose. `data/recon-examples.json`.],
+) <fig:recon-examples>
+
+A single photograph cannot separate a plate's height from a boss's, or see the floor of a counterbore; three photographs mostly can. With three, the main remaining error was a confusion between holes and counterbores. We traced one case: the correct program reached the full-resolution finalists and lost by 27 nats to a counterbore whose depth never moved from its starting value. A counterbore's step shows in a photograph mostly as ambient occlusion, and the photo model's occlusion was a fixed set of 16 rays per point, a step function of the geometry whose derivative is zero almost everywhere. On a flat receiver those 16 directions are fixed in the world, so each is a directional light of weight $1 \/ 16$, and its derivative is the moving-shadow term of @fig:secondary, with the receiver allowed to move too (a counterbore's floor moves with its depth). With that term the Jacobian's column for a counterbore's depth goes from cosine 0.88 against central differences to 0.97, every other column improves or holds, and the evaluation reaches #V("recon.3a.p1") of #V("recon.parts") parts within 1 mm with no finite differences at all. The photographs here are rendered, so this is the instrument read against a known standard. Printed parts, phone photographs and calipers are the next experiment.
 
 = Discussion <sec:discussion>
 
