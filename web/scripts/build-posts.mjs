@@ -1,6 +1,7 @@
 // Build blog posts from Typst sources: one .typ file → a web post and a PDF.
 //
-//   npm run posts
+//   npm run posts               # every post in posts.json
+//   npm run posts -- <slug>...   # only these
 //
 // Needs typst ≥ 0.14 on PATH. Vercel's build image has no typst, so the outputs
 // are committed: src/content/posts/<slug>.html and public/research/<slug>.pdf.
@@ -10,7 +11,8 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const web = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const posts = JSON.parse(readFileSync(join(web, "posts.json"), "utf8"));
+const only = process.argv.slice(2);
+const posts = JSON.parse(readFileSync(join(web, "posts.json"), "utf8")).filter((p) => !only.length || only.includes(p.slug));
 const contentDir = join(web, "src/content/posts");
 const pdfDir = join(web, "public/research");
 mkdirSync(contentDir, { recursive: true });
