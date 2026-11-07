@@ -137,6 +137,12 @@
 
 // ---- figures ----------------------------------------------------------------
 #import "@preview/cetz:0.4.2"
+#import "figures/replay.typ": fig-replay
+#import "figures/determinism.typ": fig-determinism
+#import "figures/edge.typ": fig-edge
+#import "figures/frames.typ": fig-frames
+#import "figures/secondary.typ": fig-secondary
+#import "figures/recon.typ": fig-recon
 // Web figures: drawn bodies become inline SVG via html.frame (as vision.typ); tables stay <table>s.
 #show figure: it => if web and it.kind != table {
   let lab = if it.has("label") { str(it.label) } else { "" }
@@ -420,6 +426,10 @@ where $omega_B$ is the BSDF-sampled direction, $omega_L$ the light-sampled one, 
 
 *Memory.* PRB stores nothing per vertex. With four wavelengths a path costs #V("hero.words_4l") f64 words at depth 2 and at depth 8 alike. Memory scales with paths, not pixels. Frames larger than one dispatch are traced in chunks, and a #(1024)² image at 4 spp, #V("mega.lanes") lanes, replays bit-identically in nine chunks.
 
+#figure(fig-replay(),
+  caption: [#lead[Path replay, drawn.] The forward pass computes a path's radiance and keeps a fixed handful of words per path, nothing per vertex. The replay regenerates the same path from the same seed through the same pipelines, bit for bit, and accumulates $delta theta$ at each vertex. Memory stays constant in depth, where an AD tape would grow with it.],
+) <fig:replay>
+
 = Determinism <sec:det>
 
 PRB's replay must redraw the forward pass's paths. irys makes this hold in four ways.
@@ -431,11 +441,19 @@ PRB's replay must redraw the forward pass's paths. irys makes this hold in four 
 
 The result is that the replay reproduces the forward radiance bit for bit on every lane, #V("gpu.replay_lanes") of #V("gpu.replay_lanes") at depths 2 and 8, with NEE, and through the TLAS and garden scenes; two runs give bitwise-identical loss and $delta theta$. The guarantee holds per device and driver. A different GPU or compiler may round differently, and then agrees with the CPU reference only to f32 precision.
 
+#figure(fig-determinism(),
+  caption: [#lead[Three choices make the replay bit-exact.] (a) SplitMix64 on 16-bit limbs gives the GPU, which has no 64-bit integers, the CPU's exact stream. (b) Lane gradients are summed by a fixed tree, never by float atomics. (c) BVH traversal visits children in an order that depends only on the ray.],
+) <fig:det>
+
 = Pose gradients through instanced CAD <sec:pose>
 
 *Scenes.* A scene is a two-level BVH: one bottom-level tree per CAD part or group, and a top-level tree over instances, each with an object-to-world transform. irys maps rays into an instance's space without renormalising them, so hit distances compare across instances. A pose $phi$, such as joint angles, is a map from parameters to the transforms of the moving instances. The full robot in this paper has 2.4 million triangles, tessellated by vcad from its `.loon` CAD source.
 
 *Primary edges.* Moving an instance moves the curves across which the radiance arriving at the camera plane jumps: silhouettes, boundaries and creases between faces that are not coplanar. By Reynolds transport, a pixel's derivative includes
+
+#figure(fig-edge(),
+  caption: [#lead[Primary edge sampling.] Moving an edge under $phi$ changes which pixels it covers, a jump that no derivative of shading at fixed rays can see. Paired rays traced either side of a sampled point measure it. On CAD tessellations the edge's own triangle is often a sliver thinner than $epsilon$, so the inner ray counts as inside on any coplanar triangle of the same face. The inset is not to scale.],
+) <fig:edge>
 
 $ partial I_p \/ partial phi supset.eq integral_(E inter p) (f(s - epsilon n) - f(s + epsilon n)) v_n (s) dif ell (s) $
 
@@ -443,7 +461,15 @@ over the projected edges $E$, where $n$ is the edge's outward normal and $v_n$ t
 
 *Interior term and attached frames.* Away from discontinuities the estimator is smooth in $phi$ at fixed random numbers, and we differentiate it by forward-mode dual numbers through a re-trace of the frame: ray–triangle intersection with the corners as duals, the shading frame, GGX sampling and evaluation, NEE and the MIS weights. The renderer builds a vertex's tangent frame from its normal with a construction that flips sign when the normal crosses a plane, a discontinuity in $phi$ at fixed random numbers that no edge term sees. We instead differentiate the estimator whose frame on a moving instance is rigidly attached, $R(phi) R(phi_0)^T "basis"(n(phi_0))$. At $phi_0$ it is the rendered estimator exactly, and for every $phi$ it is an equally valid estimator of the same image, so its derivative is an unbiased estimate of $partial I \/ partial phi$ from the paths the forward pass already drew. The duals reproduce the forward pass's values to #E("int.dual_vs_fwd").
 
+#figure(fig-frames(),
+  caption: [#lead[Attached frames.] Building the tangent frame from the normal flips its sign when the normal crosses a plane, so a direction drawn at fixed random numbers jumps, and no edge term sees it (a). A frame rigidly carried by the instance turns with it (b). Both are valid estimators of the same image; only the attached one is differentiable at fixed random numbers. Drawn in 2D, where the flip is a reversal.],
+) <fig:frames>
+
 *Secondary edges.* When an instance moves, its shadow and its reflection move too. We sample the edges seen from each path vertex with a per-tree edge BVH, under one-sample multiple importance over three densities: geometric, toward the sun's cone, and toward the mirror lobe. The boundary term includes the velocity of the BSDF-sampled direction, obtained by inverting the sampler at the path's random numbers and redrawing it in duals. Against warped-area estimators on the same configurations, edge sampling had 14–19× lower variance at 1.6× lower cost.
+
+#figure(fig-secondary(),
+  caption: [#lead[Moving shadows.] An occluder's light-silhouette edge casts a shadow edge on its receiver; when the occluder moves by $v$, the shadow edge moves by $d S = v - l (m dot v) \/ (m dot l)$, and every pixel it crosses changes, whether or not the occluder is in view.],
+) <fig:secondary>
 
 *Camera.* The same machinery differentiates a seven-parameter camera (translation, rotation, field of view), with the eye, axes and field of view as duals and every instance's edges as candidates.
 
@@ -516,6 +542,10 @@ The last reading is the one the title promises: the dimensions of a part from ph
 $ "score"("program", theta) = -log p("photos" | "render"("program", theta)) + 1/2 log det F(theta) - log p("program") $
 
 the residual under a robust noise model, a Laplace parameter cost from the Fisher information $F$, and the program's own length under a grammar prior. An edit to the program (add a feature, remove one, turn a hole into a counterbore or a slot, merge holes into a pattern) is kept only if it shortens the description, so the search cannot buy residual with a feature per pixel. Inside each edit, Levenberg–Marquardt fits the continuous parameters with a Jacobian from the edge-sampling estimator of @sec:pose, applied to a deterministic photo model (a G-buffer with closed-form OpenPBR shading, spherical-harmonic light, a fitted key light and ambient occlusion).
+
+#figure(fig-recon(),
+  caption: [#lead[Seeing is measuring.] The recovery edits an editable CAD program, fits each edit's dimensions with irys's edge-sampling Jacobian, scores it in nats, and keeps it only if the description of the photographs gets shorter. A feature has to pay for itself.],
+) <fig:recon>
 
 A printed tag beside the part fixes the camera's pose, its focal length and the metric scale. The test photographs are synthetic phone photographs: irys's OpenPBR scene kernel renders each part in PLA beside the tag, under a captured or synthetic environment and a key light, then adds defocus, shot and read noise, a tone curve and JPEG compression. The test set is #V("recon.parts") parts drawn from the program grammar, each recovered independently from either one photograph or three photographs from different directions.
 
