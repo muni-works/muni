@@ -173,6 +173,25 @@
 #let lbl(pos, body, anchor: "center", fill: c-label, size: s-xs, font: mono-m) = cetz.draw.content(pos, anchor: anchor, text(font: font, size: size, fill: fill, tracking: 0.04em, body))
 
 // Fig: the naive attention graph and the one comprehension it rewrites to.
+#let fig-one() = {
+  let rows = json("data/memory-axis.json").filter(r => r.device == "rtx3090" and r.n == 4096 and r.op == "fwd" and r.d == 64)
+  let pick(k) = rows.find(r => r.point == k)
+  let base = pick("naive").ms
+  let line(k, name, sl, pl) = {
+    let r = pick(k)
+    ([#name], [#sl], [#pl], [#r.kernels], [#r.nxn_buffers], [#calc.round(r.hbm_bytes / 1e6, digits: 1) MB], [#calc.round(r.ms, digits: 2)], [#calc.round(base / r.ms, digits: 2)×])
+  }
+  table(
+    columns: (auto, auto, auto, auto, auto, auto, auto, auto),
+    align: (left, left, left, right, right, right, right, right),
+    [schedule], [$S$ lives], [$P$ lives], [kernels], [$n times n$], [HBM], [ms], [speedup],
+    ..line("naive", [as written], [HBM], [HBM]),
+    ..line("checkpoint", [checkpointing], [HBM], [recomputed]),
+    ..line("flash", [flash (FA2-style)], [registers], [registers]),
+    ..line("autotune", [*searched*], [shared mem.], [recomputed]),
+  )
+}
+
 #let fig-rewrite() = cetz.canvas(length: 1cm, {
   import cetz.draw: *
   let w = 1.95
@@ -457,6 +476,16 @@ A modern model has a few dozen distinct operators. A modern framework has thousa
 
 Each hand kernel is a separate copy of the same arithmetic, and each one freezes a schedule that was right for one shape on one device. We measured how often that schedule is wrong: the fastest schedule changes with the size, the chip and even between runs on the same machine (§7.1). The winning schedule is a property of the graph, the chip and the size, not of the operator.
 
+Our thesis is that *a kernel is a theorem, not a program*. Every fast kernel we know of is a claim of the form "this comprehension, reassociated under this monoid and placed in this memory, equals the naive one." Such a claim can be derived, checked and searched. It does not need to be written. If that is right, the kernel library should be replaced by an algebra small enough to reason about, together with a search over its schedules. @fig-one shows one graph under the schedules that the field knows by name.
+
+#figure(fig-one(), kind: image,
+  caption: [One causal attention graph ($n = 4096$, $d = 64$, RTX 3090) under four schedules. Only where $S = q k^top$ and $P = "softmax"(S)$ live, and where kernels end, differ. FlashAttention-2 and checkpointing are points in this space. The search keeps $S$ in shared memory and recomputes $P$, 3.3× faster than the flash schedule on this chip. Measured; the web edition makes the figure interactive.],
+) <fig-one>
+
+#if web [
+  #html.elem("div", attrs: (id: "memory-dial", class: "derive-host"))
+]
+
 We propose writing the model once, as math, and letting the compiler derive every kernel. That works only if the IR is small enough to reason about and expressive enough that nothing important falls outside it. tang is a `no_std` Rust library that started as a geometry and physics math crate. Its `tang-expr` crate traces Rust closures into scalar expression graphs that it can differentiate, simplify and compile, and its tensor IR uses those graphs as its body language. The IR has two constructs.
 
 - *Views*: affine index maps that express broadcast, transpose, slicing, striding, padding and per-head column selection without touching memory.
@@ -552,15 +581,35 @@ The rewrite is not specific to plain attention. Anything that changes the score 
   ) <tab-gallery>
 ]
 
+== Rediscoveries
+
+The rewrites above are general, so known algorithms fall out of them. @tab-rediscover lists the ones tang derives today. Each row was a paper or a hand kernel. In tang each is a monoid, a view or a schedule field, and none adds an operator.
+
+#figure(placement: auto,
+  table(
+    columns: (auto, auto, auto),
+    align: (left, left, left),
+    [algorithm], [originally], [in tang],
+    [online softmax], [Milakov & Gimelshein 2018 @milakov2018online], [monoid on $(m, l)$],
+    [FlashAttention forward], [Dao et al. 2022 @dao2022flash], [`stabilize_softmax` + staging rule],
+    [FlashAttention backward], [hand kernel @dao2022flash], [derived gradient, max elimination, nested contractions (§3)],
+    [Welford variance], [Welford 1962 @welford1962], [monoid on $(n, mu, M_2)$],
+    [logsumexp, arg-max], [folklore], [monoids on $(m, l)$ and $("index", "value")$],
+    [top-$k$ routing], [hand kernel], [`Monoid::topk`, merge of sorted lists],
+    [split-K GEMM], [hand kernel], [`split` on any associative monoid],
+    [SwiGLU gate|up fusion], [hand kernel], [`merge_siblings` under a product monoid],
+    [implicit-GEMM convolution], [hand kernel], [guarded views, flattened reduce dims],
+    [paged KV cache], [vLLM], [gather view],
+    [scatter-add backward, segmented], [hand kernel], [gated sum + `set_sorted` segment (§8)],
+    [chunked SSD / gated delta rule], [Dao & Gu 2024 @dao2024ssd; Yang et al. 2025 @yang2025gdn], [affine scan monoid + chunked plan (§8)],
+  ),
+  caption: [Algorithms that tang derives rather than implements. Each derivation is checked against the f64 interpreter of the naive graph.],
+) <tab-rediscover>
+
 == Schedules
 
 A comprehension says _what_ to compute. Schedule fields say _how_, and they cannot change the
 math (precision changes rounding, §4):
-
-#if web [
-  The dial below holds the attention graph fixed and moves one schedule decision: where the $n times n$ scores live. Each stop is a schedule tang derives and runs; the familiar algorithms are points on it.
-  #html.elem("div", attrs: (id: "memory-dial", class: "derive-host"))
-]
 
 - `inline`: recompute inside the consumer instead of writing a buffer.
 - `split`: one workgroup per point, with threads striding the reduce space and tree-combining. This
@@ -791,20 +840,7 @@ for token.
   caption: [Decode, one stream. llama.cpp runs `llama-bench -n 128 -fa on` on a Q4_0 GGUF of the same weights. Teacher-forced on 31 greedy tokens against an exactly dequantized f32 CPU reference: 31/31 arg-max agreement.],
 ) <tab-qwen>
 
-Every change between the first build and the current one is a schedule or a lowering rule, not a
-kernel. Norms are materialized once instead of recomputed in every GEMV lane. 4-bit GEMVs under 16k
-rows are split along $k$. The attention score kernel stops at the runtime length. A load-bytes model
-picks the register dimension, so P·V shares the probabilities across the 4 GQA heads instead of
-re-reading them. A cooperative lowering computes a small reduction (RMSNorm's sum of squares, the
-per-head q/k-norm statistics) into shared memory once per block and evaluates the map that reads it
-from there, which takes the step from 729 to 584 kernels.
-
-Removing launches turned out to cost nothing and to save nothing. Inside a CUDA graph on sm_86, a
-dependent launch costs what a grid barrier costs (0.77 vs 0.81 µs), so 145 fewer kernels is
-time-neutral, and a persistent megakernel that runs the whole step as one launch with 437 phases is
-correct but 19% slower, because one register budget for every stage spills the largest GEMV. The
-gap to llama.cpp at 4k is in the kernels: the 4-bit GEMVs run at 60–82% of bandwidth, and attention
-reads K and V about twice.
+Every change between the first build and the current one is a schedule or a lowering rule, not a kernel; the appendix lists them.
 
 #figure(fig-decode(),
   caption: [Where a Qwen3-8B decode step went at 4k context in the first build: the sum of isolated kernel launches (10.3 ms; the captured graph ran in 9.6). The current build takes 8.05 ms. Dashed: the time to stream the weights and KV cache once at 936 GB/s.],
@@ -970,6 +1006,23 @@ The hand-written kernel does not disappear in this design. It becomes an intrins
 #aside[Reproducibility][
   Every number in this paper comes from `BENCHMARKS.md` in the tang repository (snapshot in `data/`), which records the command, date and machine state for each measurement. The IR is in `crates/tang-compile/src/tensor*.rs`; its design notes are in `docs/tensor-ir.md`.
 ]
+
+#heading(outlined: true, numbering: none)[Appendix: decode engineering notes] <app-decode>
+
+Every change between the first build and the current one is a schedule or a lowering rule, not a
+kernel. Norms are materialized once instead of recomputed in every GEMV lane. 4-bit GEMVs under 16k
+rows are split along $k$. The attention score kernel stops at the runtime length. A load-bytes model
+picks the register dimension, so P·V shares the probabilities across the 4 GQA heads instead of
+re-reading them. A cooperative lowering computes a small reduction (RMSNorm's sum of squares, the
+per-head q/k-norm statistics) into shared memory once per block and evaluates the map that reads it
+from there, which takes the step from 729 to 584 kernels.
+
+Removing launches turned out to cost nothing and to save nothing. Inside a CUDA graph on sm_86, a
+dependent launch costs what a grid barrier costs (0.77 vs 0.81 µs), so 145 fewer kernels is
+time-neutral, and a persistent megakernel that runs the whole step as one launch with 437 phases is
+correct but 19% slower, because one register budget for every stage spills the largest GEMV. The
+gap to llama.cpp at 4k is in the kernels: the 4-bit GEMVs run at 60–82% of bandwidth, and attention
+reads K and V about twice.
 
 #heading(outlined: true, numbering: none)[References]
 #show bibliography: it => { show "?.": "?"; show "!.": "!"; it }
