@@ -84,3 +84,12 @@ recon.3v.pose_med	0.134	same: median of max(|dx|,|dy|) pose error on the tag pla
 recon.3v.yaw_max	0.065	same: worst yaw error, degrees
 recon.3v.focal_max	0.61	same: worst focal error from EXIF + tag, percent
 recon.parts	20	the gate's parts, generate::program(3000..3020)
+recon.3a.p05	10	irys docs/recon-v1-3view-ao-report.json @de62b0a (recon_v1 gate --views 3 --no-fd, AO differentiated, 20 parts)
+recon.3a.p1	15	same
+recon.3a.topo	16	same
+recon.3a.err_lo	0.157	same: smallest max-dimension error among parts passing at 0.5 mm
+recon.3a.err_hi	0.382	same: largest
+recon.3a.err_med	0.265	same: median
+recon.3a.err1_med	0.320	same: median among parts passing at 1 mm
+recon.3a.s_part	187	same: mean seconds per part (3 photos, CPU)
+recon.3v.s_part	409	docs/recon-v1-3view-report.json @527f046: mean seconds per part with forward-difference AO columns

@@ -18,8 +18,8 @@ that introduced it and the test or example that measures it. `data/env.tsv` pins
 
 The title is a promise; these make it true (Cam, 2026-11-07: "fix the details, aiming for greatness"):
 
-- **M1, synthetic gate to 15/20 at 1 mm.** The 3-view gate is 13/20 (`recon.3v.*`). The differentiated
-  ambient occlusion (irys-recon `ao_edges`, uncommitted) is being gated; then update `tab:recon`.
+- ~~**M1, synthetic gate to 15/20 at 1 mm.**~~ Done 2026-11-07: 15/20 at 1 mm, 16/20 topology with the
+  differentiated AO and no FD columns (irys `de62b0a`, `recon.3a.*`).
 - **M2, real photographs.** Print five gate parts, photograph each three times beside the tag with a
   phone, recover, and measure with calipers. The caliper table becomes the paper's centre figure, and
   the "Photographs are synthetic" limit comes out of the scope section.

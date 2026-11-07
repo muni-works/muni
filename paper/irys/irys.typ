@@ -352,7 +352,7 @@
 
   Its differentiable core is path replay backpropagation on a GPU wavefront. Materials are written once as graphs in the tang tensor compiler and lowered both to GPU kernels and to an f64 CPU reference. An integer random-number generator, fixed-order reductions and a ray-only BVH walk make the replay reproduce the forward pass bit for bit: #V("gpu.replay_lanes") of #V("gpu.replay_lanes") lanes, with gradients identical across runs. GPU f32 gradients agree with the f64 reference to #E("gpu.dtheta_max"). On top of the material gradient sit pose gradients through instanced CAD meshes (primary edges, an interior term with attached frames, and secondary edges that move shadows and reflections) and a per-vertex image gradient that the vcad BRep kernel pulls back to the dimensions of a part.
 
-  Each layer is a measurement. A robot arm read from its CAD source gives back three joint angles and its anodised finish from a render, to #fx(max-deg-err, 2)° and #fx(theta-err, 3). A bearing bore's diameter gets its image gradient through the BRep kernel, matching vcad's forward mode to #E("brep.fwd_rel"). And from three synthetic phone photographs beside a printed tag, a recovery search over editable CAD programs finds #V("recon.3v.p05") of #V("recon.parts") test parts to within 0.5 mm in every dimension, up from #V("recon.1v.p05") with one photograph. We state the instrument's limits alongside its readings: replay is bit-exact per device and driver, the pose fit converges only near the answer, and real photographs are the next experiment, not a result of this paper.
+  Each layer is a measurement. A robot arm read from its CAD source gives back three joint angles and its anodised finish from a render, to #fx(max-deg-err, 2)° and #fx(theta-err, 3). A bearing bore's diameter gets its image gradient through the BRep kernel, matching vcad's forward mode to #E("brep.fwd_rel"). And from three synthetic phone photographs beside a printed tag, a recovery search over editable CAD programs finds #V("recon.3a.p1") of #V("recon.parts") test parts to within 1 mm in every dimension and #V("recon.3a.p05") to within 0.5 mm, against #V("recon.1v.p1") and #V("recon.1v.p05") from one photograph. We state the instrument's limits alongside its readings: replay is bit-exact per device and driver, the pose fit converges only near the answer, and real photographs are the next experiment, not a result of this paper.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -551,17 +551,17 @@ A printed tag beside the part fixes the camera's pose, its focal length and the 
 
 #figure(
   table(
-    columns: (2fr, 1fr, 1fr),
-    align: (left, right, right),
-    table.header([*Recovered*], [*1 photo*], [*3 photos*]),
-    [every dimension within 0.5 mm], [#V("recon.1v.p05")/#V("recon.parts")], [#V("recon.3v.p05")/#V("recon.parts")],
-    [every dimension within 1 mm], [#V("recon.1v.p1")/#V("recon.parts")], [#V("recon.3v.p1")/#V("recon.parts")],
-    [the right features (topology)], [#V("recon.1v.topo")/#V("recon.parts")], [#V("recon.3v.topo")/#V("recon.parts")],
+    columns: (2fr, 1fr, 1fr, 1.2fr),
+    align: (left, right, right, right),
+    table.header([*Recovered*], [*1 photo*], [*3 photos*], [*3 photos, AO grad*]),
+    [every dimension within 0.5 mm], [#V("recon.1v.p05")/#V("recon.parts")], [#V("recon.3v.p05")/#V("recon.parts")], [#V("recon.3a.p05")/#V("recon.parts")],
+    [every dimension within 1 mm], [#V("recon.1v.p1")/#V("recon.parts")], [#V("recon.3v.p1")/#V("recon.parts")], [*#V("recon.3a.p1")/#V("recon.parts")*],
+    [the right features (topology)], [#V("recon.1v.topo")/#V("recon.parts")], [#V("recon.3v.topo")/#V("recon.parts")], [#V("recon.3a.topo")/#V("recon.parts")],
   ),
-  caption: [#lead[Dimensions from synthetic phone photographs], per part, worst dimension, after the plate's quarter-turn symmetry. With three photographs the parts that pass at 0.5 mm have worst-dimension errors from #F("recon.3v.err_lo", 2) to #F("recon.3v.err_hi", 2) mm (median #F("recon.3v.err_med", 2)). Across all #V("recon.parts") parts the pose on the tag plane is recovered to a median #F("recon.3v.pose_med", 2) mm and yaw within #F("recon.3v.yaw_max", 2)°, and the focal length from EXIF and the tag within #F("recon.3v.focal_max", 1)%. `data/measured.tsv`.],
+  caption: [#lead[Dimensions from synthetic phone photographs], per part, worst dimension, after the plate's quarter-turn symmetry. The last column differentiates the photo model's ambient occlusion (below) and drops its forward-difference columns; there the parts that pass at 0.5 mm have worst-dimension errors from #F("recon.3a.err_lo", 2) to #F("recon.3a.err_hi", 2) mm (median #F("recon.3a.err_med", 2)), and a part takes #V("recon.3a.s_part") s on average against #V("recon.3v.s_part") s. Across all #V("recon.parts") parts the pose on the tag plane is recovered to a median #F("recon.3v.pose_med", 2) mm and yaw within #F("recon.3v.yaw_max", 2)°, and the focal length from EXIF and the tag within #F("recon.3v.focal_max", 1)%. `data/measured.tsv`.],
 ) <tab:recon>
 
-A single photograph cannot separate a plate's height from a boss's, or see the floor of a counterbore; three photographs mostly can. The failures that remain are of two kinds. In four parts the search confuses a hole with a counterbore. We traced one of them: the correct program reached the full-resolution finalists and lost by 27 nats to a counterbore whose depth never moved from its starting value, because a counterbore's step shows in the photo mainly as ambient occlusion and the photo model's AO was not yet differentiated. In two more parts the right features have a height off by more than a millimetre. The photographs here are rendered, so this is the instrument read against a known standard. Printed parts, phone photographs and calipers are the next experiment.
+A single photograph cannot separate a plate's height from a boss's, or see the floor of a counterbore; three photographs mostly can. With three, the main remaining error was a confusion between holes and counterbores. We traced one case: the correct program reached the full-resolution finalists and lost by 27 nats to a counterbore whose depth never moved from its starting value. A counterbore's step shows in a photograph mostly as ambient occlusion, and the photo model's occlusion was a fixed set of 16 rays per point, a step function of the geometry whose derivative is zero almost everywhere. On a flat receiver those 16 directions are fixed in the world, so each is a directional light of weight $1 \/ 16$, and its derivative is the moving-shadow term of @fig:secondary, with the receiver allowed to move too (a counterbore's floor moves with its depth). With that term the Jacobian's column for a counterbore's depth goes from cosine 0.88 against central differences to 0.97, every other column improves or holds, and the gate reaches #V("recon.3a.p1") of #V("recon.parts") parts within 1 mm with no finite differences at all. The photographs here are rendered, so this is the instrument read against a known standard. Printed parts, phone photographs and calipers are the next experiment.
 
 = Discussion <sec:discussion>
 
@@ -577,7 +577,7 @@ irys is open source under Apache-2.0. Each row of `data/measured.tsv` names the 
 
 = Conclusion
 
-Seeing becomes measuring when the renderer that explains a photograph is exact and its gradients can be trusted. irys makes the gradient exact where it can be: a replay that reproduces the forward pass bit for bit, materials compiled from one graph to a GPU tier and an f64 reference, and pose and shape gradients through the instanced CAD a kernel produces, down to the dimensions in the model. With them, a search over editable CAD programs reads the dimensions of a part from three photographs to half a millimetre in most cases. The next readings are photographs of real parts, held against calipers. irys is open source.
+Seeing becomes measuring when the renderer that explains a photograph is exact and its gradients can be trusted. irys makes the gradient exact where it can be: a replay that reproduces the forward pass bit for bit, materials compiled from one graph to a GPU tier and an f64 reference, and pose and shape gradients through the instanced CAD a kernel produces, down to the dimensions in the model. With them, a search over editable CAD programs reads the dimensions of three in four test parts from three photographs to within a millimetre, half of them to within half a millimetre. The next readings are photographs of real parts, held against calipers. irys is open source.
 
 #heading(outlined: true, numbering: none)[References]
 #show bibliography: it => { show "?.": "?"; show "!.": "!"; it }
