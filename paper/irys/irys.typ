@@ -359,7 +359,7 @@ where $omega_B$ is the BSDF-sampled direction, $omega_L$ the light-sampled one, 
 
 *Hero wavelengths.* Each path carries four stratified wavelengths, the hero and its rotations by $k \/ 4$ of the visible range @wilkie2014hero. Only the hero draws directions. The wavefront's lanes are (path, wavelength) pairs, four times as many as paths, and each lane is its own PRB path. At equal paths, four wavelengths cut per-pixel variance #F("hero.var_total", 1)× in total and #F("hero.var_chroma", 1)× in chroma.
 
-*Memory.* PRB stores nothing per vertex. With four wavelengths a path costs #V("hero.words_4l") f64 words at depth 2 and at depth 8 alike (#V("p1.words_1l") with one wavelength). Memory scales with paths, not pixels. Frames larger than one dispatch are traced in chunks, and a #(1024)² image at 4 spp, #V("mega.lanes") lanes, replays bit-identically in nine chunks.
+*Memory.* PRB stores nothing per vertex. With four wavelengths a path costs #V("hero.words_4l") f64 words at depth 2 and at depth 8 alike. Memory scales with paths, not pixels. Frames larger than one dispatch are traced in chunks, and a #(1024)² image at 4 spp, #V("mega.lanes") lanes, replays bit-identically in nine chunks.
 
 = Determinism <sec:det>
 
