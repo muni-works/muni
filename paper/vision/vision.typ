@@ -71,8 +71,11 @@
   (25, "chyp", "silicon", "concept", "inference chip", "home"),
 )
 // product names colored wherever they appear in running text
-#let brand-names = elements.filter(e => e.at(1) not in ("hand",)).map(e => (lower(e.at(1)), e.at(2)))
-#let brand-color(name) = { let m = brand-names.find(n => n.at(0) == name); if m != none { fam.at(m.at(1)).color } }
+// products with a landing-page card keep that card's color in running text (web/src/app/page.tsx);
+// the rest take their family color. The periodic table itself stays colored by family.
+#let landing = (tang: rgb("#ffd400"), vcad: rgb("#ff2052"), phyz: rgb("#00f0ff"), frog: rgb("#39ff14"), ribt: rgb("#b388ff"))
+#let brand-names = elements.filter(e => e.at(1) not in ("hand",)).map(e => { let n = lower(e.at(1)); (n, if n in landing { n } else { e.at(2) }) })
+#let brand-color(name) = { let m = brand-names.find(n => n.at(0) == name); if m != none { let k = m.at(1); if k in landing { landing.at(k) } else { fam.at(k).color } } }
 #let brand-family(name) = { let m = brand-names.find(n => n.at(0) == lower(name)); if m != none { m.at(1) } }
 // every product name takes its family color, in any case: lymb, Lymb and LYMB alike
 #let brand-re = regex("(?i)\\b(" + brand-names.map(n => n.at(0)).sorted(key: n => -n.len()).join("|") + ")\\b")
@@ -83,7 +86,7 @@
   elements: elements.map(e => (num: e.at(0), name: e.at(1), family: e.at(2), maturity: e.at(3), note: e.at(4), stage: e.at(5))),
 )) <elements-data>
 // on the web, scripts/build-posts.mjs wraps names in spans (Typst cannot put HTML inside SVG frames)
-#show brand-re: it => if web { it } else { text(fill: fam.at(brand-family(it.text)).color, it) }
+#show brand-re: it => if web { it } else { text(fill: brand-color(lower(it.text)), it) }
 
 // ---- type ([type]) ----------------------------------------------------------
 // Plex ships each weight as its own family name, so weights are picked by family.

@@ -426,6 +426,10 @@ html.post-rail-on::-webkit-scrollbar { display: none; }
 .post-rail.is-voice .post-rail-end { text-transform: none; letter-spacing: 0.04em; white-space: nowrap; }
 .post-rail.is-voice .post-rail-earth { color: var(--p-label); }
 .post-rail.is-voice .post-rail-sun { color: #ff5f00; opacity: 0.9; }
+/* the seam rail (vcad cover): minor radius r at the top, major radius R in vcad red at the end */
+.post-rail.is-seam .post-rail-end { text-transform: none; letter-spacing: 0.04em; white-space: nowrap; }
+.post-rail.is-seam .post-rail-earth { color: var(--p-label); }
+.post-rail.is-seam .post-rail-sun { color: #ff2052; opacity: 0.9; }
 .post-rail.is-gate .post-rail-end { text-transform: none; letter-spacing: 0.04em; white-space: nowrap; }
 .post-rail.is-gate .post-rail-earth { color: var(--p-label); }
 .post-rail.is-gate .post-rail-sun { color: #ff2052; opacity: 0.9; }
@@ -450,6 +454,14 @@ html.post-rail-on::-webkit-scrollbar { display: none; }
 .post .n-power { color: #ffd400; }
 .post .n-mind { color: #ff5f00; }
 .post .n-silicon { color: #a08d70; }
+/* research posts color each product as its landing-page card does (app/page.tsx) */
+.post .n-tang { color: #ffd400; }
+.post .n-vcad { color: #ff2052; }
+.post .n-phyz { color: #00f0ff; }
+.post .n-frog { color: #39ff14; }
+.post .n-ribt { color: #b388ff; }
+.post .n-ipse { color: #ff5f00; }
+.post .n-loon, .post .n-pond { color: #a08d70; }
 
 /* aside: a boxed digression */
 .post aside.aside { margin: 2.4em 2em; padding: 0.1em 0 0.1em 1em; border-left: 1px solid #4a3a2a; font-size: 0.9em; color: #a08d70; }

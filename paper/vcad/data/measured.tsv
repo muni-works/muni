@@ -1,0 +1,552 @@
+m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L72::dv	1.2e1
+m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L72::a_exact	1.2e1
+m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L72::rel_analytic	0e0
+m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L80::dv	1.2e1
+m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L80::dv_fd	1.1999999999900979e1
+m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L80::a_exact	1.2e1
+m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L80::rel_fd	8.25176963796063e-12
+m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd::cmp.max_rel_err	2.8755664515384365e-11
+m10::timing::16	836	0.599	0.054	0.171
+m10::timing::64	3284	2.170	0.141	0.545
+m10::timing::128	6548	4.315	0.259	1.043
+m10::grid::rounded_cube::16	836	24	0.588	0.600
+m10::grid::rounded_cube::64	3284	24	2.356	2.378
+m10::grid::rounded_cube::128	6548	24	4.568	4.497
+m10::grid::flywheel::16	1922	1922	3.805	0.944
+m10::grid::flywheel::64	1922	1922	3.802	0.934
+m10::grid::flywheel::128	1922	1922	3.894	0.943
+test::m10_grid_evaluation_is_bit_identical_to_linear	ok
+m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::ddv	1.6385316107350387e4
+m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::ddv_exact	1.6385316107350383e4
+m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::rel	2.2202676977710128e-16
+m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L370::ddv	1.6385316107350387e4
+m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L370::fd	1.6385316106607206e4
+m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L370::rel_fd	4.535651663714536e-11
+m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::tr_gn	4.7825108872584954e-1
+m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::tr_full	4.785305544537932e-1
+m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::rel_trace	5.843493815941603e-4
+m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::num	4.8829195929210475e-8
+m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::den	1.762292960575011e-1
+m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::rel_frob	5.263816404166327e-4
+m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::ddv	-3.1399450452827484e1
+m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::ddv_exact	-3.1399450452827402e1
+m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::rel_closed	2.602351742912546e-15
+m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::ddv	-3.1399450452827484e1
+m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::fd	-3.139945051344739e1
+m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::rel_fd	1.9306040851627877e-9
+m10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::ddv	-4.076427479325223e1
+m10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::fd	-4.0716413035710275e1
+m10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::rel	1.175490520247324e-3
+m10_second_order::m10_torus_minor_radius_second_derivative@L444::ddv	3.0867746966661355e2
+m10_second_order::m10_torus_minor_radius_second_derivative@L444::fd	3.086769450180782e2
+m10_second_order::m10_torus_minor_radius_second_derivative@L444::rel	1.6996657900804495e-6
+m10_second_order::m10_torus_nonlinear_field_chain_rule@L504::dv_dtheta	3.2078703637592102e3
+m10_second_order::m10_torus_nonlinear_field_chain_rule@L504::dv_expected	3.2078703637591993e3
+m10_second_order::m10_torus_nonlinear_field_chain_rule@L504::rel1	3.4022373673746125e-15
+m10_second_order::m10_torus_nonlinear_field_chain_rule@L505::ddv_dthth	5.556194454041147e3
+m10_second_order::m10_torus_nonlinear_field_chain_rule@L505::ddv_expected	5.556194454041159e3
+m10_second_order::m10_torus_nonlinear_field_chain_rule@L505::rel2	2.1279728815913904e-15
+m1_frozen_lift::m1_cylinder_interior_samples_match_fd::cmp.max_rel_err	5.62717788972549e-10
+m1_frozen_lift::m1_plane_offset_interior_samples_match_fd@L130::rel	4.280580707176219e-10
+test::m1_topology_change_is_an_error_not_a_lie	ok
+m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695918903e-10
+m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd::cmp.max_rel_err	6.563080667440927e-10
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::dv	-7.849862613206844e1
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::dv_exact	-7.849862613206851e1
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::rel_closed	9.051658236217551e-16
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::dv	-7.849862613206844e1
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::dv_fd	-7.849862618058978e1
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::rel_fd	6.18117103170518e-10
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::dv	-7.849862613206844e1
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::dv_continuum	-7.853981633974483e1
+m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::gap	5.244500126943832e-4
+m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L112::dv	7.764571353075621e1
+m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L112::area	7.764571353075623e1
+m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L112::rel_closed	1.8302175444073863e-16
+m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L118::dv	7.764571353075621e1
+m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L118::dv_fd	7.764571330426406e1
+m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L118::area	7.764571353075623e1
+m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L118::rel_fd	2.9169948655803503e-9
+m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim::cmp.max_rel_err	3.043112428713357e-10
+test::contraction_hook_reproduces_dual_volume_derivative	ok
+m3_mass_properties::cylinder_radius_inertia_derivatives_match_fd@L129::dual	6.202905175624541e3
+m3_mass_properties::cylinder_radius_inertia_derivatives_match_fd@L129::fd	6.202905175086926e3
+m3_mass_properties::cylinder_radius_inertia_derivatives_match_fd@L129::rel	8.667149278745321e-11
+m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L63::dizz_exact	2.5e1
+m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L63::rel	5.684341886080802e-16
+m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L80::dual	2.5000000000000014e1
+m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L80::fd	2.500000000793534e1
+m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L80::rel	3.174130823838121e-10
+m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L132::dv	-7.280717046605996e1
+m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L132::dv_fd	-7.280716977220436e1
+m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L132::rel_fd	9.530044900098613e-9
+m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum::cmp.max_rel_err	3.2214969056842494e-9
+m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L195::dv	-7.280717046605996e1
+m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L195::dmink	-6.82168297885255e1
+m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L195::gap	6.729044272160799e-2
+m4_fillet_radius::optimize::r	2.200000186013702e0
+m4_fillet_radius::optimize::iters	1.7e1
+m5_reverse_mode::agree::rounded cube dV/da::fwd	2.936649053568918e2
+m5_reverse_mode::agree::rounded cube dV/da::rev	2.9366490535689263e2
+m5_reverse_mode::agree::rounded cube dV/dr::fwd	-7.280717046605996e1
+m5_reverse_mode::agree::rounded cube dV/dr::rev	-7.280717046605974e1
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L311::dv_da_rev	2.9366490535689263e2
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L311::fd_a	2.936649055982343e2
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L311::rel_a	8.21826818500548e-10
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L312::dv_dr_rev	-7.280717046605974e1
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L312::fd_r	-7.280716977220436e1
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L312::rel_r	9.530041972326233e-9
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L321::dv_da_rev	2.9366490535689263e2
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L321::dv_da_cont	2.942057504117311e2
+m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L321::gap	1.838322514368228e-3
+m5_reverse_mode::agree::cube dV/dh::fwd	1.2e1
+m5_reverse_mode::agree::cube dV/dh::rev	1.2e1
+m5_reverse_mode::agree::hole dV/dr::fwd	-7.849862613206844e1
+m5_reverse_mode::agree::hole dV/dr::rev	-7.849862613206837e1
+m5_reverse_mode::agree::cylinder dV/dh::fwd	7.764571353075621e1
+m5_reverse_mode::agree::cylinder dV/dh::rev	7.76457135307562e1
+m6_synthesized_seeding::cone_and_torus_parameters_synthesized::dv	9.260324091503422e2
+m6_synthesized_seeding::cone_and_torus_parameters_synthesized::fd	9.260324094384487e2
+m6_synthesized_seeding::cone_and_torus_parameters_synthesized::rel_dv_vs_fd	3.111191700990721e-10
+m6_synthesized_seeding::m2_hole_radius_synthesized::dv	-7.849862614304085e1
+m6_synthesized_seeding::m2_hole_radius_synthesized::dv_closed	-7.849862613206851e1
+m6_synthesized_seeding::m2_hole_radius_synthesized::rel_dv_vs_dv_closed	1.3977751681531866e-10
+m6_synthesized_seeding::m2_hole_radius_synthesized::dv_fd	-7.849862618058978e1
+m6_synthesized_seeding::m2_hole_radius_synthesized::rel_dv_vs_dv_fd	4.783386808937068e-10
+m6_synthesized_seeding::m3_cylinder_height_synthesized::dv	7.76457135071277e1
+m6_synthesized_seeding::m3_cylinder_height_synthesized::area	7.764571353075623e1
+m6_synthesized_seeding::m3_cylinder_height_synthesized::rel_dv_vs_area	3.0431210132616057e-10
+m6_synthesized_seeding::m3_cylinder_height_synthesized::dv_fd	7.764571330426406e1
+m6_synthesized_seeding::m3_cylinder_height_synthesized::rel_dv_vs_dv_fd	2.6126829548971274e-9
+test::parameter_out_of_range_errors	ok
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_da_syn	2.936649051371136e2
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_da_hand	2.936649053568918e2
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_da_syn_vs_dv_da_hand	7.483979085091389e-10
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_dr_syn	-7.280717033803418e1
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_dr_hand	-7.280717046605996e1
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_dr_syn_vs_dv_dr_hand	1.7584226120976242e-9
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::fd_a	2.936649055982343e2
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_da_syn_vs_fd_a	1.5702276298783865e-9
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::fd_r	-7.280716977220436e1
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_dr_syn_vs_fd_r	7.771622271243143e-9
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_da_rev	2.936649051371138e2
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_da_rev_vs_dv_da_syn	7.742623359678277e-16
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_dr_rev	-7.280717033803421e1
+m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_dr_rev_vs_dv_dr_syn	3.9036964763835376e-16
+test::topology_change_errors_cleanly	ok
+m7_cone_torus::cone_half_angle_derivative@L156::dv	3.449540233126396e3
+m7_cone_torus::cone_half_angle_derivative@L156::dv_closed	3.4495402331263963e3
+m7_cone_torus::cone_half_angle_derivative@L156::rel_closed	1.318283945551539e-16
+m7_cone_torus::cone_half_angle_derivative@L163::dv	3.449540233126396e3
+m7_cone_torus::cone_half_angle_derivative@L163::dv_fd	3.449540233106063e3
+m7_cone_torus::cone_half_angle_derivative@L163::rel_fd	5.894311177350042e-12
+m7_cone_torus::cone_half_angle_derivative::cmp.max_rel_err	9.564487444975997e-11
+m7_cone_torus::cone_height_derivative@L201::dv	2.795245687107222e1
+m7_cone_torus::cone_height_derivative@L201::dv_closed	2.795245687107224e1
+m7_cone_torus::cone_height_derivative@L201::rel_closed	7.625906435030777e-16
+m7_cone_torus::cone_height_derivative@L208::dv	2.795245687107222e1
+m7_cone_torus::cone_height_derivative@L208::dv_fd	2.7952457003266318e1
+m7_cone_torus::cone_height_derivative@L208::rel_fd	4.729247945268173e-9
+m7_cone_torus::cone_height_derivative::cmp.max_rel_err	1.779619205490057e-7
+m7_cone_torus::torus_gate@L269::torus major R::dv	1.736310766953672e2
+m7_cone_torus::torus_gate@L269::torus major R::dv_fd	1.7363107724577276e2
+m7_cone_torus::torus_gate@L269::torus major R::rel_fd	3.169971469552118e-9
+m7_cone_torus::torus_gate::torus major R::cmp.max_rel_err	1.2534054511808066e-9
+m7_cone_torus::torus_gate@L269::torus minor r::dv	9.260324090208981e2
+m7_cone_torus::torus_gate@L269::torus minor r::dv_fd	9.260324094384487e2
+m7_cone_torus::torus_gate@L269::torus minor r::rel_fd	4.509028033275415e-10
+m7_cone_torus::torus_gate::torus minor r::cmp.max_rel_err	1.4296979875721212e-9
+m9::lbfgs::stop	GradientConverged
+m9::lbfgs::iters	30
+m9::lbfgs::evals	33
+m9::lbfgs::J	6.020e-17
+m9::lbfgs::err_inf	2.874e-7
+m9::lbfgs::J::0	2.1039473356557997e-1
+m9::lbfgs::J::1	2.0427182618629922e-1
+m9::lbfgs::J::2	8.490920942531356e-2
+m9::lbfgs::J::3	6.858159981991226e-2
+m9::lbfgs::J::4	4.776007572457458e-2
+m9::lbfgs::J::5	1.8336103799429675e-2
+m9::lbfgs::J::6	7.123395649124488e-3
+m9::lbfgs::J::7	3.1485850395714865e-3
+m9::lbfgs::J::8	2.6092411867055672e-3
+m9::lbfgs::J::9	1.444715615511247e-3
+m9::lbfgs::J::10	5.134744759170299e-4
+m9::lbfgs::J::11	1.2565882512105797e-4
+m9::lbfgs::J::12	5.068571464479108e-6
+m9::lbfgs::J::13	2.998546198585807e-6
+m9::lbfgs::J::14	2.1086403676426304e-6
+m9::lbfgs::J::15	2.0995994473896906e-6
+m9::lbfgs::J::16	1.6773860075916756e-6
+m9::lbfgs::J::17	1.0745828808775359e-6
+m9::lbfgs::J::18	3.3689793428320295e-7
+m9::lbfgs::J::19	1.2856286332216323e-7
+m9::lbfgs::J::20	1.8105986470442224e-8
+m9::lbfgs::J::21	1.5332859463746784e-8
+m9::lbfgs::J::22	2.616038637772763e-9
+m9::lbfgs::J::23	1.3436794329525388e-10
+m9::lbfgs::J::24	1.4030389620755316e-11
+m9::lbfgs::J::25	5.843963060944071e-13
+m9::lbfgs::J::26	1.513475751794895e-14
+m9::lbfgs::J::27	3.3847794662222578e-15
+m9::lbfgs::J::28	1.0975345647391518e-15
+m9::lbfgs::J::29	1.7717023903651703e-16
+m9::lbfgs::J::30	6.019714544814697e-17
+m9::gd::J::0	2.1039473356557983e-1
+m9::gd::J::1	2.0427182618629924e-1
+m9::gd::J::2	1.9272428059331145e-1
+m9::gd::J::3	1.722623506543569e-1
+m9::gd::J::4	1.4060609688666614e-1
+m9::gd::J::5	1.04718997126139e-1
+m9::gd::J::6	8.310425030402964e-2
+m9::gd::J::7	6.300190812691489e-2
+m9::gd::J::8	3.7262545761949664e-2
+m9::gd::J::9	3.0613253659252257e-2
+m9::gd::J::10	2.5842453463408997e-2
+m9::gd::J::11	2.3509862959770336e-2
+m9::gd::J::12	2.208120145987733e-2
+m9::gd::J::13	1.3659289203144347e-2
+m9::gd::J::14	1.13838037627544e-2
+m9::gd::J::15	1.119202264201237e-2
+m9::gd::J::16	6.957096454875337e-3
+m9::gd::J::17	5.882392099717715e-3
+m9::gd::J::18	4.815748369677286e-3
+m9::gd::J::19	4.777090057775335e-3
+m9::gd::J::20	3.2596876129581563e-3
+m9::gd::J::21	2.8094563530536715e-3
+m9::gd::J::22	2.652503637280468e-3
+m9::gd::J::23	1.8801296207152103e-3
+m9::gd::J::24	1.6440522933224293e-3
+m9::gd::J::25	1.4745982566620032e-3
+m9::gd::J::26	1.387469819788299e-3
+m9::gd::J::27	1.1073165561440923e-3
+m9::gd::J::28	9.666224203923868e-4
+m9::gd::J::29	8.607373569172901e-4
+m9::gd::J::30	7.991346427724457e-4
+m9::gd::J::31	6.60978658559662e-4
+m9::gd::J::32	5.779662214511741e-4
+m9::gd::J::33	5.161010018505704e-4
+m9::gd::J::34	4.831161567045236e-4
+m9::gd::J::35	3.976449146387369e-4
+m9::gd::J::36	3.4952217821984557e-4
+m9::gd::J::37	3.161831257100566e-4
+m9::gd::J::38	3.058275222770049e-4
+m9::gd::J::39	2.4101219065232355e-4
+m9::gd::J::40	2.1440934247803574e-4
+m9::gd::J::41	2.0020018621685583e-4
+m9::gd::J::42	1.67234886597501e-4
+m9::gd::J::43	1.4763235837307001e-4
+m9::gd::J::44	1.3474480486575023e-4
+m9::gd::J::45	1.3426869177684257e-4
+m9::gd::J::46	1.0256463103444439e-4
+m9::gd::J::47	9.26906595607687e-5
+m9::gd::J::48	8.983031462508847e-5
+m9::gd::J::49	7.176933925442701e-5
+m9::gd::J::50	6.452699717206504e-5
+m9::gd::J::51	6.183528203173891e-5
+m9::gd::J::52	5.05111296619395e-5
+m9::gd::J::53	4.536695526015138e-5
+m9::gd::J::54	4.3133364359771916e-5
+m9::gd::J::55	3.583931991676484e-5
+m9::gd::J::56	3.2225634798322297e-5
+m9::gd::J::57	3.064409409406543e-5
+m9::gd::J::58	2.568104329862707e-5
+m9::gd::J::59	2.3184623312506824e-5
+m9::gd::J::60	2.2079319802716715e-5
+m9::gd::J::61	1.865394397730693e-5
+m9::gd::J::62	1.693362781352056e-5
+m9::gd::J::63	1.6238127905101315e-5
+m9::gd::J::64	1.377782237819107e-5
+m9::gd::J::65	1.2610528709815279e-5
+m9::gd::J::66	1.2181567054892033e-5
+m9::gd::J::67	1.0397818652505468e-5
+m9::gd::J::68	9.60687080447935e-6
+m9::gd::J::69	9.381729807708482e-6
+m9::gd::J::70	8.045884952442537e-6
+m9::gd::J::71	7.519199809187344e-6
+m9::gd::J::72	7.4221172276070604e-6
+m9::gd::J::73	6.407999821952714e-6
+m9::gd::J::74	6.060051337126341e-6
+m9::gd::J::75	6.050760540863091e-6
+m9::gd::J::76	5.263094833114108e-6
+m9::gd::J::77	5.037657386139508e-6
+m9::gd::J::78	4.706669854344026e-6
+m9::gd::J::79	4.45967610936597e-6
+m9::gd::J::80	4.314197021496374e-6
+m9::gd::J::81	4.061709100841269e-6
+m9::gd::J::82	3.890926812045404e-6
+m9::gd::J::83	3.8007765783424224e-6
+m9::gd::J::84	3.6035611808702195e-6
+m9::gd::J::85	3.4856609842008174e-6
+m9::gd::J::86	3.4305051848242983e-6
+m9::gd::J::87	3.275132425668893e-6
+m9::gd::J::88	3.1926319383289687e-6
+m9::gd::J::89	3.1613459252545603e-6
+m9::gd::J::90	3.0359309473343537e-6
+m9::gd::J::91	2.9778944923402856e-6
+m9::gd::J::92	2.960801168633321e-6
+m9::gd::J::93	2.858854205472747e-6
+m9::gd::J::94	2.816924628841578e-6
+m9::gd::J::95	2.8091587083874027e-6
+m9::gd::J::96	2.7245332288347617e-6
+m9::gd::J::97	2.6936854964780883e-6
+m9::gd::J::98	2.6907891793746778e-6
+m9::gd::J::99	2.620140591838331e-6
+m9::gd::J::100	2.5964851071946316e-6
+m9::gd::J::101	2.5639792138458338e-6
+m9::gd::J::102	2.5363956234855543e-6
+m9::gd::J::103	2.5176364181271994e-6
+m9::gd::J::104	2.490068583015324e-6
+m9::gd::J::105	2.4672034366902205e-6
+m9::gd::J::106	2.4514700832484315e-6
+m9::gd::J::107	2.4278487796976285e-6
+m9::gd::J::108	2.408153571396787e-6
+m9::gd::J::109	2.3944993482040133e-6
+m9::gd::J::110	2.3738012260961662e-6
+m9::gd::J::111	2.356359995401561e-6
+m9::gd::J::112	2.3439103589345884e-6
+m9::gd::J::113	2.325606863967202e-6
+m9::gd::J::114	2.309666071087819e-6
+m9::gd::J::115	2.298035491316923e-6
+m9::gd::J::116	2.297148211501529e-6
+m9::gd::J::117	2.2667451735449294e-6
+m9::gd::J::118	2.2555245101439287e-6
+m9::gd::J::119	2.2536993506515675e-6
+m9::gd::J::120	2.2265303414070006e-6
+m9::gd::J::121	2.2155576531306464e-6
+m9::gd::J::122	2.212670505374177e-6
+m9::gd::J::123	2.1884067794836408e-6
+m9::gd::J::124	2.177546710933512e-6
+m9::gd::J::125	2.1738132616961247e-6
+m9::gd::J::126	2.1518522051623833e-6
+m9::gd::J::127	2.141068867906052e-6
+m9::gd::J::128	2.1364608752768534e-6
+m9::gd::J::129	2.1165791514017482e-6
+m9::gd::J::130	2.105787457809156e-6
+m9::gd::J::131	2.100468090001389e-6
+m9::gd::J::132	2.0823184636825918e-6
+m9::gd::J::133	2.0715432258091426e-6
+m9::gd::J::134	2.0655276991121283e-6
+m9::gd::J::135	2.048934230998503e-6
+m9::gd::J::136	2.0381266349714094e-6
+m9::gd::J::137	2.0315483386470973e-6
+m9::gd::J::138	2.0162927594947013e-6
+m9::gd::J::139	2.0055028796033607e-6
+m9::gd::J::140	1.9983921747218965e-6
+m9::gd::J::141	1.9843358853245367e-6
+m9::gd::J::142	1.9735353424104234e-6
+m9::gd::J::143	1.9660165546810433e-6
+m9::gd::J::144	1.9529738786148494e-6
+m9::gd::J::145	1.9422064662800488e-6
+m9::gd::J::146	1.9343092139389137e-6
+m9::gd::J::147	1.9221976692026343e-6
+m9::gd::J::148	1.9114413930971307e-6
+m9::gd::J::149	1.903267435882121e-6
+m9::gd::J::150	1.902078255211691e-6
+m9::gd::J::151	1.8812377111109505e-6
+m9::gd::J::152	1.8727949966178137e-6
+m9::gd::J::153	1.8705521335100968e-6
+m9::gd::J::154	1.851537679406093e-6
+m9::gd::J::155	1.8428954271921907e-6
+m9::gd::J::156	1.8397020915980466e-6
+m9::gd::J::157	1.8223560785564624e-6
+m9::gd::J::158	1.8135330625747919e-6
+m9::gd::J::159	1.8095584375547779e-6
+m9::gd::J::160	1.7936473113375694e-6
+m9::gd::J::161	1.7847036239754537e-6
+m9::gd::J::162	1.7800216007657776e-6
+m9::gd::J::163	1.7654139787212106e-6
+m9::gd::J::164	1.7563640722173996e-6
+m9::gd::J::165	1.7510839350798973e-6
+m9::gd::J::166	1.7376321200362064e-6
+m9::gd::J::167	1.7285020511492762e-6
+m9::gd::J::168	1.7226795286269068e-6
+m9::gd::J::169	1.7103022038180242e-6
+m9::gd::J::170	1.7011284072866473e-6
+m9::gd::J::171	1.6949085368858234e-6
+m9::gd::J::172	1.6834101998992607e-6
+m9::gd::J::173	1.67423146828432e-6
+m9::gd::J::174	1.6676471219594462e-6
+m9::gd::J::175	1.6569529404817758e-6
+m9::gd::J::176	1.6477640290851893e-6
+m9::gd::J::177	1.6408780411496033e-6
+m9::gd::J::178	1.640308167716909e-6
+m9::gd::J::179	1.6217384910809383e-6
+m9::gd::J::180	1.6146044735354887e-6
+m9::gd::J::181	1.6130728661909817e-6
+m9::gd::J::182	1.5961326382293112e-6
+m9::gd::J::183	1.5888125481937886e-6
+m9::gd::J::184	1.5864330202046246e-6
+m9::gd::J::185	1.5709580857613627e-6
+m9::gd::J::186	1.5634664522127122e-6
+m9::gd::J::187	1.560374477855325e-6
+m9::gd::J::188	1.5461781934622827e-6
+m9::gd::J::189	1.5385733850919576e-6
+m9::gd::J::190	1.5348458397678835e-6
+m9::gd::J::191	1.5218129858536933e-6
+m9::gd::J::192	1.5141079350206214e-6
+m9::gd::J::193	1.5098726472727295e-6
+m9::gd::J::194	1.4978254814956353e-6
+m9::gd::J::195	1.4900465547433614e-6
+m9::gd::J::196	1.4853139204989124e-6
+m9::gd::J::197	1.4742171546638817e-6
+m9::gd::J::198	1.4663858600490377e-6
+m9::gd::J::199	1.461258358699914e-6
+m9::gd::J::200	1.4509972185821933e-6
+m9::gd::stop	MaxIters
+m9::gd::iters	200
+m9::gd::evals	395
+m9::gd::J	1.451e-6
+m9::gd::err_inf	6.381e-2
+m9::ms::build_capture	82.96
+m9::ms::forward	1.27
+m9::ms::reverse	0.60
+m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::k	4e0
+m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	7.632783294297951e-17
+m9::fwd_vs_rev::0	-0.1462586035	-0.1462586035	1.94e-16
+m9::fwd_vs_rev::1	-0.0534546835	-0.0534546835	1.04e-16
+m9::fwd_vs_rev::2	-0.1733598572	-0.1733598572	4.16e-16
+m9::fwd_vs_rev::3	+0.0649373320	+0.0649373320	6.94e-17
+m9::fwd_vs_rev::4	+0.0582973359	+0.0582973359	7.63e-17
+m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::k	4e0
+m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	5.829733602802367e-2
+m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	1.940728533925807e-9
+m9::fd::0	-0.14625860	-0.14625498	2.48e-5
+m9::fd::1	-0.05345468	-0.05345500	5.83e-6
+m9::fd::2	-0.17335986	-0.17335986	2.58e-9
+m9::fd::3	+0.06493733	+0.06494620	1.37e-4
+m9::fd::4	+0.05829734	+0.05829734	1.94e-9
+m9::jac::det	3.5457e4
+m9::jac::min_pivot	3.4095e-1
+test::adjoint_is_deterministic	ok
+m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::fd	-2.365439743403286e1
+m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::g	-2.3654396251345762e1
+m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::rel	4.999861442252312e-8
+m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::fd	1.9138333865131862e-1
+m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::g	1.9138333888332748e-1
+m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::rel	1.212273012927939e-9
+m11_adjoint_rollout::adjoint_matches_fd_path@L198::g_adj	-2.3654396251345762e1
+m11_adjoint_rollout::adjoint_matches_fd_path@L198::g_fd	-2.3654396254215722e1
+m11_adjoint_rollout::adjoint_matches_fd_path@L198::rel	1.2132883201043399e-10
+m11_adjoint_rollout::adjoint_matches_fd_path@L219::g_adj	1.9138333888332748e-1
+m11_adjoint_rollout::adjoint_matches_fd_path@L219::g_fd	1.9138333896191714e-1
+m11_adjoint_rollout::adjoint_matches_fd_path@L219::rel	4.1064004307663937e-10
+test::both_channels_are_live	ok
+m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::fd	9.820200989754677e-4
+m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad	9.820204382629998e-4
+m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel	3.454995803561532e-7
+test::contact_gradient_is_deterministic	ok
+test::anchor_channel_in_isolation_matches_end_to_end_fd	ok
+test::combined_mass_and_anchor_channels_match_end_to_end_fd	ok
+m8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::fd	-2.365439743403286e1
+m8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::grad	-2.3654396254215722e1
+m8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::rel	4.987728559656424e-8
+m8_rollout_gradient::gravity_pendulum_gradient_matches_end_to_end_fd@L240::fd	-2.2795441944811756e-1
+m8_rollout_gradient::gravity_pendulum_gradient_matches_end_to_end_fd@L240::grad	-2.2795442028240492e-1
+m8_rollout_gradient::gravity_pendulum_gradient_matches_end_to_end_fd@L240::rel	8.342873614175517e-10
+m8_rollout_gradient::mass_property_chain_isolation@L159::dual	1.3528140672023892e-1
+m8_rollout_gradient::mass_property_chain_isolation@L159::fd	1.3528140641039244e-1
+m8_rollout_gradient::mass_property_chain_isolation@L159::rel	3.0984648180520935e-10
+test::rollout_is_deterministic	ok
+test::recover_radius_hitting_target_spin_speed	ok
+test::synthesized_seeding_matches_hand_written	ok
+test::core_plus_skin_matches_end_to_end_fd	ok
+test::surface_skin_in_isolation_is_exact	ok
+document_gradient::defparam_makes_the_gradient_reachable_without_hand_binding@L281::dv	5.018477584861806e2
+document_gradient::defparam_makes_the_gradient_reachable_without_hand_binding@L281::dv_exact	5.018477584873503e2
+document_gradient::defparam_makes_the_gradient_reachable_without_hand_binding@L281::rel	2.3307208413651396e-12
+document_gradient::loon_authored_document_gradient@L251::dv	5.018477584861806e2
+document_gradient::loon_authored_document_gradient@L251::dv_exact	5.018477584873503e2
+document_gradient::loon_authored_document_gradient@L251::rel	2.3307208413651396e-12
+document_gradient::ir::dv	5.018477584861806e2
+document_gradient::parametric_document_cylinder_gradient@L119::dv_exact	5.018477584873503e2
+document_gradient::parametric_document_cylinder_gradient@L119::rel	2.3307208413651396e-12
+document_gradient::ir::dizz	1.002084494221656e5
+document_gradient::parametric_document_cylinder_gradient@L140::fd_izz	1.0020844942628172e5
+document_gradient::parametric_document_cylinder_gradient@L140::rel_izz	4.1075489235847095e-11
+document_gradient::sens::dv	5.018477584861806e2
+document_gradient::qoi_gradient_matches_central_finite_differences@L169::fd_dv	5.018477584903849e2
+document_gradient::qoi_gradient_matches_central_finite_differences@L169::rel	8.377546526121693e-12
+test::unknown_parameter_is_an_error	ok
+m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::k	1e0
+m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::fd	-9.844058539321132e-2
+m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::rel	1.385591598698216e-9
+m3_flywheel::iter::0	3e0	2.5e0	1.169896901665328e0
+m3_flywheel::iter::1	3.008392273033931e0	2.6968811710592195e0	1.1501514938243282e0
+m3_flywheel::iter::2	3.02515567048961e0	3.103137492176921e0	1.1080472531473065e0
+m3_flywheel::iter::3	3.058542577281956e0	3.939074456639122e0	1.0236669730050003e0
+m3_flywheel::iter::4	3.124301959426071e0	5.420676638265038e0	9.464710427217559e-1
+m3_flywheel::iter::5	3.1868710871208603e0	5.2826008101627835e0	9.46063532515179e-1
+m3_flywheel::iter::6	3.25118406476061e0	5.380434408179108e0	9.457060211249653e-1
+m3_flywheel::iter::7	3.3815273956114877e0	5.245046218966792e0	9.455570958943095e-1
+m3_flywheel::iter::8	3.449836604341858e0	5.402896383431428e0	9.449969056684657e-1
+m3_flywheel::iter::9	3.5187110082122364e0	5.294921729666151e0	9.445954768780358e-1
+m3_flywheel::iter::10	3.66021872315271e0	5.447043988366196e0	9.444743840430709e-1
+m3_flywheel::iter::11	3.732811503196133e0	5.25899926933114e0	9.438548399608399e-1
+m3_flywheel::iter::12	3.8079414630768755e0	5.3925151604826e0	9.433137279446079e-1
+m3_flywheel::iter::13	3.959349749204321e0	5.208873503370623e0	9.432987993256279e-1
+m3_flywheel::iter::14	4.039253742849983e0	5.420576886007987e0	9.423952713776832e-1
+m3_flywheel::iter::15	4.119046413038403e0	5.277418831507545e0	9.418169899430004e-1
+m3_flywheel::iter::16	4.201515617630586e0	5.378208846733616e0	9.41287293768096e-1
+m3_flywheel::iter::17	4.367804996482344e0	5.238361575694073e0	9.408155298550127e-1
+m3_flywheel::iter::18	4.45540903252328e0	5.399973935369074e0	9.400551120026964e-1
+m3_flywheel::iter::19	4.542974010049093e0	5.28941325099322e0	9.3945939160678e-1
+m3_flywheel::iter::20	4.723767714391585e0	5.4433585241871025e0	9.389588958087149e-1
+m3_flywheel::iter::21	4.8155671671325955e0	5.252134958469846e0	9.381182795476745e-1
+m3_flywheel::iter::22	4.911544145537461e0	5.386508636081136e0	9.373544106671514e-1
+m3_flywheel::iter::23	5.103263755624251e0	5.201169449989747e0	9.368879235370339e-1
+m3_flywheel::iter::24	5.205423954466292e0	5.412172491266483e0	9.357386913749912e-1
+m3_flywheel::iter::25	5.305945691814882e0	5.269583363780551e0	9.349129816686542e-1
+m3_flywheel::iter::26	5.515532474567328e0	5.466585439849272e0	9.344112504136377e-1
+m3_flywheel::iter::27	5.62008895151632e0	5.219762218182832e0	9.332123767318369e-1
+m3_flywheel::iter::28	5.731594439829339e0	5.392152672616711e0	9.3211933391169e-1
+m3_flywheel::iter::29	5.950884163256121e0	5.1565959215772965e0	9.316897234333882e-1
+m3_flywheel::iter::30	6.069974968821228e0	5.419364887404996e0	9.299986677605775e-1
+m3_flywheel::iter::31	6.184253051462139e0	5.24478389310352e0	9.288824601661374e-1
+m3_flywheel::iter::32	6.426239229763996e0	5.482217330759447e0	9.283465076079928e-1
+m3_flywheel::iter::33	6.543714215752875e0	5.1822496587407e0	9.267099562589308e-1
+m3_flywheel::iter::34	6.672906634168784e0	5.3887328354154835e0	9.252058841573091e-1
+m3_flywheel::iter::35	6.92113487350439e0	5.109921041679858e0	9.247064680462997e-1
+m3_flywheel::iter::36	7.059674538341844e0	5.4124937702587435e0	9.224018601021268e-1
+m3_flywheel::iter::37	7.188034066965799e0	5.215560786751528e0	9.209574494578098e-1
+m3_flywheel::iter::38	7.465564087387617e0	5.4748955572984634e0	9.20146405608331e-1
+m3_flywheel::iter::39	7.5955446229701655e0	5.144905580371295e0	9.180736959098584e-1
+m3_flywheel::iter::40	7.74418374913155e0	5.365030130267443e0	9.161764914087027e-1
+m3_flywheel::iter::41	8.021868869838967e0	5.070844479845487e0	9.151901800464596e-1
+m3_flywheel::iter::42	8.181558121417844e0	5.377623350038821e0	9.124641498489464e-1
+m3_flywheel::iter::43	8.3239740459871e0	5.181488960229271e0	9.107087388822078e-1
+m3_flywheel::iter::44	8.638268805343287e0	5.422853174221452e0	9.091094784324133e-1
+m3_flywheel::iter::45	8.780541016363566e0	5.112347944347121e0	9.067528963205993e-1
+m3_flywheel::iter::46	8.948542449671319e0	5.305894616337982e0	9.046396131773892e-1
+m3_flywheel::iter::47	9.255908172136818e0	5.045166452795758e0	9.025322016171218e-1
+m3_flywheel::iter::48	9.435381749850276e0	5.297848365702842e0	8.998406670859279e-1
+m3_flywheel::iter::49	9.748708531692538e0	4.973541404840129e0	8.980676486661611e-1
+m3_flywheel::iter::50	9.9407293491349e0	5.280015768840696e0	8.946561448608994e-1
+m3_flywheel::iter::51	1.0258828233569373e1	4.906041608948977e0	8.931163200701757e-1
+m3_flywheel::iter::52	1.0463416426514598e1	5.247717708923476e0	8.890303650333352e-1
+m3_flywheel::iter::53	1.0786016590875295e1	4.850179683090234e0	8.873992627048346e-1
+m3_flywheel::iter::54	1.1001572200936387e1	5.1981295253760385e0	8.829484025698345e-1
+m3_flywheel::iter::55	1.132935056447156e1	4.807685109464108e0	8.808344522694274e-1
+m3_flywheel::iter::56	1.1552680596592475e1	5.130661203128512e0	8.764592419262617e-1
+m3_flywheel::iter::57	1.1886888522838634e1	4.773844788115412e0	8.736113722611039e-1
+m3_flywheel::iter::58	1.2e1	5.04601737362322e0	8.708814994640182e-1
+m3_flywheel::iter::59	1.2e1	4.915844561339572e0	8.706107844422838e-1
+m3_flywheel::iter::60	1.2e1	4.976801254025899e0	8.705441218425333e-1
+m3_flywheel::iter::61	1.2e1	4.950253862033295e0	8.705321328357583e-1
+m3_flywheel::iter::62	1.2e1	4.962239093191612e0	8.705296312642167e-1
+m3_flywheel::iter::63	1.2e1	4.956910418655252e0	8.705291419607635e-1
+m3_flywheel::iter::64	1.2e1	4.959296249913796e0	8.705290434102348e-1
+m3_flywheel::iter::65	1.2e1	4.9582313362982e0	8.705290238174723e-1
+m3_flywheel::iter::66	1.2e1	4.958707321483877e0	8.705290198994959e-1
+m3_flywheel::iter::67	1.2e1	4.958494701989585e0	8.705290191180516e-1
+m3_flywheel::iter::68	1.2e1	4.95858970409197e0	8.705290189620112e-1
+m3_flywheel::iter::69	1.2e1	4.958547260752788e0	8.705290189308682e-1
+m3_flywheel::iter::70	1.2e1	4.95856622387825e0	8.705290189246563e-1
+m3_flywheel::iter::71	1.2e1	4.958557751612811e0	8.705290189234118e-1
+m3_flywheel::iter::72	1.2e1	4.958561536857746e0	8.705290189231674e-1
+m3_flywheel::iter::73	1.2e1	4.958559845691621e0	8.705290189231155e-1
+m3_flywheel::iter::74	1.2e1	4.958560601269868e0	8.705290189231044e-1
+m3_flywheel::iter::75	1.2e1	4.958560263693392e0	8.705290189231025e-1
+m3_flywheel::iter::76	1.2e1	4.958560565337939e0	8.705290189231022e-1
+m3_flywheel::iter::77	1.2e1	4.958560279747077e0	8.705290189230981e-1
+m3_flywheel::iter::78	1.2e1	4.9585602797470925e0	8.705290189230979e-1
