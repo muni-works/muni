@@ -561,7 +561,7 @@ The last reading is the one the title promises: the dimensions of a part from ph
 
 $ "score"("program", theta) = -log p("photos" | "render"("program", theta)) + 1/2 log det F(theta) - log p("program") $
 
-the residual under a robust noise model, a Laplace parameter cost from the Fisher information $F$, and the program's own length under a grammar prior. An edit to the program (add a feature, remove one, turn a hole into a counterbore or a slot, merge holes into a pattern) is kept only if it shortens the description, so the search cannot buy residual with a feature per pixel. Inside each edit, Levenberg–Marquardt fits the continuous parameters with a Jacobian from the edge-sampling estimator of @sec:pose, applied to a deterministic photo model (a G-buffer with closed-form OpenPBR shading, spherical-harmonic light, a fitted key light and ambient occlusion). This photo model is not the path tracer of the preceding sections. A search makes thousands of fits, and the photo model is noise-free and cheap; the path tracer's role here is the estimator the Jacobian uses and the renderer that makes the test photographs, which keeps the model and the data from sharing a bias.
+the residual under a robust noise model, a Laplace parameter cost from the Fisher information $F$, and the program's own length under a grammar prior. An edit to the program (add a feature, remove one, turn a hole into a counterbore or a slot, merge holes into a pattern) is kept only if it shortens the description, so the search cannot buy residual with a feature per pixel. Inside each edit, Levenberg–Marquardt fits the continuous parameters with a Jacobian from the edge-sampling estimator of @sec:pose, applied to a deterministic photo model (a G-buffer with closed-form OpenPBR shading, spherical-harmonic light, a fitted key light and ambient occlusion). This photo model is not the path tracer of the preceding sections: a search makes thousands of fits, and the photo model is noise-free and about six times cheaper per evaluation. So we also run the search's result through irys itself. After the search, the appearance is refitted under the path tracer and the final fit runs on the path-traced residual, with PRB for the radiance and the per-vertex edge sampling of @sec:brep for the geometry; the program, its score and its dimensions are then the path tracer's. The last column of @tab:recon is that hybrid: it matches the photo model to within one part at every threshold.
 
 #figure(fig-recon(),
   caption: [#lead[Seeing is measuring.] The recovery edits an editable CAD program, fits each edit's dimensions with irys's edge-sampling Jacobian, scores it in nats, and keeps it only if the description of the photographs gets shorter. A feature has to pay for itself.],
@@ -571,12 +571,12 @@ A printed tag beside the part fixes the camera's pose, its focal length and the 
 
 #figure(
   table(
-    columns: (2fr, 1fr, 1fr, 1.2fr),
-    align: (left, right, right, right),
-    table.header([*Recovered*], [*1 photo*], [*3 photos*], [*3 photos, AO grad*]),
-    [every dimension within 0.5 mm], [#V("recon.1v.p05")/#V("recon.parts")], [#V("recon.3v.p05")/#V("recon.parts")], [#V("recon.3a.p05")/#V("recon.parts")],
-    [every dimension within 1 mm], [#V("recon.1v.p1")/#V("recon.parts")], [#V("recon.3v.p1")/#V("recon.parts")], [*#V("recon.3a.p1")/#V("recon.parts")*],
-    [the right features (topology)], [#V("recon.1v.topo")/#V("recon.parts")], [#V("recon.3v.topo")/#V("recon.parts")], [#V("recon.3a.topo")/#V("recon.parts")],
+    columns: (1.9fr, 0.8fr, 0.8fr, 1fr, 1.1fr),
+    align: (left, right, right, right, right),
+    table.header([*Recovered*], [*1 photo*], [*3 photos*], [*+ AO grad*], [*+ path-traced fit*]),
+    [every dimension within 0.5 mm], [#V("recon.1v.p05")/#V("recon.parts")], [#V("recon.3v.p05")/#V("recon.parts")], [#V("recon.3a.p05")/#V("recon.parts")], [#V("recon.pt.p05")/#V("recon.parts")],
+    [every dimension within 1 mm], [#V("recon.1v.p1")/#V("recon.parts")], [#V("recon.3v.p1")/#V("recon.parts")], [*#V("recon.3a.p1")/#V("recon.parts")*], [#V("recon.pt.p1")/#V("recon.parts")],
+    [the right features (topology)], [#V("recon.1v.topo")/#V("recon.parts")], [#V("recon.3v.topo")/#V("recon.parts")], [#V("recon.3a.topo")/#V("recon.parts")], [#V("recon.pt.topo")/#V("recon.parts")],
   ),
   caption: [#lead[Dimensions from synthetic phone photographs], per part, worst dimension, after the plate's quarter-turn symmetry. With #V("recon.parts") parts the counts are coarse: the Wilson 95% interval on #V("recon.3a.p1")/#V("recon.parts") is #calc.round(100 * V("recon.3a.p1_ci"), digits: 0)–#calc.round(100 * V("recon.3a.p1_ci", i: 1), digits: 0)%, against #calc.round(100 * V("recon.1v.p1_ci"), digits: 0)–#calc.round(100 * V("recon.1v.p1_ci", i: 1), digits: 0)% for one photograph. The last column differentiates the photo model's ambient occlusion (below) instead of estimating those Jacobian columns by finite differences; there the parts that pass at 0.5 mm have worst-dimension errors from #F("recon.3a.err_lo", 2) to #F("recon.3a.err_hi", 2) mm (median #F("recon.3a.err_med", 2)), and a part takes #V("recon.3a.s_part") s on average against #V("recon.3v.s_part") s. Across all #V("recon.parts") parts the pose on the tag plane is recovered to a median #F("recon.3v.pose_med", 2) mm and yaw within #F("recon.3v.yaw_max", 2)°, and the focal length from EXIF and the tag within #F("recon.3v.focal_max", 1)%. `data/measured.tsv`.],
 ) <tab:recon>
