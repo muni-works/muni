@@ -1,0 +1,2053 @@
+{
+ "robot": "rose-full",
+ "source": "rose quad00/vcad_export.py HEAD=node",
+ "loon": "rose-full.loon",
+ "units": "mm, deg",
+ "frame": "x fore, y left, z up; soles on z = 0; zero pose",
+ "root_link": "torso",
+ "notes": "a link origin is its parent joint pivot; aabb_mm spans the python-built parts only (the [use]d loon head module is not in it); ankle pitch/roll are a U-joint through one point, its cross the anklep link",
+ "links": {
+  "roll.l": {
+   "origin_mm": [
+    8.515,
+    64.0,
+    948.832
+   ],
+   "parts": [
+    {
+     "name": "cover-hip_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-hipguard_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-pitch_ll",
+     "material": "motor_dark"
+    },
+    {
+     "name": "chassis-hipR_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "chassis-hipinner_ll",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -64.0,
+     31.0,
+     763.832
+    ],
+    [
+     64.0,
+     156.935,
+     981.832
+    ]
+   ]
+  },
+  "pitch.l": {
+   "origin_mm": [
+    0.0,
+    117.835,
+    827.832
+   ],
+   "parts": [
+    {
+     "name": "cover-hipyaw_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-hipneck_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-yaw_ll",
+     "material": "motor_dark"
+    },
+    {
+     "name": "chassis-hipA_ll",
+     "material": "aluminium"
+    },
+    {
+     "name": "chassis-hipB2_ll",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -63.0,
+     54.835,
+     704.282
+    ],
+    [
+     63.0,
+     180.835,
+     860.832
+    ]
+   ]
+  },
+  "yaw.l": {
+   "origin_mm": [
+    0.0,
+    117.835,
+    733.382
+   ],
+   "parts": [
+    {
+     "name": "cover-knee_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-yawring_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-thigh_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-knee_ll",
+     "material": "motor_dark"
+    },
+    {
+     "name": "chassis-thightop_ll",
+     "material": "aluminium"
+    },
+    {
+     "name": "thigh-inner_ll",
+     "material": "aluminium"
+    },
+    {
+     "name": "thigh-outer_ll",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -67.623,
+     56.835,
+     449.48
+    ],
+    [
+     63.961,
+     178.835,
+     717.312
+    ]
+   ]
+  },
+  "knee.l": {
+   "origin_mm": [
+    -3.623,
+    117.835,
+    513.48
+   ],
+   "parts": [
+    {
+     "name": "cover-calf_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-ankle_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-ankle42_ll",
+     "material": "motor_dark"
+    },
+    {
+     "name": "rs04-ankle66_ll",
+     "material": "motor_dark"
+    },
+    {
+     "name": "shin-outer_ll",
+     "material": "aluminium"
+    },
+    {
+     "name": "shin-inner_ll",
+     "material": "aluminium"
+    },
+    {
+     "name": "shin-web_ll",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -73.806,
+     74.985,
+     17.269
+    ],
+    [
+     66.687,
+     157.243,
+     575.478
+    ]
+   ]
+  },
+  "ankle.l": {
+   "origin_mm": [
+    -3.266,
+    118.143,
+    69.269
+   ],
+   "parts": [
+    {
+     "name": "cover-shoe_ll",
+     "material": "satin_black"
+    },
+    {
+     "name": "sole_ll",
+     "material": "sole_rubber"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -124.636,
+     56.522,
+     0.0
+    ],
+    [
+     215.22,
+     182.845,
+     44.7
+    ]
+   ]
+  },
+  "sp.l": {
+   "origin_mm": [
+    0.0,
+    114.103,
+    1434.181
+   ],
+   "parts": [
+    {
+     "name": "cover-shoulder_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-shoulderyoke_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-sr_la",
+     "material": "motor_dark"
+    },
+    {
+     "name": "arm-yokeP1_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "arm-yokeP2_la",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -71.526,
+     86.003,
+     1345.723
+    ],
+    [
+     71.526,
+     319.292,
+     1505.707
+    ]
+   ]
+  },
+  "sr.l": {
+   "origin_mm": [
+    4.529,
+    255.292,
+    1409.723
+   ],
+   "parts": [
+    {
+     "name": "trim-upperarm_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-upperarm_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-deltoid_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-ep_la",
+     "material": "motor_dark"
+    },
+    {
+     "name": "arm-upperU1_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "arm-upperU2_la",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -64.0,
+     188.292,
+     1273.173
+    ],
+    [
+     68.0,
+     322.292,
+     1476.723
+    ]
+   ]
+  },
+  "ep.l": {
+   "origin_mm": [
+    0.0,
+    255.292,
+    1315.273
+   ],
+   "parts": [
+    {
+     "name": "cover-elbow_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-elbowfork_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-ey_la",
+     "material": "motor_dark"
+    },
+    {
+     "name": "arm-elbowE1_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "arm-elbowE2_la",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -59.471,
+     218.75,
+     1052.409
+    ],
+    [
+     68.529,
+     292.25,
+     1288.173
+    ]
+   ]
+  },
+  "ey.l": {
+   "origin_mm": [
+    4.529,
+    255.292,
+    1116.409
+   ],
+   "parts": [
+    {
+     "name": "cover-forearm_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "arm-forearmF1_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs00-wristroll_la",
+     "material": "motor_dark"
+    },
+    {
+     "name": "wrist-F2_la",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -52.815,
+     231.692,
+     994.059
+    ],
+    [
+     61.873,
+     307.639,
+     1116.409
+    ]
+   ]
+  },
+  "wr.l": {
+   "origin_mm": [
+    4.529,
+    269.665,
+    1019.559
+   ],
+   "parts": [
+    {
+     "name": "cover-wristsleeve_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-wristpitch_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-wristboot_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R0_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1a_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1b_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1laa_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1roda_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1lab_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1rodb_la",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -34.444,
+     230.892,
+     826.29
+    ],
+    [
+     43.302,
+     308.439,
+     1046.059
+    ]
+   ]
+  },
+  "wy.l": {
+   "origin_mm": [
+    4.529,
+    269.665,
+    862.29
+   ],
+   "parts": [
+    {
+     "name": "cover-hand_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0a_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0b_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0f_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0palm_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la0_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0link0_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la1_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0link1_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la2_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0link2_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la3_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0link3_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la4_la",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la5_la",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -35.471,
+     237.165,
+     648.194
+    ],
+    [
+     63.529,
+     293.49,
+     867.79
+    ]
+   ]
+  },
+  "roll.r": {
+   "origin_mm": [
+    8.515,
+    -64.0,
+    948.832
+   ],
+   "parts": [
+    {
+     "name": "cover-hip_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-hipguard_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-pitch_rl",
+     "material": "motor_dark"
+    },
+    {
+     "name": "chassis-hipR_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "chassis-hipinner_rl",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -64.0,
+     -156.935,
+     763.832
+    ],
+    [
+     64.0,
+     -31.0,
+     981.832
+    ]
+   ]
+  },
+  "pitch.r": {
+   "origin_mm": [
+    0.0,
+    -117.835,
+    827.832
+   ],
+   "parts": [
+    {
+     "name": "cover-hipyaw_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-hipneck_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-yaw_rl",
+     "material": "motor_dark"
+    },
+    {
+     "name": "chassis-hipA_rl",
+     "material": "aluminium"
+    },
+    {
+     "name": "chassis-hipB2_rl",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -63.0,
+     -180.835,
+     704.282
+    ],
+    [
+     63.0,
+     -54.835,
+     860.832
+    ]
+   ]
+  },
+  "yaw.r": {
+   "origin_mm": [
+    0.0,
+    -117.835,
+    733.382
+   ],
+   "parts": [
+    {
+     "name": "cover-knee_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-yawring_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-thigh_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-knee_rl",
+     "material": "motor_dark"
+    },
+    {
+     "name": "chassis-thightop_rl",
+     "material": "aluminium"
+    },
+    {
+     "name": "thigh-inner_rl",
+     "material": "aluminium"
+    },
+    {
+     "name": "thigh-outer_rl",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -67.623,
+     -178.835,
+     449.48
+    ],
+    [
+     63.961,
+     -56.835,
+     717.312
+    ]
+   ]
+  },
+  "knee.r": {
+   "origin_mm": [
+    -3.623,
+    -117.835,
+    513.48
+   ],
+   "parts": [
+    {
+     "name": "cover-calf_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-ankle_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-ankle42_rl",
+     "material": "motor_dark"
+    },
+    {
+     "name": "rs04-ankle66_rl",
+     "material": "motor_dark"
+    },
+    {
+     "name": "shin-outer_rl",
+     "material": "aluminium"
+    },
+    {
+     "name": "shin-inner_rl",
+     "material": "aluminium"
+    },
+    {
+     "name": "shin-web_rl",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -73.806,
+     -157.243,
+     17.269
+    ],
+    [
+     66.687,
+     -74.985,
+     575.478
+    ]
+   ]
+  },
+  "ankle.r": {
+   "origin_mm": [
+    -3.266,
+    -118.143,
+    69.269
+   ],
+   "parts": [
+    {
+     "name": "cover-shoe_rl",
+     "material": "satin_black"
+    },
+    {
+     "name": "sole_rl",
+     "material": "sole_rubber"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -124.656,
+     -182.845,
+     0.0
+    ],
+    [
+     215.22,
+     -56.522,
+     44.703
+    ]
+   ]
+  },
+  "sp.r": {
+   "origin_mm": [
+    0.0,
+    -114.103,
+    1434.181
+   ],
+   "parts": [
+    {
+     "name": "cover-shoulder_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-shoulderyoke_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-sr_ra",
+     "material": "motor_dark"
+    },
+    {
+     "name": "arm-yokeP1_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "arm-yokeP2_ra",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -71.526,
+     -319.292,
+     1345.723
+    ],
+    [
+     71.526,
+     -86.003,
+     1505.707
+    ]
+   ]
+  },
+  "sr.r": {
+   "origin_mm": [
+    4.529,
+    -255.292,
+    1409.723
+   ],
+   "parts": [
+    {
+     "name": "trim-upperarm_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-upperarm_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-deltoid_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-ep_ra",
+     "material": "motor_dark"
+    },
+    {
+     "name": "arm-upperU1_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "arm-upperU2_ra",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -64.0,
+     -322.292,
+     1273.173
+    ],
+    [
+     68.0,
+     -188.292,
+     1476.723
+    ]
+   ]
+  },
+  "ep.r": {
+   "origin_mm": [
+    0.0,
+    -255.292,
+    1315.273
+   ],
+   "parts": [
+    {
+     "name": "cover-elbow_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-elbowfork_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-ey_ra",
+     "material": "motor_dark"
+    },
+    {
+     "name": "arm-elbowE1_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "arm-elbowE2_ra",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -59.471,
+     -292.25,
+     1052.409
+    ],
+    [
+     68.529,
+     -218.75,
+     1288.173
+    ]
+   ]
+  },
+  "ey.r": {
+   "origin_mm": [
+    4.529,
+    -255.292,
+    1116.409
+   ],
+   "parts": [
+    {
+     "name": "cover-forearm_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "arm-forearmF1_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs00-wristroll_ra",
+     "material": "motor_dark"
+    },
+    {
+     "name": "wrist-F2_ra",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -52.815,
+     -307.639,
+     994.059
+    ],
+    [
+     61.873,
+     -231.692,
+     1116.409
+    ]
+   ]
+  },
+  "wr.r": {
+   "origin_mm": [
+    4.529,
+    -269.665,
+    1019.559
+   ],
+   "parts": [
+    {
+     "name": "cover-wristsleeve_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-wristpitch_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-wristboot_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R0_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1a_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1b_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1laa_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1roda_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1lab_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-R1rodb_ra",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -34.444,
+     -308.439,
+     826.29
+    ],
+    [
+     43.302,
+     -230.892,
+     1046.059
+    ]
+   ]
+  },
+  "wy.r": {
+   "origin_mm": [
+    4.529,
+    -269.665,
+    862.29
+   ],
+   "parts": [
+    {
+     "name": "cover-hand_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0a_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0b_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0f_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0palm_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la0_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0link0_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la1_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0link1_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la2_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0link2_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la3_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0link3_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la4_ra",
+     "material": "satin_black"
+    },
+    {
+     "name": "wrist-H0la5_ra",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -35.471,
+     -293.49,
+     648.194
+    ],
+    [
+     63.529,
+     -237.165,
+     867.79
+    ]
+   ]
+  },
+  "chest": {
+   "origin_mm": [
+    0.0,
+    0.0,
+    1287.07
+   ],
+   "parts": [
+    {
+     "name": "trim-j1ring_l",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-j1ring_r",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-chest",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-waisthub",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-neckbase",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-sp_la",
+     "material": "motor_dark"
+    },
+    {
+     "name": "rs04-sp_ra",
+     "material": "motor_dark"
+    },
+    {
+     "name": "torso-side_l",
+     "material": "aluminium"
+    },
+    {
+     "name": "torso-side_r",
+     "material": "aluminium"
+    },
+    {
+     "name": "torso-deck0",
+     "material": "aluminium"
+    },
+    {
+     "name": "torso-deck1",
+     "material": "aluminium"
+    },
+    {
+     "name": "waist-W4",
+     "material": "aluminium"
+    },
+    {
+     "name": "rs02-headyaw",
+     "material": "motor_dark"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -84.161,
+     -186.6,
+     1217.07
+    ],
+    [
+     102.474,
+     186.6,
+     1533.993
+    ]
+   ]
+  },
+  "wyaw": {
+   "origin_mm": [
+    0.0,
+    0.0,
+    1060.62
+   ],
+   "parts": [
+    {
+     "name": "cover-waist",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-waistroll",
+     "material": "motor_dark"
+    },
+    {
+     "name": "waist-W0",
+     "material": "aluminium"
+    },
+    {
+     "name": "waist-W1",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -70.742,
+     -84.007,
+     1034.52
+    ],
+    [
+     70.742,
+     84.007,
+     1215.07
+    ]
+   ]
+  },
+  "wroll": {
+   "origin_mm": [
+    0.0,
+    0.0,
+    1155.07
+   ],
+   "parts": [
+    {
+     "name": "cover-waistroll",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-waistpitch",
+     "material": "motor_dark"
+    },
+    {
+     "name": "waist-W2",
+     "material": "aluminium"
+    },
+    {
+     "name": "waist-W3",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -60.0,
+     -69.0,
+     1086.07
+    ],
+    [
+     60.0,
+     69.0,
+     1347.07
+    ]
+   ]
+  },
+  "torso": {
+   "origin_mm": [
+    0.0,
+    0.0,
+    999.922
+   ],
+   "parts": [
+    {
+     "name": "cover-pelvis",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs04-roll_ll",
+     "material": "motor_dark"
+    },
+    {
+     "name": "chassis-rollmount_ll",
+     "material": "aluminium"
+    },
+    {
+     "name": "rs04-roll_rl",
+     "material": "motor_dark"
+    },
+    {
+     "name": "chassis-rollmount_rl",
+     "material": "aluminium"
+    },
+    {
+     "name": "rs04-waistyaw",
+     "material": "motor_dark"
+    },
+    {
+     "name": "pelvis-deck",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -74.0,
+     -128.0,
+     884.832
+    ],
+    [
+     74.0,
+     128.0,
+     1086.72
+    ]
+   ]
+  },
+  "hyaw": {
+   "origin_mm": [
+    10.146,
+    0.0,
+    1495.422
+   ],
+   "parts": [
+    {
+     "name": "cover-neck",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-headhub",
+     "material": "satin_black"
+    },
+    {
+     "name": "cover-necksleeve",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-neckring",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-neckpuck_r",
+     "material": "satin_black"
+    },
+    {
+     "name": "trim-neckpuck_l",
+     "material": "satin_black"
+    },
+    {
+     "name": "rs02-headpitch",
+     "material": "motor_dark"
+    },
+    {
+     "name": "neck-N0",
+     "material": "aluminium"
+    },
+    {
+     "name": "neck-N1",
+     "material": "aluminium"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -54.604,
+     -58.625,
+     1517.172
+    ],
+    [
+     74.896,
+     58.625,
+     1607.522
+    ]
+   ]
+  },
+  "hpitch": {
+   "origin_mm": [
+    10.146,
+    0.0,
+    1563.772
+   ],
+   "parts": [
+    {
+     "name": "cover-headcheek",
+     "material": "satin_black"
+    },
+    {
+     "name": "head-H1",
+     "material": "aluminium"
+    },
+    {
+     "name": "full-shell",
+     "material": "satin_black"
+    },
+    {
+     "name": "full-ears",
+     "material": "dots"
+    },
+    {
+     "name": "full-grille",
+     "material": "dots"
+    },
+    {
+     "name": "full-crown-grille",
+     "material": "dots"
+    },
+    {
+     "name": "full-lenses",
+     "material": "lens"
+    },
+    {
+     "name": "full-glass",
+     "material": "glass"
+    },
+    {
+     "name": "full-face",
+     "material": "face"
+    },
+    {
+     "name": "full-neck",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -33.604,
+     21.75,
+     1520.022
+    ],
+    [
+     53.896,
+     29.6,
+     1607.522
+    ]
+   ]
+  },
+  "wp.l": {
+   "origin_mm": [
+    4.529,
+    269.665,
+    862.29
+   ],
+   "parts": [
+    {
+     "name": "wrist-P0x_la",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -4.471,
+     260.665,
+     853.29
+    ],
+    [
+     13.529,
+     278.665,
+     871.29
+    ]
+   ]
+  },
+  "wp.r": {
+   "origin_mm": [
+    4.529,
+    -269.665,
+    862.29
+   ],
+   "parts": [
+    {
+     "name": "wrist-P0x_ra",
+     "material": "satin_black"
+    }
+   ],
+   "aabb_mm": [
+    [
+     -4.471,
+     -278.665,
+     853.29
+    ],
+    [
+     13.529,
+     -260.665,
+     871.29
+    ]
+   ]
+  },
+  "anklep.l": {
+   "origin_mm": [
+    -3.266,
+    118.143,
+    69.269
+   ],
+   "parts": [
+    {
+     "name": "ankle_cross_l",
+     "material": "aluminium"
+    }
+   ]
+  },
+  "anklep.r": {
+   "origin_mm": [
+    -3.266,
+    -118.143,
+    69.269
+   ],
+   "parts": [
+    {
+     "name": "ankle_cross_r",
+     "material": "aluminium"
+    }
+   ]
+  }
+ },
+ "joints": [
+  {
+   "name": "waist_yaw",
+   "type": "revolute",
+   "parent": "torso",
+   "child": "wyaw",
+   "pivot_mm": [
+    0.0,
+    0.0,
+    1060.62
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limits_deg": [
+    -90.0,
+    90.0
+   ]
+  },
+  {
+   "name": "waist_roll",
+   "type": "revolute",
+   "parent": "wyaw",
+   "child": "wroll",
+   "pivot_mm": [
+    0.0,
+    0.0,
+    1155.07
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -25.0,
+    25.0
+   ]
+  },
+  {
+   "name": "waist_pitch",
+   "type": "revolute",
+   "parent": "wroll",
+   "child": "chest",
+   "pivot_mm": [
+    0.0,
+    0.0,
+    1287.07
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -25.0,
+    60.0
+   ]
+  },
+  {
+   "name": "l_hip_roll",
+   "type": "revolute",
+   "parent": "torso",
+   "child": "roll.l",
+   "pivot_mm": [
+    8.515,
+    64.0,
+    948.832
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -22.92,
+    89.95
+   ]
+  },
+  {
+   "name": "l_hip_pitch",
+   "type": "revolute",
+   "parent": "roll.l",
+   "child": "pitch.l",
+   "pivot_mm": [
+    0.0,
+    117.835,
+    827.832
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -171.89,
+    126.62
+   ]
+  },
+  {
+   "name": "l_hip_yaw",
+   "type": "revolute",
+   "parent": "pitch.l",
+   "child": "yaw.l",
+   "pivot_mm": [
+    0.0,
+    117.835,
+    733.382
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limits_deg": [
+    -57.3,
+    57.3
+   ]
+  },
+  {
+   "name": "l_knee_pitch",
+   "type": "revolute",
+   "parent": "yaw.l",
+   "child": "knee.l",
+   "pivot_mm": [
+    -3.623,
+    117.835,
+    513.48
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    0.0,
+    127.77
+   ]
+  },
+  {
+   "name": "l_ankle_pitch",
+   "type": "revolute",
+   "parent": "knee.l",
+   "child": "anklep.l",
+   "pivot_mm": [
+    -3.266,
+    118.143,
+    69.269
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -49.85,
+    19.77
+   ]
+  },
+  {
+   "name": "l_ankle_roll",
+   "type": "revolute",
+   "parent": "anklep.l",
+   "child": "ankle.l",
+   "pivot_mm": [
+    -3.266,
+    118.143,
+    69.269
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -19.77,
+    19.77
+   ]
+  },
+  {
+   "name": "l_shoulder_pitch",
+   "type": "revolute",
+   "parent": "chest",
+   "child": "sp.l",
+   "pivot_mm": [
+    0.0,
+    114.103,
+    1434.181
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -189.99,
+    69.9
+   ]
+  },
+  {
+   "name": "l_shoulder_roll",
+   "type": "revolute",
+   "parent": "sp.l",
+   "child": "sr.l",
+   "pivot_mm": [
+    4.529,
+    255.292,
+    1409.723
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -99.69,
+    89.95
+   ]
+  },
+  {
+   "name": "l_upperarm_rot",
+   "type": "revolute",
+   "parent": "sr.l",
+   "child": "ep.l",
+   "pivot_mm": [
+    0.0,
+    255.292,
+    1315.273
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "limits_deg": [
+    -130.06,
+    130.06
+   ]
+  },
+  {
+   "name": "l_elbow",
+   "type": "revolute",
+   "parent": "ep.l",
+   "child": "ey.l",
+   "pivot_mm": [
+    4.529,
+    255.292,
+    1116.409
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -139.8,
+    0.0
+   ]
+  },
+  {
+   "name": "l_wrist_roll",
+   "type": "revolute",
+   "parent": "ey.l",
+   "child": "wr.l",
+   "pivot_mm": [
+    4.529,
+    269.665,
+    1019.559
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "limits_deg": [
+    -150.0,
+    150.0
+   ]
+  },
+  {
+   "name": "l_wrist_pitch",
+   "type": "revolute",
+   "parent": "wr.l",
+   "child": "wp.l",
+   "pivot_mm": [
+    4.529,
+    269.665,
+    862.29
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -45.0,
+    45.0
+   ]
+  },
+  {
+   "name": "l_wrist_yaw",
+   "type": "revolute",
+   "parent": "wp.l",
+   "child": "wy.l",
+   "pivot_mm": [
+    4.529,
+    269.665,
+    862.29
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -30.0,
+    30.0
+   ]
+  },
+  {
+   "name": "r_hip_roll",
+   "type": "revolute",
+   "parent": "torso",
+   "child": "roll.r",
+   "pivot_mm": [
+    8.515,
+    -64.0,
+    948.832
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -89.95,
+    22.92
+   ]
+  },
+  {
+   "name": "r_hip_pitch",
+   "type": "revolute",
+   "parent": "roll.r",
+   "child": "pitch.r",
+   "pivot_mm": [
+    0.0,
+    -117.835,
+    827.832
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -171.89,
+    126.62
+   ]
+  },
+  {
+   "name": "r_hip_yaw",
+   "type": "revolute",
+   "parent": "pitch.r",
+   "child": "yaw.r",
+   "pivot_mm": [
+    0.0,
+    -117.835,
+    733.382
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limits_deg": [
+    -57.3,
+    57.3
+   ]
+  },
+  {
+   "name": "r_knee_pitch",
+   "type": "revolute",
+   "parent": "yaw.r",
+   "child": "knee.r",
+   "pivot_mm": [
+    -3.623,
+    -117.835,
+    513.48
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    0.0,
+    127.77
+   ]
+  },
+  {
+   "name": "r_ankle_pitch",
+   "type": "revolute",
+   "parent": "knee.r",
+   "child": "anklep.r",
+   "pivot_mm": [
+    -3.266,
+    -118.143,
+    69.269
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -49.85,
+    19.77
+   ]
+  },
+  {
+   "name": "r_ankle_roll",
+   "type": "revolute",
+   "parent": "anklep.r",
+   "child": "ankle.r",
+   "pivot_mm": [
+    -3.266,
+    -118.143,
+    69.269
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -19.77,
+    19.77
+   ]
+  },
+  {
+   "name": "r_shoulder_pitch",
+   "type": "revolute",
+   "parent": "chest",
+   "child": "sp.r",
+   "pivot_mm": [
+    0.0,
+    -114.103,
+    1434.181
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -189.99,
+    69.9
+   ]
+  },
+  {
+   "name": "r_shoulder_roll",
+   "type": "revolute",
+   "parent": "sp.r",
+   "child": "sr.r",
+   "pivot_mm": [
+    4.529,
+    -255.292,
+    1409.723
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -89.95,
+    99.69
+   ]
+  },
+  {
+   "name": "r_upperarm_rot",
+   "type": "revolute",
+   "parent": "sr.r",
+   "child": "ep.r",
+   "pivot_mm": [
+    0.0,
+    -255.292,
+    1315.273
+   ],
+   "axis": [
+    -0.0,
+    -0.0,
+    1.0
+   ],
+   "limits_deg": [
+    -130.06,
+    130.06
+   ]
+  },
+  {
+   "name": "r_elbow",
+   "type": "revolute",
+   "parent": "ep.r",
+   "child": "ey.r",
+   "pivot_mm": [
+    4.529,
+    -255.292,
+    1116.409
+   ],
+   "axis": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "limits_deg": [
+    0.0,
+    139.8
+   ]
+  },
+  {
+   "name": "r_wrist_roll",
+   "type": "revolute",
+   "parent": "ey.r",
+   "child": "wr.r",
+   "pivot_mm": [
+    4.529,
+    -269.665,
+    1019.559
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "limits_deg": [
+    -150.0,
+    150.0
+   ]
+  },
+  {
+   "name": "r_wrist_pitch",
+   "type": "revolute",
+   "parent": "wr.r",
+   "child": "wp.r",
+   "pivot_mm": [
+    4.529,
+    -269.665,
+    862.29
+   ],
+   "axis": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -45.0,
+    45.0
+   ]
+  },
+  {
+   "name": "r_wrist_yaw",
+   "type": "revolute",
+   "parent": "wp.r",
+   "child": "wy.r",
+   "pivot_mm": [
+    4.529,
+    -269.665,
+    862.29
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "limits_deg": [
+    -30.0,
+    30.0
+   ]
+  },
+  {
+   "name": "head_yaw",
+   "type": "revolute",
+   "parent": "chest",
+   "child": "hyaw",
+   "pivot_mm": [
+    10.146,
+    0.0,
+    1495.422
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limits_deg": [
+    -57.3,
+    57.3
+   ]
+  },
+  {
+   "name": "head_pitch",
+   "type": "revolute",
+   "parent": "hyaw",
+   "child": "hpitch",
+   "pivot_mm": [
+    10.146,
+    0.0,
+    1563.772
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "limits_deg": [
+    -20.0,
+    48.99
+   ]
+  }
+ ]
+}

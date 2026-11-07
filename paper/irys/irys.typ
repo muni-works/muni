@@ -260,30 +260,85 @@
   })
 }
 
+// The cover: rose full (vcad hardware/rose-full, streamlined) standing in the Barcelona Pavilion,
+// rendered by irys's OpenPBR scene kernel, with its joint axes from rose-full.joints.json projected
+// through the same camera (examples/paper_hero writes both). Scene: "Barcelona Pavillion" by
+// eMirage, CC-BY, from blender.org's demo files.
+#let fig-cover(width: 21.59) = {
+  let rows = read("data/scene/annotation.tsv").split("\n").filter(l => l != "").map(l => l.split("\t"))
+  let size = rows.find(r => r.at(0) == "size")
+  let (pw, ph) = (float(size.at(1)), float(size.at(2)))
+  let k = width / pw
+  let height = ph * k
+  let inv = json("data/scene/rose-full.joints.json")
+  let lim = (:)
+  for j in inv.joints { lim.insert(j.name, j.limits_deg) }
+  let nparts = inv.links.values().map(l => l.parts.len()).sum()
+  let P(x, y) = (x * k, height - y * k)
+  let ok(r, i) = r.at(i) != "nan" and r.at(i + 1) != "nan"
+  let joints = rows.filter(r => r.at(0) == "joint" and ok(r, 2) and ok(r, 4) and ok(r, 6))
+  // the robot's right side faces the image's left, where the labels are, so no leader crosses the body
+  let callouts = ("head_pitch", "r_shoulder_pitch", "r_elbow", "waist_yaw", "r_knee_pitch", "r_ankle_pitch")
+  let pretty(n) = upper(if n.starts-with("r_") { "right " + n.slice(2) } else { n }.replace("_", " "))
+  cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+    content((0, 0), anchor: "south-west", image("data/scene/beauty.png", width: width * 1cm))
+    // scrims under the type: the page's background, fading into the render
+    rect((0, 0), (width * 0.42, height), stroke: none,
+      fill: gradient.linear(c-bg.transparentize(18%), c-bg.transparentize(100%), angle: 0deg))
+    rect((width * 0.55, 0), (width, height * 0.22), stroke: none,
+      fill: gradient.linear(c-bg.transparentize(100%), c-bg.transparentize(25%), angle: 0deg))
+    // every joint axis, ±80 mm about its pivot
+    for r in joints {
+      let (a, b) = (P(float(r.at(4)), float(r.at(5))), P(float(r.at(6)), float(r.at(7))))
+      line(a, b, stroke: 0.35pt + c-info.transparentize(25%))
+      circle(P(float(r.at(2)), float(r.at(3))), radius: 0.035, fill: c-info, stroke: none)
+    }
+    // callouts: a leader from the pivot to a label column on the left
+    let col = 1.0
+    let picked = callouts.map(n => joints.find(r => r.at(1) == n)).filter(r => r != none)
+    let sorted = picked.sorted(key: r => float(r.at(3)))
+    let y0 = height * 0.86
+    let dy = height * 0.115
+    for (i, r) in sorted.enumerate() {
+      let piv = P(float(r.at(2)), float(r.at(3)))
+      let ly = y0 - i * dy
+      let knee = (piv.at(0) - 0.9, ly)
+      line(piv, knee, (col + 4.6, ly), stroke: 0.3pt + c-text.transparentize(30%))
+      circle(piv, radius: 0.07, stroke: 0.4pt + c-text, fill: none)
+      let l = lim.at(r.at(1))
+      content((col, ly + 0.05), anchor: "south-west", text(font: mono-m, size: s-xs, fill: c-text, tracking: track)[#str(i + 1) #h(0.4em) #pretty(r.at(1))])
+      content((col, ly - 0.05), anchor: "north-west", text(font: mono-m, size: s-xs, fill: c-label, tracking: track)[#str(calc.round(l.at(0), digits: 1))° … #str(calc.round(l.at(1), digits: 1))°])
+    }
+    // the count block, from the inventory
+    content((width - 0.9, 0.9), anchor: "south-east", align(right, text(font: mono-m, size: s-xs, fill: c-text, tracking: track)[
+      ROSE FULL · #inv.joints.len() REVOLUTE JOINTS · #nparts PARTS \
+      #text(fill: c-label)[VCAD HARDWARE/ROSE-FULL · RENDERED BY IRYS]]))
+  })
+}
+
 // ---- title page -----------------------------------------------------------------
-#if not web {page(margin: (x: 0.75in, top: 0.7in, bottom: 0.65in))[
+#if not web {page(margin: 0in)[
   #set par(leading: 0.5em)
-  #grid(columns: (auto, 1fr, auto), column-gutter: 0.8em, align: horizon,
-    caps(fill: c-text)[Municipal Robotics · Research],
-    line(length: 100%, stroke: 0.5pt + c-line-hi),
-    caps[November 2026 · Draft])
-  #v(1.6em)
-  #image("images/muni-logo.svg", width: 0.95in)
-  #v(0.35in)
-  #align(center, fig-hero(width: 17.0))
-  #v(0.1in)
-  #grid(columns: (1fr, auto), align: (left, right),
-    caps[rose's shoulder plate · vcad's frozen mesh · each node's share of the gradient],
-    caps(fill: c-sel)[pixels to a CAD dimension])
-  #v(1fr)
-  #v(0.25in)
-  #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[Bit-Exact Path Replay\ for CAD Scenes])
-  #v(0.5em)
-  #line(length: 22%, stroke: 2pt + c-label)
-  #v(0.7em)
-  #text(size: s-lg, fill: c-label)[Spectral, deterministic gradients of materials, poses and CAD parameters on a GPU wavefront]
-  #v(0.5in)
-  #caps[Cam Pedersen · Municipal Robotics]
+  #fig-cover(width: 21.59)
+  #pad(x: 0.75in, top: 0.3in, bottom: 0.65in)[
+    #grid(columns: (auto, 1fr, auto), column-gutter: 0.8em, align: horizon,
+      caps(fill: c-text)[Municipal Robotics · Research],
+      line(length: 100%, stroke: 0.5pt + c-line-hi),
+      caps[November 2026 · Draft])
+    #v(0.45in)
+    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[Bit-Exact Path Replay\ for CAD Scenes])
+    #v(0.5em)
+    #line(length: 22%, stroke: 2pt + c-label)
+    #v(0.7em)
+    #text(size: s-lg, fill: c-label)[Spectral, deterministic gradients of materials, poses and CAD parameters on a GPU wavefront]
+    #v(0.55in)
+    #grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
+      caps[Cam Pedersen · Municipal Robotics],
+      image("images/muni-logo.svg", width: 0.7in))
+    #v(0.3in)
+    #text(size: s-xs, fill: c-label)[Cover: the scene is "Barcelona Pavillion" by eMirage, CC-BY, from blender.org's demo files.]
+  ]
 ]}
 
 #let abstract-text = [
@@ -430,6 +485,10 @@ The target is the arm at shoulder pitch, shoulder roll and elbow (#V("fit.true_p
 == From pixels to CAD parameters <sec:brep>
 
 The edge sampler's velocity is a projection of the material point's motion, so replacing the pose's velocity with a unit translation per axis yields $partial cal(L) \/ partial x_i$ for every mesh vertex. vcad's differentiable seam @pedersen2026vcad takes exactly that cotangent on the nodes of a frozen tessellation and returns the derivative with respect to a CAD parameter in one reverse pass. The shared benchmark uses rose's left shoulder-pitch output plate, a 3 mm rounded plate with a 49 mm bearing bore and twelve bolt holes, with $theta$ the bore diameter. irys renders vcad's frozen plan (#V("brep.nodes") nodes, #V("brep.tris") triangles) as it is, against the sky at 160×128, under a fixed smooth image loss.
+
+#figure(fig-hero(width: 11.5),
+  caption: [#lead[Where the bore's gradient comes from.] irys's render of the benchmark plate with vcad's frozen mesh fading in from left to right. Each tick sits on a node that moves when the bore grows, points the way that node moves on screen, and is as long as its share of $partial cal(L) \/ partial theta$. Only the bore's nodes move with $theta$, so the derivative picks out exactly that feature. Every mark is data from the run in @tab:brep.],
+) <fig:seam>
 
 #figure(
   table(
