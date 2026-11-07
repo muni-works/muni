@@ -33,11 +33,11 @@
   },
   {
     "slug": "irys",
-    "title": "Bit-Exact Path Replay for CAD Scenes",
-    "subtitle": "Spectral, deterministic gradients of materials, poses and CAD parameters on a GPU wavefront",
+    "title": "Seeing Is Measuring",
+    "subtitle": "From pixels to the dimensions of a CAD model, through a bit-exact differentiable renderer",
     "date": "2026-11-06",
     "author": "Cam Pedersen",
-    "description": "irys is a differentiable path tracer for scenes straight out of a CAD kernel: path replay backpropagation on a GPU wavefront whose replay is bit-exact, pose gradients through instanced CAD meshes, and a per-vertex image gradient that vcad's BRep kernel turns into gradients of CAD dimensions.",
+    "description": "A photograph of a part already contains its dimensions. irys reads them out: a differentiable renderer whose replay is bit-exact, whose gradients reach through instanced CAD to the dimensions in the model, and which recovers editable CAD programs from three photographs to half a millimetre on most test parts.",
     "root": "../paper/irys",
     "source": "irys.typ",
     "cover": "pavilion"

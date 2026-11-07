@@ -1,4 +1,4 @@
-# Bit-Exact Path Replay for CAD Scenes
+# Seeing Is Measuring
 
 Draft preprint on irys's differentiable renderer (`crates/irys-diff` in ecto/irys): PRB on a GPU
 wavefront with tang-compiled BSDFs, bit-exact replay, pose gradients through instanced CAD, and the
@@ -15,6 +15,16 @@ Each row is `key  value  source`, where the source names the irys `docs/design.m
 that introduced it and the test or example that measures it. `data/env.tsv` pins irys, vcad and rose.
 
 ## Open items before submission
+
+The title is a promise; these make it true (Cam, 2026-11-07: "fix the details, aiming for greatness"):
+
+- **M1, synthetic gate to 15/20 at 1 mm.** The 3-view gate is 13/20 (`recon.3v.*`). The differentiated
+  ambient occlusion (irys-recon `ao_edges`, uncommitted) is being gated; then update `tab:recon`.
+- **M2, real photographs.** Print five gate parts, photograph each three times beside the tag with a
+  phone, recover, and measure with calipers. The caliper table becomes the paper's centre figure, and
+  the "Photographs are synthetic" limit comes out of the scope section.
+- **Honest uncertainties.** The Fisher σ are optimistic (design log); calibrate them against the gate's
+  actual errors and report coverage.
 
 - **Regenerate every row in one pass on one recorded machine:** `IRYS_REV=<rev> repro/repro.sh`
   (clones irys and rose at pinned commits, runs every gate test and the two rose examples in release,

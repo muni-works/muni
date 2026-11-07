@@ -71,3 +71,16 @@ brep.e2e	40.0144	irys 103e3da
 brep.e2e_rel	3.85e-3	irys 103e3da
 brep.nodes	4942	irys 103e3da
 brep.tris	9932	irys 103e3da
+recon.1v.p05	2	irys docs/image-to-cad.md "v1" @845f34a, docs/recon-v1-report.md (recon_v1 gate, 1 photo per part, 20 parts)
+recon.1v.p1	6	same
+recon.1v.topo	11	same
+recon.3v.p05	10	irys docs/recon-v1-3view-report.json @527f046 (recon_v1 gate --views 3, 20 parts)
+recon.3v.p1	13	same
+recon.3v.topo	15	same
+recon.3v.err_lo	0.171	same: smallest max-dimension error among parts passing at 0.5 mm
+recon.3v.err_hi	0.488	same: largest
+recon.3v.err_med	0.351	same: median
+recon.3v.pose_med	0.134	same: median of max(|dx|,|dy|) pose error on the tag plane, mm, all 20 parts
+recon.3v.yaw_max	0.065	same: worst yaw error, degrees
+recon.3v.focal_max	0.61	same: worst focal error from EXIF + tag, percent
+recon.parts	20	the gate's parts, generate::program(3000..3020)

@@ -1,6 +1,6 @@
 // Research post: irys, a differentiable spectral path tracer for CAD scenes.
 // Written as the arXiv preprint that accompanies the irys launch; the companion of paper/vcad
-// ("Bit-Exact Path Replay for CAD Scenes"), sharing its rose-arm benchmark.
+// ("Exact Gradients Through a BRep Kernel"), sharing its rose-arm benchmark.
 // Same treatment as paper/vcad and paper/ribt (muon "Pilot Light", dark); style block copied from vcad.typ.
 // One source, two outputs: `--features html --format html --input target=html` builds the web post.
 // Every measured number below is read from data/measured.tsv; each row names the design-doc line,
@@ -63,7 +63,7 @@
   }))
 }
 
-#set document(title: "Bit-Exact Path Replay for CAD Scenes", author: "Cam Pedersen (Municipal Robotics)")
+#set document(title: "Seeing Is Measuring", author: "Cam Pedersen (Municipal Robotics)")
 
 #let hf-out() = { let m = page.margin; let l = if type(m) == dictionary { m.at("left", default: m.at("x", default: 0.75in)) } else { 0.75in }; calc.max(0in, l - 0.7in) }
 
@@ -76,7 +76,7 @@
   numbering: "1",
   header: context {
     if counter(page).get().first() > 1 {
-      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Bit-Exact Path Replay for CAD Scenes], caps[Municipal Robotics]))
+      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Seeing Is Measuring], caps[Municipal Robotics]))
     }
   },
   footer: context {
@@ -327,11 +327,11 @@
       line(length: 100%, stroke: 0.5pt + c-line-hi),
       caps[November 2026 · Draft])
     #v(0.45in)
-    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[Bit-Exact Path Replay\ for CAD Scenes])
+    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.35, tracking: -0.025em)[Seeing Is\ Measuring])
     #v(0.5em)
     #line(length: 22%, stroke: 2pt + c-label)
     #v(0.7em)
-    #text(size: s-lg, fill: c-label)[Spectral, deterministic gradients of materials, poses and CAD parameters on a GPU wavefront]
+    #text(size: s-lg, fill: c-label)[From pixels to the dimensions of a CAD model, through a bit-exact differentiable renderer]
     #v(0.55in)
     #grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
       caps[Cam Pedersen · Municipal Robotics],
@@ -342,9 +342,11 @@
 ]}
 
 #let abstract-text = [
-  Inverse rendering of engineered objects needs gradients with respect to the quantities an engineer controls, the finish of a part, the pose of a mechanism, the dimensions in its CAD model, computed through scenes of millions of triangles that come straight from a CAD kernel. We describe irys, an open-source Rust path tracer whose differentiable core is path replay backpropagation (PRB) on a GPU wavefront. Its BSDFs are written once as graphs in the tang tensor compiler and lowered twice, to an evaluation kernel and an adjoint kernel, for the GPU (WGSL) and for a CPU reference that runs the same graph in f64. Every path carries four hero wavelengths. Every reduction has a fixed order, the random-number generator is integer-exact on both tiers, and the BVH walk depends only on the ray, so the replay pass reproduces the forward pass bit for bit: #V("gpu.replay_lanes") of #V("gpu.replay_lanes") lanes, at every depth we tested, and the gradient is identical across runs. PRB's memory is a constant #V("hero.words_4l") words per path, independent of depth.
+  A photograph of a machined part already contains its dimensions. Reading them out means running a renderer backwards: finding the CAD parameters whose image matches the photograph, and knowing how sure we are. That makes a renderer a measuring instrument, and an instrument has to be exact before it can be precise. We describe irys, an open-source Rust renderer built to that standard.
 
-  On top of the material gradient we add pose gradients through a two-level BVH of instanced CAD meshes: primary edge sampling, an interior term by forward-mode duals with frames rigidly attached to the moving instance, and secondary edges that move shadows and reflections. GPU f32 gradients agree with the f64 reference to #E("gpu.dtheta_max") on the worst parameter, and hero wavelengths cut colour noise #F("hero.var_chroma", 1)×. On a robot arm read from its CAD source we recover three joint angles and an anodised finish together from a rendered target, to #fx(max-deg-err, 2)° and #fx(theta-err, 3). Finally, irys's per-vertex image gradient composes with the differentiable BRep seam of the vcad kernel, a companion paper: the pullback of irys's gradient to a bearing-bore diameter matches vcad's forward mode to #E("brep.fwd_rel") and its finite-difference oracle to #E("brep.fd_rel"). Determinism is per device and driver, and the pose fit converges only from within about ±#V("basin.deg")° of the answer; we state these limits with the results.
+  Its differentiable core is path replay backpropagation on a GPU wavefront. Materials are written once as graphs in the tang tensor compiler and lowered both to GPU kernels and to an f64 CPU reference. An integer random-number generator, fixed-order reductions and a ray-only BVH walk make the replay reproduce the forward pass bit for bit: #V("gpu.replay_lanes") of #V("gpu.replay_lanes") lanes, with gradients identical across runs. GPU f32 gradients agree with the f64 reference to #E("gpu.dtheta_max"). On top of the material gradient sit pose gradients through instanced CAD meshes (primary edges, an interior term with attached frames, and secondary edges that move shadows and reflections) and a per-vertex image gradient that the vcad BRep kernel pulls back to the dimensions of a part.
+
+  Each layer is a measurement. A robot arm read from its CAD source gives back three joint angles and its anodised finish from a render, to #fx(max-deg-err, 2)° and #fx(theta-err, 3). A bearing bore's diameter gets its image gradient through the BRep kernel, matching vcad's forward mode to #E("brep.fwd_rel"). And from three synthetic phone photographs beside a printed tag, a recovery search over editable CAD programs finds #V("recon.3v.p05") of #V("recon.parts") test parts to within 0.5 mm in every dimension, up from #V("recon.1v.p05") with one photograph. We state the instrument's limits alongside its readings: replay is bit-exact per device and driver, the pose fit converges only near the answer, and real photographs are the next experiment, not a result of this paper.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -362,17 +364,18 @@
 
 = Introduction
 
-A robot that recognises a part and a technician who checks an assembly against its drawing both need to find the parameters whose rendering matches a photograph. For engineered objects the parameters are not free-form vertices or a neural field. They are a material, the angles of a mechanism's joints, and the dimensions in a CAD model. The renderer that answers the question therefore has to differentiate through scenes as they come out of a CAD kernel: millions of triangles, instanced, with sharp creases and many thin slivers, lit by a sun.
+To measure a part, you usually touch it: calipers, a coordinate-measuring machine, a gauge pin. A photograph touches nothing, yet it already contains the part's dimensions, mixed up with its pose, its finish, the light in the room and the lens. Separating them is inverse rendering: find the parameters whose rendering matches the photograph. For an engineered object those parameters are not free-form vertices or a neural field. They are the dimensions in a CAD model, the angles of a mechanism's joints and the finish of its surfaces. If a renderer can recover them, and say how well it knows each one, it is a measuring instrument.
 
-Path replay backpropagation @vicini2021prb made physically based differentiable rendering practical by replacing the stored path tape with a second, replayed pass, so memory no longer grows with path depth. PRB requires the replay to regenerate exactly the paths the forward pass drew. When it does not, the gradient belongs to a different estimator from the one rendered. Systems built on general array compilers @jakob2022drjit meet the contract inside one process and one backend. We also wanted a GPU tier and a CPU f64 reference that run the same BSDF source and agree to rounding, with each tier bit-identical across runs. Then a failing gradient test is a bug, never noise.
+An instrument has two obligations. It must be *exact*: the same input gives the same reading, and the reading means what it says. And it must be *precise*: its error is small and known. For a differentiable renderer, exactness is a property of the gradient. Path replay backpropagation @vicini2021prb made physically based differentiable rendering practical by replacing the stored path tape with a second, replayed pass. That only works if the replay regenerates exactly the paths the forward pass drew; otherwise the gradient belongs to a different estimator from the one rendered. Systems built on general array compilers @jakob2022drjit meet this contract inside one process and one backend. We wanted a GPU tier and an f64 CPU reference that run the same material source and agree to rounding, with each tier bit-identical across runs. Then a failing gradient test is a bug, never noise, and a reading can be trusted.
 
-This paper describes irys, the renderer behind vcad and our other robotics tools. Its contributions are:
+This paper describes irys, the renderer behind vcad and our robotics tools, and how it meets both obligations. Its contributions are:
 
 - *One BSDF source, two lowerings, two tiers.* Materials are tang tensor graphs. tang lowers each one to an evaluation program and an adjoint program, emitting WGSL kernels for the GPU and running the same graph in its f64 interpreter for the CPU reference. The path logic (ray generation, traversal, bounce, accumulation) is hand-written (@sec:ir).
 - *PRB on a wavefront with hero wavelengths and NEE.* Four wavelengths per path, next-event estimation with multiple importance sampling, and the light-sampled lanes folded into the same graph batch (@sec:prb).
 - *Bit-exact replay by construction.* An integer RNG that is exact on both tiers, fixed-order reductions with no float atomics, and a BVH walk that depends only on the ray (@sec:det).
 - *Pose gradients through instanced CAD meshes.* Primary edge sampling with crease ownership and visibility-aware importance, an interior term by forward-mode duals with attached frames, and secondary edge sampling for moving shadows and reflections (@sec:pose).
 - *Validation at every layer and a fit on a real robot.* Gradients against central differences with common random numbers, GPU against CPU f64, and a joint pose and finish recovery on an arm read from its CAD source (@sec:results).
+- *Dimensions from photographs.* A search over editable CAD programs, scored by description length and fitted with the same edge-sampling estimator, recovers the dimensions of parts from synthetic phone photographs beside a printed tag (@sec:recon).
 - *A bridge to CAD parameters.* A per-vertex image gradient that the vcad BRep kernel pulls back to the dimensions of the part, shared as a benchmark with the companion paper @pedersen2026vcad (@sec:brep).
 
 == Scope and limits
@@ -382,6 +385,7 @@ This paper describes irys, the renderer behind vcad and our other robotics tools
 - *Lights.* The environment is the only emitter (a sky and a von Mises–Fisher sun lobe).
 - *Pose parameters are rigid.* Joint angles and the camera move instances rigidly. Non-rigid shape change enters only through the BRep bridge of @sec:brep.
 - *The pose fit has a basin.* The elbow converges from within about ±#V("basin.deg")° of the answer and fails from outside it; the blur and pyramid schedules we tried did not widen it reliably.
+- *Photographs are synthetic.* Every photograph in @sec:recon is rendered, with a camera model applied. Real photographs of printed parts, checked with calipers, are the next experiment.
 - *Hardware.* All timings come from one Apple M-series machine through Metal; the exact chip was not recorded in the source logs, and timings in this draft are not yet regenerated on a single pinned machine (@sec:repro).
 
 = Background and related work
@@ -505,6 +509,30 @@ The edge sampler's velocity is a projection of the material point's motion, so r
 
 A finite difference that rebuilds the part is not a usable reference here. Rebuilding at $theta plus.minus h$ loses node correspondence for $h >= 2 times 10^(-3)$ mm and changes topology at $0.05$ mm, where the bore rim's sag-adaptive segment count drops; below that the render difference is quadrature noise. The pullback has no step size. It is exact for the frozen mesh, and irys's sampling error is the only noise in the result.
 
+== Dimensions from photographs <sec:recon>
+
+The last reading is the one the title promises: the dimensions of a part from photographs of it. The recovery searches over editable CAD programs. A program is a plate with a corner treatment and a list of features (holes, counterbores, slots, bosses and hole patterns), each with its dimensions, plus the part's pose on the table. A program is scored by its description length in nats,
+
+$ "score"("program", theta) = -log p("photos" | "render"("program", theta)) + 1/2 log det F(theta) - log p("program") $
+
+the residual under a robust noise model, a Laplace parameter cost from the Fisher information $F$, and the program's own length under a grammar prior. An edit to the program (add a feature, remove one, turn a hole into a counterbore or a slot, merge holes into a pattern) is kept only if it shortens the description, so the search cannot buy residual with a feature per pixel. Inside each edit, Levenberg–Marquardt fits the continuous parameters with a Jacobian from the edge-sampling estimator of @sec:pose, applied to a deterministic photo model (a G-buffer with closed-form OpenPBR shading, spherical-harmonic light, a fitted key light and ambient occlusion).
+
+A printed tag beside the part fixes the camera's pose, its focal length and the metric scale. The test photographs are synthetic phone photographs: irys's OpenPBR scene kernel renders each part in PLA beside the tag, under a captured or synthetic environment and a key light, then adds defocus, shot and read noise, a tone curve and JPEG compression. The test set is #V("recon.parts") parts drawn from the program grammar, each recovered independently from either one photograph or three photographs from different directions.
+
+#figure(
+  table(
+    columns: (2fr, 1fr, 1fr),
+    align: (left, right, right),
+    table.header([*Recovered*], [*1 photo*], [*3 photos*]),
+    [every dimension within 0.5 mm], [#V("recon.1v.p05")/#V("recon.parts")], [#V("recon.3v.p05")/#V("recon.parts")],
+    [every dimension within 1 mm], [#V("recon.1v.p1")/#V("recon.parts")], [#V("recon.3v.p1")/#V("recon.parts")],
+    [the right features (topology)], [#V("recon.1v.topo")/#V("recon.parts")], [#V("recon.3v.topo")/#V("recon.parts")],
+  ),
+  caption: [#lead[Dimensions from synthetic phone photographs], per part, worst dimension, after the plate's quarter-turn symmetry. With three photographs the parts that pass at 0.5 mm have worst-dimension errors from #F("recon.3v.err_lo", 2) to #F("recon.3v.err_hi", 2) mm (median #F("recon.3v.err_med", 2)). Across all #V("recon.parts") parts the pose on the tag plane is recovered to a median #F("recon.3v.pose_med", 2) mm and yaw within #F("recon.3v.yaw_max", 2)°, and the focal length from EXIF and the tag within #F("recon.3v.focal_max", 1)%. `data/measured.tsv`.],
+) <tab:recon>
+
+A single photograph cannot separate a plate's height from a boss's, or see the floor of a counterbore; three photographs mostly can. The failures that remain are of two kinds. In four parts the search confuses a hole with a counterbore. We traced one of them: the correct program reached the full-resolution finalists and lost by 27 nats to a counterbore whose depth never moved from its starting value, because a counterbore's step shows in the photo mainly as ambient occlusion and the photo model's AO was not yet differentiated. In two more parts the right features have a height off by more than a millimetre. The photographs here are rendered, so this is the instrument read against a known standard. Printed parts, phone photographs and calipers are the next experiment.
+
 = Discussion <sec:discussion>
 
 *Why insist on bit-exact replay.* With an exact replay, a gradient that disagrees with its reference is a bug in the estimator, not an artefact of the replay. We could therefore set every gate in this paper tight and debug failures by bisection. That is how we found the crease-ownership bug in our first edge sampler. It inflated one parameter's edge term by a factor of five on a shaded arm while the mask-only test passed.
@@ -519,7 +547,7 @@ irys is open source under Apache-2.0. Each row of `data/measured.tsv` names the 
 
 = Conclusion
 
-A differentiable renderer for engineered objects needs gradients of the parameters engineers control, computed on scenes straight out of a CAD kernel, with errors small and known enough to optimise against. irys provides them with PRB on a GPU wavefront whose replay is bit-exact by construction, materials compiled from one graph to both a GPU tier and an f64 reference, pose gradients through instanced CAD with primary, interior and secondary terms, and a per-vertex gradient that a BRep kernel turns into gradients of CAD dimensions. irys is open source.
+Seeing becomes measuring when the renderer that explains a photograph is exact and its gradients can be trusted. irys makes the gradient exact where it can be: a replay that reproduces the forward pass bit for bit, materials compiled from one graph to a GPU tier and an f64 reference, and pose and shape gradients through the instanced CAD a kernel produces, down to the dimensions in the model. With them, a search over editable CAD programs reads the dimensions of a part from three photographs to half a millimetre in most cases. The next readings are photographs of real parts, held against calipers. irys is open source.
 
 #heading(outlined: true, numbering: none)[References]
 #show bibliography: it => { show "?.": "?"; show "!.": "!"; it }
