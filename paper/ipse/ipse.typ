@@ -21,9 +21,10 @@
 #let c-fault   = rgb("#ff2052")
 #let c-info    = rgb("#00f0ff")
 
-// product names in their family color, as in the vision paper's periodic table
-#let brand-names = (("tang", "make"), ("ipse", "mind"), ("frog", "mind"))
-#let fam-color = (make: c-ok, mind: c-sel)
+// product names in their landing-page color
+#let brand-names = (("tang", "tang"), ("ipse", "ipse"), ("frog", "frog"))
+// each product in its landing-page color (web/src/app/page.tsx), not its family
+#let fam-color = (tang: rgb("#ffd400"), ipse: rgb("#ff5f00"), frog: rgb("#39ff14"))
 #let brand-re = regex("(?i)\\b(tang|ipse|frog)\\b")
 #metadata(brand-names) <brand-names>
 #let brand-family(name) = brand-names.find(n => n.at(0) == lower(name)).at(1)
