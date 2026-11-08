@@ -454,7 +454,9 @@ Every fast model today runs on kernels someone wrote by hand, one per operator, 
 
 tang's tensor IR is built from two constructs. _Views_ are affine maps from an iteration space to tensor coordinates. _Comprehensions_ are reductions under a monoid whose body is a scalar expression graph. Everything else is either a rewrite or a schedule. Fusion is one substitution rule. Nobody writes flash attention. The compiler produces it by recognizing online softmax as a monoid. Gradients of comprehensions are comprehensions, so the same passes derive and optimize the backward pass. That includes a flash-style attention backward that writes no $n times n$ intermediates on any backend (on tensor cores at full speed, and on WGSL and Metal for now at a cost we report). The concurrent superoptimizers we discuss derive only the forward. Precision and thread mapping are schedule fields that cannot change the math (precision changes only rounding, which we predict), chosen per kernel by measurement on the device.
 
-One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, GLSL and C, from a datacenter GPU and a desktop GPU and a laptop down to a humanoid robot's phone-class SoC. On an RTX 3090 a derived transformer block's forward pass at sequence length 512 runs 1.37× faster than PyTorch with TF32. Qwen3-8B decodes as a single IR graph at 148.7 tok/s, tied with llama.cpp at short context and at 92% of it at 4k. There are no per-operator kernels. The one pattern-specific emitter, CUDA's flash kernel, matches the online-softmax monoid, not attention. We then derive the kernels of a hand-tuned engine that serves an 80B mixture-of-experts model on one H200. The derived MoE expert layer beats the engine's hand kernels at every batch size from 1 to 64. The derived head-dim-256 attention and the derived gated-delta scan replace hand kernels in the engine's prefill, which cuts the time to first token at 44k tokens from 8.33 s to 5.54 s.
+One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, GLSL and C, from a datacenter GPU and a desktop GPU and a laptop down to a humanoid robot's phone-class SoC. On an RTX 3090 a derived transformer block's forward pass at sequence length 512 runs 1.37× faster than PyTorch with TF32. Qwen3-8B decodes as a single IR graph at 148.7 tok/s, tied with llama.cpp at short context and at 92% of it at 4k. There are no per-operator kernels. The one pattern-specific emitter, CUDA's flash kernel, matches the online-softmax monoid, not attention. We then derive the kernels of a hand-tuned engine that serves an 80B mixture-of-experts model on one H200. The derived MoE expert layer beats the engine's hand kernels at every batch size from 1 to 64, and inside the model it is faster from 16 concurrent streams up. The derived head-dim-256 attention and the derived gated-delta scan replace hand kernels in the engine's prefill, which cuts the time to first token at 44k tokens from 8.33 s to 5.54 s.
+
+Finally, we ask how far a kernel is from the fastest any implementation could be. For a comprehension over affine views, the least memory traffic and the tile that attains it are the primal and dual of one linear program, and we prove weak duality in Lean. A time floor built on that bound, with no fitted constants, is sound on every kernel we measured on two GPUs, tight to 0.82–0.90 of measured time on the RTX 3090, and it shows that small-batch decode on the H200 is bound by its chain of dependent kernels, not by bandwidth.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -476,7 +478,7 @@ A modern model has a few dozen distinct operators. A modern framework has thousa
 
 Each hand kernel is a separate copy of the same arithmetic, and each one freezes a schedule that was right for one shape on one device. We measured how often that schedule is wrong: the fastest schedule changes with the size, the chip and even between runs on the same machine (§7.1). The winning schedule is a property of the graph, the chip and the size, not of the operator.
 
-Our thesis is that *a kernel is a theorem, not a program*. Every fast kernel we know of is a claim of the form "this comprehension, reassociated under this monoid and placed in this memory, equals the naive one." Such a claim can be derived, checked and searched. It does not need to be written. If that is right, the kernel library should be replaced by an algebra small enough to reason about, together with a search over its schedules. @fig-one shows one graph under the schedules that the field knows by name.
+Our thesis is that *a kernel is a theorem, not a program*. Every fast kernel we know of is a claim of the form "this comprehension, reassociated under this monoid and placed in this memory, equals the naive one." Such a claim can be derived, checked and searched. It does not need to be written. It can also be bounded: the least traffic any schedule of a comprehension can move, and the tile that moves it, are dual solutions of one linear program. If that is right, the kernel library should be replaced by an algebra small enough to reason about, together with a search over its schedules. @fig-one shows one graph under the schedules that the field knows by name.
 
 #figure(fig-one(), kind: image,
   caption: [One causal attention graph ($n = 4096$, $d = 64$, RTX 3090) under four schedules. Only where $S = q k^top$ and $P = "softmax"(S)$ live, and where kernels end, differ. FlashAttention-2 and checkpointing are points in this space. The search keeps $S$ in shared memory and recomputes $P$, 3.3× faster than the flash schedule on this chip. Measured; the web edition makes the figure interactive.],
@@ -496,7 +498,8 @@ Contributions:
 + *Derived backward passes.* Reverse-mode differentiation maps comprehensions to comprehensions, including the online-softmax monoid. A proof procedure removes the stabilizing max's gradient, and with nested contractions this yields an attention backward with no $n times n$ tensors (§3).
 + *Precision as a schedule.* An emulating interpreter predicts the error of a format choice before it runs (§4).
 + *One graph, six targets.* Lowerings from shared emitters, measured against hand kernels, PyTorch and the bandwidth limit on four chips (§5, §7).
-+ *A production engine, derived.* Top-$k$ routing as one monoid, integer tensor-core and narrow GEMV schedules, a segmented-sum gather backward, chunked scans, and Hopper attention schedules. With them, derived kernels replace hand kernels in an 80B MoE engine on an H200 (§8, §10).
++ *A production engine, derived.* Top-$k$ routing as one monoid, integer tensor-core and narrow GEMV schedules, a segmented-sum gather backward, chunked scans, and Hopper attention schedules. With them, derived kernels replace hand kernels in an 80B MoE engine on an H200 (§8, §11).
++ *The speed of light.* The traffic lower bound and the optimal tile are dual solutions of one linear program read off a kernel's views, with weak duality in Lean. A time floor built on it, with no fitted constants, is sound on every measured kernel on two GPUs and explains where decode loses time (§9).
 
 = The IR
 
@@ -964,6 +967,65 @@ Both went into the engine behind switches, gated on the engine's own accuracy ch
 
 Training needs the backward. The derived attention backward was nine kernels that round-tripped P and dS through memory, at 13–25 TFLOP/s. A lowering now recognizes the pattern the gradient pass produces (a tuple reduction over queries whose operands are pointwise maps of two short contractions) and emits one kernel per key block. dK and dV stay in registers, and dQ is added with Hopper's bulk asynchronous reduce. Variants on `mma.sync`, on `wgmma` with two consumer warpgroups, and with a producer warpgroup are all derived from the same match, and the autotuner picks per shape. The fused kernel reaches 0.81–0.96× of SDPA's backward at $d = 128$ and 0.79–1.03× at $d = 256$, and the whole program is 4–8× faster than the nine kernels.
 
+== The derived MoE in the model
+
+A layer that wins in isolation still has to win inside the model. Behind a switch, the derived MoE replaces the engine's expert kernels in every layer of Qwen3-Coder-Next. It passes all of the engine's accuracy checks. Getting there exposed one numerical choice: a block-split sum of squares in RMSNorm, split 256 ways, pushed the KL divergence at 3k tokens to $2.8 times 10^(-4)$, over the $2 times 10^(-4)$ bar. Split 1024 ways it is $2.3 times 10^(-5)$, lower than the serial sum's $4.1 times 10^(-5)$. Precision is a schedule here too.
+
+The derived model is faster than the hand engine from 16 concurrent streams up: a decode step at 48 streams takes 28.78 ms against 30.26 ms. At 1–8 streams it is still slower. The layer is faster, so the loss is not in any one kernel. §9 explains where it goes.
+
+= The speed of light
+
+"Derived kernels beat hand kernels" is a claim about two programs. It says nothing about whether either is fast. The question that matters is how far a kernel is from the fastest any implementation could be. tang can answer it from the same comprehension it compiles.
+
+== The floor and the tile are dual
+
+For a comprehension over affine views, the least memory traffic of any tiled schedule comes from a linear program. Each view projects the iteration space onto one operand, and the Brascamp–Lieb inequality bounds how many iterations a tile can run for the data it holds @christ2013hbl. The program's optimum is the traffic lower bound. Its dual is a tile shape that attains it. So the bound and the schedule are two solutions of one problem, and the duality gap is how far a schedule is from optimal. tang builds this program from a kernel's views (`TensorGraph::kernel_lp`) and solves both sides.
+
+It reproduces the classical bounds. Matmul gets exponent $3 slash 2$ with a $sqrt(M slash 3)$ cube tile. Attention gets Saha and Ye's $Theta(min(N^2 d^2 slash M, N^2 d slash sqrt(M)))$ @saha2024io, and its dual tile is FlashAttention's $M slash (4 d)$ blocks. The dual is a prediction about the autotuner, and we can check it (@tab-dual).
+
+#figure(
+  table(
+    columns: (auto, auto, auto),
+    align: (left, left, left),
+    [kernel], [dual tile], [autotuner],
+    [matmul, 3090], [64 × 64], [64 × 64: match],
+    [attention, one memory level], [$M slash (4d)$ rows], [default schedule moves 2–2.8× the dual's traffic],
+    [matmul, M4, registers as a level], [64 × 64], [64 × 64: match],
+    [attention, M4, registers as a level], [64 rows × 32 keys], [64 × 32: match, half the one-level dual's traffic],
+  ),
+  caption: [The dual of the traffic program against the tile the measured autotuner picks. With one memory level, the M4 autotuner beats the dual because it keeps the accumulator, and attention's online state, in registers. Adding registers as a second level of the program reproduces both picks. The match depends on the register budget being the schedule space's largest register tile.],
+) <tab-dual>
+
+Weak duality is mechanized in Lean: no box-tiled schedule moves fewer bytes than the primal. General schedules need the full discrete Brascamp–Lieb theorem, which we have not mechanized. Guarded views fit the program as it is. For a gather view the bound is $max("HBL"("rest"), "compulsory" + U dot "slice")$, which is sound for the given index data and equals the analytic MoE floor under uniform top-$k$. Multi-term views, such as a convolution's $x + k$, are dropped from the program, which keeps the bound sound but loose. Masks are not modelled.
+
+== From traffic to time
+
+Traffic is one limit. A kernel's time floor is
+$ t >= t_"launch" + max(B slash beta + lambda, F slash pi, ceil(w) lambda, I slash iota) $
+for $B$ bytes at bandwidth $beta$, DRAM latency $lambda$, $F$ flops at peak $pi$, $w$ waves, and $I$ issue slots at the chip's issue rate $iota$, each counted from the lowered kernel. A decode step's floor is the longest path through its kernel graph, where independent kernels may overlap. Every constant comes from a datasheet or an empty-kernel launch. Nothing is fitted to the times we predict.
+
+We measured every kernel's DRAM bytes and time with Nsight on an RTX 3090 and an H200. The floor is sound on every kernel on both chips: it never predicts more than the measured time. On the 3090 it is tight, at 0.82–0.90 of the measured time, and every large kernel is bandwidth-bound. On the H200 it was loose until the issue term entered. The Q8 GEMV is predicted at 58.7 µs against 63.5 µs measured, a ratio of 0.92, up from 0.42 without that term. The same code is bandwidth-bound on one chip and issue-bound on the other. The Q4_K MoE GEMVs are not closed: they sit at 0.39–0.70, and counting their instructions finely enough needs Hopper counters.
+
+== What the floor says about decode
+
+On the H200 a whole decode step's traffic floor is only 0.16–0.29 of its measured time, and the gaps between kernels inside the CUDA graph are only 0–8% of the step. The missing time is per kernel. A cold dependent GEMV costs 6.9 µs including launch, and any dependent kernel under about 2 MB costs about that much whatever it does. At one stream the hand engine's step is 548 kernels in 4.04 ms, 7.4 µs each. At small batch, decode is bound by its chain of dependent kernels, not by bandwidth, which is why the derived MoE layer can win alone and lose in the model.
+
+The floor also ranks fixes before anyone builds them (@tab-levers). Each lever is a schedule change, and the floor bounds what it can gain.
+
+#figure(
+  table(
+    columns: (auto, auto, auto),
+    align: (left, left, left),
+    [lever], [bound from the floor], [measured, H200],
+    [blind L2 prefetch of the next matrix], [+4 to +28% (slower)], [net slower: next kernel −0.4 to −0.6 µs, prefetcher +0.6 to +4 µs],
+    [shared expert on a parallel graph branch], [≤ 9% at one stream], [within noise at 1–8 streams; −6 to −13% at 16–48, bitwise equal],
+    [fuse block-local chains (norm → GEMV, gate|up → down)], [−25% hand, −38% derived at one stream; 4–8% at 48], [in progress],
+  ),
+  caption: [Decode levers, bounded by the step floor and then measured. The first version of the floor credited L2 prefetch with up to −36%; charging the prefetching kernel for the matrix it streams turned that into the measured loss. Gains are against the step time; the parallel shared expert is a switch in the engine.],
+) <tab-levers>
+
+The claim is therefore sharper than "derived beats hand." On the 3090, tang's large kernels run within 11–22% of a floor no implementation can beat. Where they are further away, the floor names the missing term: registers, issue slots or the chain of dependent kernels.
+
 = Related work
 
 *Schedules.* Halide @ragan2013halide separated algorithm from schedule. TVM @chen2018tvm and Ansor @zheng2020ansor searched the schedule space with learned cost models, and Tensor Comprehensions @vasilache2018tc used polyhedral compilation. tang inherits the separation and the search.
@@ -971,6 +1033,8 @@ Training needs the backward. The derived attention backward was nine kernels tha
 *Deriving fused kernels.* The closest work is concurrent. Mirage @wu2024mirage superoptimizes multi-level $mu$Graphs with probabilistic equivalence checks. EqiForge @eqiforge2026 uses equality saturation to derive FlashAttention-style forward kernels. Flashlight @flashlight2025 generates flash-style kernels for arbitrary attention variants inside TorchInductor. tang differs on three axes. Its rewrite is deterministic, keyed on the monoid structure rather than found by search. It derives the _backward_ pass, including the gradient of the online-softmax monoid and the elimination of the stabilizing max. And it lowers to six targets, not one. Neither Flashlight nor EqiForge publishes code, so we measure against FlexAttention and FA2 instead (§7.3).
 
 *Tile languages and hand kernels.* Triton @tillet2019triton, ThunderKittens @spector2024tk and TileLang @wang2025tilelang make kernels easier to write. FlashAttention @dao2022flash @dao2023flash2 @shah2024flash3 is the hand-derived frontier. Online softmax is due to Milakov and Gimelshein @milakov2018online. tang aims to make writing kernels unnecessary, and treats these kernels as the targets derived code must reach.
+
+*Lower bounds.* Communication lower bounds for loop nests over arrays come from the Brascamp–Lieb inequality @christ2013hbl, and red-blue pebbling bounds are now derived automatically for affine programs. Attention's I/O complexity is $Theta(N^2 d^2 slash M)$ for large caches @saha2024io. These analyze a fixed algorithm and model traffic only. tang reads the program off the kernel it compiles, uses its dual as a schedule, adds latency, issue and launch terms, and checks the result against hardware counters.
 
 *Generated kernels.* LLM agents now write CUDA, but KernelBench-Verified @kbverified2026 shows frontier models reward-hacking benchmarks by hard-coding test values. A derived kernel is checked by construction against an f64 interpreter of the same graph.
 
@@ -1001,7 +1065,9 @@ What remains is measured too. The derived Hopper forward runs at 0.42–0.60× o
 
 Two primitives, affine views and monoid comprehensions, are enough to express a transformer, its gradient and its quantized inference. Fusion, flash attention and the flash backward become rewrites and schedule choices, not kernels. Because the schedule is searched per chip, the same source matches hand kernels within 7% or beats them on Metal and Vulkan, runs on an embedded Adreno, and beats PyTorch on a transformer block's forward pass on CUDA.
 
-The hand-written kernel does not disappear in this design. It becomes an intrinsic, a fast implementation of one comprehension shape on one chip, which the compiler uses when it wins and replaces when it doesn't. In the last hand-tuned engine we run, an 80B MoE model on an H200, derived kernels now beat the hand-written MoE kernels at every batch size and cut the time to first token at 44k tokens by a third. The kernels the engine still keeps by hand are the next targets.
+The hand-written kernel does not disappear in this design. It becomes an intrinsic, a fast implementation of one comprehension shape on one chip, which the compiler uses when it wins and replaces when it doesn't. In the last hand-tuned engine we run, an 80B MoE model on an H200, the derived MoE layer beats the hand-written one at every batch size, the derived model is faster from 16 streams up, and derived prefill kernels cut the time to first token at 44k tokens by a third.
+
+The comparison with hand kernels was never the point. The traffic floor and the tile that reaches it are dual solutions of one program, so a compiler that derives kernels can also say how far each one is from the best possible. Where tang's kernels fall short of that floor, it names why. At small batch the cause is the chain of dependent kernels, so the next step is fusing that chain, and the floor already bounds what fusion can gain.
 
 #aside[Reproducibility][
   Every number in this paper comes from `BENCHMARKS.md` in the tang repository (snapshot in `data/`), which records the command, date and machine state for each measurement. The IR is in `crates/tang-compile/src/tensor*.rs`; its design notes are in `docs/tensor-ir.md`.
