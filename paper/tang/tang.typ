@@ -971,7 +971,7 @@ Training needs the backward. The derived attention backward was nine kernels tha
 
 A layer that wins in isolation still has to win inside the model. Behind a switch, the derived MoE replaces the engine's expert kernels in every layer of Qwen3-Coder-Next. It passes all of the engine's accuracy checks. Getting there exposed one numerical choice: a block-split sum of squares in RMSNorm, split 256 ways, pushed the KL divergence at 3k tokens to $2.8 times 10^(-4)$, over the $2 times 10^(-4)$ bar. Split 1024 ways it is $2.3 times 10^(-5)$, lower than the serial sum's $4.1 times 10^(-5)$. Precision is a schedule here too.
 
-The derived model is faster than the hand engine from 16 concurrent streams up: a decode step at 48 streams takes 28.78 ms against 30.26 ms. At 1–8 streams it is still slower. The layer is faster, so the loss is not in any one kernel. §9 measures where it goes.
+The derived model is faster than the hand engine from 16 concurrent streams up: a decode step at 48 streams takes 28.78 ms against 30.26 ms. At 1–8 streams it was slower, so the engine takes the derived path only for windows of at least 16 rows and keeps the hand kernels below that. In isolation the layer is faster at every batch size, so the loss is not in the kernels alone. §9 measures where it goes.
 
 = The speed of light
 
