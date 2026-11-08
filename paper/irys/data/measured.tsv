@@ -99,3 +99,30 @@ recon.1v.p1_ci	0.145	0.519	Wilson 95% interval for 6/20
 recon.pt.p05	11	irys docs/recon-v1-3view-pt-hybrid-report.md @e2fec74 (recon_v1 gate --views 3 --no-fd --renderer hybrid: G-buffer search, final fit through irys's path tracer; 20 parts)
 recon.pt.p1	14	same
 recon.pt.topo	16	same
+recon.g.parts	100	irys docs/recon-v1-gate100-report.md @812dc62 (recon_v1 gate --views 3 --no-fd, AO differentiated; in-grammar seeds 3000..3099; first 20 = recon.3a)
+recon.g.p05	40	same
+recon.g.p1	52	same
+recon.g.topo	60	same
+recon.g.p1_ci	0.42	0.62	same: Wilson 95%
+recon.g.p05_ci	0.31	0.50	same: Wilson 95%
+recon.g.topo_ci	0.50	0.69	same: Wilson 95%
+recon.g.new_p1	37	same: seeds 3020..3099, within 1 mm (of 80)
+recon.g.given_topo	87	same: % within 1 mm given correct topology (52/60)
+recon.g.given_topo_ci	0.76	0.93	same: Wilson 95%
+recon.g.hole_cb	19	same: parts with hole<->counterbore confusion (of 40 topology failures incl. 4 tag misses)
+recon.g.notag	4	same: parts failing before recon (no tag36h11 found in one photo)
+recon.g.med_ok	0.383	same: median worst-dimension error, mm, correct-topology parts
+recon.g.p90_ok	1.406	same: p90
+recon.g.h_bias	0.18	same: mean plate-height error, mm (low)
+recon.o.parts	24	same: out-of-grammar seeds 9000..9023, 6 kinds x 4
+recon.o.p05	5	same
+recon.o.p1	9	same
+recon.o.topo	10	same
+recon.o.p1_ci	0.21	0.57	same: Wilson 95%
+recon.sig.c	17.8	same: sigma' = c * sigma_Fisher, fitted on even seeds
+recon.sig.c_ci	12.7	21.8	same: bootstrap
+recon.sig.cov1	68	same: % of odd-seed dimensions within 1 sigma'
+recon.sig.k95	6.72	same: 95% half-width in sigma'
+recon.sig.cov95	96	same: % of odd-seed dimensions within k95 sigma'
+recon.sig.rho	-0.15	same: Spearman rank correlation of sigma_Fisher with |error|
+recon.sig.opt	6	same: median factor by which Fisher sigma is optimistic

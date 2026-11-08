@@ -30,6 +30,9 @@ The title is a promise; these make it true (Cam, 2026-11-07: "fix the details, a
 
 - ~~**M1, synthetic gate to 15/20 at 1 mm.**~~ Done 2026-11-07: 15/20 at 1 mm, 16/20 topology with the
   differentiated AO and no FD columns (irys `de62b0a`, `recon.3a.*`).
+- **Held-out gate (124 parts).** Done 2026-11-07: 52/100 within 1 mm [42, 62], 87% given topology;
+  out of grammar 9/24; calibrated σ′ = 17.8 σ_F (irys `812dc62`, `recon.g.*`, `recon.o.*`, `recon.sig.*`).
+  Open: hole↔counterbore identification; plate height 0.18 mm low bias.
 - **M2, real photographs.** Print five gate parts, photograph each three times beside the tag with a
   phone, recover, and measure with calipers. The caliper table becomes the paper's centre figure, and
   the "Photographs are synthetic" limit comes out of the scope section.
