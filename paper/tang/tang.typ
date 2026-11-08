@@ -456,7 +456,7 @@ tang's tensor IR is built from two constructs. _Views_ are affine maps from an i
 
 One graph lowers to WGSL, CUDA tensor cores, Metal simdgroup matrices, OpenCL, GLSL and C, from a datacenter GPU and a desktop GPU and a laptop down to a humanoid robot's phone-class SoC. On an RTX 3090 a derived transformer block's forward pass at sequence length 512 runs 1.37× faster than PyTorch with TF32. Qwen3-8B decodes as a single IR graph at 148.7 tok/s, tied with llama.cpp at short context and at 92% of it at 4k. There are no per-operator kernels. The one pattern-specific emitter, CUDA's flash kernel, matches the online-softmax monoid, not attention. We then derive the kernels of a hand-tuned engine that serves an 80B mixture-of-experts model on one H200. The derived MoE expert layer beats the engine's hand kernels at every batch size from 1 to 64, and inside the model it is faster from 16 concurrent streams up. The derived head-dim-256 attention and the derived gated-delta scan replace hand kernels in the engine's prefill, which cuts the time to first token at 44k tokens from 8.33 s to 5.54 s.
 
-Finally, we ask how far a kernel is from the fastest any implementation could be. For a comprehension over affine views, the least memory traffic and the tile that attains it are the primal and dual of one linear program, and we prove weak duality in Lean. A time floor built on that bound, with no fitted constants, is sound on every kernel we measured on two GPUs, tight to 0.82–0.90 of measured time on the RTX 3090, and it shows that small-batch decode on the H200 is bound by its chain of dependent kernels, not by bandwidth.
+Finally, we ask how far a kernel is from the fastest any implementation could be. For a comprehension over affine views, the least memory traffic and the tile that attains it are the primal and dual of one linear program, and we prove weak duality in Lean. A time floor built on that bound, with no fitted constants, is sound on every kernel we measured on two GPUs, tight to 0.82–0.90 of measured time on the RTX 3090, and it shows that small-batch decode on the H200 is not limited by bandwidth. What does limit it remains open: removing launches did not help.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -499,7 +499,7 @@ Contributions:
 + *Precision as a schedule.* An emulating interpreter predicts the error of a format choice before it runs (§4).
 + *One graph, six targets.* Lowerings from shared emitters, measured against hand kernels, PyTorch and the bandwidth limit on four chips (§5, §7).
 + *A production engine, derived.* Top-$k$ routing as one monoid, integer tensor-core and narrow GEMV schedules, a segmented-sum gather backward, chunked scans, and Hopper attention schedules. With them, derived kernels replace hand kernels in an 80B MoE engine on an H200 (§8, §11).
-+ *The speed of light.* The traffic lower bound and the optimal tile are dual solutions of one linear program read off a kernel's views, with weak duality in Lean. A time floor built on it, with no fitted constants, is sound on every measured kernel on two GPUs and explains where decode loses time (§9).
++ *The speed of light.* The traffic lower bound and the optimal tile are dual solutions of one linear program read off a kernel's views, with weak duality in Lean. A time floor built on it, with no fitted constants, is sound on every measured kernel on two GPUs (§9).
 
 = The IR
 
@@ -971,7 +971,7 @@ Training needs the backward. The derived attention backward was nine kernels tha
 
 A layer that wins in isolation still has to win inside the model. Behind a switch, the derived MoE replaces the engine's expert kernels in every layer of Qwen3-Coder-Next. It passes all of the engine's accuracy checks. Getting there exposed one numerical choice: a block-split sum of squares in RMSNorm, split 256 ways, pushed the KL divergence at 3k tokens to $2.8 times 10^(-4)$, over the $2 times 10^(-4)$ bar. Split 1024 ways it is $2.3 times 10^(-5)$, lower than the serial sum's $4.1 times 10^(-5)$. Precision is a schedule here too.
 
-The derived model is faster than the hand engine from 16 concurrent streams up: a decode step at 48 streams takes 28.78 ms against 30.26 ms. At 1–8 streams it is still slower. The layer is faster, so the loss is not in any one kernel. §9 explains where it goes.
+The derived model is faster than the hand engine from 16 concurrent streams up: a decode step at 48 streams takes 28.78 ms against 30.26 ms. At 1–8 streams it is still slower. The layer is faster, so the loss is not in any one kernel. §9 measures where it goes.
 
 = The speed of light
 
@@ -1008,7 +1008,7 @@ We measured every kernel's DRAM bytes and time with Nsight on an RTX 3090 and an
 
 == What the floor says about decode
 
-On the H200 a whole decode step's traffic floor is only 0.16–0.29 of its measured time, and the gaps between kernels inside the CUDA graph are only 0–8% of the step. The missing time is per kernel. A cold dependent GEMV costs 6.9 µs including launch, and any dependent kernel under about 2 MB costs about that much whatever it does. At one stream the hand engine's step is 548 kernels in 4.04 ms, 7.4 µs each. At small batch, decode is bound by its chain of dependent kernels, not by bandwidth, which is why the derived MoE layer can win alone and lose in the model.
+On the H200 a whole decode step's traffic floor is only 0.16–0.29 of its measured time, and the gaps between kernels inside the CUDA graph are only 0–8% of the step. The missing time is per kernel. A cold dependent GEMV costs 6.9 µs including launch, and any dependent kernel under about 2 MB costs about that much whatever it does. At one stream the hand engine's step is 548 kernels in 4.04 ms, 7.4 µs each. That arithmetic suggests decode at small batch is bound by its chain of dependent kernels, but the obvious test refutes the simple form of it. Removing 96 of the 548 launches by fusion did not speed up the step, because the work moved into tails on the same critical path (@tab-levers). What limits small-batch decode on the H200 is still an open term in the floor.
 
 The floor also ranks fixes before anyone builds them (@tab-levers). Each lever is a schedule change, and the floor bounds what it can gain.
 
@@ -1019,12 +1019,12 @@ The floor also ranks fixes before anyone builds them (@tab-levers). Each lever i
     [lever], [bound from the floor], [measured, H200],
     [blind L2 prefetch of the next matrix], [+4 to +28% (slower)], [net slower: next kernel −0.4 to −0.6 µs, prefetcher +0.6 to +4 µs],
     [shared expert on a parallel graph branch], [≤ 9% at one stream], [within noise at 1–8 streams; −6 to −13% at 16–48, bitwise equal],
-    [fuse block-local chains (norm → GEMV, gate|up → down)], [−25% hand, −38% derived at one stream; 4–8% at 48], [in progress],
+    [fuse block-local chains], [−25% hand, −38% derived at one stream; 4–8% at 48], [no gain: top-$k$ into the router GEMV 4.05 → 4.13 ms; with combine fused, 4.44 ms, 96 of 548 launches removed],
   ),
   caption: [Decode levers, bounded by the step floor and then measured. The first version of the floor credited L2 prefetch with up to −36%; charging the prefetching kernel for the matrix it streams turned that into the measured loss. Gains are against the step time; the parallel shared expert is a switch in the engine.],
 ) <tab-levers>
 
-The claim is therefore sharper than "derived beats hand." On the 3090, tang's large kernels run within 11–22% of a floor no implementation can beat. Where they are further away, the floor names the missing term: registers, issue slots or the chain of dependent kernels.
+The claim is therefore sharper than "derived beats hand." On the 3090, tang's large kernels run within 11–22% of a floor no implementation can beat. Further away, it has named two missing terms so far, registers and issue slots. It also failed once in a useful way: its fusion bound promised gains that fusion did not deliver, so per-kernel fill is not yet modelled correctly.
 
 = Related work
 
@@ -1067,7 +1067,7 @@ Two primitives, affine views and monoid comprehensions, are enough to express a 
 
 The hand-written kernel does not disappear in this design. It becomes an intrinsic, a fast implementation of one comprehension shape on one chip, which the compiler uses when it wins and replaces when it doesn't. In the last hand-tuned engine we run, an 80B MoE model on an H200, the derived MoE layer beats the hand-written one at every batch size, the derived model is faster from 16 streams up, and derived prefill kernels cut the time to first token at 44k tokens by a third.
 
-The comparison with hand kernels was never the point. The traffic floor and the tile that reaches it are dual solutions of one program, so a compiler that derives kernels can also say how far each one is from the best possible. Where tang's kernels fall short of that floor, it names why. At small batch the cause is the chain of dependent kernels, so the next step is fusing that chain, and the floor already bounds what fusion can gain.
+The comparison with hand kernels was never the point. The traffic floor and the tile that reaches it are dual solutions of one program, so a compiler that derives kernels can also say how far each one is from the best possible. Where tang's kernels fall short of that floor, it can name why on some kernels and not yet on others. Small-batch decode on the H200 is the open case: it is far from its traffic floor, and removing launches did not close the distance.
 
 #aside[Reproducibility][
   Every number in this paper comes from `BENCHMARKS.md` in the tang repository (snapshot in `data/`), which records the command, date and machine state for each measurement. The IR is in `crates/tang-compile/src/tensor*.rs`; its design notes are in `docs/tensor-ir.md`.
