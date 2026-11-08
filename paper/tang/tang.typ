@@ -444,7 +444,7 @@
   #v(0.5em)
   #line(length: 22%, stroke: 2pt + c-label)
   #v(0.7em)
-  #text(size: s-lg, fill: c-label)[A Tensor IR of Views and Comprehensions]
+  #text(size: s-lg, fill: c-label)[Kernels at the Speed of Light, from a Tensor IR of Views and Comprehensions]
   #v(0.5in)
   #caps[Cam Pedersen · Municipal Robotics]
 ]}
