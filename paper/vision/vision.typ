@@ -154,8 +154,6 @@
 #set page(
   paper: "us-letter",
   fill: c-bg,
-  // DRAFT across every page until the plan is released
-  foreground: place(center + horizon, rotate(-32deg, text(font: mono-sb, size: 128pt, tracking: 0.12em, fill: c-sel.transparentize(93%), "DRAFT"))),
   margin: (x: 1.85in, top: 1.1in, bottom: 1.05in),
   header-ascent: 0.45in,
   footer-descent: 0.45in,

@@ -32,11 +32,11 @@ export function element(num: number): Element {
 /** The table's layout: each family is a list of columns, read top to bottom in build order, as in the paper. */
 export const layout: [string, number[][]][] = [
   ["make", [[1, 2, 3, 4]]],
-  ["world", [[5, 6, 7, 8]]],
-  ["body", [[9, 10, 11], [12, 13, 14], [15, 16]]],
-  ["power", [[17, 18, 19]]],
-  ["mind", [[20, 21, 22]]],
-  ["silicon", [[23, 24, 25]]],
+  ["world", [[5, 6, 7]]],
+  ["body", [[8, 9, 10], [11, 12, 13], [14, 15]]],
+  ["power", [[16, 17, 18]]],
+  ["mind", [[19, 20, 21]]],
+  ["silicon", [[22, 23, 24]]],
 ];
 
 /** Public homes for the projects that have one. */
