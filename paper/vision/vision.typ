@@ -543,15 +543,15 @@
 
 // Abstract: one text, two layouts
 #let abstract-text = [
-  Every machine now in existence passed through human hands. We propose a program to end that dependence: machines that manufacture their successors, each unit measured against its model, until the purchased fraction of every new machine approaches zero and a small seed of them can operate beyond the reach of any supply chain. Organized as an autonomous company amplified by intelligence, such machines could grow under human license and, in time, gather the light of a star. The program begins on a sidewalk in Ohio.
+  Every machine now in existence passed through human hands. We propose machines that manufacture their successors, each unit measured against its model, until the purchased fraction of every new machine approaches zero and a small seed of them can operate beyond the reach of any supply chain. Organized as an autonomous company amplified by intelligence, such machines could grow under human license and, in time, gather the light of a star. The program begins on a sidewalk in Ohio.
 
-  Robots are expensive chiefly because of the human labor embodied in them. Our prototype actuator is estimated at \$1,086 to have built; about two thirds of that is outsourced machining, on perhaps \$60–90 of metal. A machine that makes more of itself reduces that markup; a design process that measures each unit's sim-to-real gap and returns it to the design as a gradient reduces the remainder.
+  Robots are expensive because of the labor that goes into them. Our prototype actuator is estimated at \$1,086 to have built; about two thirds of that is outsourced machining, on perhaps \$60–90 of metal. A machine that makes more of itself reduces that markup; a design process that measures each unit's sim-to-real gap and returns it to the design as a gradient reduces the remainder.
 
   The program is funded first by software. frog, our coding agent for local models, is free. When a task needs more than a local model, frog's default is pond, our model gateway, which serves our own models on tang, routes to those of others, and earns the revenue that funds the arm.
 
   The hardware derives from a single unit. A lymb is a six-axis arm on purchased actuators (\$5,000 list), designed and ready to cut. Two lymbs at any table make a duet (\$12,000, target) that can fold laundry or build the next lymb; Rose, our humanoid, is a duet on legs. One stack of our own carries it, from a source language for parts to a physics engine that can be differentiated through contact. Its principal result, so far in simulation only, is the recovery of a humanoid's inertial parameters from ±20% error to machine precision.
 
-  Eight stages follow, each larger in scale and each built by its predecessor: Desk, Shop, Road, City, Home, Moon, Mars and Star. Only Desk is a plan, with exact gates: pond revenue that funds the arm, then ten lymbs sold at 40% gross margin, each under 2 mm RMS tool-point error. The later stages are aspirations and are stated as such. Progress is reported as a single quantity, electrons under management: the power drawn by machines we built, in service. That quantity is presently zero watts. Every number here is cited, or labeled as an estimate or a model output.
+  Eight stages follow, each larger in scale and each built by its predecessor: Desk, Shop, Road, City, Home, Moon, Mars and Star. Only Desk is a plan, with exact gates: pond revenue that funds the arm, then ten lymbs sold at 40% gross margin, each under 2 mm RMS tool-point error. The later stages are aspirations and are stated as such. We report progress as one quantity, electrons under management, which is the power drawn by machines we built, in service. That quantity is zero watts today. Every number here is cited, or labeled as an estimate or a model output.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -633,11 +633,11 @@
   set par(leading: 0.95em, spacing: 1.5em)
   [Dear reader,
 
-  In December 2025 I started Municipal Robotics in Cleveland to build one machine for one job: a small rover that clears snow from sidewalks @muni2025whitepaper. By the end of that month it drove! Municipal Robotics got into Founders Inc, where I spent a month proving the concept and shipped an autonomy stack. Then something incredible happened: I rushed home to Ohio, and my wife gave birth to our son!
+  In December 2025 I started Municipal Robotics in Cleveland to build one machine for one job: a small rover that clears snow from sidewalks @muni2025whitepaper. By the end of that month it drove! Municipal Robotics got into Founders Inc, where I spent a month proving the concept and shipped an autonomy stack. Then something incredible happened. I rushed home to Ohio, and my wife gave birth to our son!
 
-  Building that rover taught me the lesson this paper rests on: the expensive part of a robot is the people who design, build and check each one. To make a single rover I'd written a language for parts, a CAD kernel, a physics engine you can differentiate, and a way to record everything the machine did. None of them cared that the thing was a rover! Point them at a humanoid, or at a pair of arms that builds more arms, and they work the same way. If the tools don't care what they build, the body's a choice, and I'd chosen a small one.
+  Building that rover taught me that the expensive part of a robot is the people who design, build and check each one. To make a single rover I'd written a language for parts, a CAD kernel, a physics engine you can differentiate, and a way to record everything the machine did. None of them cared that the thing was a rover! Point them at a humanoid, or at a pair of arms that builds more arms, and they work the same way. The tools don't care what they build, so I didn't have to stop at a rover.
 
-  So I retired the rover. My son made the choice easy: the thesis I started with wasn't ambitious enough for the world I want to leave him. I kept what mattered: the city, the sidewalk, and the habit of plain claims and sourced numbers.
+  So I retired the rover. My son made the choice easy. The thesis I started with wasn't ambitious enough for the world I want to leave him. I kept what mattered: the city, the sidewalk, and the habit of plain claims and sourced numbers.
 
   What follows is a plan for machines that build machines, from one arm on a desk in Ohio to a swarm of collectors around a star. Most of it isn't built yet. Today there's one person, one bought humanoid, a CNC mill, a stack of software, and these pages. I've written it down anyway, with every gate stated and every number labeled, so you can see exactly where it stands.
 
@@ -792,10 +792,10 @@ Every earlier step up the scale came from a machine that made energy or work che
   caption: [#lead[Cost to reach low Earth orbit, per kg, by first flight] (approximate, inflation-adjusted @csis2022launch). Filled orange: reusable boosters. The hollow point is a stated target, not a result. Launch fell about fortyfold from the Shuttle to Falcon Heavy. The cost of what a settlement needs on arrival has not moved.],
 ) <fig:launch>
 
-Leaving the planet is now largely the same problem, because launch has become far less expensive. Reusable rockets cut the cost of reaching low Earth orbit from about \$54,500 per kg on the Space Shuttle to about \$2,700 per kg on a Falcon 9 @csis2022launch. The remaining expense lies in what a settlement requires on arrival, and in the people needed to make it. A civilization is unlikely to reach Type II by launching factories; it may do so by sending a seed that can grow one.
+Leaving the planet is now largely the same problem, because launch has become far less expensive. Reusable rockets cut the cost of reaching low Earth orbit from about \$54,500 per kg on the Space Shuttle to about \$2,700 per kg on a Falcon 9 @csis2022launch. What remains expensive is what a settlement requires on arrival, and the people needed to make it. A civilization is unlikely to reach Type II by launching factories; it may do so by sending a seed that can grow one.
 
 
-This plan assigns that climb a single measure, electrons under management (@sec:eum): the power drawn by machines we built, in service, measured on the same axis as the Kardashev scale. At present it is zero.
+This plan measures that climb with one number, electrons under management (@sec:eum): the power drawn by machines we built, in service, measured on the same axis as the Kardashev scale. At present it is zero.
 
 == Smart defaults <sec:defaults>
 
@@ -839,7 +839,7 @@ We build arms and humanoids because Earth has been a reinforcement-learning envi
   caption: [#lead[Smart defaults.] Earth's long experiment, on a log scale of years, and the part of this plan that copies each result. Dates are approximate: the earliest evidence of life @dodd2017evidence, limbs @daeschler2006devonian, the first stone tools @harmand2015lomekwi.],
 ) <fig:life>
 
-The first default was a cell: a unit that makes a copy of itself. Everything since was built from cells. Our cell is the duet, two lymbs at a table that can build the next duet. Like a cell, it divides, though only with a license (@sec:replication).
+The first default was a cell, a unit that makes a copy of itself. Everything since was built from cells. Our cell is the duet, two lymbs at a table that can build the next duet. Like a cell, it divides, though only with a license (@sec:replication).
 
 The later defaults are the ones we copy directly. Limbs came out of the water about 375 million years ago @daeschler2006devonian. Grasping hands came with the primates, upright walking freed them, and about 3.3 million years ago hands began making tools @harmand2015lomekwi. There is also a practical reason. The world people built is shaped for those defaults: stairs, door handles, sidewalks, tables and tools all assume two arms, two hands and a body about our size. A machine with that shape can use what is already here.
 
@@ -945,7 +945,7 @@ Five years ago this plan would have needed a factory before it needed a customer
   caption: [#lead[Plates, cut on a desk.] The arm's plates nested on three 15 in sheets and one 12 in sheet, with bearing bores and bolt circles; the router's path in orange. Schematic.],
 ) <fig:plate>
 
-*We own the whole stack, and it can take gradients through contact.* Most robotics teams build on a stack they do not control: a simulator from one company, a CAD tool from another, a learning framework from a third, reintegrated whenever one of them changes. Each interface between them can conceal sim-to-real error, and no gradient passes through it. We wrote ours, from the language parts are written in down to the physics (@fig:elements), so one gradient can run from a measured robot back to a parameter in a source file. Its physics engine, phyz, computes exact gradients of a simulated motion with respect to physical parameters such as mass and inertia. That includes contact, the hard case for anything with feet or fingers: its contact adjoint differentiates the same physics the forward pass runs @ipse2026brief. In simulation, on synthetic motion, it has recovered five of a K1 humanoid's inertial parameters from ±20% error to machine precision (sphere feet; @sec:schema). Domain randomization @tobin2017domain, the usual alternative, can make a policy tolerant of a gap, but it does not provide the gap's gradient.
+*We own the whole stack, and it can take gradients through contact.* Most robotics teams build on a stack they do not control: a simulator from one company, a CAD tool from another, a learning framework from a third, reintegrated whenever one of them changes. Each interface between them can conceal sim-to-real error, and no gradient passes through it. We wrote ours, from the language parts are written in down to the physics (@fig:elements), so one gradient can run from a measured robot back to a parameter in a source file. Its physics engine, phyz, computes exact gradients of a simulated motion with respect to physical parameters such as mass and inertia. That includes contact, the hard case for anything with feet or fingers. Its contact adjoint differentiates the same physics the forward pass runs @ipse2026brief. In simulation, on synthetic motion, it has recovered five of a K1 humanoid's inertial parameters from ±20% error to machine precision (sphere feet; @sec:schema). Domain randomization @tobin2017domain, the usual alternative, can make a policy tolerant of a gap, but it does not provide the gap's gradient.
 
 #figure(
   align(center, cetz.canvas(length: 1.3cm, {
@@ -1047,7 +1047,7 @@ cetz.canvas(length: 1cm, {
 
 
 
-On February 28 the United States and Israel went to war with Iran. A conditional ceasefire came in April, but in October a blockade still holds, tankers are still struck in the Strait of Hormuz, and oil trades above \$100 a barrel @britannica2026iran @globalsecurity2026iran. That winter the Justice Department released some three million pages of the Epstein files, weeks after the law's deadline, and survivors' lawyers said the release exposed the names of the very people it was meant to protect @cbs2026epstein @ohchr2026epstein. Both episodes illustrate one pattern: a few people decide, and those who bear the cost are rarely present.
+On February 28 the United States and Israel went to war with Iran. A conditional ceasefire came in April, but in October a blockade still holds, tankers are still struck in the Strait of Hormuz, and oil trades above \$100 a barrel @britannica2026iran @globalsecurity2026iran. That winter the Justice Department released some three million pages of the Epstein files, weeks after the law's deadline, and survivors' lawyers said the release exposed the names of the very people it was meant to protect @cbs2026epstein @ohchr2026epstein. In both, a few people decided, and those who bore the cost were rarely present.
 
 #figure(
   cetz.canvas(length: 1cm, {
@@ -1157,7 +1157,7 @@ Every machine in this plan is a bet that what people have fought over can be mad
   caption: [#lead[rana-100 prototype bill of materials, drawn to scale] @rana2026bom. All prices are estimates, not binding quotes. The bracketed span is outsourced machining; the amber bar below is our estimate of the metal inside it, on the same axis, and is not part of the BOM.],
 ) <fig:rana>
 
-The *idiot index* of a part is its cost divided by the cost of its raw materials. A high index means most of the price lies in process rather than material. Our prototype actuator, rana-100, shows the problem (@fig:rana; line items in @tab:rana).
+The *idiot index* of a part is its cost divided by the cost of its raw materials. A high index means most of the price pays for process rather than material. Our prototype actuator, rana-100, shows the problem (@fig:rana; line items in @tab:rana).
 
 
 #mathfig(
@@ -1180,7 +1180,7 @@ About two thirds of the cost is machining that someone else does, on metal worth
 
 
 
-The same structure repeats one level up. A lymb's materials are about \$2,000, of which about \$1,200 is the six purchased actuators @mr2026vision. The plates are inexpensive; the cost resides in the supplier's actuators. Owning the actuator is Desk's third step (@sec:arm), and we take that step only where rana wins on a measured metric.
+The same structure repeats one level up. A lymb's materials are about \$2,000, of which about \$1,200 is the six purchased actuators @mr2026vision. The plates are inexpensive; the actuators are the main cost. Owning the actuator is Desk's third step (@sec:arm), and we take that step only where rana wins on a measured metric.
 
 == Math
 
@@ -1356,11 +1356,11 @@ The machining in @fig:rana is the part of the cost that a machine making its own
 
 We are building machines that build machines, and measuring every one. The unit is a lymb: one arm, shipped with its sim-to-real gap, the difference between what our physics engine predicted and what the built arm did. Two lymbs on any table make a duet, and a duet can do a day's work or build the next lymb. A humanoid is a duet on legs.
 
-*An autonomous company, amplified by intelligence.* What grows is a company. An increasing share of its work is done by its own machines and software: frog writes its code, pond earns its revenue, duets build its machines and keep them running. People retain the decisions that matter. They set what the company may do, license each division, and read the receipts. At each stage the company does one more part of its own work by itself (@tab:loopstate), and it never decides alone how fast it grows.
+*An autonomous company, amplified by intelligence.* What grows is a company. Its own machines and software do more and more of its work. frog writes its code, pond earns its revenue, duets build its machines and keep them running. People retain the decisions that matter. They set what the company may do, license each division, and read the receipts. At each stage the company does one more part of its own work by itself (@tab:loopstate), and it never decides alone how fast it grows.
 
 The plan climbs in eight stages, each a step up in scale and each built by the one before it (@fig:glance). Only the first, Desk, is a plan. The rest are goals.
 
-== Flywheel
+== Stage by stage
 
 #figure(
   table(
@@ -1376,7 +1376,7 @@ The plan climbs in eight stages, each a step up in scale and each built by the o
     [Mars], [The same seed, lifeline cut], [Autonomy with no one to ask], [0 human commands to a receipt],
     [Star], [A swarm of collectors], [—], [Power and doubling time],
   ),
-  caption: [#lead[The flywheel.] Each stage funds and builds the next. The full gates are in @tab:arc.],
+  caption: [#lead[What each stage passes on.] Each stage funds and builds the next. The full gates are in @tab:arc.],
 ) <tab:flywheel>
 
 Each stage pays for the next and teaches it something it could not learn otherwise (@tab:flywheel).
@@ -1420,7 +1420,7 @@ Each is argued where it is used. They are collected here so that they can be quo
 + *Buy the commodity; own the layer where we win.* The actuator is a commodity. Our edge is the geometry, the measured model and the controller around it (@sec:arm).
 + *The guarantee should live in hardware.* Force limits should come from physics, current limits and compliance, measured on the robot. Today they do not (@sec:safety).
 + *Never be Flock Safety.* No face recognition, no plate reading, no tracking of people, no selling or sharing data that tracks anyone, no police access to people-tracking data (@sec:city).
-+ *Everything that can be open is open.* Software, designs, firmware where we control it, and data formats. The K1’s Booster firmware is not ours and is not open.
++ *Everything that can be open is open.* Software, designs, firmware where we control it, and data formats. The K1's Booster firmware is not ours and is not open.
 + *No division without a license.* A duet copies itself only with a signed, per-copy license from people, under a published ceiling on doubling time (@sec:replication).
 
 #if not web { pagebreak(weak: true) }
@@ -1502,7 +1502,7 @@ The stack is a tree rooted at one language, loon. Every project in it, software 
 
 Most robots are assembled from other people's tools. The body is drawn in a CAD program such as SolidWorks or Onshape @onshape, exported as meshes into a URDF file @urdf, loaded into a simulator such as Isaac Sim @isaacsim or MuJoCo @todorov2012mujoco, and wired together with ROS @macenski2022ros2. Each is excellent at its job. But every handoff is a translation, and what does not survive translation is the reason a design is what it is. A wall thickness becomes a triangle mesh. A motor constant becomes a number in a file. The simulator can say how the robot moved, but not which line of the design to change.
 
-Our projects bond like atoms in a molecule (@fig:bonds). loon is the nucleus: parts, worlds and, one day, chips are written in it. tang carries the math that every engine shares. frog, our coding agent, writes code against local models, which tang can serve. A vcad part is a phyz collider, without an export in between, so a quantity defined once stays defined everywhere. Four rules keep the bonds clean: engines never depend on vcad, and vcad never depends on an app; engines never depend on each other; there is one GPU device; and units are millimeters, with Z up, everywhere.
+Our projects bond like atoms in a molecule (@fig:bonds). loon is the nucleus, and parts, worlds and, one day, chips are written in it. tang carries the math that every engine shares. frog, our coding agent, writes code against local models, which tang can serve. A vcad part is a phyz collider, without an export in between, so a quantity defined once stays defined everywhere. Four rules keep the bonds clean: engines never depend on vcad, and vcad never depends on an app; engines never depend on each other; there is one GPU device; and units are millimeters, with Z up, everywhere.
 
 
 Every number in this plan comes from one loop (@fig:loop): design in loon source, simulate in phyz, build with kerf, measure the built unit, and feed the gap back into the design as a gradient. Each stage removes a person from one more edge of it (@tab:loopstate).
@@ -1527,7 +1527,7 @@ Every number in this plan comes from one loop (@fig:loop): design in loon source
   caption: [#lead[The loop, read clockwise.] The small labels name the tool at each step. The software projects are listed in @fig:elements, and the dyno is a planned actuator test stand that does not exist yet. Each later stage of the plan removes a human from one more edge. In Desk the gradient edge is a person reading the gap and redesigning by hand.],
 ) <fig:loop>
 
-The gradient crosses the whole molecule. A task loss in Ipse passes through phyz's contact adjoint, into vcad geometry, and out to a number in loon source, with no translation at any hop. Part of that chain runs today, in simulation: on a test model, a phyz rollout gradient passes through a ground-contact model into a vcad geometry parameter and agrees with finite differences. Joining the two ends is co-design work for Road @pond2026strategy. A chain of separate tools struggles to do this however good each tool is, because the gradient stops at the first export. This is the central wager of the stack.
+The gradient crosses the whole molecule. A task loss in Ipse passes through phyz's contact adjoint, into vcad geometry, and out to a number in loon source, with no translation at any hop. Part of that chain runs today in simulation. On a test model, a phyz rollout gradient passes through a ground-contact model into a vcad geometry parameter and agrees with finite differences. Joining the two ends is co-design work for Road @pond2026strategy. A chain of separate tools struggles to do this however good each tool is, because the gradient stops at the first export. The stack exists to make this gradient possible.
 
 #figure(
   cetz.canvas(length: 1cm, {
@@ -1612,13 +1612,13 @@ Every body runs on one unregulated DC bus of *36–60 V*. Every load must accept
   caption: [#lead[The pack] @mr2026battery. Every body we build uses it. The runtime figures assume a Rose-class body with two lymbs.],
 ) <tab:pack>
 
-Beside the power runs one management bus, CAN-FD, for presence, power control and telemetry. Bulk data (cameras, logs, the twin) travels over Ethernet. There is no separate hardwired e-stop loop, and other humanoids do not carry one either. Pulling a pack is the hard stop: its connector's last-mating pin is the power enable.
+Beside the power runs one management bus, CAN-FD, for presence, power control and telemetry. Bulk data (cameras, logs, the twin) travels over Ethernet. There is no separate hardwired e-stop loop, and other humanoids do not carry one either. Pulling a pack is the hard stop, because its connector's last-mating pin is the power enable.
 
 #if not web { pagebreak(weak: true) }
 == Pack
 
 
-There is one battery: a 13S2P pack of Molicel P50B 21700 cells, *468 Wh* and about *2.65 kg* (estimate) @mr2026battery @molicel2023p50b. The same pack goes in a body, a duet, a charging dock, the rack's UPS and the seed. A humanoid carries two of them (A and B, 936 Wh), one in each flank of the torso, and swaps them itself. Its hand draws pack A sideways onto a passive dock rail while pack B keeps the robot powered, then pushes a fresh pack home. The dock is rails, pads and a charger, with no actuators. A swap takes about a minute and leaves the robot powered, so runtime is set by dock capacity, not by the pack. The energy checks by hand, from 26 cells at 3.6 V and 5.0 Ah each @molicel2023p50b:
+There is one battery, a 13S2P pack of Molicel P50B 21700 cells, *468 Wh* and about *2.65 kg* (estimate) @mr2026battery @molicel2023p50b. The same pack goes in a body, a duet, a charging dock, the rack's UPS and the seed. A humanoid carries two of them (A and B, 936 Wh), one in each flank of the torso, and swaps them itself. Its hand draws pack A sideways onto a passive dock rail while pack B keeps the robot powered, then pushes a fresh pack home. The dock is rails, pads and a charger, with no actuators. A swap takes about a minute and leaves the robot powered, so runtime is set by dock capacity, not by the pack. The energy checks by hand, from 26 cells at 3.6 V and 5.0 Ah each @molicel2023p50b:
 
 $ E = underbrace(13, "series") times underbrace(2, "parallel") times 3.6 "V" times 5.0 "Ah" = 468 "Wh" $ <eq:pack>
 
@@ -1736,7 +1736,7 @@ The pack is also the EUM instrument. EUM (@sec:eum) is defined at each machine's
   caption: [#lead[The kore and its two hosts] (modeled). Left: one kore, exploded. Center: the humanoid bay, lid lifted and one kore drawn. Right: a 12U rack with a GPU node and three kore chassis. Renders by vcad-render @mr2026compute.],
 ) <fig:blade>
 
-Compute comes in one module, the *kore*: a small carrier on an aluminum spine that is both its rail and its heat path, with one rear connector for the bus, Ethernet and CAN-FD @mr2026compute. The same kore slides into a rack chassis or into a humanoid's torso bay, and tells its host what it is before it takes power.
+Compute comes in one module, the *kore*, a small carrier on an aluminum spine that is both its rail and its heat path, with one rear connector for the bus, Ethernet and CAN-FD @mr2026compute. The same kore slides into a rack chassis or into a humanoid's torso bay, and tells its host what it is before it takes power.
 
 How a body uses its slots follows Ipse's seams (@sec:mind). The fast layers, whole-body tracking and skills, are deadline-bound and always run on a body's first kore, isolated. The slow layer, intent and the world model, runs on more kores when a body has them, or on the rack over the same seam when it does not, and if it is lost the body finishes its skill and stands @ipse2026brief. Whether a body thinks onboard or leans on the rack is then a matter of slot count. Rose is run first with one kore, close to the K1's compute, then with more, so the effect of compute is measured one variable at a time.
 
@@ -1767,9 +1767,9 @@ Every board design is open. Printed-circuit fabrication and assembly stay bought
 #if not web { pagebreak(weak: true) }
 == Tools <sec:tools>
 
-A tool goes where the gripper goes: on a *tool changer* at the wrist. Two datum pins locate it and a quarter-turn ring locks it. One face carries four contacts, 48 V and return and the two CAN-FD lines, and a short enable pin that mates last, so a tool stays dead until it is fully seated: the same rule as the pack's connector (@sec:power). A tool is a bus device with no trigger and no battery of its own. The robot commands it over CAN, and it reports back what it did. Tools wait in a passive rack, and a humanoid changes them the way it swaps packs, in about a minute.
+A tool mounts where the gripper mounts, on a *tool changer* at the wrist. Two datum pins locate it and a quarter-turn ring locks it. One face carries four contacts, 48 V and return and the two CAN-FD lines, and a short enable pin that mates last, so a tool stays dead until it is fully seated: the same rule as the pack's connector (@sec:power). A tool is a bus device with no trigger and no battery of its own. The robot commands it over CAN, and it reports back what it did. Tools wait in a passive rack, and a humanoid changes them the way it swaps packs, in about a minute.
 
-Away from a robot, or in a person's hand, a tool takes a *brick*: half a pack. The pack's 13S2P is two 13S1P strings, so a brick is 13 cells, 46.8 V, 234 Wh and about 1.3 kg (estimate). It needs no new voltage, cell, charger or dock: two bricks clip together into a pack, and a pack comes apart into two bricks.
+Away from a robot, or in a person's hand, a tool takes a *brick*: half a pack. The pack's 13S2P is two 13S1P strings, so a brick is 13 cells, 46.8 V, 234 Wh and about 1.3 kg (estimate). It needs no new voltage, cell, charger or dock. Two bricks clip together into a pack, and a pack comes apart into two bricks.
 
 #figure(
   align(center, cetz.canvas(length: 0.85cm, {
@@ -1844,7 +1844,7 @@ Together they are a Right Livelihood rule: earn a living without causing harm. T
 
 == Layers
 
-Our design target is physical: a robot we design should be unable to exceed the body-region contact limits of ISO/TS 15066 @iso15066 even with its software replaced, so that making it dangerous would mean building a different robot. No product in this paper meets that target yet. The lymb's three RS04 joints peak at 120 N·m and the gripper can squeeze 375 N per finger at peak, so today its force limit is an actuator current-limit setting, not physics, and it has to be measured. The K1 is a purchased robot whose actuators and firmware we did not design, so the physics layer does not cover it; its street safety rests on the rules in @sec:city.
+Our design target is that a robot we design should be unable to exceed the body-region contact limits of ISO/TS 15066 @iso15066 even with its software replaced, so that making it dangerous would mean building a different robot. No product in this paper meets that target yet. The lymb's three RS04 joints peak at 120 N·m and the gripper can squeeze 375 N per finger at peak, so today its force limit is an actuator current-limit setting, not physics, and it has to be measured. The K1 is a purchased robot whose actuators and firmware we did not design, so the physics layer does not cover it; its street safety rests on the rules in @sec:city.
 
 The collaborative-robot safety envelope and the anti-weaponization goal share most of their physics, but not all of it. Force limits bound what the robot's own body can do on contact. They do not bound what a held object can do: a gripper rated to squeeze 112.5 N and hold a 500 ml bottle can also hold a blade. That gap is why the other layers in @tab:safety exist, and why we do not call the physics layer a complete guarantee.
 
@@ -1858,7 +1858,7 @@ ISO/TS 15066 was written for industrial cobots. For a humanoid on a public sidew
     [Physics], [Actuators, mass and speed sized so contact force stays under ISO/TS 15066], [#status("fault", "No") RS04 peaks at 120 N·m], [Everything],
     [Mechanism], [Slip clutches and compliant joints that yield above a set torque], [#status("label", "Planned") none in v9], [Reflashing],
     [Electronics], [Current limits set in torc hardware, not firmware], [#status("label", "Planned") v9 uses RobStride firmware current limits], [Reflashing],
-    [Interfaces], [A gripper by design; no trigger lines at the tool], [#status("info", "Designed") only the EL05’s CAN + 48 V and a camera pair], [Casual modification],
+    [Interfaces], [A gripper by design; no trigger lines at the tool], [#status("info", "Designed") only the EL05's CAN + 48 V and a camera pair], [Casual modification],
     [Mind], [Ipse can refuse; refusals are logged, never trained against], [#status("label", "Planned") Ipse is K1 research, not on the lymb], [Misuse by instruction],
     [Terms], [Sales terms ban weapons use; fleet buyers vetted], [#status("label", "Planned") no terms written], [Resale, mostly],
   ),
@@ -1867,7 +1867,7 @@ ISO/TS 15066 was written for industrial cobots. For a humanoid on a public sidew
 
 The table is ordered by strength. A guarantee in the physics layer survives anything short of building a different robot. A guarantee in the terms layer is a promise. We do not claim the lower layers are as strong as the upper ones.
 
-The lymb already shows why the physics layer has to be designed rather than assumed. The RS04’s 120 N·m peak is much more than a 1.27 kg payload needs. So the force limit has to come from current limits, compliance and speed, and it has to be measured. The crush points in the arm audit are an open item for the same reason @rose2026forkv9.
+The lymb already shows why the physics layer has to be designed rather than assumed. The RS04's 120 N·m peak is much more than a 1.27 kg payload needs. So the force limit has to come from current limits, compliance and speed, and it has to be measured. The crush points in the arm audit are an open item for the same reason @rose2026forkv9.
 
 Software, designs and data formats stay open. Open licenses cannot restrict use, so the terms layer is weak for open designs, and that is accepted. The guarantee has to live in hardware, and until clutches and hardware current limits are built and measured, it does not.
 
@@ -1875,7 +1875,7 @@ Software, designs and data formats stay open. Open licenses cannot restrict use,
 
 == Rules
 
-These rules are the company's governance: people, not machines, decide how fast it grows. A machine that builds the next machine invites one fear above others: replication nobody can stop. The image is known as gray goo, from Drexler's 1986 warning about self-replicating nanomachines @drexler1986engines. Our duets are not nanomachines. They are two arms at a table, with a mill and a router nearby. They need stock, power and repair, and that is the first defense. It is not enough by itself, because a branch that doubles on its own power, on a planet with no one on it, is exactly what Star asks for. So the limits are designed in from the first duet. None of them is built yet.
+Under these rules, people decide how fast the company grows, and machines do not. A machine that builds the next machine raises the fear of replication nobody can stop. The image is known as gray goo, from Drexler's 1986 warning about self-replicating nanomachines @drexler1986engines. Our duets are not nanomachines. They are two arms at a table, with a mill and a router nearby. They need stock, power and repair, and that is the first defense. It is not enough by itself, because a branch that doubles on its own power, on a planet with no one on it, is exactly what Star asks for. So the limits are designed in from the first duet. None of them is built yet.
 
 - *Licensed division.* A duet builds a copy only with a signed license for that one copy. Licenses come from keys held by people, not by the duets. A duet cannot mint its own, and a copy built without one does not pass its acceptance receipts.
 - *A germ line no duet can edit.* The design and its receipts live where the machines that do the work cannot change them. Every copy is checked against the germ line; a copy that drifts is decommissioned and stripped for stock.
@@ -1926,7 +1926,7 @@ Amplification by intelligence should not mean renting it. Today most of the comp
 
 == Agents
 
-Once software spends money, orders parts and answers customers, the risks are no longer only physical. An agent can be misled by what it reads, spend without limit, or sign what it should not. So the company's agents follow the same rule as its duets: they act inside limits people set and cannot change.
+Once software spends money, orders parts and answers customers, the risks are no longer only physical. An agent can be misled by what it reads, spend without limit, or sign what it should not. So the company's agents follow the same rule as its duets. They act inside limits people set and cannot change.
 
 - *Caps.* Every agent has a spending and ordering cap, per day and per action.
 - *Approvals.* Anything over a cap, any new supplier and any contract goes to a person.
@@ -1967,7 +1967,7 @@ Once software spends money, orders parts and answers customers, the risks are no
   caption: [#lead[The arc.] Eight stages, each a step up in scale; one loop, one number. Each stage contains the one before it, and each removes a person from one more edge of the loop. Watts are electrons under management (@sec:eum), as orders of magnitude, not targets @mr2026vision.],
 ) <fig:arc>
 
-One number runs through every stage: *electrons under management* (EUM), in watts. It measures the same thing at every scale, so progress can be read off one axis, from one robot to a fraction of the sun's output (3.828 × 10#super[26] W, nominal @iau2015b3).
+We track one number through every stage, *electrons under management* (EUM), in watts. It measures the same thing at every scale, so progress can be read off one axis, from one robot to a fraction of the sun's output (3.828 × 10#super[26] W, nominal @iau2015b3).
 
 
 #mathfig(
@@ -1996,7 +1996,7 @@ One number runs through every stage: *electrons under management* (EUM), in watt
 
 == Labor <sec:labor>
 
-The fourth number is the company's own: the *labor fraction*, the share of its work still done by people, in hours per unit of output, reported by function. It is the twin of the bought fraction. One counts what the company buys from others; the other counts what it still needs people for. Today it is about 100%: one person does nearly all of it, and frog writes some of the code. The plan is working when it falls stage by stage while the decisions people keep (@sec:company) do not.
+The fourth number is the company's own: the *labor fraction*, the share of its work still done by people, in hours per unit of output, reported by function. It is the twin of the bought fraction. One counts what the company buys from others; the other counts what it still needs people for. Today it is about 100%, because one person does nearly all of it and frog writes some of the code. The plan is working when it falls stage by stage while the decisions people keep (@sec:company) do not.
 
 == Doublings
 
@@ -2011,7 +2011,7 @@ The second headline number is the time the company takes to double what it can b
 *Software first, then an arm that ships with its gap.* Desk has three steps over roughly three years. Each closes on an exact gate (@tab:arc).
 
 + *Software that pays for the arm.* frog, our coding agent for local models, is free and stays free. When a task needs more than a local model, frog's default is pond: a gateway to many models, ours on tang and other people's, that keeps each session's cache warm, drafts ahead, and hands a session from local to cloud without re-sending it, priced per finished task rather than per token. pond is what we sell, and its revenue funds the lymb (@sec:pond). frog runs today; pond is early, built on our zest codebase.
-+ *An arm worth buying.* Build it on RobStride actuators. The actuator is a commodity; our contribution lies in what surrounds it: geometry checked against real loads, a measured model of every unit, a controller trained against that model, and a stated sim-to-real gap on every lymb.
++ *An arm worth buying.* Build it on RobStride actuators. The actuator is a commodity; we add what surrounds it: geometry checked against real loads, a measured model of every unit, a controller trained against that model, and a stated sim-to-real gap on every lymb.
 + *Own the actuator, where it wins.* Desk revenue funds rana and torc. A purchased joint is replaced only where rana wins on a measured metric. Abandoning rana would be a valid outcome.
 
 == pond <sec:pond>
@@ -2069,7 +2069,7 @@ The second headline number is the time the company takes to double what it can b
 
 pond earns on a gap in prices. Open-model tokens already sell near cost: a frog coding task costs us a few cents on open-model APIs, while the frontier models developers compare against cost dollars a task (@app:pond). So pond charges per finished task, not per token. At \$0.25 a task it keeps most of the price, and the Desk gate of \$10,000 a month is about 40,000 tasks.
 
-pond routes each call to the model that fits it, ours or anyone else's, so frog's users are never tied to one lab. The margin is in owning the engine: calls served on tang carry it, since every gain in tang lands in cost per task, and the session work frog already does (warm caches, drafting from a session's own history, a warm hand-off from a Mac) makes pond faster and more predictable than a generic endpoint. First tang must learn to serve many sessions at once, at full speed on rented NVIDIA GPUs.
+pond routes each call to the model that fits it, ours or anyone else's, so frog's users are never tied to one lab. The margin comes from owning the engine. Calls served on tang carry it, since every gain in tang lands in cost per task, and the session work frog already does (warm caches, drafting from a session's own history, a warm hand-off from a Mac) makes pond faster and more predictable than a generic endpoint. First tang must learn to serve many sessions at once, at full speed on rented NVIDIA GPUs.
 
 pond rents compute only as demand opens each step (@fig:pond): open-model APIs while tang learns to serve, one rented H200 running tang near 23,000 tasks a month, and another each time the last is about 40% busy. The risks are rising GPU rents, heavy tasks under a per-task price, and the labs hosting agents of their own.
 
@@ -2125,7 +2125,7 @@ The actuators are about 60% of a lymb's materials (\~\$1,200 of \~\$2,000). That
 ) <tab:prices>
 
 
-Until rana succeeds or is abandoned, the lymb business depends on one supplier's pricing. We do not expect the Rose price (\$15,000, the G1’s price class @unitree2024g1) to be reachable on purchased actuators (estimate; the Rose bill of materials is not costed in this paper). It therefore waits for rana.
+Until rana succeeds or is abandoned, the lymb business depends on one supplier's pricing. We do not expect the Rose price (\$15,000, the G1's price class @unitree2024g1) to be reachable on purchased actuators (estimate; the Rose bill of materials is not costed in this paper). It therefore waits for rana.
 
 Vendors rarely say at what pose or duty cycle a rated payload holds. Our 1.27 kg is a modeled continuous hold at full extension, the worst case; bent working poses hold more. If you need a proven arm now, a commercial one will likely serve you sooner.
 
@@ -2164,7 +2164,7 @@ A duet learns in simulation first, against the measured model of its own two lym
 
 == Division
 
-A duet is also the cell of this plan: the smallest unit that can make more of itself. It builds lymbs, and two lymbs make a duet. In order:
+A duet is also the cell of this plan, the smallest unit that can make more of itself. It builds lymbs, and two lymbs make a duet. In order:
 
 + A duet assembles a lymb from cut plates and purchased actuators, and the lymb passes the Desk test.
 + A duet tends the mill and router that cut those plates, and winds and pots its own rana stators.
@@ -2183,13 +2183,13 @@ The harder problems follow. Actuators end to end: magnets stay bought until a fe
 
 == Bought
 
-We bought a Booster K1 rather than building first: 95 cm, 19.5 kg, 22 degrees of freedom, force-controlled joints @booster2025k1. A commercial body has known kinematics and a known-good build, so it serves as a *control*: every later body, Rose included, is measured against it. Its own computer has no CUDA and little headroom, which we measured on the robot @ipse2026deploy.
+We bought a Booster K1 rather than building first: 95 cm, 19.5 kg, 22 degrees of freedom, force-controlled joints @booster2025k1. A commercial body has known kinematics and a known-good build, so it is a *control*, and we measure every later body, Rose included, against it. Its own computer has no CUDA and little headroom, which we measured on the robot @ipse2026deploy.
 
 The K1 has two jobs. In Lakewood it will pick up litter (@sec:city); it has not grasped litter yet. In the lab it is the body for Ipse, a developmental research program. The two share hardware, software and one rule: every claim ships with the number that supports it.
 
 == Rose
 
-Rose is the humanoid we will build. The name is the thesis: past tense of rise, the one that stood up. It is a line of three sizes, mini, full and mega, each anchored to something real (@tab:rose), all of bent sheet aluminum cut flat and folded, with no machined blocks @rose2026line. Its arms are lymbs of its size: a humanoid is a duet on legs, with a torso that carries the kore bay and two packs (@sec:power). Rose mini starts now, in parallel, on purchased actuators, because the K1 has shown the limits of a body we did not build; Road overlaps Shop. Rose full's \$15,000 target is the G1's price class @unitree2024g1, and it waits for rana.
+Rose is the humanoid we will build. The name is the past tense of rise, the one that stood up. It is a line of three sizes, mini, full and mega, each anchored to something real (@tab:rose), all of bent sheet aluminum cut flat and folded, with no machined blocks @rose2026line. Its arms are lymbs of its size, because a humanoid is a duet on legs, with a torso that carries the kore bay and two packs (@sec:power). Rose mini starts now, in parallel, on purchased actuators, because the K1 has shown the limits of a body we did not build; Road overlaps Shop. Rose full's \$15,000 target is the G1's price class @unitree2024g1, and it waits for rana.
 
 #figure(
   table(
@@ -2217,7 +2217,7 @@ One finding already shapes rana. Sized to jump, Rose mega is limited by speed, n
 
 Ipse matters to this plan for two reasons: it produces Road's first claim, a body that fits its own model (@sec:schema), and it is the layer in @tab:safety that can refuse an instruction.
 
-Ipse (Interoceptive Predictive Self-Emergence) is a scaffold for growing a mind on a K1 over months of lived experience @ipse2026brief. The name states the project's hypothesis, not a result. It is not a robot control stack. Its architecture is a world model with fast and slow latents; interoception (battery, joint temperature, motor current, IMU) enters as observation rather than reward. Its simulation runs in phyz, on bodies authored in vcad; no MuJoCo or Isaac is involved.
+Ipse (Interoceptive Predictive Self-Emergence) is a research program for growing a mind on a K1 over months of lived experience @ipse2026brief. The name states the project's hypothesis, not a result. It is not a robot control stack. Its architecture is a world model with fast and slow latents; interoception (battery, joint temperature, motor current, IMU) enters as observation rather than reward. Its simulation runs in phyz, on bodies authored in vcad; no MuJoCo or Isaac is involved.
 
 Its standing constraints are quoted here because they bind the company, not just the research @ipse2026brief:
 
@@ -2234,7 +2234,7 @@ We do not name the robot. The design brief says it "should not be named by us": 
 
 The first claim of Road is Ipse's Phase 1 milestone: a body schema, not a world model @ipse2026brief @pond2026strategy. The K1 starts from the vendor's model of its own body, which is wrong in places. From its own exploratory movements, and by gradient descent through phyz's contact model, it fits its own masses and inertias, and we publish the residual against the weighed parts as its *measured body schema*.
 
-In simulation the method works: five inertial parameters recover from ±20% error to machine precision through contact @ipse2026brief. That shows the gradient is correct; it does not show that the method fits a real body. Hardware adds friction, backlash, latency and compliance, and the K1's flat feet give a contact the gradient cannot yet pass. So the hardware claim is preregistered, with its falsifier, before it runs: the fitted model must beat *persistence* ("the next state is the current state"), which on a mostly still body is nearly right @pond2026strategy.
+In simulation the method works. Five inertial parameters recover from ±20% error to machine precision through contact @ipse2026brief. That shows the gradient is correct; it does not show that the method fits a real body. Hardware adds friction, backlash, latency and compliance, and the K1's flat feet give a contact the gradient cannot yet pass. So the hardware claim is preregistered, with its falsifier, before it runs: the fitted model must beat *persistence* ("the next state is the current state"), which on a mostly still body is nearly right @pond2026strategy.
 
 *Gate.* Preregistered hardware body-schema fit: held-out joint-position error ≤ 0.8 × persistence at 0.1 s and 0.5 s, and fitted link masses within ±5% of weighed parts. Rose walks 100 m on level pavement carrying two lymbs, 0 falls in 5 of 5. A gradient co-designed part beats its hand-designed predecessor by ≥ 10% on its named objective (@tab:arc).
 
@@ -2286,7 +2286,7 @@ These are design rules for the street pilot; none of the street pipeline is buil
 
 == Scope
 
-The pilot does not automate interaction with the public beyond yielding and stopping. It does not enter private property, and it does not touch sharps, hazardous waste or anything a person is holding. Remote assistance may be a product feature, but data from it never trains Ipse @mr2026vision. We will not wait for a contract: the robots go around the city picking up trash until someone stops us. These limits hold the whole time.
+The pilot does not automate interaction with the public beyond yielding and stopping. It does not enter private property, and it does not touch sharps, hazardous waste or anything a person is holding. Remote assistance may be a product feature, but data from it never trains Ipse @mr2026vision. We will not wait for a contract. The robots go around the city picking up trash until someone stops us. These limits hold the whole time.
 
 == moth <sec:moth>
 
@@ -2336,7 +2336,7 @@ moth is also the cheapest check that the standards of @sec:power are body-agnost
 
 *A seed grows a duet, with a lifeline.* A seed is the smallest thing that can grow a duet: one duet, a mill and a router, a collector and a pack, the design in its germ line, and enough bought parts for a few generations. On the Moon it runs the Shop loop with remote approval and teleoperated help when something breaks.
 
-*Why the Moon first.* It is about three days away and 1.3 light-seconds out, close enough for a lifeline: a person can approve, watch and help in near real time. It is the cheapest place to learn what changes when the supply chain is gone.
+*Why the Moon first.* It is about three days away and 1.3 light-seconds out, close enough for a person to approve, watch and help in near real time. It is the cheapest place to learn what changes when the supply chain is gone.
 
 *What is hard.* The lunar night lasts about two weeks, so power must be stored or the seed must sleep. Dust is abrasive and clings to everything. Vacuum removes convection, so every kore and motor cools by conduction alone. Regolith is stock, but it is mostly oxides of silicon, iron, aluminum, calcium and magnesium, and turning it into metal and glass is a process we have never run. And every kilogram of the seed is paid for at launch.
 
@@ -2350,7 +2350,7 @@ moth is also the cheapest check that the standards of @sec:power are body-agnost
 
 *The same seed, lifeline cut.* A seed lands on Mars and runs with no human commands between landing and its receipt.
 
-*Why Mars.* It is the plainest second home for life, and machines go first so that people can follow: by the time a person lands, duets will have built shelter, collectors and the means to make more of themselves (@sec:war). It has what the Moon lacks: water ice in the ground and a carbon dioxide atmosphere, the raw stock for fuel and oxygen.
+*Why Mars.* It is the plainest second home for life, and machines go first so that people can follow. By the time a person lands, duets will have built shelter, collectors and the means to make more of themselves (@sec:war). It has what the Moon lacks: water ice in the ground and a carbon dioxide atmosphere, the raw stock for fuel and oxygen.
 
 *What is hard.* Distance. Mars is about seven months away and 3–22 light-minutes out (@fig:eq-light), too far for remote hands, so every judgment the Moon left to a person must be the seed's own. Launch windows open about every 26 months, so a failure costs two years. Sunlight is about 43% of Earth's, and dust storms can cover the planet for weeks. Moon and Mars add problems Shop never meets, launch mass, radiation, thermal cycling and metal from regolith, and the Earth tests of @sec:moon only begin on them.
 
@@ -2492,14 +2492,14 @@ Four results would prove the plan wrong:
     table.header([*Risk*], [*What would show it*], [*What we do*]),
     [One actuator supplier (RobStride)], [A price or lead-time change], [rana, which replaces a RobStride joint only once it is validated (@sec:rana, @tab:sens)],
     [Lymb hold too small for buyers (1.27 kg straight out, modeled)], [Buyers decline at that rating], [Rate the hold by pose, since bent poses hold more, and design the springs (@sec:arm)],
-    [Bought humanoid (Booster K1)], [Vendor support ends], [The K1 serves as a control; Rose is the body measured against it (@sec:mind)],
+    [Bought humanoid (Booster K1)], [Vendor support ends], [The K1 is a control; Rose is the body measured against it (@sec:mind)],
     [Breadth across many projects], [Stage gates slip], [Projects not needed in Desk wait for their stage (@fig:elements)],
     [rana never beats bought actuators], [Dyno results], [Keep buying RobStride. Dropping rana is a valid outcome],
   ),
   caption: [#lead[Risks and responses.] Responses are those stated elsewhere in this paper.],
 ) <tab:risks>
 
-Each is a gate (@tab:arc), and we will publish the ones we miss. The risks below are smaller: each could hurt, and none alone would end the plan.
+Each is a gate (@tab:arc), and we will publish the ones we miss. The risks below are smaller. Each could hurt, and none alone would end the plan.
 
 == Capital
 
@@ -2521,7 +2521,7 @@ Each open item is limited by one of four things. Sorting them shows which can be
 
 == Timeline
 
-We give dates only for Desk, and those are approximate: three steps over roughly three years, each gated on evidence. Rose mini starts now, in parallel, but no stage after Desk has a date, Road included.
+We give dates only for Desk, and those are approximate, three steps over roughly three years, each gated on evidence. Rose mini starts now, in parallel, but no stage after Desk has a date, Road included.
 
 What we can say:
 
@@ -2745,7 +2745,7 @@ A frog coding task makes about 40 model calls at about 20,000 tokens of context 
     [Harness], [Flat CAN pair + 48 V pair, 2.1 m; palm-camera USB 2.0 pair in the same run @mr2026gripper], [–],
     [*Arm total*], [], [*\~\$2,000 (est.)*],
   ),
-  caption: [#lead[Arm bill of materials summary] @rose2026forkv9 @mr2026vision. Arm materials \~\$2,000 (est.), of which \~\$1,200 is actuators; other lines are not yet broken out. The arm-repo BOM lists the gripper servo generically; the EL05 choice is from the gripper v2 design. The USB pair must stay within USB 2.0’s \~1.5–2 m; at the full 2.1 m harness length this is open.],
+  caption: [#lead[Arm bill of materials summary] @rose2026forkv9 @mr2026vision. Arm materials \~\$2,000 (est.), of which \~\$1,200 is actuators; other lines are not yet broken out. The arm-repo BOM lists the gripper servo generically; the EL05 choice is from the gripper v2 design. The USB pair must stay within USB 2.0's \~1.5–2 m; at the full 2.1 m harness length this is open.],
 ) <tab:bomarm>
 
 #figure(
