@@ -633,13 +633,15 @@
   set par(leading: 0.95em, spacing: 1.5em)
   [Dear reader,
 
-  I started Municipal Robotics in Cleveland in December 2025 to build one machine for one job: a small rover that clears snow from sidewalks @muni2025whitepaper. By the end of that month it drove. Municipal Robotics was accepted to Founders Inc, where I spent a month proving out the concept and shipped an autonomy stack. Then something incredible happened: I rushed home to Ohio, and my wife gave birth to our son! I realized I wanted to build an even better world for him, and that my original thesis was not ambitious enough.
+  In December 2025 I started Municipal Robotics in Cleveland to build one machine for one job: a small rover that clears snow from sidewalks @muni2025whitepaper. By the end of that month it drove! Municipal Robotics got into Founders Inc, where I spent a month proving the concept and shipped an autonomy stack. Then something incredible happened: I rushed home to Ohio, and my wife gave birth to our son!
 
-  Building it taught me the lesson this paper rests on. The expensive part of a robot is the people who design, build and check each one. To build one rover I wrote a language for parts, a CAD kernel, a physics engine you can differentiate, and a way to record everything it did. None of them cared that the thing was a rover. Pointed at a humanoid, or at a pair of arms that builds more arms, they worked the same way.
+  Building that rover taught me the lesson this paper rests on: the expensive part of a robot is the people who design, build and check each one. To make a single rover I'd written a language for parts, a CAD kernel, a physics engine you can differentiate, and a way to record everything the machine did. None of them cared that the thing was a rover! Point them at a humanoid, or at a pair of arms that builds more arms, and they work the same way. If the tools don't care what they build, the body's a choice, and I'd chosen a small one.
 
-  So I retired the rover. Technology and supply chains do not stop improving: it turns out you can retrofit an electric snowblower with autonomy, which a year ago did not exist (Vevor) or cost too much (Yarbo). Snow will come soon :) In the meantime, the software stack has evolved to the point of humanoid capability, abstracted so the embodiment is heterogeneous. I kept what mattered: the city, the sidewalk, and the habit of plain claims and sourced numbers.
+  So I retired the rover. My son made the choice easy: the thesis I started with wasn't ambitious enough for the world I want to leave him. I kept what mattered: the city, the sidewalk, and the habit of plain claims and sourced numbers.
 
-  What follows is a plan for machines that build machines, from one arm on a desk in Ohio to a swarm of collectors around a star. Most of it is not built. Today there is one person, one bought humanoid, a CNC mill, a stack of software, and these pages. I wrote it down anyway, with every gate stated and every number labeled, so you can see exactly where it stands.
+  What follows is a plan for machines that build machines, from one arm on a desk in Ohio to a swarm of collectors around a star. Most of it isn't built yet. Today there's one person, one bought humanoid, a CNC mill, a stack of software, and these pages. I've written it down anyway, with every gate stated and every number labeled, so you can see exactly where it stands.
+
+  I can't wait to build it.
 
   Let's build a better world for our children.]
   v(1.4em)
