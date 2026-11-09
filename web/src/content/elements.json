@@ -66,22 +66,14 @@
     },
     {
       "num": 5,
-      "name": "wodl",
-      "family": "world",
-      "maturity": "concept",
-      "note": "world format",
-      "stage": "shop"
-    },
-    {
-      "num": 6,
       "name": "kosm",
       "family": "world",
       "maturity": "exists",
-      "note": "runs wodl worlds",
+      "note": "runs simulated worlds",
       "stage": "desk"
     },
     {
-      "num": 7,
+      "num": 6,
       "name": "phyz",
       "family": "world",
       "maturity": "exists",
@@ -89,7 +81,7 @@
       "stage": "desk"
     },
     {
-      "num": 8,
+      "num": 7,
       "name": "iris",
       "family": "world",
       "maturity": "concept",
@@ -97,7 +89,7 @@
       "stage": "shop"
     },
     {
-      "num": 9,
+      "num": 8,
       "name": "rana",
       "family": "body",
       "maturity": "designed",
@@ -105,7 +97,7 @@
       "stage": "desk"
     },
     {
-      "num": 10,
+      "num": 9,
       "name": "torc",
       "family": "body",
       "maturity": "designed",
@@ -113,7 +105,7 @@
       "stage": "desk"
     },
     {
-      "num": 11,
+      "num": 10,
       "name": "lymb",
       "family": "body",
       "maturity": "designed",
@@ -121,7 +113,7 @@
       "stage": "desk"
     },
     {
-      "num": 12,
+      "num": 11,
       "name": "hand",
       "family": "body",
       "maturity": "designed",
@@ -129,7 +121,7 @@
       "stage": "desk"
     },
     {
-      "num": 13,
+      "num": 12,
       "name": "duet",
       "family": "body",
       "maturity": "concept",
@@ -137,7 +129,7 @@
       "stage": "shop"
     },
     {
-      "num": 14,
+      "num": 13,
       "name": "Rose",
       "family": "body",
       "maturity": "concept",
@@ -145,7 +137,7 @@
       "stage": "road"
     },
     {
-      "num": 15,
+      "num": 14,
       "name": "moth",
       "family": "body",
       "maturity": "concept",
@@ -153,7 +145,7 @@
       "stage": "city"
     },
     {
-      "num": 16,
+      "num": 15,
       "name": "seed",
       "family": "body",
       "maturity": "concept",
@@ -161,7 +153,7 @@
       "stage": "moon"
     },
     {
-      "num": 17,
+      "num": 16,
       "name": "pack",
       "family": "power",
       "maturity": "concept",
@@ -169,7 +161,7 @@
       "stage": "road"
     },
     {
-      "num": 18,
+      "num": 17,
       "name": "kore",
       "family": "power",
       "maturity": "concept",
@@ -177,7 +169,7 @@
       "stage": "road"
     },
     {
-      "num": 19,
+      "num": 18,
       "name": "nerv",
       "family": "power",
       "maturity": "concept",
@@ -185,7 +177,7 @@
       "stage": "road"
     },
     {
-      "num": 20,
+      "num": 19,
       "name": "Ipse",
       "family": "mind",
       "maturity": "exists",
@@ -193,7 +185,7 @@
       "stage": "road"
     },
     {
-      "num": 21,
+      "num": 20,
       "name": "frog",
       "family": "mind",
       "maturity": "exists",
@@ -201,7 +193,7 @@
       "stage": "desk"
     },
     {
-      "num": 22,
+      "num": 21,
       "name": "pond",
       "family": "mind",
       "maturity": "concept",
@@ -209,7 +201,7 @@
       "stage": "desk"
     },
     {
-      "num": 23,
+      "num": 22,
       "name": "loom",
       "family": "silicon",
       "maturity": "concept",
@@ -217,7 +209,7 @@
       "stage": "home"
     },
     {
-      "num": 24,
+      "num": 23,
       "name": "rune",
       "family": "silicon",
       "maturity": "concept",
@@ -225,7 +217,7 @@
       "stage": "home"
     },
     {
-      "num": 25,
+      "num": 24,
       "name": "chyp",
       "family": "silicon",
       "maturity": "concept",
