@@ -37,7 +37,7 @@
     "subtitle": "irys, an open-source spectral path tracer",
     "date": "2026-11-06",
     "author": "Cam Pedersen",
-    "description": "irys is an open-source spectral path tracer whose differentiable core replays the forward pass bit for bit, so its gradients are identical across runs, checked against an f64 reference, and reach through instanced CAD to the dimensions in the model.",
+    "description": "irys is an open-source spectral path tracer. Its backward pass replays the forward pass bit for bit, so two runs give identical gradients. We check those gradients against an f64 reference, and vcad's BRep kernel pulls them back to the dimensions of a CAD part.",
     "root": "../paper/irys",
     "source": "irys.typ",
     "cover": "pavilion"
