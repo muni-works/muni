@@ -72,3 +72,13 @@ recon.all.parts	124	same
 recon.g.s_part_mew	675	same: median s per part per process on mew (24 cores, 6 processes x 4 threads)
 recon.o.overlap_p1	0	same: keyhole kind, of 4
 recon.o.unround_p1	3	same: off-grid kind, of 4
+amp.a.a	0.994	irys claude/recon-amplitudes @9e335b6, examples/recon_amp a (v0 path-traced studio, 4 views, 256x192): final amplitude, start 0.5
+amp.a.err	0.024	same: worst |error| of the hole's x, y, r, mm (start 2.0, 2.0, 1.0 off)
+amp.a.steps	11	same: accepted LM steps
+amp.a.evals	108	same: renders
+amp.a.s	225	same: seconds on mew (shared, load ~45)
+amp.a.len	5.48	same: L of the hole, nats
+amp.b.a	0.014	irys claude/recon-amplitudes @9e335b6, examples/recon_amp b (no hole in target): final amplitude, start 0.5; emitted program has no hole
+amp.b.a_max0	0.030	same: amplitude where beta=0..10 settled
+amp.b.steps	8	same: accepted LM steps
+amp.b.s	246	same: seconds on mew

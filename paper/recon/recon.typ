@@ -61,7 +61,7 @@
   }))
 }
 
-#set document(title: "A Feature Must Pay for Itself", author: "Cam Pedersen (Municipal Robotics)")
+#set document(title: "Seeing Is Measuring", author: "Cam Pedersen (Municipal Robotics)")
 
 #let hf-out() = { let m = page.margin; let l = if type(m) == dictionary { m.at("left", default: m.at("x", default: 0.75in)) } else { 0.75in }; calc.max(0in, l - 0.7in) }
 
@@ -74,7 +74,7 @@
   numbering: "1",
   header: context {
     if counter(page).get().first() > 1 {
-      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[A Feature Must Pay for Itself], caps[Municipal Robotics]))
+      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Seeing Is Measuring], caps[Municipal Robotics]))
     }
   },
   footer: context {
@@ -222,11 +222,11 @@
       line(length: 100%, stroke: 0.5pt + c-line-hi),
       caps[November 2026 · Draft])
     #v(0.35in)
-    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.2, tracking: -0.025em)[A Feature Must\ Pay for Itself])
+    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.2, tracking: -0.025em)[Seeing Is\ Measuring])
     #v(0.5em)
     #line(length: 22%, stroke: 2pt + c-label)
     #v(0.7em)
-    #text(size: s-lg, fill: c-label)[Editable CAD programs from photographs, by description length and a differentiable renderer]
+    #text(size: s-lg, fill: c-label)[Editable CAD programs from photographs: a feature must pay for itself]
     #v(0.45in)
     #grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
       caps[Cam Pedersen · Municipal Robotics],
@@ -438,9 +438,9 @@ The Fisher information gives each dimension a standard deviation. On this gate t
 
 We test the relaxation where it should be strongest, in three steps of increasing difficulty, before any gate. All three use the code of @sec:amp at irys `claude/recon-amplitudes`.
 
-*(a) A feature that is there.* A 60×40×8 mm plate with one 4 mm-radius through-hole, rendered by the path tracer in four known views (the sim-to-sim setting of the recovery's first version). The fit starts with the right plate and an optional hole at amplitude 0.5, 2 mm off in each coordinate and 1 mm small. It passes if the amplitude goes to 1 and every dimension ends within 0.5 mm. #todo[result of (a)]
+*(a) A feature that is there.* A 60×40×8 mm plate with one 4 mm-radius through-hole, rendered by the path tracer in four known views (the sim-to-sim setting of the recovery's first version). The fit starts with the right plate and an optional hole at amplitude 0.5, 2 mm off in each coordinate and 1 mm small. It passes if the amplitude goes to 1 and every dimension ends within 0.5 mm. It passes. The amplitude rises in the first four steps, while the hole's position and radius walk to the target through the $a$-weighted edge term, and ends at #V("amp.a.a") with every dimension within #F("amp.a.err", 3) mm, in #V("amp.a.steps") accepted steps and #V("amp.a.evals") renders (#V("amp.a.s") s on a shared machine). The amplitude stops just short of 1: the last 0.6% would cost more in residual than the anneal's $beta a (1 - a)$ saves at $beta lt.eq 1000$ nats, so the program is emitted by rounding, as designed.
 
-*(b) A feature that is not.* The same start against a plate with no hole. It passes if the amplitude goes to 0. #todo[result of (b)]
+*(b) A feature that is not.* The same start against a plate with no hole. It passes if the amplitude goes to 0. The emitted program is right (the plate alone, its dimensions within 0.01 mm), but by our own criterion the amplitude does not reach 0. It falls from 0.5 to #F("amp.b.a_max0", 2) in the first step and settles there at $beta lt.eq 10$: a faint grey disc, 3% of a hole, buys about ten nats of residual, because the model's noise and the target's differ (the target is rendered at 64 samples per pixel, the model at 16) and a free disc can fit a little of that difference. The anneal at $beta = 1000$ pushes it to #F("amp.b.a", 3), and rounding emits no hole. This is the relaxation's characteristic failure in miniature: between the endpoints a feature is not a feature but a free image component, and it will be used to explain whatever the model cannot. AMP-B-LONG
 
 *(c) Hole or counterbore.* Gate part 3016, which the greedy search gets wrong (@fig:examples): its 3.8 mm hole is recovered as a counterbore whose outer radius is the hole's and whose inner hole is too small. We take the search's own program, replace that counterbore by two alternatives at amplitudes 0.5 and 0.5 on the simplex, a through-hole of the counterbore's outer radius and the counterbore as found, and let the relaxation choose, under the photo model, robust noise and appearance of the search's final fit. #todo[result of (c)]
 

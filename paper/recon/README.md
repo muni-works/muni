@@ -1,4 +1,4 @@
-# A Feature Must Pay for Itself (working title)
+# Seeing Is Measuring
 
 Draft preprint on image-to-CAD recovery: three phone photographs and a printed tag in, an editable
 CAD program out. Built on irys (`paper/irys`, the companion paper), split out of its former
@@ -18,12 +18,8 @@ as `[TODO: …]` in the PDF; never a number the data does not support.
 
 ## Title
 
-The irys paper is currently "Seeing Is Measuring"; whether that title moves here is Cam's call.
-Proposals of our own:
-
-1. **A Feature Must Pay for Itself** (current) — the MDL rule in one line.
-2. **Every Hole Is a Counterbore of Depth Zero** — the amplitude/relaxation idea and the gate's top failure.
-3. **Programs From Pixels** — plain, catchy, says the task.
+"Seeing Is Measuring" (Cam, 2026-11-10; moved here from the irys paper). Subtitle: "Editable CAD
+programs from photographs: a feature must pay for itself".
 
 ## Status
 
