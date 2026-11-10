@@ -82,3 +82,7 @@ amp.b.a	0.014	irys claude/recon-amplitudes @9e335b6, examples/recon_amp b (no ho
 amp.b.a_max0	0.030	same: amplitude where beta=0..10 settled
 amp.b.steps	8	same: accepted LM steps
 amp.b.s	246	same: seconds on mew
+amp.al.a	1.000	irys claude/recon-amplitudes @HEAD, recon_amp with AMP_LONG=1 (beta to 1e5) a: final amplitude
+amp.al.err	0.032	same: worst dim error mm
+amp.bl.a	0.000	irys claude/recon-amplitudes @HEAD, recon_amp with AMP_LONG=1 (beta to 1e5) b: final amplitude
+amp.bl.dnll	30	same: nats of residual given up between a=0.03 (75955.6) and a=0 (75985.1)
