@@ -8,8 +8,8 @@ WORK=${1:-$HERE/work}
 IRYS_REV=103e3da807f6f33b96daa70d0da817897c496e21
 ROSE_REV=832192f32a1634ea856e0a8ded40eacd84e9d9e7
 mkdir -p "$WORK"
-[ -d "$WORK/irys/.git" ] || git clone -q https://github.com/ecto/irys.git "$WORK/irys"
-[ -d "$WORK/rose/.git" ] || GIT_LFS_SKIP_SMUDGE=1 git clone -q https://github.com/ecto/rose.git "$WORK/rose"
+[ -d "$WORK/irys/.git" ] || git clone -q https://github.com/muni-works/irys.git "$WORK/irys"
+[ -d "$WORK/rose/.git" ] || GIT_LFS_SKIP_SMUDGE=1 git clone -q https://github.com/muni-works/rose.git "$WORK/rose"
 git -C "$WORK/irys" checkout -q --force "$IRYS_REV"
 git -C "$WORK/rose" checkout -q --force "$ROSE_REV"
 cd "$WORK/irys"

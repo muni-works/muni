@@ -31,7 +31,6 @@ vcad/phyz/tang plan (`docs/launch/full-tang.html` in vcad); none of its gates is
   fixed in vcad PR 1080; the paper pins that commit and describes both (§9.4).
   The run was made at the PR's head, 7af5dce; main has it squash-merged as a3ad5ec with an
   identical tree, which is the commit `repro.sh` and the paper name.
-- `repro/irys.sh` clones `ecto/rose`, which is private: outside readers cannot run that step.
 - A blind referee review (November 2026) drove the current revision: rebuild FD, step sweeps, the
   polygonization study, optimizer baselines, costs, plan radius, segment-count jumps and the
   filleted-box contact rollout are in repro/paper_experiments.rs and paper_contact_fillet.rs.
