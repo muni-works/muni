@@ -29,8 +29,7 @@ implementation (irys `crates/irys-recon/src/amp.rs`, branch `claude/recon-amplit
 
 TODO (marked in the text):
 
-- **Amplitude experiments (a)–(c)** (`examples/recon_amp.rs`, run on mew): see section 5.4. Results
-  go to `data/amp-*.json` and `amp.*` rows of `data/measured.tsv`.
+- ~~Amplitude experiments (a)–(c)~~ done (data/amp-*.json, amp.* rows).
 - **Gate with amplitude finals.** Rerun the 100-part in-grammar gate with the finalists' optional
   features relaxed, against greedy MDL. Needs wiring `amp::fit` into `search::recover`'s final stage.
 - **M2, real photographs.** Print five gate parts (kit in `~/Developer/irys-assets/recon-m2-kit`),

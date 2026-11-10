@@ -108,3 +108,10 @@ fit.ms_intsec	66.2	design.md L1171
 fit.seconds	244	design.md L1175
 fit.tris	2.4	design.md L683-688 (millions of triangles, whole robot)
 basin.deg	5	design.md L1008 (elbow basin half-width)
+amp.c.v1_s	448	irys claude/recon-amplitudes, recon_amp c (gate part 3016, 3 synthetic photos, photo model, Huber 1.5, beta to 1e5) on mew: v1 seconds; this run's v1 found the hole (gate run read a counterbore)
+amp.c.a_hole	1.0	same: final hole amplitude
+amp.c.a_cb	0.0	same: final counterbore amplitude
+amp.c.r	3.841	same: hole radius mm (truth 3.800)
+amp.c.pos_err	0.29	same: hole centre max |dx|,|dy| vs truth after the half turn, mm
+amp.c.s	93	same: amplitude fit seconds
+amp.c.evals	213	same: renders
