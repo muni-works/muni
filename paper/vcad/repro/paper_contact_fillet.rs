@@ -60,15 +60,15 @@ fn model(props: &[BodyMassProps]) -> Model {
     ModelBuilder::new().gravity(Vec3::new(0.0, 0.0, -9.81)).dt(DT).add_body("box", -1, joint, props[0].to_spatial_inertia()).build()
 }
 
-fn spec<'a>() -> AdjointRolloutSpec<'a> {
+fn spec() -> AdjointRolloutSpec {
     AdjointRolloutSpec {
-        build_model: Box::new(|p: &[BodyMassProps]| model(p)),
+        build_model: std::sync::Arc::new(|p: &[BodyMassProps]| model(p)),
         q0: vec![0.0],
         v0: vec![0.0],
         steps: STEPS,
-        ctrl: Box::new(|_t| DVec::from_slice(&[0.0])),
-        objective_value: Box::new(|q, _v| q[0]),
-        objective_gradient: Box::new(|q, v| {
+        ctrl: std::sync::Arc::new(|_t| DVec::from_slice(&[0.0])),
+        objective_value: std::sync::Arc::new(|q: &[f64], _v: &[f64]| q[0]),
+        objective_gradient: std::sync::Arc::new(|q: &[f64], v: &[f64]| {
             let mut g = vec![0.0; q.len()];
             g[0] = 1.0;
             (g, vec![0.0; v.len()])

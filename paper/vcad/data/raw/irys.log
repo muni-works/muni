@@ -1,5 +1,62 @@
-    Blocking waiting for file lock on package cache
-    Blocking waiting for file lock on package cache
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling robust v1.2.0
+   Compiling paste v1.0.15
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.154
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling version_check v0.9.5
+   Compiling libm v0.2.16
+   Compiling autocfg v1.5.1
+   Compiling thiserror v2.0.21
+   Compiling either v1.19.0
+   Compiling smallvec v1.16.3
+   Compiling crossbeam-utils v0.8.23
+   Compiling equivalent v1.0.3
+   Compiling crossbeam-epoch v0.9.21
+   Compiling crossbeam-deque v0.8.8
+   Compiling heapless v0.8.0
+   Compiling rayon-core v1.13.0
+   Compiling byteorder v1.5.0
+   Compiling stable_deref_trait v1.2.1
+   Compiling allocator-api2 v0.2.21
+   Compiling find-msvc-tools v0.1.14
+   Compiling shlex v2.0.1
+   Compiling foldhash v0.2.0
+   Compiling log v0.4.34
+   Compiling hash32 v0.3.1
+   Compiling float_next_after v1.0.0
+   Compiling hashbrown v0.17.1
+   Compiling winnow v0.7.15
+   Compiling tang-la v0.1.1
+   Compiling toml_write v0.1.2
+   Compiling rustc-hash v1.1.0
+   Compiling itertools v0.11.0
+   Compiling ttf-parser v0.25.1
+   Compiling ryu v1.0.23
+   Compiling anyhow v1.0.104
+   Compiling slotmap v1.1.1
+   Compiling cc v1.8.0
+   Compiling cfg-if v1.0.5
+   Compiling libloading v0.8.9
+   Compiling tang v0.2.1 (https://github.com/ecto/tang?rev=bfc8003#bfc8003b)
+   Compiling num-traits v0.2.19
+   Compiling hashbrown v0.16.1
+   Compiling indexmap v2.14.2
+   Compiling vcad-kernel-math v0.10.0
+   Compiling vcad-kernel-math v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling tang-expr v0.1.1 (https://github.com/ecto/tang?rev=bfc8003#bfc8003b)
+   Compiling irys-core v0.1.0 (/home/cam/vcad-paper-rerun/work/irys/crates/irys-core)
+   Compiling vcad-kernel-geom v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-topo v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-geom v0.10.0
+   Compiling vcad-kernel-topo v0.10.0
+   Compiling vcad-kernel-primitives v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-nurbs v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
 warning: missing documentation for a method
    --> crates/irys-core/src/geometry.rs:194:5
     |
@@ -12,7 +69,86 @@ note: the lint level is defined here
   1 | #![warn(missing_docs)]
     |         ^^^^^^^^^^^^
 
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling irys-prims v0.1.0 (/home/cam/vcad-paper-rerun/work/irys/crates/irys-prims)
+   Compiling tang-compile v0.1.0 (https://github.com/ecto/tang?rev=bfc8003#bfc8003b)
+   Compiling vcad-kernel-primitives v0.10.0
+   Compiling geographiclib-rs v0.2.7
+   Compiling vcad-kernel-nurbs v0.10.0
+   Compiling vcad-kernel-naming v0.10.0
+   Compiling vcad-kernel-fillet v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
 warning: `irys-core` (lib) generated 1 warning
+   Compiling vcad-kernel-fillet v0.10.0
+   Compiling vcad-kernel-naming v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling rayon v1.12.0
+   Compiling clipper-sys v0.7.2
+   Compiling earcutr v0.4.3
+   Compiling rstar v0.12.2
+   Compiling approx v0.5.1
+   Compiling spade v2.15.1
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling bytemuck_derive v1.12.1
+   Compiling geo-types v0.7.20
+   Compiling vcad-kernel-sketch v0.10.0
+   Compiling vcad-kernel-sketch v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling stepperoni v0.1.0
+   Compiling stepperoni v0.1.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-tool-derive v0.10.0
+   Compiling vcad-tool-derive v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-step v0.10.0
+   Compiling vcad-kernel-step v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling bytemuck v1.25.2
+   Compiling geo v0.28.0
+   Compiling vcad-kernel-sweep v0.10.0
+   Compiling vcad-kernel-text v0.10.0
+   Compiling vcad-kernel-constraints v0.10.0
+   Compiling vcad-kernel-text v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-constraints v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-sweep v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling kosm-render v0.2.0 (https://github.com/ecto/kosm?rev=59b1d03ec45cf9e9a04ccbbbef0bcc06d8f559d4#59b1d03e)
+   Compiling irys-light v0.1.0 (/home/cam/vcad-paper-rerun/work/irys/crates/irys-light)
+   Compiling vcad-receipt v0.10.0
+   Compiling vcad-kernel-tessellate v0.10.0
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling vcad-ir v0.10.0
+   Compiling toml_edit v0.22.27
+   Compiling vcad-kernel-tessellate v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-cost v0.10.0
+   Compiling vcad-ir v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-qcd v0.10.0
+   Compiling vcad-kernel-enclosure v0.10.0
+   Compiling vcad-kernel-cost v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-receipt v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-calibration v0.10.0
+   Compiling vcad-kernel-export v0.10.0
+   Compiling vcad-kernel-adjoint v0.10.0
+   Compiling vcad-kernel-thermal v0.10.0
+   Compiling vcad-kernel-acoustics v0.10.0
+   Compiling vcad-kernel-antenna v0.10.0
+   Compiling vcad-kernel-particle v0.10.0
+   Compiling vcad-kernel-sheet v0.10.0
+   Compiling vcad-kernel-em v0.10.0
+   Compiling geo-clipper v0.8.0
+   Compiling vcad-kernel-tolerance v0.10.0
+   Compiling vcad-kernel-neutronics v0.10.0
+   Compiling toml v0.8.23
+   Compiling vcad-kernel-booleans v0.10.0
+   Compiling vcad-kernel-cam v0.10.0
+   Compiling vcad-kernel-booleans v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-cam v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-flow v0.10.0
+   Compiling vcad-kernel-topopt v0.10.0
+   Compiling vcad-kernel-fea v0.10.0
+   Compiling vcad-kernel-shell v0.10.0
+   Compiling vcad-kernel-shell v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-stocksim v0.10.0
+   Compiling vcad-kernel-sheet v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-diff v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling irys-diff v0.1.0 (/home/cam/vcad-paper-rerun/work/irys/crates/irys-diff)
+   Compiling vcad-kernel-stocksim v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
 warning: associated function `from_parts` is never used
    --> crates/irys-diff/src/vis.rs:499:19
     |
@@ -24,10 +160,19 @@ warning: associated function `from_parts` is never used
     |
     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
 
+   Compiling vcad-gdsii v0.10.0
+   Compiling vcad-kernel-raytrace v0.10.0
+   Compiling vcad-kernel-raytrace v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+   Compiling vcad-kernel-photonics v0.10.0
+   Compiling vcad-kernel-dfm v0.10.0
+   Compiling vcad-kernel-dfm v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
 warning: `irys-diff` (lib) generated 1 warning
-    Finished `release` profile [optimized] target(s) in 0.18s
+   Compiling vcad-kernel v0.10.0
+   Compiling vcad v0.10.0
+   Compiling vcad-kernel v0.11.0 (https://github.com/ecto/vcad?rev=d10f279d9693d307c7faa7289ec6490b12f0bd77#d10f279d)
+    Finished `release` profile [optimized] target(s) in 55.20s
      Running `target/release/examples/rose_brep`
-L_shoA_shop_out: 4942 nodes, 9932 triangles (1.9s)
+L_shoA_shop_out: 4942 nodes, 9932 triangles (2.6s)
 edges: 9780 segments, Σℓ 3677 px; 93138 of 100000 samples visible
 rose-arm BRep benchmark: L_shoA_shop_out, θ = bearing bore diameter 49 mm
   nodes 4942, edge samples 100000 × 8 seeds, image 160×128
@@ -35,4 +180,4 @@ rose-arm BRep benchmark: L_shoA_shop_out, θ = bearing bore diameter 49 mm
   dℒ/dθ, vcad forward seam:            +4.016864e1   max rel vs pullback 1.24e-15
   dℒ/dθ, vcad fd_velocities oracle:     +4.017028e1   max rel vs pullback 4.27e-5
   dℒ/dθ, end-to-end render FD (h 0.1 mm, 16² pts/px): +4.001440e1   rel 3.85e-3 (6.8 σ)
-  total 21.1s
+  total 31.0s

@@ -10,7 +10,7 @@ Draft preprint on vcad's differentiable seam (`crates/vcad-kernel-diff` and its 
 ## Numbers
 
 Every measured value in `vcad.typ` is read from `data/measured.tsv`; a missing key is a build
-error. To regenerate it from scratch (on a build machine, ~30 min):
+error. To regenerate it from scratch (on a build machine, ~90 min):
 
     repro/repro.sh            # clones vcad at the pinned commit into repro/work/
 
@@ -26,9 +26,10 @@ vcad/phyz/tang plan (`docs/launch/full-tang.html` in vcad); none of its gates is
 
 ## Open items before submission
 
-- Two disagreements with finite differences are reported in the paper and not explained: the
-  fillet-radius (and s_x) gradient on the filleted, drilled box (1.4e-4, §9.4), and the filleted
-  cube's second derivative (1e-3, §9.3). Both point at the seam where blends meet other surfaces.
+- The two disagreements with finite differences an earlier draft reported (fillet-radius and s_x
+  gradient on the filleted, drilled box; the filleted cube's second derivative) were seam bugs,
+  fixed in vcad PR 1080; the paper pins that commit and describes both (§9.4).
+- `repro/irys.sh` clones `ecto/rose`, which is private: outside readers cannot run that step.
 - A blind referee review (November 2026) drove the current revision: rebuild FD, step sweeps, the
   polygonization study, optimizer baselines, costs, plan radius, segment-count jumps and the
   filleted-box contact rollout are in repro/paper_experiments.rs and paper_contact_fillet.rs.

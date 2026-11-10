@@ -14,8 +14,8 @@
 # Takes about 90 minutes (the paper's optimizer baselines are most of it) on a 24-core box; run it on a build machine, not a laptop.
 set -euo pipefail
 
-VCAD_REPO=${VCAD_REPO:-https://github.com/ecto/vcad.git}
-VCAD_REV=${VCAD_REV:-d10f279d9693d307c7faa7289ec6490b12f0bd77}
+VCAD_REPO=${VCAD_REPO:-https://github.com/muni-works/vcad.git}
+VCAD_REV=${VCAD_REV:-7af5dce81bea4aea801dd37128b912ab3a3c6cd2}
 HERE=$(cd "$(dirname "$0")" && pwd)
 WORK=${1:-$HERE/work}
 DATA=$HERE/../data

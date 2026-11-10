@@ -1,6 +1,119 @@
-   Compiling vcad-kernel-diff v0.11.0 (/home/cam/diffcad/repro/work/vcad/crates/vcad-kernel-diff)
-    Finished `release` profile [optimized] target(s) in 0.78s
-     Running tests/m0_extrude_volume.rs (target/release/deps/m0_extrude_volume-a5ab5ad966cf1519)
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.44
+   Compiling unicode-ident v1.0.22
+   Compiling robust v1.2.0
+   Compiling serde_core v1.0.228
+   Compiling paste v1.0.15
+   Compiling serde v1.0.228
+   Compiling zmij v1.0.17
+   Compiling serde_json v1.0.149
+   Compiling memchr v2.7.6
+   Compiling itoa v1.0.17
+   Compiling libm v0.2.16
+   Compiling autocfg v1.5.0
+   Compiling version_check v0.9.5
+   Compiling either v1.15.0
+   Compiling thiserror v2.0.18
+   Compiling smallvec v1.15.1
+   Compiling tang-la v0.1.1
+   Compiling equivalent v1.0.2
+   Compiling heapless v0.8.0
+   Compiling byteorder v1.5.0
+   Compiling crossbeam-utils v0.8.21
+   Compiling stable_deref_trait v1.2.1
+   Compiling foldhash v0.1.5
+   Compiling find-msvc-tools v0.1.9
+   Compiling rayon-core v1.13.0
+   Compiling shlex v1.3.0
+   Compiling allocator-api2 v0.2.21
+   Compiling log v0.4.29
+   Compiling itertools v0.11.0
+   Compiling float_next_after v1.0.0
+   Compiling hash32 v0.3.1
+   Compiling hashbrown v0.16.1
+   Compiling cc v1.2.55
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.14
+   Compiling rustc-hash v1.1.0
+   Compiling ttf-parser v0.25.1
+   Compiling ryu v1.0.23
+   Compiling slotmap v1.1.1
+   Compiling num-traits v0.2.19
+   Compiling hashbrown v0.15.5
+   Compiling tang v0.2.1
+   Compiling crossbeam-epoch v0.9.18
+   Compiling vcad-kernel-math v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-math)
+   Compiling tang-expr v0.2.0
+   Compiling vcad-kernel-geom v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-geom)
+   Compiling vcad-kernel-topo v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-topo)
+   Compiling syn v2.0.114
+   Compiling indexmap v2.13.0
+   Compiling vcad-kernel-primitives v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-primitives)
+   Compiling vcad-kernel-nurbs v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-nurbs)
+   Compiling crossbeam-deque v0.8.6
+   Compiling geographiclib-rs v0.2.5
+   Compiling vcad-kernel-naming v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-naming)
+   Compiling vcad-kernel-fillet v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-fillet)
+   Compiling tang-sparse v0.1.1
+   Compiling tang-ad v0.1.1
+   Compiling tang-optim v0.2.0
+   Compiling clipper-sys v0.7.2 (/home/cam/vcad-paper-rerun/work/vcad/third_party/clipper-sys)
+   Compiling tang-compile v0.1.1
+   Compiling rayon v1.11.0
+   Compiling earcutr v0.4.3
+   Compiling rstar v0.12.2
+   Compiling approx v0.5.1
+   Compiling spade v2.15.0
+   Compiling geo-types v0.7.18
+   Compiling geo v0.28.0
+   Compiling serde_derive v1.0.228
+   Compiling thiserror-impl v2.0.18
+   Compiling vcad-tool-derive v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-tool-derive)
+   Compiling bytemuck_derive v1.10.2
+   Compiling kosm-render v0.2.0 (https://github.com/ecto/kosm?rev=59b1d03ec45cf9e9a04ccbbbef0bcc06d8f559d4#59b1d03e)
+   Compiling vcad-kernel-sketch v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-sketch)
+   Compiling stepperoni v0.1.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/stepperoni)
+   Compiling bytemuck v1.24.0
+   Compiling vcad-kernel-step v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-step)
+   Compiling vcad-kernel-text v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-text)
+   Compiling vcad-kernel-constraints v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-constraints)
+   Compiling vcad-kernel-sweep v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-sweep)
+   Compiling vcad-receipt v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-receipt)
+   Compiling vcad-kernel-tessellate v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-tessellate)
+   Compiling vcad-ir v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ir)
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling vcad-kernel-cost v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-cost)
+   Compiling vcad-kernel-enclosure v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-enclosure)
+   Compiling vcad-kernel-qcd v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-qcd)
+   Compiling vcad-kernel-calibration v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-calibration)
+   Compiling geo-clipper v0.8.0
+   Compiling toml_edit v0.22.27
+   Compiling vcad-kernel-adjoint v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-adjoint)
+   Compiling vcad-kernel-em v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-em)
+   Compiling vcad-kernel-particle v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-particle)
+   Compiling vcad-kernel-sheet v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-sheet)
+   Compiling vcad-kernel-neutronics v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-neutronics)
+   Compiling vcad-kernel-acoustics v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-acoustics)
+   Compiling vcad-kernel-antenna v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-antenna)
+   Compiling vcad-kernel-cam v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-cam)
+   Compiling vcad-kernel-tolerance v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-tolerance)
+   Compiling vcad-kernel-stocksim v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-stocksim)
+   Compiling vcad-kernel-booleans v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-booleans)
+   Compiling vcad-kernel-topopt v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-topopt)
+   Compiling vcad-kernel-shell v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-shell)
+   Compiling vcad-kernel-diff v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-diff)
+   Compiling toml v0.8.23
+   Compiling vcad-kernel-thermal v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-thermal)
+   Compiling vcad-kernel-fea v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-fea)
+   Compiling vcad-kernel-flow v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-flow)
+   Compiling vcad-gdsii v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-gdsii)
+   Compiling vcad-kernel-raytrace v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-raytrace)
+   Compiling vcad-kernel-photonics v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-photonics)
+   Compiling vcad-kernel-dfm v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-dfm)
+   Compiling vcad-kernel v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel)
+    Finished `release` profile [optimized] target(s) in 28.73s
+     Running tests/m0_extrude_volume.rs (target/release/deps/m0_extrude_volume-a5a3dd7c773d1cfc)
 
 running 1 test
 test m0_extrude_volume_derivative_matches_analytic_and_fd ... PAPER	m0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L72::dv	1.2e1
@@ -15,31 +128,31 @@ ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running tests/m10_perf.rs (target/release/deps/m10_perf-a0feb3454f39c9d0)
+     Running tests/m10_perf.rs (target/release/deps/m10_perf-15a36872a7ee3dc4)
 
 running 2 tests
 test m10_capture_seam_pullback_timings ... 
 === M10 timings (median ms) ===
 -- rounded cube: capture / seam / pullback (all ~linear in nodes) --
-  segs= 16 nodes=   836: capture   0.599  seam  0.054  pullback  0.171
-  segs= 64 nodes=  3284: capture   2.170  seam  0.141  pullback  0.545
-  segs=128 nodes=  6548: capture   4.315  seam  0.259  pullback  1.043
+  segs= 16 nodes=   836: capture   0.596  seam  0.056  pullback  0.172
+  segs= 64 nodes=  3284: capture   2.212  seam  0.141  pullback  0.541
+  segs=128 nodes=  6548: capture   4.311  seam  0.258  pullback  1.044
 -- evaluate_plan (FD-oracle resolution): naive O(nodes·verts) vs grid --
-  rounded cube segs= 16 nodes=   836 topo-verts=  24: naive   0.588  grid   0.600  (speedup 0.98x)
-  rounded cube segs= 64 nodes=  3284 topo-verts=  24: naive   2.356  grid   2.378  (speedup 0.99x)
-  rounded cube segs=128 nodes=  6548 topo-verts=  24: naive   4.568  grid   4.497  (speedup 1.02x)
-  flywheel     segs= 16 nodes=  1922 topo-verts=1922: naive   3.805  grid   0.944  (speedup 4.03x)
-  flywheel     segs= 64 nodes=  1922 topo-verts=1922: naive   3.802  grid   0.934  (speedup 4.07x)
-  flywheel     segs=128 nodes=  1922 topo-verts=1922: naive   3.894  grid   0.943  (speedup 4.13x)
+  rounded cube segs= 16 nodes=   836 topo-verts=  24: naive   0.589  grid   0.594  (speedup 0.99x)
+  rounded cube segs= 64 nodes=  3284 topo-verts=  24: naive   2.369  grid   2.387  (speedup 0.99x)
+  rounded cube segs=128 nodes=  6548 topo-verts=  24: naive   4.603  grid   4.599  (speedup 1.00x)
+  flywheel     segs= 16 nodes=  1922 topo-verts=1922: naive   3.810  grid   0.938  (speedup 4.06x)
+  flywheel     segs= 64 nodes=  1922 topo-verts=1922: naive   3.812  grid   0.932  (speedup 4.09x)
+  flywheel     segs=128 nodes=  1922 topo-verts=1922: naive   3.744  grid   0.915  (speedup 4.09x)
 
 ok
 test m10_grid_evaluation_is_bit_identical_to_linear ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.23s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.22s
 
-     Running tests/m10_second_order.rs (target/release/deps/m10_second_order-2a43d76346ec8b5f)
+     Running tests/m10_second_order.rs (target/release/deps/m10_second_order-679f515bddb98266)
 
-running 8 tests
+running 9 tests
 test m10_cone_half_angle_second_derivative_matches_closed_form ... PAPER	m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::ddv	1.6385316107350387e4
 PAPER	m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::ddv_exact	1.6385316107350383e4
 PAPER	m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::rel	2.2202676977710128e-16
@@ -50,29 +163,34 @@ PAPER	m10_second_order::m10_cone_half_angle_second_derivative_matches_closed_for
 ok
 test m10_cylinder_height_second_derivative_is_zero ... cylinder height: dV/dh 77.645714 (area 77.645714), d²V/dh² 0.000e0
 ok
-test m10_gauss_newton_hessian_matches_full_hessian_near_optimum ... GN eigenvalues   : [0.0005048002734010182, 0.011116879646770593, 0.01695697542514812, 0.03155498566361838, 0.4181174477169114]
-full eigenvalues : [0.0005056937206686547, 0.011130061626016098, 0.016982891922659817, 0.031618578253996665, 0.41829332893045196]
-PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::tr_gn	4.7825108872584954e-1
-PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::tr_full	4.785305544537932e-1
-PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::rel_trace	5.843493815941603e-4
-trace: GN 4.78251e-1 vs full 4.78531e-1 (rel 5.843e-4)
-PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::num	4.8829195929210475e-8
-PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::den	1.762292960575011e-1
-PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::rel_frob	5.263816404166327e-4
-relative Frobenius ‖H_GN − H_full‖/‖H_GN‖ = 5.264e-4
+test m10_gauss_newton_hessian_matches_full_hessian_near_optimum ... GN eigenvalues   : [0.0005065726945094164, 0.011143171875144962, 0.017008739116847124, 0.03168241316141496, 0.41847295906109483]
+full eigenvalues : [0.0005065842201824333, 0.011143213257758893, 0.01700879171039212, 0.03168237570703267, 0.41847115609359]
+PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::tr_gn	4.7881385590901127e-1
+PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::tr_full	4.788121209889561e-1
+PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::rel_trace	3.623370614203482e-6
+trace: GN 4.78814e-1 vs full 4.78812e-1 (rel 3.623e-6)
+PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::num	4.0389772341428536e-11
+PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::den	1.7653711687075802e-1
+PAPER	m10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::rel_frob	1.512577681007133e-5
+relative Frobenius ‖H_GN − H_full‖/‖H_GN‖ = 1.513e-5
 ok
-test m10_hole_second_derivative_matches_closed_form_and_fd ... PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::ddv	-3.1399450452827484e1
+test m10_hole_second_derivative_matches_closed_form_and_fd ... PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::ddv	-3.1399450452827466e1
 PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::ddv_exact	-3.1399450452827402e1
-PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::rel_closed	2.602351742912546e-15
-PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::ddv	-3.1399450452827484e1
-PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::fd	-3.139945051344739e1
-PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::rel_fd	1.9306040851627877e-9
-hole d²V/dr²: analytic -31.399450 closed -31.399450 FD -31.399451 (rel_fd 1.931e-9)
+PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::rel_closed	2.036623103148949e-15
+PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::ddv	-3.1399450452827466e1
+PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::fd	-3.139945048502568e1
+PAPER	m10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::rel_fd	1.0254388272696723e-9
+hole d²V/dr²: analytic -31.399450 closed -31.399450 FD -31.399450 (rel_fd 1.025e-9)
 ok
 test m10_rounded_cube_second_derivative_matches_fd ... PAPER	m10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::ddv	-4.076427479325223e1
-PAPER	m10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::fd	-4.0716413035710275e1
-PAPER	m10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::rel	1.175490520247324e-3
-rounded cube: dV/dr -72.807170, d²V/dr² analytic -40.764275 vs FD -40.716413 (rel 1.175e-3)
+PAPER	m10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::fd	-4.075340654029702e1
+PAPER	m10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::rel	2.6668330031402417e-4
+rounded cube: dV/dr -72.807170, d²V/dr² analytic -40.764275 vs FD -40.753407 (rel 2.667e-4)
+ok
+test m10_rounded_cube_second_derivative_matches_same_plan_stencil ... PAPER	m10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::ddv	-4.076427479325223e1
+PAPER	m10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::five	-4.076428507670682e1
+PAPER	m10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::rel	2.522662809712376e-7
+rounded cube same-plan d²V/dr²: seam -40.764275 vs 5-point -40.764285 (rel 2.523e-7)
 ok
 test m10_torus_major_radius_second_derivative ... torus d²V/dR²: analytic -1.498e-14 vs FD 8.527e-8 (dV/dR 173.631077)
 ok
@@ -90,9 +208,9 @@ PAPER	m10_second_order::m10_torus_nonlinear_field_chain_rule@L505::rel2	2.127972
 torus chain rule: dV/dθ 3207.870364 vs 3207.870364 (rel 3.402e-15), d²V/dθ² 5556.194454 vs 5556.194454 (rel 2.128e-15)
 ok
 
-test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
 
-     Running tests/m1_frozen_lift.rs (target/release/deps/m1_frozen_lift-a2135c511cf9b7ed)
+     Running tests/m1_frozen_lift.rs (target/release/deps/m1_frozen_lift-3e8d4cba1c6696c8)
 
 running 3 tests
 test m1_cylinder_interior_samples_match_fd ... PAPER	m1_frozen_lift::m1_cylinder_interior_samples_match_fd::cmp.max_rel_err	5.62717788972549e-10
@@ -151,22 +269,22 @@ test m1_topology_change_is_an_error_not_a_lie ... ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
 
-     Running tests/m2_boolean_hole.rs (target/release/deps/m2_boolean_hole-ce562fa2ee8b1c3e)
+     Running tests/m2_boolean_hole.rs (target/release/deps/m2_boolean_hole-5412b75fdd3d2aeb)
 
 running 2 tests
 test m2_rim_nodes_implicit_diff_matches_fd ... PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695918903e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.59781671167936e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9497944048962632e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9497942693612464e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6638936300736436e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.6705763246986663e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294028657495085e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.723304044375001e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.8918515767944124e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269278222098e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294028102542197e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.723304475072357e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.891851766732349e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269324614339e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286125757817963e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.4396773820171526e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.4396783950891765e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.46669122928029e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.5360881060235443e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.536089647254427e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.0610169878557165e-11
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.9010858736515227e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.0610169878557165e-11
@@ -174,190 +292,190 @@ PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874099
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.46669122928029e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.4396773820171526e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286125757817963e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269278222098e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.800069724318628e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.0793005213999525e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.563080667440927e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7708592157475346e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6638936300736436e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9497944048962632e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.59781671167936e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695918903e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.8552103236996293e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.5710375524092147e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.0700275111072112e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.6705763246986663e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.729178311741171e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079296738575e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.891849016975559e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269278222098e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269324614339e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.800070083892633e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079300381473473e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.563080703452152e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.77085838314169e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.66389415873679e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9497942693612464e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.5978174712385944e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695920245e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.855210600832567e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.5710367308759105e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.0700277663907665e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.67057604719924e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.729178808025774e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079296458722591e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.891848827037329e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269185437797e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286125757817963e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537271742042211e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.466686797155266e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1012320262212315e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8643133508129797e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1012334466917008e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8643123520693517e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.7376967677963195e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.729777617940907e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.729777224271358e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874108783264287e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.253618696756036e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.181285799625436e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7923237540062214e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809392883811355e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587744286868506e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.2536177098868305e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.181286266991242e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7923236300674636e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.80939144208706e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587748060708896e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.085910902645779e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294028657495085e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.529671640124024e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.663888987881506e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6212889913280516e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6045674420445685e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695918903e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1570827594796637e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.828945555450524e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.719443608240019e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.751680641247702e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.918796883520029e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.631740754269292e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587731182441538e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294030322362351e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.529673165217466e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.66389057387114e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.621289293773348e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6045683316117787e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695924267e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1570826580839262e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8289456034383339e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.719445623357549e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7516808097207393e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.9187972653293586e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.6317436768686285e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587745089318835e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.789767266176593e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.00042057464212e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000429226122446e-11
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537256474598347e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0715014373648784e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874071394349374e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.0610169878557165e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.3146750496910553e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8643114596997551e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0715004012375299e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874067216946655e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.060972426249953e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.3146750496921203e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.864309462217872e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.5287165842461686e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.071502457974251e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.181282850198625e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000405720648016e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809382672070902e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587706548511122e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079298652507356e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294049640814714e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.751682654220021e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.580988999098033e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.1112195227379787e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6045696024229666e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695964052e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.604572122163776e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.621286470951796e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.0700304688591087e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.529671640124024e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.359243379992641e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0715031539245317e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.181283172340301e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000397069134568e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809379268163065e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587710322343054e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079298792434215e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294047975970665e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7516829911653633e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.5809888515281343e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.111218730693434e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.604570661433087e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695930975e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.604571063150737e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6212798607173974e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.0700302135753658e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.5296709865126746e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.3592283536767896e-11
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0859069862246692e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587716681363554e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809411865567077e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000422085493109e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537286958433774e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809418673416338e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000411740159994e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537360150212721e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.221400179060147e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874071394349374e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.487407348306534e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.060957368229172e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.7376970676170953e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.7376956489642617e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.0610169878557165e-11
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.8892062421730094e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0715006948130191e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0714999988622915e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537218357097881e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286157069008253e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996268860694679e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286158961573322e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996268907086369e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.5452612566785623e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.3114144628700414e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294028657495085e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.6705718847078477e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.26288208817309e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.24961293554037e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.497993427016581e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.497993427016581e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.24961293554037e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.26288208817309e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.6705718847078477e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294028657495085e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.3114144628700414e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.31141373654692e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294026992640714e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.670572717206126e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.262882071480462e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.249613771471121e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.4980001588927e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.4980001588927e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.249613771471121e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.262882071480462e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.670572717206126e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294026992640714e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.31141373654692e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.5452612566785623e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996268860694679e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286157069008253e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996268907086369e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286158961573322e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537218357097881e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0715006948130191e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0714999988622915e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.8892062421730094e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.0610169878557165e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.7376970676170953e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.7376956489642617e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.060957368229172e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874071394349374e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.487407348306534e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.221400179060147e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537286958433774e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000422085493109e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809411865567077e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537360150212721e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000411740159994e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809418673416338e-11
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587716681363554e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0859069862246692e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.359243379992641e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.529671640124024e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.0700304688591087e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.621286470951796e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.604572122163776e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695964052e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6045696024229666e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.1112195227379787e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.580988999098033e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.751682654220021e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294049640814714e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079298652507356e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587706548511122e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809382672070902e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000405720648016e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.181282850198625e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.071502457974251e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.3592283536767896e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.5296709865126746e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.0700302135753658e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6212798607173974e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.604571063150737e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695930975e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.604570661433087e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.111218730693434e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.5809888515281343e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7516829911653633e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294047975970665e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079298792434215e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587710322343054e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809379268163065e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000397069134568e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.181283172340301e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0715031539245317e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.5287165842461686e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8643114596997551e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.3146750496910553e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.0610169878557165e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874071394349374e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0715014373648784e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.864309462217872e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.3146750496921203e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.060972426249953e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874067216946655e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0715004012375299e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537256474598347e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.00042057464212e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.000429226122446e-11
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.789767266176593e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587731182441538e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.631740754269292e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.918796883520029e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.751680641247702e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.719443608240019e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.828945555450524e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1570827594796637e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695918903e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6045674420445685e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6212889913280516e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.663888987881506e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.529671640124024e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294028657495085e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587745089318835e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.6317436768686285e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.9187972653293586e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7516808097207393e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	8.719445623357549e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8289456034383339e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1570826580839262e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695924267e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6045683316117787e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.621289293773348e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.66389057387114e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.529673165217466e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294030322362351e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.085910902645779e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587744286868506e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.809392883811355e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7923237540062214e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.181285799625436e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.253618696756036e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9587748060708896e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.80939144208706e-11
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7923236300674636e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.181286266991242e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.2536177098868305e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874108783264287e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.729777617940907e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.729777224271358e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.7376967677963195e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8643133508129797e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1012320262212315e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8643123520693517e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1012334466917008e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.466686797155266e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.0537271742042211e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286125757817963e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269278222098e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.891849016975559e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079296738575e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.729178311741171e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.6705763246986663e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.0700275111072112e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.5710375524092147e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.8552103236996293e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695918903e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.59781671167936e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9497944048962632e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6638936300736436e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.7708592157475346e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.563080667440927e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.0793005213999525e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.800069724318628e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269278222098e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269185437797e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.891848827037329e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079296458722591e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.729178808025774e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.67057604719924e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.0700277663907665e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.5710367308759105e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.855210600832567e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695920245e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.5978174712385944e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9497942693612464e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.66389415873679e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.77085838314169e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	6.563080703452152e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.079300381473473e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.800070083892633e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269324614339e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286125757817963e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.4396773820171526e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.46669122928029e-10
@@ -365,35 +483,35 @@ PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.4874099
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.0610169878557165e-11
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.9010858736515227e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.0610169878557165e-11
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.5360881060235443e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.536089647254427e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	5.46669122928029e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.4396773820171526e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.4396783950891765e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.8286125757817963e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269278222098e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.8918515767944124e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.723304044375001e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294028657495085e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.996269324614339e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	3.891851766732349e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	4.723304475072357e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.1294028102542197e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.6705763246986663e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	2.6638936300736436e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9497944048962632e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.9497942693612464e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.59781671167936e-10
 PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel	1.3977796695918903e-10
-PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd::cmp.max_rel_err	6.563080667440927e-10
+PAPER	m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd::cmp.max_rel_err	6.563080703452152e-10
 ok
-test m2_through_hole_dv_dr_matches_closed_form_and_fd ... PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::dv	-7.849862613206844e1
+test m2_through_hole_dv_dr_matches_closed_form_and_fd ... PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::dv	-7.849862613206854e1
 PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::dv_exact	-7.849862613206851e1
-PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::rel_closed	9.051658236217551e-16
-PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::dv	-7.849862613206844e1
+PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::rel_closed	3.6206632944870205e-16
+PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::dv	-7.849862613206854e1
 PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::dv_fd	-7.849862618058978e1
-PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::rel_fd	6.18117103170518e-10
-PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::dv	-7.849862613206844e1
+PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::rel_fd	6.181158359383649e-10
+PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::dv	-7.849862613206854e1
 PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::dv_continuum	-7.853981633974483e1
-PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::gap	5.244500126943832e-4
+PAPER	m2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::gap	5.244500126931166e-4
 ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
 
-     Running tests/m3_boundary_trim.rs (target/release/deps/m3_boundary_trim-78bdfaf0a9f16f82)
+     Running tests/m3_boundary_trim.rs (target/release/deps/m3_boundary_trim-2c5e2584684a5d24)
 
 running 1 test
 test boundary_nodes_track_a_moving_plane_trim ... PAPER	m3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L112::dv	7.764571353075621e1
@@ -408,7 +526,7 @@ ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running tests/m3_mass_properties.rs (target/release/deps/m3_mass_properties-96644169abb31193)
+     Running tests/m3_mass_properties.rs (target/release/deps/m3_mass_properties-fc462c672a1c41fc)
 
 running 3 tests
 test contraction_hook_reproduces_dual_volume_derivative ... ok
@@ -446,7 +564,7 @@ ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running tests/m4_fillet_radius.rs (target/release/deps/m4_fillet_radius-cfb3a68a81e66107)
+     Running tests/m4_fillet_radius.rs (target/release/deps/m4_fillet_radius-30cb7016b8c97392)
 
 running 2 tests
 test m4_fillet_radius_derivative_matches_fd_and_continuum ... PAPER	m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L132::dv	-7.280717046605996e1
@@ -457,13 +575,13 @@ PAPER	m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L19
 PAPER	m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L195::dmink	-6.82168297885255e1
 PAPER	m4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L195::gap	6.729044272160799e-2
 ok
-test m4_fillet_radius_optimized_to_target_volume ... PAPER	m4_fillet_radius::optimize::r	2.200000186013702e0
-PAPER	m4_fillet_radius::optimize::iters	1.7e1
+test m4_fillet_radius_optimized_to_target_volume ... PAPER	m4_fillet_radius::optimize::r	2.2000001226898838e0
+PAPER	m4_fillet_radius::optimize::iters	1.2e1
 ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
 
-     Running tests/m5_reverse_mode.rs (target/release/deps/m5_reverse_mode-d4411b2795b4147a)
+     Running tests/m5_reverse_mode.rs (target/release/deps/m5_reverse_mode-ed22cbf589e40bd8)
 
 running 2 tests
 test m5_one_pullback_prices_every_fillet_cube_parameter ... PAPER	m5_reverse_mode::agree::rounded cube dV/da::fwd	2.936649053568918e2
@@ -482,15 +600,15 @@ PAPER	m5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L321::
 ok
 test m5_pullback_matches_forward_across_model_classes ... PAPER	m5_reverse_mode::agree::cube dV/dh::fwd	1.2e1
 PAPER	m5_reverse_mode::agree::cube dV/dh::rev	1.2e1
-PAPER	m5_reverse_mode::agree::hole dV/dr::fwd	-7.849862613206844e1
+PAPER	m5_reverse_mode::agree::hole dV/dr::fwd	-7.849862613206854e1
 PAPER	m5_reverse_mode::agree::hole dV/dr::rev	-7.849862613206837e1
 PAPER	m5_reverse_mode::agree::cylinder dV/dh::fwd	7.764571353075621e1
 PAPER	m5_reverse_mode::agree::cylinder dV/dh::rev	7.76457135307562e1
 ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
 
-     Running tests/m6_synthesized_seeding.rs (target/release/deps/m6_synthesized_seeding-ba98e484266e375a)
+     Running tests/m6_synthesized_seeding.rs (target/release/deps/m6_synthesized_seeding-fb5be8b792038d20)
 
 running 6 tests
 test cone_and_torus_parameters_synthesized ... PAPER	m6_synthesized_seeding::cone_and_torus_parameters_synthesized::dv	3.4495402329862322e3
@@ -500,12 +618,12 @@ PAPER	m6_synthesized_seeding::cone_and_torus_parameters_synthesized::dv	9.260324
 PAPER	m6_synthesized_seeding::cone_and_torus_parameters_synthesized::fd	9.260324094384487e2
 PAPER	m6_synthesized_seeding::cone_and_torus_parameters_synthesized::rel_dv_vs_fd	3.111191700990721e-10
 ok
-test m2_hole_radius_synthesized ... PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::dv	-7.849862614304085e1
+test m2_hole_radius_synthesized ... PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::dv	-7.849862614304081e1
 PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::dv_closed	-7.849862613206851e1
-PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::rel_dv_vs_dv_closed	1.3977751681531866e-10
-PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::dv	-7.849862614304085e1
+PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::rel_dv_vs_dv_closed	1.3977697371582448e-10
+PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::dv	-7.849862614304081e1
 PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::dv_fd	-7.849862618058978e1
-PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::rel_dv_vs_dv_fd	4.783386808937068e-10
+PAPER	m6_synthesized_seeding::m2_hole_radius_synthesized::rel_dv_vs_dv_fd	4.783392239932006e-10
 ok
 test m3_cylinder_height_synthesized ... PAPER	m6_synthesized_seeding::m3_cylinder_height_synthesized::dv	7.76457135071277e1
 PAPER	m6_synthesized_seeding::m3_cylinder_height_synthesized::area	7.764571353075623e1
@@ -536,9 +654,9 @@ PAPER	m6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_d
 ok
 test topology_change_errors_cleanly ... ok
 
-test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
 
-     Running tests/m7_cone_torus.rs (target/release/deps/m7_cone_torus-28b598d613fadd06)
+     Running tests/m7_cone_torus.rs (target/release/deps/m7_cone_torus-d6362339954e947c)
 
 running 4 tests
 test cone_half_angle_derivative ... PAPER	m7_cone_torus::cone_half_angle_derivative@L156::dv	3.449540233126396e3
@@ -568,326 +686,426 @@ PAPER	m7_cone_torus::torus_gate@L269::torus minor r::rel_fd	4.509028033275415e-1
 PAPER	m7_cone_torus::torus_gate::torus minor r::cmp.max_rel_err	1.4296979875721212e-9
 ok
 
-test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running tests/m9_many_parameters.rs (target/release/deps/m9_many_parameters-3a8cc9666b8b9817)
+     Running tests/m9_many_parameters.rs (target/release/deps/m9_many_parameters-301e0422c5b4f978)
 
-running 3 tests
-test m9_lbfgs_recovers_theta_star ... L-BFGS: stop GradientConverged, iters 30, evals 33, J 6.020e-17, theta [10.000000021274278, 11.99999993318762, 8.000000036825773, 1.7999997126066125, 2.200000132782462], ||theta-theta*||inf 2.874e-7
-PAPER	m9::lbfgs::J::0	2.1039473356557997e-1
-PAPER	m9::lbfgs::J::1	2.0427182618629922e-1
-PAPER	m9::lbfgs::J::2	8.490920942531356e-2
-PAPER	m9::lbfgs::J::3	6.858159981991226e-2
-PAPER	m9::lbfgs::J::4	4.776007572457458e-2
-PAPER	m9::lbfgs::J::5	1.8336103799429675e-2
-PAPER	m9::lbfgs::J::6	7.123395649124488e-3
-PAPER	m9::lbfgs::J::7	3.1485850395714865e-3
-PAPER	m9::lbfgs::J::8	2.6092411867055672e-3
-PAPER	m9::lbfgs::J::9	1.444715615511247e-3
-PAPER	m9::lbfgs::J::10	5.134744759170299e-4
-PAPER	m9::lbfgs::J::11	1.2565882512105797e-4
-PAPER	m9::lbfgs::J::12	5.068571464479108e-6
-PAPER	m9::lbfgs::J::13	2.998546198585807e-6
-PAPER	m9::lbfgs::J::14	2.1086403676426304e-6
-PAPER	m9::lbfgs::J::15	2.0995994473896906e-6
-PAPER	m9::lbfgs::J::16	1.6773860075916756e-6
-PAPER	m9::lbfgs::J::17	1.0745828808775359e-6
-PAPER	m9::lbfgs::J::18	3.3689793428320295e-7
-PAPER	m9::lbfgs::J::19	1.2856286332216323e-7
-PAPER	m9::lbfgs::J::20	1.8105986470442224e-8
-PAPER	m9::lbfgs::J::21	1.5332859463746784e-8
-PAPER	m9::lbfgs::J::22	2.616038637772763e-9
-PAPER	m9::lbfgs::J::23	1.3436794329525388e-10
-PAPER	m9::lbfgs::J::24	1.4030389620755316e-11
-PAPER	m9::lbfgs::J::25	5.843963060944071e-13
-PAPER	m9::lbfgs::J::26	1.513475751794895e-14
-PAPER	m9::lbfgs::J::27	3.3847794662222578e-15
-PAPER	m9::lbfgs::J::28	1.0975345647391518e-15
-PAPER	m9::lbfgs::J::29	1.7717023903651703e-16
-PAPER	m9::lbfgs::J::30	6.019714544814697e-17
-PAPER	m9::gd::J::0	2.1039473356557983e-1
-PAPER	m9::gd::J::1	2.0427182618629924e-1
-PAPER	m9::gd::J::2	1.9272428059331145e-1
-PAPER	m9::gd::J::3	1.722623506543569e-1
-PAPER	m9::gd::J::4	1.4060609688666614e-1
-PAPER	m9::gd::J::5	1.04718997126139e-1
-PAPER	m9::gd::J::6	8.310425030402964e-2
-PAPER	m9::gd::J::7	6.300190812691489e-2
-PAPER	m9::gd::J::8	3.7262545761949664e-2
-PAPER	m9::gd::J::9	3.0613253659252257e-2
-PAPER	m9::gd::J::10	2.5842453463408997e-2
-PAPER	m9::gd::J::11	2.3509862959770336e-2
-PAPER	m9::gd::J::12	2.208120145987733e-2
-PAPER	m9::gd::J::13	1.3659289203144347e-2
-PAPER	m9::gd::J::14	1.13838037627544e-2
-PAPER	m9::gd::J::15	1.119202264201237e-2
-PAPER	m9::gd::J::16	6.957096454875337e-3
-PAPER	m9::gd::J::17	5.882392099717715e-3
-PAPER	m9::gd::J::18	4.815748369677286e-3
-PAPER	m9::gd::J::19	4.777090057775335e-3
-PAPER	m9::gd::J::20	3.2596876129581563e-3
-PAPER	m9::gd::J::21	2.8094563530536715e-3
-PAPER	m9::gd::J::22	2.652503637280468e-3
-PAPER	m9::gd::J::23	1.8801296207152103e-3
-PAPER	m9::gd::J::24	1.6440522933224293e-3
-PAPER	m9::gd::J::25	1.4745982566620032e-3
-PAPER	m9::gd::J::26	1.387469819788299e-3
-PAPER	m9::gd::J::27	1.1073165561440923e-3
-PAPER	m9::gd::J::28	9.666224203923868e-4
-PAPER	m9::gd::J::29	8.607373569172901e-4
-PAPER	m9::gd::J::30	7.991346427724457e-4
-PAPER	m9::gd::J::31	6.60978658559662e-4
-PAPER	m9::gd::J::32	5.779662214511741e-4
-PAPER	m9::gd::J::33	5.161010018505704e-4
-PAPER	m9::gd::J::34	4.831161567045236e-4
-PAPER	m9::gd::J::35	3.976449146387369e-4
-PAPER	m9::gd::J::36	3.4952217821984557e-4
-PAPER	m9::gd::J::37	3.161831257100566e-4
-PAPER	m9::gd::J::38	3.058275222770049e-4
-PAPER	m9::gd::J::39	2.4101219065232355e-4
-PAPER	m9::gd::J::40	2.1440934247803574e-4
-PAPER	m9::gd::J::41	2.0020018621685583e-4
-PAPER	m9::gd::J::42	1.67234886597501e-4
-PAPER	m9::gd::J::43	1.4763235837307001e-4
-PAPER	m9::gd::J::44	1.3474480486575023e-4
-PAPER	m9::gd::J::45	1.3426869177684257e-4
-PAPER	m9::gd::J::46	1.0256463103444439e-4
-PAPER	m9::gd::J::47	9.26906595607687e-5
-PAPER	m9::gd::J::48	8.983031462508847e-5
-PAPER	m9::gd::J::49	7.176933925442701e-5
-PAPER	m9::gd::J::50	6.452699717206504e-5
-PAPER	m9::gd::J::51	6.183528203173891e-5
-PAPER	m9::gd::J::52	5.05111296619395e-5
-PAPER	m9::gd::J::53	4.536695526015138e-5
-PAPER	m9::gd::J::54	4.3133364359771916e-5
-PAPER	m9::gd::J::55	3.583931991676484e-5
-PAPER	m9::gd::J::56	3.2225634798322297e-5
-PAPER	m9::gd::J::57	3.064409409406543e-5
-PAPER	m9::gd::J::58	2.568104329862707e-5
-PAPER	m9::gd::J::59	2.3184623312506824e-5
-PAPER	m9::gd::J::60	2.2079319802716715e-5
-PAPER	m9::gd::J::61	1.865394397730693e-5
-PAPER	m9::gd::J::62	1.693362781352056e-5
-PAPER	m9::gd::J::63	1.6238127905101315e-5
-PAPER	m9::gd::J::64	1.377782237819107e-5
-PAPER	m9::gd::J::65	1.2610528709815279e-5
-PAPER	m9::gd::J::66	1.2181567054892033e-5
-PAPER	m9::gd::J::67	1.0397818652505468e-5
-PAPER	m9::gd::J::68	9.60687080447935e-6
-PAPER	m9::gd::J::69	9.381729807708482e-6
-PAPER	m9::gd::J::70	8.045884952442537e-6
-PAPER	m9::gd::J::71	7.519199809187344e-6
-PAPER	m9::gd::J::72	7.4221172276070604e-6
-PAPER	m9::gd::J::73	6.407999821952714e-6
-PAPER	m9::gd::J::74	6.060051337126341e-6
-PAPER	m9::gd::J::75	6.050760540863091e-6
-PAPER	m9::gd::J::76	5.263094833114108e-6
-PAPER	m9::gd::J::77	5.037657386139508e-6
-PAPER	m9::gd::J::78	4.706669854344026e-6
-PAPER	m9::gd::J::79	4.45967610936597e-6
-PAPER	m9::gd::J::80	4.314197021496374e-6
-PAPER	m9::gd::J::81	4.061709100841269e-6
-PAPER	m9::gd::J::82	3.890926812045404e-6
-PAPER	m9::gd::J::83	3.8007765783424224e-6
-PAPER	m9::gd::J::84	3.6035611808702195e-6
-PAPER	m9::gd::J::85	3.4856609842008174e-6
-PAPER	m9::gd::J::86	3.4305051848242983e-6
-PAPER	m9::gd::J::87	3.275132425668893e-6
-PAPER	m9::gd::J::88	3.1926319383289687e-6
-PAPER	m9::gd::J::89	3.1613459252545603e-6
-PAPER	m9::gd::J::90	3.0359309473343537e-6
-PAPER	m9::gd::J::91	2.9778944923402856e-6
-PAPER	m9::gd::J::92	2.960801168633321e-6
-PAPER	m9::gd::J::93	2.858854205472747e-6
-PAPER	m9::gd::J::94	2.816924628841578e-6
-PAPER	m9::gd::J::95	2.8091587083874027e-6
-PAPER	m9::gd::J::96	2.7245332288347617e-6
-PAPER	m9::gd::J::97	2.6936854964780883e-6
-PAPER	m9::gd::J::98	2.6907891793746778e-6
-PAPER	m9::gd::J::99	2.620140591838331e-6
-PAPER	m9::gd::J::100	2.5964851071946316e-6
-PAPER	m9::gd::J::101	2.5639792138458338e-6
-PAPER	m9::gd::J::102	2.5363956234855543e-6
-PAPER	m9::gd::J::103	2.5176364181271994e-6
-PAPER	m9::gd::J::104	2.490068583015324e-6
-PAPER	m9::gd::J::105	2.4672034366902205e-6
-PAPER	m9::gd::J::106	2.4514700832484315e-6
-PAPER	m9::gd::J::107	2.4278487796976285e-6
-PAPER	m9::gd::J::108	2.408153571396787e-6
-PAPER	m9::gd::J::109	2.3944993482040133e-6
-PAPER	m9::gd::J::110	2.3738012260961662e-6
-PAPER	m9::gd::J::111	2.356359995401561e-6
-PAPER	m9::gd::J::112	2.3439103589345884e-6
-PAPER	m9::gd::J::113	2.325606863967202e-6
-PAPER	m9::gd::J::114	2.309666071087819e-6
-PAPER	m9::gd::J::115	2.298035491316923e-6
-PAPER	m9::gd::J::116	2.297148211501529e-6
-PAPER	m9::gd::J::117	2.2667451735449294e-6
-PAPER	m9::gd::J::118	2.2555245101439287e-6
-PAPER	m9::gd::J::119	2.2536993506515675e-6
-PAPER	m9::gd::J::120	2.2265303414070006e-6
-PAPER	m9::gd::J::121	2.2155576531306464e-6
-PAPER	m9::gd::J::122	2.212670505374177e-6
-PAPER	m9::gd::J::123	2.1884067794836408e-6
-PAPER	m9::gd::J::124	2.177546710933512e-6
-PAPER	m9::gd::J::125	2.1738132616961247e-6
-PAPER	m9::gd::J::126	2.1518522051623833e-6
-PAPER	m9::gd::J::127	2.141068867906052e-6
-PAPER	m9::gd::J::128	2.1364608752768534e-6
-PAPER	m9::gd::J::129	2.1165791514017482e-6
-PAPER	m9::gd::J::130	2.105787457809156e-6
-PAPER	m9::gd::J::131	2.100468090001389e-6
-PAPER	m9::gd::J::132	2.0823184636825918e-6
-PAPER	m9::gd::J::133	2.0715432258091426e-6
-PAPER	m9::gd::J::134	2.0655276991121283e-6
-PAPER	m9::gd::J::135	2.048934230998503e-6
-PAPER	m9::gd::J::136	2.0381266349714094e-6
-PAPER	m9::gd::J::137	2.0315483386470973e-6
-PAPER	m9::gd::J::138	2.0162927594947013e-6
-PAPER	m9::gd::J::139	2.0055028796033607e-6
-PAPER	m9::gd::J::140	1.9983921747218965e-6
-PAPER	m9::gd::J::141	1.9843358853245367e-6
-PAPER	m9::gd::J::142	1.9735353424104234e-6
-PAPER	m9::gd::J::143	1.9660165546810433e-6
-PAPER	m9::gd::J::144	1.9529738786148494e-6
-PAPER	m9::gd::J::145	1.9422064662800488e-6
-PAPER	m9::gd::J::146	1.9343092139389137e-6
-PAPER	m9::gd::J::147	1.9221976692026343e-6
-PAPER	m9::gd::J::148	1.9114413930971307e-6
-PAPER	m9::gd::J::149	1.903267435882121e-6
-PAPER	m9::gd::J::150	1.902078255211691e-6
-PAPER	m9::gd::J::151	1.8812377111109505e-6
-PAPER	m9::gd::J::152	1.8727949966178137e-6
-PAPER	m9::gd::J::153	1.8705521335100968e-6
-PAPER	m9::gd::J::154	1.851537679406093e-6
-PAPER	m9::gd::J::155	1.8428954271921907e-6
-PAPER	m9::gd::J::156	1.8397020915980466e-6
-PAPER	m9::gd::J::157	1.8223560785564624e-6
-PAPER	m9::gd::J::158	1.8135330625747919e-6
-PAPER	m9::gd::J::159	1.8095584375547779e-6
-PAPER	m9::gd::J::160	1.7936473113375694e-6
-PAPER	m9::gd::J::161	1.7847036239754537e-6
-PAPER	m9::gd::J::162	1.7800216007657776e-6
-PAPER	m9::gd::J::163	1.7654139787212106e-6
-PAPER	m9::gd::J::164	1.7563640722173996e-6
-PAPER	m9::gd::J::165	1.7510839350798973e-6
-PAPER	m9::gd::J::166	1.7376321200362064e-6
-PAPER	m9::gd::J::167	1.7285020511492762e-6
-PAPER	m9::gd::J::168	1.7226795286269068e-6
-PAPER	m9::gd::J::169	1.7103022038180242e-6
-PAPER	m9::gd::J::170	1.7011284072866473e-6
-PAPER	m9::gd::J::171	1.6949085368858234e-6
-PAPER	m9::gd::J::172	1.6834101998992607e-6
-PAPER	m9::gd::J::173	1.67423146828432e-6
-PAPER	m9::gd::J::174	1.6676471219594462e-6
-PAPER	m9::gd::J::175	1.6569529404817758e-6
-PAPER	m9::gd::J::176	1.6477640290851893e-6
-PAPER	m9::gd::J::177	1.6408780411496033e-6
-PAPER	m9::gd::J::178	1.640308167716909e-6
-PAPER	m9::gd::J::179	1.6217384910809383e-6
-PAPER	m9::gd::J::180	1.6146044735354887e-6
-PAPER	m9::gd::J::181	1.6130728661909817e-6
-PAPER	m9::gd::J::182	1.5961326382293112e-6
-PAPER	m9::gd::J::183	1.5888125481937886e-6
-PAPER	m9::gd::J::184	1.5864330202046246e-6
-PAPER	m9::gd::J::185	1.5709580857613627e-6
-PAPER	m9::gd::J::186	1.5634664522127122e-6
-PAPER	m9::gd::J::187	1.560374477855325e-6
-PAPER	m9::gd::J::188	1.5461781934622827e-6
-PAPER	m9::gd::J::189	1.5385733850919576e-6
-PAPER	m9::gd::J::190	1.5348458397678835e-6
-PAPER	m9::gd::J::191	1.5218129858536933e-6
-PAPER	m9::gd::J::192	1.5141079350206214e-6
-PAPER	m9::gd::J::193	1.5098726472727295e-6
-PAPER	m9::gd::J::194	1.4978254814956353e-6
-PAPER	m9::gd::J::195	1.4900465547433614e-6
-PAPER	m9::gd::J::196	1.4853139204989124e-6
-PAPER	m9::gd::J::197	1.4742171546638817e-6
-PAPER	m9::gd::J::198	1.4663858600490377e-6
-PAPER	m9::gd::J::199	1.461258358699914e-6
-PAPER	m9::gd::J::200	1.4509972185821933e-6
-GD:     stop MaxIters, iters 200, evals 395, J 1.451e-6, ||theta-theta*||inf 6.381e-2
-objective evaluations: L-BFGS 33 vs GD 395 (ratio 11.97x)
+running 4 tests
+test m9_lbfgs_recovers_theta_star ... L-BFGS: stop GradientConverged, iters 30, evals 36, J 2.150e-18, theta [10.000000008017562, 12.000000019759282, 8.000000010944811, 1.8000000604057746, 2.199999995867837], ||theta-theta*||inf 6.041e-8
+PAPER	m9::lbfgs::J::0	2.1039473352845464e-1
+PAPER	m9::lbfgs::J::1	2.042693937773502e-1
+PAPER	m9::lbfgs::J::2	8.489838377251685e-2
+PAPER	m9::lbfgs::J::3	6.856963502136476e-2
+PAPER	m9::lbfgs::J::4	4.7697764771994056e-2
+PAPER	m9::lbfgs::J::5	1.8322013985537174e-2
+PAPER	m9::lbfgs::J::6	7.10991355299951e-3
+PAPER	m9::lbfgs::J::7	3.1428169454949828e-3
+PAPER	m9::lbfgs::J::8	2.604596057705939e-3
+PAPER	m9::lbfgs::J::9	1.439965148841247e-3
+PAPER	m9::lbfgs::J::10	5.133676180025079e-4
+PAPER	m9::lbfgs::J::11	1.2588690094699365e-4
+PAPER	m9::lbfgs::J::12	4.942479196563109e-6
+PAPER	m9::lbfgs::J::13	2.9854936785095583e-6
+PAPER	m9::lbfgs::J::14	2.101551883675188e-6
+PAPER	m9::lbfgs::J::15	2.0926814482494693e-6
+PAPER	m9::lbfgs::J::16	1.6385089552461694e-6
+PAPER	m9::lbfgs::J::17	1.0531485997204067e-6
+PAPER	m9::lbfgs::J::18	3.238343775453606e-7
+PAPER	m9::lbfgs::J::19	2.562957156583048e-7
+PAPER	m9::lbfgs::J::20	2.959480356375604e-8
+PAPER	m9::lbfgs::J::21	6.748744419115931e-10
+PAPER	m9::lbfgs::J::22	4.8013206143661175e-11
+PAPER	m9::lbfgs::J::23	5.057980518604613e-13
+PAPER	m9::lbfgs::J::24	1.9906438734124357e-13
+PAPER	m9::lbfgs::J::25	9.171804822606611e-14
+PAPER	m9::lbfgs::J::26	3.251651371228778e-15
+PAPER	m9::lbfgs::J::27	1.5480589568844852e-16
+PAPER	m9::lbfgs::J::28	1.0822196808071071e-16
+PAPER	m9::lbfgs::J::29	2.4653527223561757e-17
+PAPER	m9::lbfgs::J::30	2.1500482405833097e-18
+PAPER	m9::gd::J::0	2.1039473352845464e-1
+PAPER	m9::gd::J::1	2.0426939377735018e-1
+PAPER	m9::gd::J::2	1.9271758485224036e-1
+PAPER	m9::gd::J::3	1.7224911214429464e-1
+PAPER	m9::gd::J::4	1.4058622019809874e-1
+PAPER	m9::gd::J::5	1.0470005612213058e-1
+PAPER	m9::gd::J::6	8.309165317032613e-2
+PAPER	m9::gd::J::7	6.297967779950778e-2
+PAPER	m9::gd::J::8	3.7247343664430166e-2
+PAPER	m9::gd::J::9	3.0605619663314532e-2
+PAPER	m9::gd::J::10	2.5851529019016353e-2
+PAPER	m9::gd::J::11	2.3542599650733093e-2
+PAPER	m9::gd::J::12	2.2147345930079387e-2
+PAPER	m9::gd::J::13	1.3644345801220438e-2
+PAPER	m9::gd::J::14	1.137385544792458e-2
+PAPER	m9::gd::J::15	1.1252249278976974e-2
+PAPER	m9::gd::J::16	6.9462465501275794e-3
+PAPER	m9::gd::J::17	5.872993803557391e-3
+PAPER	m9::gd::J::18	4.82491516236595e-3
+PAPER	m9::gd::J::19	4.801218621259578e-3
+PAPER	m9::gd::J::20	3.2536335762811037e-3
+PAPER	m9::gd::J::21	2.8045397001489913e-3
+PAPER	m9::gd::J::22	2.6681806764358145e-3
+PAPER	m9::gd::J::23	1.8764048608611737e-3
+PAPER	m9::gd::J::24	1.6420503778617884e-3
+PAPER	m9::gd::J::25	1.4749583992679186e-3
+PAPER	m9::gd::J::26	1.393135622307231e-3
+PAPER	m9::gd::J::27	1.1046148619195484e-3
+PAPER	m9::gd::J::28	9.649174698111474e-4
+PAPER	m9::gd::J::29	8.604350153771523e-4
+PAPER	m9::gd::J::30	8.020669964748203e-4
+PAPER	m9::gd::J::31	6.59118645011912e-4
+PAPER	m9::gd::J::32	5.768621111142573e-4
+PAPER	m9::gd::J::33	5.161029246671581e-4
+PAPER	m9::gd::J::34	4.857374716588538e-4
+PAPER	m9::gd::J::35	3.964776277160339e-4
+PAPER	m9::gd::J::36	3.4895432404122523e-4
+PAPER	m9::gd::J::37	3.1665568756444814e-4
+PAPER	m9::gd::J::38	3.0885444239033173e-4
+PAPER	m9::gd::J::39	2.4035111375618826e-4
+PAPER	m9::gd::J::40	2.143553202133105e-4
+PAPER	m9::gd::J::41	2.0135208395018068e-4
+PAPER	m9::gd::J::42	1.6667453390657215e-4
+PAPER	m9::gd::J::43	1.4736608931213333e-4
+PAPER	m9::gd::J::44	1.3517971626068867e-4
+PAPER	m9::gd::J::45	1.1614048189245499e-4
+PAPER	m9::gd::J::46	1.0226948171348002e-4
+PAPER	m9::gd::J::47	9.282800494386712e-5
+PAPER	m9::gd::J::48	9.105864419209715e-5
+PAPER	m9::gd::J::49	7.150995272201476e-5
+PAPER	m9::gd::J::50	6.457506364520545e-5
+PAPER	m9::gd::J::51	6.256158369448909e-5
+PAPER	m9::gd::J::52	5.031084582693536e-5
+PAPER	m9::gd::J::53	4.535752102170954e-5
+PAPER	m9::gd::J::54	4.360422859583451e-5
+PAPER	m9::gd::J::55	3.5681271704455124e-5
+PAPER	m9::gd::J::56	3.221540352408473e-5
+PAPER	m9::gd::J::57	3.096191928418444e-5
+PAPER	m9::gd::J::58	2.5564679826715722e-5
+PAPER	m9::gd::J::59	2.3168027088160622e-5
+PAPER	m9::gd::J::60	2.2315178988274227e-5
+PAPER	m9::gd::J::61	1.856522552602887e-5
+PAPER	m9::gd::J::62	1.692669870934716e-5
+PAPER	m9::gd::J::63	1.641679426863259e-5
+PAPER	m9::gd::J::64	1.3713655919516075e-5
+PAPER	m9::gd::J::65	1.2605151515257116e-5
+PAPER	m9::gd::J::66	1.2327090812689466e-5
+PAPER	m9::gd::J::67	1.0349329551314752e-5
+PAPER	m9::gd::J::68	9.608384995405207e-6
+PAPER	m9::gd::J::69	9.500481221191422e-6
+PAPER	m9::gd::J::70	8.010826589557775e-6
+PAPER	m9::gd::J::71	7.52220397203488e-6
+PAPER	m9::gd::J::72	6.88898754117361e-6
+PAPER	m9::gd::J::73	6.3805501332375e-6
+PAPER	m9::gd::J::74	6.064354391184857e-6
+PAPER	m9::gd::J::75	5.590484890941177e-6
+PAPER	m9::gd::J::76	5.242565976152075e-6
+PAPER	m9::gd::J::77	5.042343459482122e-6
+PAPER	m9::gd::J::78	4.681235900942073e-6
+PAPER	m9::gd::J::79	4.4433764976708826e-6
+PAPER	m9::gd::J::80	4.320094853685282e-6
+PAPER	m9::gd::J::81	4.041032314737665e-6
+PAPER	m9::gd::J::82	3.878306050474845e-6
+PAPER	m9::gd::J::83	3.806231970886365e-6
+PAPER	m9::gd::J::84	3.586598839858241e-6
+PAPER	m9::gd::J::85	3.475088720752917e-6
+PAPER	m9::gd::J::86	3.4360994449716214e-6
+PAPER	m9::gd::J::87	3.2605827412089386e-6
+PAPER	m9::gd::J::88	3.1837522458724734e-6
+PAPER	m9::gd::J::89	3.1658429038992057e-6
+PAPER	m9::gd::J::90	3.0233066928675943e-6
+PAPER	m9::gd::J::91	2.9698469870836553e-6
+PAPER	m9::gd::J::92	2.96477288491556e-6
+PAPER	m9::gd::J::93	2.847468104211511e-6
+PAPER	m9::gd::J::94	2.8096998105239097e-6
+PAPER	m9::gd::J::95	2.7568669256149633e-6
+PAPER	m9::gd::J::96	2.714121409894854e-6
+PAPER	m9::gd::J::97	2.6867342233146687e-6
+PAPER	m9::gd::J::98	2.643389626215987e-6
+PAPER	m9::gd::J::99	2.6103396653772172e-6
+PAPER	m9::gd::J::100	2.5897894001469524e-6
+PAPER	m9::gd::J::101	2.5535330324911277e-6
+PAPER	m9::gd::J::102	2.527101538771782e-6
+PAPER	m9::gd::J::103	2.510982555962867e-6
+PAPER	m9::gd::J::104	2.480146227822993e-6
+PAPER	m9::gd::J::105	2.4582263922854713e-6
+PAPER	m9::gd::J::106	2.444906595169558e-6
+PAPER	m9::gd::J::107	2.4182769198604402e-6
+PAPER	m9::gd::J::108	2.3994422744603697e-6
+PAPER	m9::gd::J::109	2.3878588080531595e-6
+PAPER	m9::gd::J::110	2.3645258883766813e-6
+PAPER	m9::gd::J::111	2.3477924610768456e-6
+PAPER	m9::gd::J::112	2.337218569492001e-6
+PAPER	m9::gd::J::113	2.3165426137469756e-6
+PAPER	m9::gd::J::114	2.3012617392310372e-6
+PAPER	m9::gd::J::115	2.291265281208296e-6
+PAPER	m9::gd::J::116	2.272706402728072e-6
+PAPER	m9::gd::J::117	2.258442270679473e-6
+PAPER	m9::gd::J::118	2.248733239858757e-6
+PAPER	m9::gd::J::119	2.2319031634947785e-6
+PAPER	m9::gd::J::120	2.218320805995011e-6
+PAPER	m9::gd::J::121	2.208707546180318e-6
+PAPER	m9::gd::J::122	2.193339095213021e-6
+PAPER	m9::gd::J::123	2.1802486422987417e-6
+PAPER	m9::gd::J::124	2.170614022080981e-6
+PAPER	m9::gd::J::125	2.1701813100873284e-6
+PAPER	m9::gd::J::126	2.1437628743362394e-6
+PAPER	m9::gd::J::127	2.1340619393629758e-6
+PAPER	m9::gd::J::128	2.132448111588836e-6
+PAPER	m9::gd::J::129	2.1085290404461866e-6
+PAPER	m9::gd::J::130	2.098719353012451e-6
+PAPER	m9::gd::J::131	2.096009545820985e-6
+PAPER	m9::gd::J::132	2.0743168175764814e-6
+PAPER	m9::gd::J::133	2.064390992334744e-6
+PAPER	m9::gd::J::134	2.060729238005639e-6
+PAPER	m9::gd::J::135	2.0409653680933843e-6
+PAPER	m9::gd::J::136	2.030939502783958e-6
+PAPER	m9::gd::J::137	2.026429181300197e-6
+PAPER	m9::gd::J::138	2.0083757827639836e-6
+PAPER	m9::gd::J::139	1.998267799726113e-6
+PAPER	m9::gd::J::140	1.9930515482188242e-6
+PAPER	m9::gd::J::141	1.9764640279558916e-6
+PAPER	m9::gd::J::142	1.9662891645101855e-6
+PAPER	m9::gd::J::143	1.9604567796750693e-6
+PAPER	m9::gd::J::144	1.9451522781621335e-6
+PAPER	m9::gd::J::145	1.9349429842143726e-6
+PAPER	m9::gd::J::146	1.928586832096032e-6
+PAPER	m9::gd::J::147	1.9144185951550587e-6
+PAPER	m9::gd::J::148	1.9041808915860993e-6
+PAPER	m9::gd::J::149	1.897384579879662e-6
+PAPER	m9::gd::J::150	1.8842206793401399e-6
+PAPER	m9::gd::J::151	1.8739752934090375e-6
+PAPER	m9::gd::J::152	1.8667822384540937e-6
+PAPER	m9::gd::J::153	1.8545299533363296e-6
+PAPER	m9::gd::J::154	1.8442984606994965e-6
+PAPER	m9::gd::J::155	1.8367753282869407e-6
+PAPER	m9::gd::J::156	1.8367164663014482e-6
+PAPER	m9::gd::J::157	1.8151203948907933e-6
+PAPER	m9::gd::J::158	1.8073226226248805e-6
+PAPER	m9::gd::J::159	1.8061503479368377e-6
+PAPER	m9::gd::J::160	1.7864255761574551e-6
+PAPER	m9::gd::J::161	1.7784007817611618e-6
+PAPER	m9::gd::J::162	1.776246907608247e-6
+PAPER	m9::gd::J::163	1.7582129165963027e-6
+PAPER	m9::gd::J::164	1.7499936734159478e-6
+PAPER	m9::gd::J::165	1.7470096058377003e-6
+PAPER	m9::gd::J::166	1.7304672700663448e-6
+PAPER	m9::gd::J::167	1.7221064243399734e-6
+PAPER	m9::gd::J::168	1.7183883850448839e-6
+PAPER	m9::gd::J::169	1.7031759690270316e-6
+PAPER	m9::gd::J::170	1.6946985523741352e-6
+PAPER	m9::gd::J::171	1.6903812704400823e-6
+PAPER	m9::gd::J::172	1.676319823005616e-6
+PAPER	m9::gd::J::173	1.6677582992534053e-6
+PAPER	m9::gd::J::174	1.662884179342049e-6
+PAPER	m9::gd::J::175	1.6498928275544915e-6
+PAPER	m9::gd::J::176	1.6412759395740094e-6
+PAPER	m9::gd::J::177	1.635932012659819e-6
+PAPER	m9::gd::J::178	1.6238877968249504e-6
+PAPER	m9::gd::J::179	1.615235100993941e-6
+PAPER	m9::gd::J::180	1.6095072059437054e-6
+PAPER	m9::gd::J::181	1.5983023846183906e-6
+PAPER	m9::gd::J::182	1.5896263991544183e-6
+PAPER	m9::gd::J::183	1.5835467462869914e-6
+PAPER	m9::gd::J::184	1.5731203011391773e-6
+PAPER	m9::gd::J::185	1.5644383132500475e-6
+PAPER	m9::gd::J::186	1.5580704190831821e-6
+PAPER	m9::gd::J::187	1.5580630267288296e-6
+PAPER	m9::gd::J::188	1.539672828309499e-6
+PAPER	m9::gd::J::189	1.5330623451246245e-6
+PAPER	m9::gd::J::190	1.53211512534898e-6
+PAPER	m9::gd::J::191	1.5153150680910693e-6
+PAPER	m9::gd::J::192	1.5085205859882599e-6
+PAPER	m9::gd::J::193	1.5067687437080786e-6
+PAPER	m9::gd::J::194	1.4913460305447584e-6
+PAPER	m9::gd::J::195	1.4843920969379417e-6
+PAPER	m9::gd::J::196	1.4819259899681918e-6
+PAPER	m9::gd::J::197	1.4677729273743643e-6
+PAPER	m9::gd::J::198	1.460695311184939e-6
+PAPER	m9::gd::J::199	1.4576390784374005e-6
+PAPER	m9::gd::J::200	1.4445751959962643e-6
+GD:     stop MaxIters, iters 200, evals 395, J 1.445e-6, ||theta-theta*||inf 6.366e-2
+objective evaluations: L-BFGS 36 vs GD 395 (ratio 10.97x)
 ok
-test m9_reverse_is_cheaper_per_iterate ... shared build+capture 82.96 ms/iterate; differentiation: forward 1.27 ms (5 seam passes) vs reverse 0.60 ms (1 seam + 1 pullback + 5 dots); ratio 2.14x
+test m9_node_velocities_match_same_plan_fd ... param 0: max node |seam − FD| = 7.484e-10
+param 1: max node |seam − FD| = 1.262e-9
+param 2: max node |seam − FD| = 1.398e-10
+param 3: max node |seam − FD| = 1.159e-9
+param 4: max node |seam − FD| = 7.650e-10
+ok
+test m9_reverse_is_cheaper_per_iterate ... shared build+capture 83.15 ms/iterate; differentiation: forward 1.44 ms (5 seam passes) vs reverse 0.72 ms (1 seam + 1 pullback + 5 dots); ratio 2.01x
 ok
 test m9_reverse_matches_forward_and_fd ... PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::k	0e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	1.942890293094024e-16
-k0: forward -0.1462586035 reverse -0.1462586035 rel 1.94e-16
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	2.7755575615628914e-17
+k0: forward -0.1463275270 reverse -0.1463275270 rel 2.78e-17
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::k	1e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	1.0408340855860843e-16
-k1: forward -0.0534546835 reverse -0.0534546835 rel 1.04e-16
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	1.1102230246251565e-16
+k1: forward -0.0534674681 reverse -0.0534674681 rel 1.11e-16
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::k	2e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	4.163336342344337e-16
-k2: forward -0.1733598572 reverse -0.1733598572 rel 4.16e-16
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	3.3306690738754696e-16
+k2: forward -0.1734281473 reverse -0.1734281473 rel 3.33e-16
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::k	3e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	6.938893903907228e-17
-k3: forward +0.0649373320 reverse +0.0649373320 rel 6.94e-17
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	1.249000902703301e-16
+k3: forward +0.0649707592 reverse +0.0649707592 rel 1.25e-16
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::k	4e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	7.632783294297951e-17
-k4: forward +0.0582973359 reverse +0.0582973359 rel 7.63e-17
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel	4.85722573273506e-17
+k4: forward +0.0582973359 reverse +0.0582973359 rel 4.86e-17
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::k	0e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	-1.4625498319376096e-1
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	2.475364515742927e-5
-FD k0: reverse -0.14625860 fd -0.14625498 rel 2.48e-5
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	-1.4632752688703565e-1
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	9.169274717942072e-10
+FD k0: reverse -0.14632753 fd -0.14632753 rel 9.17e-10
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::k	1e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	-5.3454995416202244e-2
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	5.834372709329987e-6
-FD k1: reverse -0.05345468 fd -0.05345500 rel 5.83e-6
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	-5.3467467647783096e-2
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	8.70656959478095e-9
+FD k1: reverse -0.05346747 fd -0.05346747 rel 8.71e-9
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::k	2e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	-1.733598576358908e-1
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	2.5760519078566737e-9
-FD k2: reverse -0.17335986 fd -0.17335986 rel 2.58e-9
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	-1.734281477733246e-1
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	2.725804280320315e-9
+FD k2: reverse -0.17342815 fd -0.17342815 rel 2.73e-9
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::k	3e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	6.49461977947352e-2
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	1.3651023166662786e-4
-FD k3: reverse +0.06493733 fd +0.06494620 rel 1.37e-4
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	6.497075759337445e-2
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	2.3989033877304622e-8
+FD k3: reverse +0.06497076 fd +0.06497076 rel 2.40e-8
 PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::k	4e0
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	5.829733602802367e-2
-PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	1.940728533925807e-9
-FD k4: reverse +0.05829734 fd +0.05829734 rel 1.94e-9
-QoI Jacobian det 3.5457e4, min pivot 3.4095e-1
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd	5.829733590312358e-2
+PAPER	m9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel	5.3010572955145615e-12
+FD k4: reverse +0.05829734 fd +0.05829734 rel 5.30e-12
+QoI Jacobian det 3.5689e4, min pivot 3.4138e-1
 ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.19s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.82s
 
-   Compiling vcad-eval v0.11.0 (/home/cam/diffcad/repro/work/vcad/crates/vcad-eval)
-   Compiling vcad-kernel-physics v0.11.0 (/home/cam/diffcad/repro/work/vcad/crates/vcad-kernel-physics)
-    Finished `release` profile [optimized] target(s) in 8.12s
-     Running tests/m11_adjoint_rollout.rs (target/release/deps/m11_adjoint_rollout-82295a5989c19f03)
+   Compiling syn v2.0.114
+   Compiling memchr v2.7.6
+   Compiling byteorder v1.5.0
+   Compiling cfg-if v1.0.4
+   Compiling libc v0.2.189
+   Compiling zerocopy v0.8.36
+   Compiling typenum v1.19.0
+   Compiling generic-array v0.14.7
+   Compiling once_cell v1.21.3
+   Compiling pin-project-lite v0.2.16
+   Compiling cpufeatures v0.2.17
+   Compiling vcad-eval v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-eval)
+   Compiling float-cmp v0.9.0
+   Compiling phyz-math v0.4.1
+   Compiling phyz-model v0.4.1
+   Compiling tracing-core v0.1.36
+   Compiling phyz-rigid v0.4.1
+   Compiling phyz-collision v0.4.1
+   Compiling hash32 v0.3.1
+   Compiling stl_io v0.8.6
+   Compiling heapless v0.8.0
+   Compiling serde_json v1.0.149
+   Compiling phyz-contact v0.4.1
+   Compiling getrandom v0.2.17
+   Compiling rand_core v0.6.4
+   Compiling rstar v0.12.2
+   Compiling phyz-diff v0.4.1
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling digest v0.10.7
+   Compiling geo-types v0.7.18
+   Compiling sha2 v0.10.9
+   Compiling geo v0.28.0
+   Compiling geo-clipper v0.8.0
+   Compiling serde_derive v1.0.228
+   Compiling thiserror-impl v2.0.18
+   Compiling vcad-tool-derive v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-tool-derive)
+   Compiling bytemuck_derive v1.10.2
+   Compiling tracing-attributes v0.1.31
+   Compiling phyz v0.4.1
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.3.1
+   Compiling bytemuck v1.24.0
+   Compiling rand v0.8.5
+   Compiling tracing v0.1.44
+   Compiling thiserror v2.0.18
+   Compiling vcad-kernel-sketch v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-sketch)
+   Compiling stepperoni v0.1.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/stepperoni)
+   Compiling vcad-kernel-step v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-step)
+   Compiling vcad-kernel-constraints v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-constraints)
+   Compiling vcad-kernel-sweep v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-sweep)
+   Compiling vcad-kernel-text v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-text)
+   Compiling rand_distr v0.4.3
+   Compiling phyz-md v0.4.1
+   Compiling serde v1.0.228
+   Compiling vcad-receipt v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-receipt)
+   Compiling vcad-ir v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ir)
+   Compiling vcad-kernel-tessellate v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-tessellate)
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling vcad-kernel-cost v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-cost)
+   Compiling vcad-kernel-cam v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-cam)
+   Compiling vcad-kernel-calibration v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-calibration)
+   Compiling vcad-kernel-qcd v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-qcd)
+   Compiling vcad-kernel-enclosure v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-enclosure)
+   Compiling quick-xml v0.37.5
+   Compiling toml_edit v0.22.27
+   Compiling vcad-kernel-adjoint v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-adjoint)
+   Compiling vcad-kernel-em v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-em)
+   Compiling vcad-kernel-thermal v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-thermal)
+   Compiling vcad-kernel-sheet v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-sheet)
+   Compiling vcad-kernel-antenna v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-antenna)
+   Compiling vcad-kernel-neutronics v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-neutronics)
+   Compiling vcad-kernel-particle v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-particle)
+   Compiling vcad-kernel-acoustics v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-acoustics)
+   Compiling vcad-kernel-booleans v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-booleans)
+   Compiling toml v0.8.23
+   Compiling vcad-kernel-tolerance v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-tolerance)
+   Compiling vcad-kernel-flow v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-flow)
+   Compiling vcad-kernel-fea v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-fea)
+   Compiling vcad-kernel-topopt v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-topopt)
+   Compiling vcad-kernel-shell v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-shell)
+   Compiling vcad-kernel-stocksim v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-stocksim)
+   Compiling vcad-kernel-diff v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-diff)
+   Compiling vcad-kernel-raytrace v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-raytrace)
+   Compiling vcad-gdsii v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-gdsii)
+   Compiling vcad-ecad-schematic v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-schematic)
+   Compiling vcad-ecad-package v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-package)
+   Compiling vcad-kernel-atoms v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-atoms)
+   Compiling vcad-kernel-dfm v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-dfm)
+   Compiling vcad-ecad-sim v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-sim)
+   Compiling vcad-kernel-photonics v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-photonics)
+   Compiling vcad-ecad-pcb v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-pcb)
+   Compiling vcad-kernel v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel)
+   Compiling vcad-kernel-urdf v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-urdf)
+   Compiling vcad-kernel-physics v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-physics)
+    Finished `release` profile [optimized] target(s) in 27.38s
+     Running tests/m11_adjoint_rollout.rs (target/release/deps/m11_adjoint_rollout-a7102d18d2a3ab31)
 
 running 3 tests
 test adjoint_is_deterministic ... ok
-test adjoint_matches_end_to_end_fd ... PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::fd	-2.365439743403286e1
-PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::g	-2.3654396251345762e1
-PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::rel	4.999861442252312e-8
-PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::fd	1.9138333865131862e-1
-PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::g	1.9138333888332748e-1
-PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::rel	1.212273012927939e-9
+test adjoint_matches_end_to_end_fd ... PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::fd	-2.365439743403286e1
+PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::g	-2.3654396251345762e1
+PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::rel	4.999861442252312e-8
+PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::fd	1.9138333865131862e-1
+PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::g	1.9138333888332748e-1
+PAPER	m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::rel	1.212273012927939e-9
 ok
-test adjoint_matches_fd_path ... PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L198::g_adj	-2.3654396251345762e1
-PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L198::g_fd	-2.3654396254215722e1
-PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L198::rel	1.2132883201043399e-10
-PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L219::g_adj	1.9138333888332748e-1
-PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L219::g_fd	1.9138333896191714e-1
-PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L219::rel	4.1064004307663937e-10
+test adjoint_matches_fd_path ... PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L199::g_adj	-2.3654396251345762e1
+PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L199::g_fd	-2.3654396254215722e1
+PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L199::rel	1.2132883201043399e-10
+PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L220::g_adj	1.9138333888332748e-1
+PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L220::g_fd	1.9138333896191714e-1
+PAPER	m11_adjoint_rollout::adjoint_matches_fd_path@L220::rel	4.1064004307663937e-10
 ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
-     Running tests/m11_contact_gradient.rs (target/release/deps/m11_contact_gradient-f04e2fd981fe9bc4)
+     Running tests/m11_contact_gradient.rs (target/release/deps/m11_contact_gradient-d208c89936374d12)
 
 running 3 tests
 test both_channels_are_live ... ok
-test contact_chain_matches_end_to_end_fd ... PAPER	m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::fd	9.820200989754677e-4
-PAPER	m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad	9.820204382629998e-4
-PAPER	m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel	3.454995803561532e-7
+test contact_chain_matches_end_to_end_fd ... PAPER	m11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::fd	9.820200989754677e-4
+PAPER	m11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::grad	9.820204382629998e-4
+PAPER	m11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::rel	3.454995803561532e-7
 ok
 test contact_gradient_is_deterministic ... ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
 
-     Running tests/m8_anchor_channel.rs (target/release/deps/m8_anchor_channel-1b23213a342dd860)
+     Running tests/m8_anchor_channel.rs (target/release/deps/m8_anchor_channel-20bf7bf8ad20b79f)
 
 running 2 tests
 test anchor_channel_in_isolation_matches_end_to_end_fd ... ok
@@ -895,7 +1113,7 @@ test combined_mass_and_anchor_channels_match_end_to_end_fd ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-     Running tests/m8_rollout_gradient.rs (target/release/deps/m8_rollout_gradient-4cf67b6c197ea96a)
+     Running tests/m8_rollout_gradient.rs (target/release/deps/m8_rollout_gradient-97ae09a38a7f3681)
 
 running 4 tests
 test flywheel_spinup_gradient_matches_end_to_end_fd ... PAPER	m8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::fd	-2.365439743403286e1
@@ -923,15 +1141,15 @@ test rollout_is_deterministic ... ok
 
 test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
-     Running tests/m8_spinup_demo.rs (target/release/deps/m8_spinup_demo-548414db95c534dd)
+     Running tests/m8_spinup_demo.rs (target/release/deps/m8_spinup_demo-45be459b86d47824)
 
 running 2 tests
 test recover_radius_hitting_target_spin_speed ... ok
 test synthesized_seeding_matches_hand_written ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
 
-     Running tests/m8_surface_skin.rs (target/release/deps/m8_surface_skin-840b6001b7da0ea7)
+     Running tests/m8_surface_skin.rs (target/release/deps/m8_surface_skin-9f9259d47712a026)
 
 running 2 tests
 test core_plus_skin_matches_end_to_end_fd ... ok
@@ -939,9 +1157,60 @@ test surface_skin_in_isolation_is_exact ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
-   Compiling vcad-eval v0.11.0 (/home/cam/diffcad/repro/work/vcad/crates/vcad-eval)
-    Finished `release` profile [optimized] target(s) in 7.94s
-     Running tests/document_gradient.rs (target/release/deps/document_gradient-9b4059b1cd3cc52f)
+   Compiling semver v1.0.27
+   Compiling libc v0.2.189
+   Compiling regex-syntax v0.8.8
+   Compiling beef v0.5.2
+   Compiling lazy_static v1.5.0
+   Compiling fnv v1.0.7
+   Compiling bitmaps v3.2.1
+   Compiling rand_core v0.6.4
+   Compiling wasm-encoder v0.227.1
+   Compiling vcad-ir v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ir)
+   Compiling vcad-receipt v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-receipt)
+   Compiling vcad-kernel-cost v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-cost)
+   Compiling uuid v1.20.0
+   Compiling vcad-kernel-tessellate v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-tessellate)
+   Compiling leb128fmt v0.1.0
+   Compiling termcolor v1.4.1
+   Compiling unicode-width v0.1.14
+   Compiling vcad-kernel-cam v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-cam)
+   Compiling minimal-lexical v0.2.1
+   Compiling roxmltree v0.20.0
+   Compiling rand_xoshiro v0.6.0
+   Compiling nom v7.1.3
+   Compiling codespan-reporting v0.11.1
+   Compiling rustc_version v0.4.1
+   Compiling cfb v0.7.3
+   Compiling imbl-sized-chunks v0.1.3
+   Compiling logos-codegen v0.15.1
+   Compiling imbl v3.0.0
+   Compiling vcad-kernel-adjoint v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-adjoint)
+   Compiling vcad-kernel-em v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-em)
+   Compiling vcad-kernel-sheet v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-sheet)
+   Compiling dirs-sys-next v0.1.2
+   Compiling dirs-next v2.0.0
+   Compiling vcad-kernel-stocksim v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-stocksim)
+   Compiling vcad-kernel-tolerance v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-tolerance)
+   Compiling vcad-kernel-booleans v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-booleans)
+   Compiling vcad-kernel-shell v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-shell)
+   Compiling vcad-kernel-diff v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-diff)
+   Compiling logos-derive v0.15.1
+   Compiling logos v0.15.1
+   Compiling loon-lang v0.7.0 (https://github.com/ecto/loon?rev=c12ef566613995f913012c79773bab825950566f#c12ef566)
+   Compiling vcad-ecad-schematic v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-schematic)
+   Compiling vcad-ecad-package v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-package)
+   Compiling vcad-kernel-raytrace v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-raytrace)
+   Compiling vcad-parts v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-parts)
+   Compiling vcad-ecad-sim v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-sim)
+   Compiling vcad-ecad-symbols v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-symbols)
+   Compiling vcad-kernel-dfm v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-dfm)
+   Compiling vcad-kernel v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel)
+   Compiling vcad-ecad-pcb v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-ecad-pcb)
+   Compiling vcad-loon v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-loon)
+   Compiling vcad-eval v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-eval)
+    Finished `release` profile [optimized] target(s) in 24.24s
+     Running tests/document_gradient.rs (target/release/deps/document_gradient-bc57b9d1b8077dda)
 
 running 5 tests
 test defparam_makes_the_gradient_reachable_without_hand_binding ... PAPER	document_gradient::defparam_makes_the_gradient_reachable_without_hand_binding@L281::dv	5.018477584861806e2
@@ -965,11 +1234,11 @@ PAPER	document_gradient::qoi_gradient_matches_central_finite_differences@L169::r
 ok
 test unknown_parameter_is_an_error ... ok
 
-test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
 
-   Compiling vcad-kernel-diff v0.11.0 (/home/cam/diffcad/repro/work/vcad/crates/vcad-kernel-diff)
-    Finished `release` profile [optimized] target(s) in 0.40s
-     Running tests/m3_flywheel_optimize.rs (target/release/deps/m3_flywheel_optimize-907df7ee0ff0b7a1)
+   Compiling vcad-kernel-diff v0.11.0 (/home/cam/vcad-paper-rerun/work/vcad/crates/vcad-kernel-diff)
+    Finished `release` profile [optimized] target(s) in 0.44s
+     Running tests/m3_flywheel_optimize.rs (target/release/deps/m3_flywheel_optimize-44a4c1b23f2a6ce2)
 
 running 1 test
 test flywheel_hits_target_inertia_with_less_mass ... PAPER	m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::k	0e0
@@ -977,7 +1246,7 @@ PAPER	m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::fd
 PAPER	m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::rel	1.0805625777545905e-8
 PAPER	m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::k	1e0
 PAPER	m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::fd	-9.844058539321132e-2
-PAPER	m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::rel	1.385591598698216e-9
+PAPER	m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::rel	1.385591739674499e-9
 iter 0: theta (3.0000, 2.5000) J 1.169897 g (-0.00420, -0.09844)
 iter 10: theta (3.6602, 5.4470) J 0.944474 g (-0.00454, +0.01175)
 iter 20: theta (4.7238, 5.4434) J 0.938959 g (-0.00574, +0.01195)
@@ -986,88 +1255,87 @@ iter 40: theta (7.7442, 5.3650) J 0.916176 g (-0.00868, +0.00919)
 iter 50: theta (9.9407, 5.2800) J 0.894656 g (-0.00994, +0.01169)
 iter 60: theta (12.0000, 4.9768) J 0.870544 g (-0.01171, +0.00166)
 iter 70: theta (12.0000, 4.9586) J 0.870529 g (-0.01193, +0.00000)
-iter 78: theta (12.0000, 4.9586) J 0.870529 g (-0.01193, -0.00000)
+iter 77: theta (12.0000, 4.9586) J 0.870529 g (-0.01193, -0.00000)
 stop: StepConverged
 PAPER	m3_flywheel::iter::0	3e0	2.5e0	1.169896901665328e0
 PAPER	m3_flywheel::iter::1	3.008392273033931e0	2.6968811710592195e0	1.1501514938243282e0
 PAPER	m3_flywheel::iter::2	3.02515567048961e0	3.103137492176921e0	1.1080472531473065e0
 PAPER	m3_flywheel::iter::3	3.058542577281956e0	3.939074456639122e0	1.0236669730050003e0
-PAPER	m3_flywheel::iter::4	3.124301959426071e0	5.420676638265038e0	9.464710427217559e-1
-PAPER	m3_flywheel::iter::5	3.1868710871208603e0	5.2826008101627835e0	9.46063532515179e-1
-PAPER	m3_flywheel::iter::6	3.25118406476061e0	5.380434408179108e0	9.457060211249653e-1
-PAPER	m3_flywheel::iter::7	3.3815273956114877e0	5.245046218966792e0	9.455570958943095e-1
-PAPER	m3_flywheel::iter::8	3.449836604341858e0	5.402896383431428e0	9.449969056684657e-1
-PAPER	m3_flywheel::iter::9	3.5187110082122364e0	5.294921729666151e0	9.445954768780358e-1
-PAPER	m3_flywheel::iter::10	3.66021872315271e0	5.447043988366196e0	9.444743840430709e-1
-PAPER	m3_flywheel::iter::11	3.732811503196133e0	5.25899926933114e0	9.438548399608399e-1
-PAPER	m3_flywheel::iter::12	3.8079414630768755e0	5.3925151604826e0	9.433137279446079e-1
-PAPER	m3_flywheel::iter::13	3.959349749204321e0	5.208873503370623e0	9.432987993256279e-1
-PAPER	m3_flywheel::iter::14	4.039253742849983e0	5.420576886007987e0	9.423952713776832e-1
-PAPER	m3_flywheel::iter::15	4.119046413038403e0	5.277418831507545e0	9.418169899430004e-1
-PAPER	m3_flywheel::iter::16	4.201515617630586e0	5.378208846733616e0	9.41287293768096e-1
-PAPER	m3_flywheel::iter::17	4.367804996482344e0	5.238361575694073e0	9.408155298550127e-1
-PAPER	m3_flywheel::iter::18	4.45540903252328e0	5.399973935369074e0	9.400551120026964e-1
-PAPER	m3_flywheel::iter::19	4.542974010049093e0	5.28941325099322e0	9.3945939160678e-1
-PAPER	m3_flywheel::iter::20	4.723767714391585e0	5.4433585241871025e0	9.389588958087149e-1
-PAPER	m3_flywheel::iter::21	4.8155671671325955e0	5.252134958469846e0	9.381182795476745e-1
-PAPER	m3_flywheel::iter::22	4.911544145537461e0	5.386508636081136e0	9.373544106671514e-1
-PAPER	m3_flywheel::iter::23	5.103263755624251e0	5.201169449989747e0	9.368879235370339e-1
-PAPER	m3_flywheel::iter::24	5.205423954466292e0	5.412172491266483e0	9.357386913749912e-1
-PAPER	m3_flywheel::iter::25	5.305945691814882e0	5.269583363780551e0	9.349129816686542e-1
-PAPER	m3_flywheel::iter::26	5.515532474567328e0	5.466585439849272e0	9.344112504136377e-1
-PAPER	m3_flywheel::iter::27	5.62008895151632e0	5.219762218182832e0	9.332123767318369e-1
-PAPER	m3_flywheel::iter::28	5.731594439829339e0	5.392152672616711e0	9.3211933391169e-1
-PAPER	m3_flywheel::iter::29	5.950884163256121e0	5.1565959215772965e0	9.316897234333882e-1
-PAPER	m3_flywheel::iter::30	6.069974968821228e0	5.419364887404996e0	9.299986677605775e-1
-PAPER	m3_flywheel::iter::31	6.184253051462139e0	5.24478389310352e0	9.288824601661374e-1
-PAPER	m3_flywheel::iter::32	6.426239229763996e0	5.482217330759447e0	9.283465076079928e-1
-PAPER	m3_flywheel::iter::33	6.543714215752875e0	5.1822496587407e0	9.267099562589308e-1
-PAPER	m3_flywheel::iter::34	6.672906634168784e0	5.3887328354154835e0	9.252058841573091e-1
-PAPER	m3_flywheel::iter::35	6.92113487350439e0	5.109921041679858e0	9.247064680462997e-1
-PAPER	m3_flywheel::iter::36	7.059674538341844e0	5.4124937702587435e0	9.224018601021268e-1
-PAPER	m3_flywheel::iter::37	7.188034066965799e0	5.215560786751528e0	9.209574494578098e-1
-PAPER	m3_flywheel::iter::38	7.465564087387617e0	5.4748955572984634e0	9.20146405608331e-1
-PAPER	m3_flywheel::iter::39	7.5955446229701655e0	5.144905580371295e0	9.180736959098584e-1
-PAPER	m3_flywheel::iter::40	7.74418374913155e0	5.365030130267443e0	9.161764914087027e-1
-PAPER	m3_flywheel::iter::41	8.021868869838967e0	5.070844479845487e0	9.151901800464596e-1
-PAPER	m3_flywheel::iter::42	8.181558121417844e0	5.377623350038821e0	9.124641498489464e-1
-PAPER	m3_flywheel::iter::43	8.3239740459871e0	5.181488960229271e0	9.107087388822078e-1
-PAPER	m3_flywheel::iter::44	8.638268805343287e0	5.422853174221452e0	9.091094784324133e-1
-PAPER	m3_flywheel::iter::45	8.780541016363566e0	5.112347944347121e0	9.067528963205993e-1
-PAPER	m3_flywheel::iter::46	8.948542449671319e0	5.305894616337982e0	9.046396131773892e-1
-PAPER	m3_flywheel::iter::47	9.255908172136818e0	5.045166452795758e0	9.025322016171218e-1
-PAPER	m3_flywheel::iter::48	9.435381749850276e0	5.297848365702842e0	8.998406670859279e-1
-PAPER	m3_flywheel::iter::49	9.748708531692538e0	4.973541404840129e0	8.980676486661611e-1
-PAPER	m3_flywheel::iter::50	9.9407293491349e0	5.280015768840696e0	8.946561448608994e-1
-PAPER	m3_flywheel::iter::51	1.0258828233569373e1	4.906041608948977e0	8.931163200701757e-1
-PAPER	m3_flywheel::iter::52	1.0463416426514598e1	5.247717708923476e0	8.890303650333352e-1
-PAPER	m3_flywheel::iter::53	1.0786016590875295e1	4.850179683090234e0	8.873992627048346e-1
-PAPER	m3_flywheel::iter::54	1.1001572200936387e1	5.1981295253760385e0	8.829484025698345e-1
-PAPER	m3_flywheel::iter::55	1.132935056447156e1	4.807685109464108e0	8.808344522694274e-1
-PAPER	m3_flywheel::iter::56	1.1552680596592475e1	5.130661203128512e0	8.764592419262617e-1
-PAPER	m3_flywheel::iter::57	1.1886888522838634e1	4.773844788115412e0	8.736113722611039e-1
-PAPER	m3_flywheel::iter::58	1.2e1	5.04601737362322e0	8.708814994640182e-1
-PAPER	m3_flywheel::iter::59	1.2e1	4.915844561339572e0	8.706107844422838e-1
-PAPER	m3_flywheel::iter::60	1.2e1	4.976801254025899e0	8.705441218425333e-1
-PAPER	m3_flywheel::iter::61	1.2e1	4.950253862033295e0	8.705321328357583e-1
-PAPER	m3_flywheel::iter::62	1.2e1	4.962239093191612e0	8.705296312642167e-1
-PAPER	m3_flywheel::iter::63	1.2e1	4.956910418655252e0	8.705291419607635e-1
-PAPER	m3_flywheel::iter::64	1.2e1	4.959296249913796e0	8.705290434102348e-1
-PAPER	m3_flywheel::iter::65	1.2e1	4.9582313362982e0	8.705290238174723e-1
-PAPER	m3_flywheel::iter::66	1.2e1	4.958707321483877e0	8.705290198994959e-1
-PAPER	m3_flywheel::iter::67	1.2e1	4.958494701989585e0	8.705290191180516e-1
-PAPER	m3_flywheel::iter::68	1.2e1	4.95858970409197e0	8.705290189620112e-1
-PAPER	m3_flywheel::iter::69	1.2e1	4.958547260752788e0	8.705290189308682e-1
-PAPER	m3_flywheel::iter::70	1.2e1	4.95856622387825e0	8.705290189246563e-1
-PAPER	m3_flywheel::iter::71	1.2e1	4.958557751612811e0	8.705290189234118e-1
-PAPER	m3_flywheel::iter::72	1.2e1	4.958561536857746e0	8.705290189231674e-1
-PAPER	m3_flywheel::iter::73	1.2e1	4.958559845691621e0	8.705290189231155e-1
-PAPER	m3_flywheel::iter::74	1.2e1	4.958560601269868e0	8.705290189231044e-1
-PAPER	m3_flywheel::iter::75	1.2e1	4.958560263693392e0	8.705290189231025e-1
-PAPER	m3_flywheel::iter::76	1.2e1	4.958560565337939e0	8.705290189231022e-1
-PAPER	m3_flywheel::iter::77	1.2e1	4.958560279747077e0	8.705290189230981e-1
-PAPER	m3_flywheel::iter::78	1.2e1	4.9585602797470925e0	8.705290189230979e-1
+PAPER	m3_flywheel::iter::4	3.124301959426071e0	5.4206766382650375e0	9.464710427217561e-1
+PAPER	m3_flywheel::iter::5	3.1868710871208603e0	5.282600810162768e0	9.460635325151789e-1
+PAPER	m3_flywheel::iter::6	3.25118406476061e0	5.380434408179134e0	9.457060211249648e-1
+PAPER	m3_flywheel::iter::7	3.3815273956114873e0	5.2450462189667295e0	9.455570958943087e-1
+PAPER	m3_flywheel::iter::8	3.449836604341858e0	5.402896383431478e0	9.449969056684673e-1
+PAPER	m3_flywheel::iter::9	3.518711008212236e0	5.294921729666069e0	9.445954768780358e-1
+PAPER	m3_flywheel::iter::10	3.6602187231527106e0	5.447043988366454e0	9.44474384043075e-1
+PAPER	m3_flywheel::iter::11	3.732811503196132e0	5.258999269330929e0	9.438548399608447e-1
+PAPER	m3_flywheel::iter::12	3.8079414630768755e0	5.3925151604826524e0	9.433137279446062e-1
+PAPER	m3_flywheel::iter::13	3.9593497492043204e0	5.208873503370584e0	9.432987993256277e-1
+PAPER	m3_flywheel::iter::14	4.039253742849983e0	5.420576886008029e0	9.423952713776841e-1
+PAPER	m3_flywheel::iter::15	4.119046413038402e0	5.277418831507498e0	9.418169899430014e-1
+PAPER	m3_flywheel::iter::16	4.2015156176305855e0	5.3782088467336395e0	9.412872937680952e-1
+PAPER	m3_flywheel::iter::17	4.367804996482343e0	5.238361575694094e0	9.40815529855013e-1
+PAPER	m3_flywheel::iter::18	4.455409032523278e0	5.399973935369055e0	9.400551120026958e-1
+PAPER	m3_flywheel::iter::19	4.542974010049091e0	5.2894132509932605e0	9.394593916067799e-1
+PAPER	m3_flywheel::iter::20	4.723767714391582e0	5.443358524187028e0	9.389588958087138e-1
+PAPER	m3_flywheel::iter::21	4.815567167132594e0	5.252134958469908e0	9.381182795476746e-1
+PAPER	m3_flywheel::iter::22	4.9115441455374595e0	5.3865086360811425e0	9.373544106671509e-1
+PAPER	m3_flywheel::iter::23	5.1032637556242495e0	5.2011694499897265e0	9.368879235370356e-1
+PAPER	m3_flywheel::iter::24	5.205423954466291e0	5.412172491266461e0	9.357386913749899e-1
+PAPER	m3_flywheel::iter::25	5.305945691814881e0	5.269583363780589e0	9.349129816686541e-1
+PAPER	m3_flywheel::iter::26	5.515532474567326e0	5.466585439849223e0	9.344112504136365e-1
+PAPER	m3_flywheel::iter::27	5.620088951516319e0	5.219762218182844e0	9.332123767318361e-1
+PAPER	m3_flywheel::iter::28	5.731594439829338e0	5.392152672616695e0	9.321193339116893e-1
+PAPER	m3_flywheel::iter::29	5.950884163256121e0	5.156595921577369e0	9.316897234333863e-1
+PAPER	m3_flywheel::iter::30	6.069974968821226e0	5.419364887405003e0	9.299986677605776e-1
+PAPER	m3_flywheel::iter::31	6.184253051462138e0	5.244783893103498e0	9.288824601661372e-1
+PAPER	m3_flywheel::iter::32	6.426239229763996e0	5.482217330759537e0	9.283465076079936e-1
+PAPER	m3_flywheel::iter::33	6.543714215752872e0	5.182249658740634e0	9.267099562589298e-1
+PAPER	m3_flywheel::iter::34	6.672906634168784e0	5.388732835415569e0	9.252058841573081e-1
+PAPER	m3_flywheel::iter::35	6.921134873504384e0	5.109921041679648e0	9.247064680463039e-1
+PAPER	m3_flywheel::iter::36	7.059674538341847e0	5.412493770258878e0	9.224018601021265e-1
+PAPER	m3_flywheel::iter::37	7.188034066965798e0	5.215560786751479e0	9.209574494578103e-1
+PAPER	m3_flywheel::iter::38	7.46556408738762e0	5.4748955572985825e0	9.201464056083333e-1
+PAPER	m3_flywheel::iter::39	7.595544622970164e0	5.144905580371227e0	9.180736959098587e-1
+PAPER	m3_flywheel::iter::40	7.744183749131551e0	5.3650301302674555e0	9.161764914087018e-1
+PAPER	m3_flywheel::iter::41	8.021868869838965e0	5.070844479845439e0	9.15190180046461e-1
+PAPER	m3_flywheel::iter::42	8.181558121417844e0	5.377623350038851e0	9.124641498489471e-1
+PAPER	m3_flywheel::iter::43	8.323974045987097e0	5.1814889602292125e0	9.107087388822096e-1
+PAPER	m3_flywheel::iter::44	8.638268805343293e0	5.422853174221586e0	9.091094784324164e-1
+PAPER	m3_flywheel::iter::45	8.78054101636356e0	5.112347944347011e0	9.067528963206012e-1
+PAPER	m3_flywheel::iter::46	8.94854244967132e0	5.305894616338004e0	9.046396131773877e-1
+PAPER	m3_flywheel::iter::47	9.25590817213682e0	5.045166452795751e0	9.02532201617122e-1
+PAPER	m3_flywheel::iter::48	9.435381749850276e0	5.297848365702821e0	8.998406670859282e-1
+PAPER	m3_flywheel::iter::49	9.748708531692536e0	4.973541404840079e0	8.980676486661618e-1
+PAPER	m3_flywheel::iter::50	9.940729349134905e0	5.280015768840736e0	8.946561448609003e-1
+PAPER	m3_flywheel::iter::51	1.0258828233569364e1	4.906041608948816e0	8.931163200701797e-1
+PAPER	m3_flywheel::iter::52	1.046341642651461e1	5.247717708923554e0	8.890303650333348e-1
+PAPER	m3_flywheel::iter::53	1.0786016590875288e1	4.850179683090051e0	8.873992627048396e-1
+PAPER	m3_flywheel::iter::54	1.1001572200936401e1	5.1981295253760615e0	8.829484025698342e-1
+PAPER	m3_flywheel::iter::55	1.132935056447157e1	4.807685109464071e0	8.808344522694278e-1
+PAPER	m3_flywheel::iter::56	1.1552680596592488e1	5.130661203128498e0	8.764592419262606e-1
+PAPER	m3_flywheel::iter::57	1.1886888522838653e1	4.773844788115455e0	8.736113722611034e-1
+PAPER	m3_flywheel::iter::58	1.2e1	5.046017373623228e0	8.708814994640186e-1
+PAPER	m3_flywheel::iter::59	1.2e1	4.915844561339538e0	8.706107844422853e-1
+PAPER	m3_flywheel::iter::60	1.2e1	4.976801254025852e0	8.705441218425332e-1
+PAPER	m3_flywheel::iter::61	1.2e1	4.950253862033277e0	8.705321328357588e-1
+PAPER	m3_flywheel::iter::62	1.2e1	4.9622390931916085e0	8.70529631264216e-1
+PAPER	m3_flywheel::iter::63	1.2e1	4.9569104186552755e0	8.705291419607631e-1
+PAPER	m3_flywheel::iter::64	1.2e1	4.959296249913766e0	8.705290434102347e-1
+PAPER	m3_flywheel::iter::65	1.2e1	4.9582313362982235e0	8.70529023817472e-1
+PAPER	m3_flywheel::iter::66	1.2e1	4.958707321483887e0	8.705290198994964e-1
+PAPER	m3_flywheel::iter::67	1.2e1	4.958494701989554e0	8.705290191180513e-1
+PAPER	m3_flywheel::iter::68	1.2e1	4.958589704092006e0	8.705290189620107e-1
+PAPER	m3_flywheel::iter::69	1.2e1	4.95854726075277e0	8.705290189308688e-1
+PAPER	m3_flywheel::iter::70	1.2e1	4.958566223878246e0	8.705290189246561e-1
+PAPER	m3_flywheel::iter::71	1.2e1	4.9585577516128065e0	8.705290189234115e-1
+PAPER	m3_flywheel::iter::72	1.2e1	4.958561536857755e0	8.705290189231675e-1
+PAPER	m3_flywheel::iter::73	1.2e1	4.958559845691603e0	8.705290189231158e-1
+PAPER	m3_flywheel::iter::74	1.2e1	4.95856060126985e0	8.705290189231043e-1
+PAPER	m3_flywheel::iter::75	1.2e1	4.9585602636934265e0	8.705290189231032e-1
+PAPER	m3_flywheel::iter::76	1.2e1	4.958560565337947e0	8.70529018923102e-1
+PAPER	m3_flywheel::iter::77	1.2e1	4.958560279747085e0	8.705290189230972e-1
 ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 781.72s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1061.57s
 

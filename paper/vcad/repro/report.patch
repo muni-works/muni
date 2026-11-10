@@ -1,5 +1,5 @@
 diff --git a/crates/vcad-eval/tests/document_gradient.rs b/crates/vcad-eval/tests/document_gradient.rs
-index 8982a2c..e31e6ee 100644
+index 8982a2cc1..e31e6ee6c 100644
 --- a/crates/vcad-eval/tests/document_gradient.rs
 +++ b/crates/vcad-eval/tests/document_gradient.rs
 @@ -117,6 +117,9 @@ fn parametric_document_cylinder_gradient() {
@@ -53,7 +53,7 @@ index 8982a2c..e31e6ee 100644
          rel <= 1e-9,
          "defparam-authored dV/dr {dv} vs closed form {dv_exact} (rel {rel:.3e})"
 diff --git a/crates/vcad-kernel-diff/tests/m0_extrude_volume.rs b/crates/vcad-kernel-diff/tests/m0_extrude_volume.rs
-index 045dbca..2f35778 100644
+index 045dbcadb..2f357781a 100644
 --- a/crates/vcad-kernel-diff/tests/m0_extrude_volume.rs
 +++ b/crates/vcad-kernel-diff/tests/m0_extrude_volume.rs
 @@ -70,6 +70,9 @@ fn m0_extrude_volume_derivative_matches_analytic_and_fd() {
@@ -86,7 +86,7 @@ index 045dbca..2f35778 100644
          cmp.max_rel_err <= GATE,
          "node dx/dd max rel err {:.3e} at node {} (velocity scale {:.3})",
 diff --git a/crates/vcad-kernel-diff/tests/m10_second_order.rs b/crates/vcad-kernel-diff/tests/m10_second_order.rs
-index 817ece5..39da6f1 100644
+index c371a9a1b..43e299ffa 100644
 --- a/crates/vcad-kernel-diff/tests/m10_second_order.rs
 +++ b/crates/vcad-kernel-diff/tests/m10_second_order.rs
 @@ -130,6 +130,9 @@ fn m10_hole_second_derivative_matches_closed_form_and_fd() {
@@ -183,8 +183,18 @@ index 817ece5..39da6f1 100644
      eprintln!("relative Frobenius ‖H_GN − H_full‖/‖H_GN‖ = {rel_frob:.3e}");
      assert!(
          rel_frob < 0.15,
+@@ -874,6 +904,9 @@ fn m10_rounded_cube_second_derivative_matches_same_plan_stencil() {
+     let five =
+         (-v(2.0 * h) + 16.0 * v(h) - 30.0 * v(0.0) + 16.0 * v(-h) - v(-2.0 * h)) / (12.0 * h * h);
+     let rel = (ddv - five).abs() / five.abs();
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::ddv\t{:e}", (ddv) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::five\t{:e}", (five) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::rel\t{:e}", (rel) as f64);
+     eprintln!("rounded cube same-plan d²V/dr²: seam {ddv:.6} vs 5-point {five:.6} (rel {rel:.3e})");
+     assert!(
+         rel < 1e-5,
 diff --git a/crates/vcad-kernel-diff/tests/m1_frozen_lift.rs b/crates/vcad-kernel-diff/tests/m1_frozen_lift.rs
-index 1d2347b..a8249d9 100644
+index 1d2347bc9..a8249d97b 100644
 --- a/crates/vcad-kernel-diff/tests/m1_frozen_lift.rs
 +++ b/crates/vcad-kernel-diff/tests/m1_frozen_lift.rs
 @@ -88,6 +88,7 @@ fn m1_cylinder_interior_samples_match_fd() {
@@ -204,7 +214,7 @@ index 1d2347b..a8249d9 100644
          }
      }
 diff --git a/crates/vcad-kernel-diff/tests/m2_boolean_hole.rs b/crates/vcad-kernel-diff/tests/m2_boolean_hole.rs
-index 7a4b11a..0a7b667 100644
+index 7a4b11a99..0a7b66714 100644
 --- a/crates/vcad-kernel-diff/tests/m2_boolean_hole.rs
 +++ b/crates/vcad-kernel-diff/tests/m2_boolean_hole.rs
 @@ -109,6 +109,9 @@ fn m2_through_hole_dv_dr_matches_closed_form_and_fd() {
@@ -254,7 +264,7 @@ index 7a4b11a..0a7b667 100644
          cmp.max_rel_err <= GATE,
          "dx/dr max rel err {:.3e} at node {}",
 diff --git a/crates/vcad-kernel-diff/tests/m3_boundary_trim.rs b/crates/vcad-kernel-diff/tests/m3_boundary_trim.rs
-index ecc579e..ae45221 100644
+index ecc579eed..ae452210a 100644
 --- a/crates/vcad-kernel-diff/tests/m3_boundary_trim.rs
 +++ b/crates/vcad-kernel-diff/tests/m3_boundary_trim.rs
 @@ -110,12 +110,19 @@ fn boundary_nodes_track_a_moving_plane_trim() {
@@ -286,7 +296,7 @@ index ecc579e..ae45221 100644
          cmp.max_rel_err <= GATE,
          "dx/dh max rel err {:.3e} at node {}",
 diff --git a/crates/vcad-kernel-diff/tests/m3_flywheel_optimize.rs b/crates/vcad-kernel-diff/tests/m3_flywheel_optimize.rs
-index f8b5da4..1210f70 100644
+index f8b5da437..1210f7092 100644
 --- a/crates/vcad-kernel-diff/tests/m3_flywheel_optimize.rs
 +++ b/crates/vcad-kernel-diff/tests/m3_flywheel_optimize.rs
 @@ -149,6 +149,9 @@ fn flywheel_hits_target_inertia_with_less_mass() {
@@ -308,7 +318,7 @@ index f8b5da4..1210f70 100644
      // The loop must have actually descended, monotonically, and recovered
      // most of the achievable improvement: J at the known-good design θ* is
 diff --git a/crates/vcad-kernel-diff/tests/m3_mass_properties.rs b/crates/vcad-kernel-diff/tests/m3_mass_properties.rs
-index a6f7985..8fdff58 100644
+index a6f7985e4..8fdff58e1 100644
 --- a/crates/vcad-kernel-diff/tests/m3_mass_properties.rs
 +++ b/crates/vcad-kernel-diff/tests/m3_mass_properties.rs
 @@ -61,6 +61,8 @@ fn extrude_inertia_derivative_matches_closed_form_and_fd() {
@@ -341,7 +351,7 @@ index a6f7985..8fdff58 100644
              rel <= GATE,
              "{what}: dual {dual} vs fd {fd} (rel {rel:.3e})"
 diff --git a/crates/vcad-kernel-diff/tests/m4_fillet_radius.rs b/crates/vcad-kernel-diff/tests/m4_fillet_radius.rs
-index 555624c..b935b45 100644
+index 555624c3a..b935b4588 100644
 --- a/crates/vcad-kernel-diff/tests/m4_fillet_radius.rs
 +++ b/crates/vcad-kernel-diff/tests/m4_fillet_radius.rs
 @@ -130,6 +130,9 @@ fn m4_fillet_radius_derivative_matches_fd_and_continuum() {
@@ -382,7 +392,7 @@ index 555624c..b935b45 100644
          (result.theta[0] - r_star).abs() < 1e-3,
          "found r = {} vs target r* = {r_star}",
 diff --git a/crates/vcad-kernel-diff/tests/m5_reverse_mode.rs b/crates/vcad-kernel-diff/tests/m5_reverse_mode.rs
-index 2058bc8..65575d6 100644
+index 2058bc850..65575d659 100644
 --- a/crates/vcad-kernel-diff/tests/m5_reverse_mode.rs
 +++ b/crates/vcad-kernel-diff/tests/m5_reverse_mode.rs
 @@ -55,6 +55,8 @@ fn pullback_vs_forward(
@@ -418,7 +428,7 @@ index 2058bc8..65575d6 100644
      assert!(gap < 0.10, "continuum gap {gap:.3}");
  }
 diff --git a/crates/vcad-kernel-diff/tests/m6_synthesized_seeding.rs b/crates/vcad-kernel-diff/tests/m6_synthesized_seeding.rs
-index 377ab76..c1211e0 100644
+index 377ab769a..c1211e095 100644
 --- a/crates/vcad-kernel-diff/tests/m6_synthesized_seeding.rs
 +++ b/crates/vcad-kernel-diff/tests/m6_synthesized_seeding.rs
 @@ -97,11 +97,17 @@ fn m2_hole_radius_synthesized() {
@@ -531,7 +541,7 @@ index 377ab76..c1211e0 100644
          rel(dv, fd) <= FD_GATE,
          "torus minor radius: synthesized {dv} vs FD {fd}"
 diff --git a/crates/vcad-kernel-diff/tests/m7_cone_torus.rs b/crates/vcad-kernel-diff/tests/m7_cone_torus.rs
-index 09748d7..8c3a709 100644
+index 09748d7dc..8c3a70946 100644
 --- a/crates/vcad-kernel-diff/tests/m7_cone_torus.rs
 +++ b/crates/vcad-kernel-diff/tests/m7_cone_torus.rs
 @@ -154,6 +154,9 @@ fn cone_half_angle_derivative() {
@@ -606,7 +616,7 @@ index 09748d7..8c3a709 100644
          cmp.max_rel_err <= GATE,
          "{label}: dx/dθ max rel err {:.3e} at node {}",
 diff --git a/crates/vcad-kernel-diff/tests/m9_many_parameters.rs b/crates/vcad-kernel-diff/tests/m9_many_parameters.rs
-index eec2cd9..1880a2d 100644
+index fd6dde063..a2f971fba 100644
 --- a/crates/vcad-kernel-diff/tests/m9_many_parameters.rs
 +++ b/crates/vcad-kernel-diff/tests/m9_many_parameters.rs
 @@ -452,6 +452,8 @@ fn m9_reverse_matches_forward_and_fd() {
@@ -638,65 +648,65 @@ index eec2cd9..1880a2d 100644
          "GD:     stop {:?}, iters {}, evals {}, J {:.3e}, ||theta-theta*||inf {:.3e}",
          gd.stop,
 diff --git a/crates/vcad-kernel-physics/tests/m11_adjoint_rollout.rs b/crates/vcad-kernel-physics/tests/m11_adjoint_rollout.rs
-index f80b750..df7ab06 100644
+index 07985098f..d53cb10c8 100644
 --- a/crates/vcad-kernel-physics/tests/m11_adjoint_rollout.rs
 +++ b/crates/vcad-kernel-physics/tests/m11_adjoint_rollout.rs
-@@ -196,6 +196,9 @@ fn adjoint_matches_fd_path() {
+@@ -197,6 +197,9 @@ fn adjoint_matches_fd_path() {
          "flywheel J: adjoint {j_adj} vs fd-path {j_fd}"
      );
      let rel = (g_adj[0] - g_fd[0]).abs() / g_fd[0].abs();
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L198::g_adj\t{:e}", (g_adj[0]) as f64);
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L198::g_fd\t{:e}", (g_fd[0]) as f64);
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L198::rel\t{:e}", (rel) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L199::g_adj\t{:e}", (g_adj[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L199::g_fd\t{:e}", (g_fd[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L199::rel\t{:e}", (rel) as f64);
      assert!(
          rel <= 1e-5,
          "flywheel dJ/dr: adjoint {} vs fd-path {} (rel {rel:.3e})",
-@@ -217,6 +220,9 @@ fn adjoint_matches_fd_path() {
+@@ -218,6 +221,9 @@ fn adjoint_matches_fd_path() {
          "pendulum J: adjoint {j_adj} vs fd-path {j_fd}"
      );
      let rel = (g_adj[0] - g_fd[0]).abs() / g_fd[0].abs();
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L219::g_adj\t{:e}", (g_adj[0]) as f64);
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L219::g_fd\t{:e}", (g_fd[0]) as f64);
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L219::rel\t{:e}", (rel) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L220::g_adj\t{:e}", (g_adj[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L220::g_fd\t{:e}", (g_fd[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L220::rel\t{:e}", (rel) as f64);
      assert!(
          rel <= 1e-5,
          "pendulum dJ/dr: adjoint {} vs fd-path {} (rel {rel:.3e})",
-@@ -246,6 +252,9 @@ fn adjoint_matches_end_to_end_fd() {
+@@ -247,6 +253,9 @@ fn adjoint_matches_end_to_end_fd() {
      let (_, g) = rollout_gradient_adjoint(&bodies, &flywheel_spec(), &[R0]).expect("adjoint");
      let fd = e2e(&flywheel_rollout);
      let rel = (g[0] - fd).abs() / fd.abs();
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::fd\t{:e}", (fd) as f64);
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::g\t{:e}", (g[0]) as f64);
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::rel\t{:e}", (rel) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::g\t{:e}", (g[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::rel\t{:e}", (rel) as f64);
      assert!(
          rel <= GATE,
          "flywheel dω/dr: adjoint {} vs end-to-end fd {fd} (rel {rel:.3e})",
-@@ -256,6 +265,9 @@ fn adjoint_matches_end_to_end_fd() {
+@@ -257,6 +266,9 @@ fn adjoint_matches_end_to_end_fd() {
      let (_, g) = rollout_gradient_adjoint(&bodies, &pendulum_spec(), &[R0]).expect("adjoint");
      let fd = e2e(&pendulum_rollout);
      let rel = (g[0] - fd).abs() / fd.abs();
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::fd\t{:e}", (fd) as f64);
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::g\t{:e}", (g[0]) as f64);
-+    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::rel\t{:e}", (rel) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::g\t{:e}", (g[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::rel\t{:e}", (rel) as f64);
      assert!(
          rel <= GATE,
          "pendulum dq(T)/dr: adjoint {} vs end-to-end fd {fd} (rel {rel:.3e})",
 diff --git a/crates/vcad-kernel-physics/tests/m11_contact_gradient.rs b/crates/vcad-kernel-physics/tests/m11_contact_gradient.rs
-index b648ea6..e403163 100644
+index 3cb3a7291..75881cedb 100644
 --- a/crates/vcad-kernel-physics/tests/m11_contact_gradient.rs
 +++ b/crates/vcad-kernel-physics/tests/m11_contact_gradient.rs
-@@ -164,6 +164,9 @@ fn contact_chain_matches_end_to_end_fd() {
+@@ -165,6 +165,9 @@ fn contact_chain_matches_end_to_end_fd() {
      };
      let fd = (j_at(R0 + H_THETA) - j_at(R0 - H_THETA)) / (2.0 * H_THETA);
      let rel = (grad[0] - fd).abs() / fd.abs();
-+    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::fd\t{:e}", (fd) as f64);
-+    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad\t{:e}", (grad[0]) as f64);
-+    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel\t{:e}", (rel) as f64);
++    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::grad\t{:e}", (grad[0]) as f64);
++    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::rel\t{:e}", (rel) as f64);
      assert!(
          rel <= GATE,
          "dJ/dr: chain {} vs end-to-end fd {fd} (rel {rel:.3e})",
 diff --git a/crates/vcad-kernel-physics/tests/m8_rollout_gradient.rs b/crates/vcad-kernel-physics/tests/m8_rollout_gradient.rs
-index 31f33e3..ced55a0 100644
+index 31f33e327..ced55a0d1 100644
 --- a/crates/vcad-kernel-physics/tests/m8_rollout_gradient.rs
 +++ b/crates/vcad-kernel-physics/tests/m8_rollout_gradient.rs
 @@ -157,6 +157,9 @@ fn mass_property_chain_isolation() {
