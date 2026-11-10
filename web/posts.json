@@ -30,5 +30,16 @@
     "root": "../paper/ribt",
     "source": "ribt.typ",
     "cover": "ridgelines"
+  },
+  {
+    "slug": "tang",
+    "title": "Don't Write Kernels, Derive Them",
+    "subtitle": "Chasing the Speed of Light: Kernels from a Tensor IR of Views and Comprehensions",
+    "date": "2026-11-10",
+    "author": "Cam Pedersen",
+    "description": "tang's tensor IR has two constructs, affine views and monoid comprehensions. Fusion, flash attention and its backward pass are derived as rewrites, and one graph lowers to CUDA, Metal, WGSL, OpenCL, GLSL and C. The least memory traffic and the optimal tile are dual solutions of one linear program, and a time floor built on it never exceeds measured time on the kernels we checked against hardware counters. Wins and losses against PyTorch, llama.cpp and FlashAttention are both reported.",
+    "root": "../paper/tang",
+    "source": "tang.typ",
+    "cover": "flash-tiles"
   }
 ]
