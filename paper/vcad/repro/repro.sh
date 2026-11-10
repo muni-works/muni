@@ -15,7 +15,7 @@
 set -euo pipefail
 
 VCAD_REPO=${VCAD_REPO:-https://github.com/muni-works/vcad.git}
-VCAD_REV=${VCAD_REV:-7af5dce81bea4aea801dd37128b912ab3a3c6cd2}
+VCAD_REV=${VCAD_REV:-a3ad5eced5a0fbfff8373e10d81beae201c69b3d}
 HERE=$(cd "$(dirname "$0")" && pwd)
 WORK=${1:-$HERE/work}
 DATA=$HERE/../data

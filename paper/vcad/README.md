@@ -29,6 +29,8 @@ vcad/phyz/tang plan (`docs/launch/full-tang.html` in vcad); none of its gates is
 - The two disagreements with finite differences an earlier draft reported (fillet-radius and s_x
   gradient on the filleted, drilled box; the filleted cube's second derivative) were seam bugs,
   fixed in vcad PR 1080; the paper pins that commit and describes both (§9.4).
+  The run was made at the PR's head, 7af5dce; main has it squash-merged as a3ad5ec with an
+  identical tree, which is the commit `repro.sh` and the paper name.
 - `repro/irys.sh` clones `ecto/rose`, which is private: outside readers cannot run that step.
 - A blind referee review (November 2026) drove the current revision: rebuild FD, step sweeps, the
   polygonization study, optimizer baselines, costs, plan radius, segment-count jumps and the
