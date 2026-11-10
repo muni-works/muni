@@ -1,0 +1,38 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+warning: missing documentation for a method
+   --> crates/irys-core/src/geometry.rs:194:5
+    |
+194 |     pub fn triangles(&self) -> &[[u32; 3]] {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: the lint level is defined here
+   --> crates/irys-core/src/lib.rs:1:9
+    |
+  1 | #![warn(missing_docs)]
+    |         ^^^^^^^^^^^^
+
+warning: `irys-core` (lib) generated 1 warning
+warning: associated function `from_parts` is never used
+   --> crates/irys-diff/src/vis.rs:499:19
+    |
+496 | impl EdgeSamples {
+    | ---------------- associated function in this implementation
+...
+499 |     pub(crate) fn from_parts(pixel: Vec<usize>, weight: Vec<Vec<f64>>, visible: usize) -> Self {
+    |                   ^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `irys-diff` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.18s
+     Running `target/release/examples/rose_brep`
+L_shoA_shop_out: 4942 nodes, 9932 triangles (1.9s)
+edges: 9780 segments, Σℓ 3677 px; 93138 of 100000 samples visible
+rose-arm BRep benchmark: L_shoA_shop_out, θ = bearing bore diameter 49 mm
+  nodes 4942, edge samples 100000 × 8 seeds, image 160×128
+  dℒ/dθ, vcad pullback (irys ∂ℒ/∂x):  +4.016864e1 ± 2.26e-2
+  dℒ/dθ, vcad forward seam:            +4.016864e1   max rel vs pullback 1.24e-15
+  dℒ/dθ, vcad fd_velocities oracle:     +4.017028e1   max rel vs pullback 4.27e-5
+  dℒ/dθ, end-to-end render FD (h 0.1 mm, 16² pts/px): +4.001440e1   rel 3.85e-3 (6.8 σ)
+  total 21.1s

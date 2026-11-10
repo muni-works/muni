@@ -11,7 +11,7 @@
 #    which vcad.typ reads for every number in its tables and figures.
 #
 # Needs: git, a Rust toolchain (rustup picks vcad's rust-toolchain if present), python3.
-# Takes ~30 min on a 24-core box; run it on a build machine, not a laptop.
+# Takes about 90 minutes (the paper's optimizer baselines are most of it) on a 24-core box; run it on a build machine, not a laptop.
 set -euo pipefail
 
 VCAD_REPO=${VCAD_REPO:-https://github.com/ecto/vcad.git}
@@ -28,6 +28,11 @@ cd "$WORK/vcad"
 git fetch -q origin "$VCAD_REV" || true
 git checkout -q --force "$VCAD_REV"
 git apply "$HERE/report.patch"
+# the paper's own experiments live beside vcad's tests, and print the same way
+D=crates/vcad-kernel-diff/tests
+sed '/^\/\/!/d' "$D/m9_many_parameters.rs" > "$D/paper_m9_base.rs"
+cp "$HERE/paper_experiments.rs" "$D/paper_experiments.rs"
+cp "$HERE/paper_contact_fillet.rs" crates/vcad-kernel-physics/tests/paper_contact_fillet.rs
 
 {
   echo "vcad_rev	$VCAD_REV"
@@ -51,10 +56,18 @@ run() { # crate, test targets...
   run vcad-kernel-physics m8_rollout_gradient m8_spinup_demo m8_anchor_channel m8_surface_skin \
     m11_adjoint_rollout m11_contact_gradient
   run vcad-eval document_gradient
-  # the flywheel L-BFGS run is #[ignore]d in vcad's CI for runtime (~13 min); run it here
-  cargo test --release --locked -p vcad-kernel-diff --test m3_flywheel_optimize -- --ignored --nocapture --test-threads=1
 } 2>&1 | tee "$DATA/raw/tests.log"
+{
+  cargo test --release --locked -p vcad-kernel-diff --test paper_experiments -- paper_ --nocapture --test-threads=1
+  cargo test --release --locked -p vcad-kernel-physics --test paper_contact_fillet -- --nocapture --test-threads=1
+} 2>&1 | tee "$DATA/raw/paper.log"
+{
+  # the flywheel projected-gradient-descent run is #[ignore]d in vcad's CI for runtime (~13 min); run it here
+  cargo test --release --locked -p vcad-kernel-diff --test m3_flywheel_optimize -- --ignored --nocapture --test-threads=1
+} 2>&1 | tee -a "$DATA/raw/tests.log"
 
+git -C "$WORK/vcad" clean -fdq crates
 git -C "$WORK/vcad" checkout -q -- .
-python3 "$HERE/collect.py" "$DATA/raw/tests.log" > "$DATA/measured.tsv"
+"$HERE/irys.sh" "$WORK"
+python3 "$HERE/collect.py" "$DATA/raw/tests.log" "$DATA/raw/paper.log" "$DATA/raw/irys.log" > "$DATA/measured.tsv"
 echo "wrote $DATA/measured.tsv ($(wc -l < "$DATA/measured.tsv") values)"

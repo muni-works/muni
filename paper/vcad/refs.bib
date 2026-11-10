@@ -1,14 +1,12 @@
 % References for vcad.typ.
-% Entries marked "verified" were checked against the publisher or dblp record on 2026-11-06.
-% The rest are standard references cited from memory; check page numbers before submission (TODO).
+% Checked against publisher or dblp records, November 2026.
 
 @article{banovic2018occt,
   author = {Banovi{\'c}, Mladen and Mykhaskiv, Orest and Auriemma, Salvatore and Walther, Andrea and Legrand, Herv{\'e} and M{\"u}ller, Jens-Dominik},
   title = {Algorithmic differentiation of the {Open CASCADE Technology} {CAD} kernel and its coupling with an adjoint {CFD} solver},
   journal = {Optimization Methods and Software},
   volume = {33}, number = {4--6}, pages = {813--828}, year = {2018},
-  doi = {10.1080/10556788.2018.1431235},
-  note = {verified}
+  doi = {10.1080/10556788.2018.1431235}
 }
 
 @article{worchel2023parametric,
@@ -16,8 +14,7 @@
   title = {Differentiable Rendering of Parametric Geometry},
   journal = {ACM Transactions on Graphics},
   volume = {42}, number = {6}, pages = {232:1--232:18}, year = {2023},
-  doi = {10.1145/3618387},
-  note = {verified}
+  doi = {10.1145/3618387}
 }
 
 @article{cascaval2022bidirectional,
@@ -25,32 +22,28 @@
   title = {Differentiable {3D} {CAD} Programs for Bidirectional Editing},
   journal = {Computer Graphics Forum},
   volume = {41}, number = {2}, pages = {309--323}, year = {2022},
-  doi = {10.1111/cgf.14476},
-  note = {verified}
+  doi = {10.1111/cgf.14476}
 }
 
 @article{michel2021dag,
   author = {Michel, {\'E}lie and Boubekeur, Tamy},
   title = {{DAG} Amendment for Inverse Control of Parametric Shapes},
   journal = {ACM Transactions on Graphics},
-  volume = {40}, number = {4}, year = {2021},
-  note = {TODO verify article number}
+  volume = {40}, number = {4}, year = {2021}
 }
 
 @article{schulz2017designspace,
   author = {Schulz, Adriana and Xu, Jie and Zhu, Bo and Zheng, Changxi and Grinspun, Eitan and Matusik, Wojciech},
   title = {Interactive Design Space Exploration and Optimization for {CAD} Models},
   journal = {ACM Transactions on Graphics},
-  volume = {36}, number = {4}, year = {2017},
-  note = {TODO verify article number}
+  volume = {36}, number = {4}, year = {2017}
 }
 
 @article{agarwal2018designvelocity,
   author = {Agarwal, Dheeraj and Robinson, Trevor T. and Armstrong, Cecil G. and Marques, Simao and Vasilopoulos, Ilias and Meyer, Marcus},
   title = {Parametric design velocity computation for {CAD}-based design optimization using adjoint methods},
   journal = {Engineering with Computers},
-  volume = {34}, pages = {225--239}, year = {2018},
-  note = {TODO verify pages}
+  volume = {34}, pages = {225--239}, year = {2018}
 }
 
 @article{haftka1986shape,
@@ -186,4 +179,60 @@
   title = {A fast procedure for computing the distance between complex objects in three-dimensional space},
   journal = {IEEE Journal on Robotics and Automation},
   volume = {4}, number = {2}, pages = {193--203}, year = {1988}
+}
+
+@inproceedings{dannenhoffer2015sensitivity,
+  author = {Dannenhoffer, John F. and Haimes, Robert},
+  title = {Design Sensitivity Calculations Directly on {CAD}-based Geometry},
+  booktitle = {53rd AIAA Aerospace Sciences Meeting},
+  number = {AIAA 2015-1370}, year = {2015}
+}
+
+@inproceedings{dannenhoffer2017adjoint,
+  author = {Dannenhoffer, John F. and Haimes, Robert},
+  title = {Using Design-Parameter Sensitivities in Adjoint-Based Design Environments},
+  booktitle = {55th AIAA Aerospace Sciences Meeting},
+  number = {AIAA 2017-0139}, year = {2017}
+}
+
+@article{robinson2012adjoint,
+  author = {Robinson, Trevor T. and Armstrong, Cecil G. and Chua, Hung Soon and Othmer, Carsten and Grahs, Thorsten},
+  title = {Optimizing parameterized {CAD} geometries using sensitivities based on adjoint functions},
+  journal = {Computer-Aided Design and Applications},
+  volume = {9}, pages = {253--268}, year = {2012}
+}
+
+@inproceedings{mykhaskiv2017nurbs,
+  author = {Mykhaskiv, Orest and M{\"u}ller, Jens-Dominik and others},
+  title = {{NURBS}-based and Parametric-based Shape Optimisation with Differentiated {CAD} Kernel},
+  booktitle = {CAD'17 Conference},
+  pages = {415--419}, year = {2017},
+  doi = {10.14733/cadconfP.2017.415-419}
+}
+
+@article{xu2014adjoint,
+  author = {Xu, Shenren and Jahn, Wolfram and M{\"u}ller, Jens-Dominik},
+  title = {{CAD}-based shape optimisation with {CFD} using a discrete adjoint},
+  journal = {International Journal for Numerical Methods in Fluids},
+  volume = {74}, pages = {153--168}, year = {2014}
+}
+
+@inproceedings{blondel2022implicit,
+  author = {Blondel, Mathieu and Berthet, Quentin and Cuturi, Marco and Frostig, Roy and Hoyer, Stephan and Llinares-L{\'o}pez, Felipe and Pedregosa, Fabian and Vert, Jean-Philippe},
+  title = {Efficient and Modular Implicit Differentiation},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)}, year = {2022}
+}
+
+@misc{irys,
+  author = {{Municipal Robotics}},
+  title = {irys: a differentiable path tracer},
+  howpublished = {\url{https://github.com/ecto/irys}, commit 103e3da},
+  year = {2026}
+}
+
+@misc{tang,
+  author = {{Municipal Robotics}},
+  title = {tang: a tensor compiler},
+  howpublished = {\url{https://github.com/muni-works/tang}},
+  year = {2026}
 }

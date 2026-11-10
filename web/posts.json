@@ -37,7 +37,7 @@
     "subtitle": "Differentiating CAD parameters through tessellation, fillets, mass properties and contact",
     "date": "2026-11-06",
     "author": "Cam Pedersen",
-    "description": "vcad's differentiable seam freezes the tessellation's topology and differentiates node positions exactly, so a hole radius, a fillet radius or a named document parameter gets an exact gradient of volume, inertia or a simulated rollout with contact. Every derivative is checked against finite differences of a full rebuild; topology changes are reported, not differentiated.",
+    "description": "Derivatives of CAD parameters, fillet radii included, through vcad's BRep kernel: the tessellation's topology is frozen and its node positions differentiated, with second order, a transposed pass and a rigid-body adjoint with contact. Checked against finite differences of fresh rebuilds, with the polygonization gap and two open disagreements stated.",
     "root": "../paper/vcad",
     "source": "vcad.typ",
     "cover": "plasma-torus"

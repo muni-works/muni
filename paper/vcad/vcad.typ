@@ -220,14 +220,14 @@
   let y = -0.45
   lbl(((X(1) + X(2) + w) / 2, y), [lift-bridge duals · implicit vertex rows], fill: c-text)
   lbl(((X(1) + X(2) + w) / 2, y - 0.35), [dx/dθ, exact; combinatorics never differentiated])
-  lbl((X(3) + w / 2, y), [∂J/∂x], fill: c-text)
-  lbl((X(3) + w / 2, y - 0.35), [divergence theorem])
+  lbl((X(3) + w / 2 + 0.3, y), [∂J/∂x], fill: c-text)
+  lbl((X(3) + w / 2 + 0.3, y - 0.35), [divergence theorem])
   // the adjoint, backwards
   let yb = -1.55
   line((X(3) + w / 2, yb), (X(0) + w / 2, yb), mark: (end: "stealth", fill: c-info), stroke: (paint: c-info, thickness: 0.6pt, dash: "dashed"))
-  lbl(((X(0) + X(3) + w) / 2, yb - 0.3), [reverse mode: one pullback of ∂J/∂x prices every θ], fill: c-info)
+  lbl(((X(0) + X(3) + w) / 2, yb - 0.3), [transposed pass: one pass of ∂J/∂x gives every dJ/dθ], fill: c-info)
   // topology wall
-  lbl((X(1) + w / 2, h + 0.35), [topology change ⇒ error, not a gradient], fill: c-fault)
+  lbl((X(1) + w / 2, h + 0.35), [a topology change returns an error], fill: c-fault)
 })
 
 // L-BFGS vs projected GD on the five-parameter rounded, drilled box (log J per iterate)
@@ -284,9 +284,20 @@
   lbl((w / 2, -0.75), [bore radius (mm)])
   lbl((-0.7, h / 2), [hole radius (mm)], anchor: "east")
   circle((X(8), Y(5)), radius: 0.12, stroke: 0.7pt + c-ok, fill: none)
-  lbl((X(8) + 0.2, Y(5) - 0.3), [θ\* that set the target], anchor: "west", fill: c-ok)
+  lbl((X(8), Y(5) - 0.35), [design whose inertia is the target], anchor: "north", fill: c-ok)
   if pts.len() > 1 {
-    line(..pts.map(p => (X(p.at(0)), Y(p.at(1)))), stroke: 0.8pt + c-sel)
+    line(..pts.map(p => (X(p.at(0)), Y(p.at(1)))), stroke: 0.4pt + c-line-hi)
+  }
+  let lb = ()
+  let j = 0
+  while ("fly::path::" + str(j)) in measured { lb.push((V("fly::path::" + str(j), i: 0), V("fly::path::" + str(j), i: 1))); j += 1 }
+  if lb.len() > 1 {
+    line(..lb.map(p => (X(p.at(0)), Y(p.at(1)))), stroke: 1.1pt + c-sel)
+    for p in lb { circle((X(p.at(0)), Y(p.at(1))), radius: 0.06, fill: c-sel, stroke: none) }
+    lbl((X(lb.last().at(0)) - 0.15, Y(lb.last().at(1)) + 0.45), [L-BFGS], anchor: "east", fill: c-sel)
+    lbl((X(6.0), Y(3.2)), [projected gradient descent, faint], fill: c-label)
+  }
+  if pts.len() > 1 {
     circle((X(pts.first().at(0)), Y(pts.first().at(1))), radius: 0.08, fill: c-label, stroke: none)
     circle((X(pts.last().at(0)), Y(pts.last().at(1))), radius: 0.09, fill: c-sel, stroke: none)
     lbl((X(pts.first().at(0)) + 0.15, Y(pts.first().at(1)) - 0.25), [θ₀], anchor: "west")
@@ -461,8 +472,8 @@
   // simple oblique: screen x = x, screen y = y·sin(p)·0.45 + z
   let S(x, y, z) = (ox + x, y * 0.42 + z)
   let front(u, v) = calc.sin(u) * calc.cos(v) * 0.42 - calc.sin(v) * 0 < 0.4
-  let nu = 36
-  let nv = 16
+  let nu = 24
+  let nv = 12
   for i in range(nu) {
     let u = 2 * calc.pi * i / nu
     let pts = range(nv + 1).map(j => { let v = 2 * calc.pi * j / nv; let c = R0 + r0 * calc.cos(v); S(c * calc.cos(u), c * calc.sin(u), r0 * calc.sin(v)) })
@@ -568,7 +579,7 @@
   }
   // the gate
   line((X(1e-6), -0.25), (X(1e-6), Y(0) + 0.35), stroke: (paint: c-warn, thickness: 0.7pt, dash: "dashed"))
-  lbl((X(1e-6), Y(0) + 0.55), [gate $10^(-6)$], fill: c-warn)
+  lbl((X(1e-6), Y(0) + 0.55), [tolerance $10^(-6)$], fill: c-warn)
   for (k, (name, fdv, nodev)) in rows.enumerate() {
     let y = Y(k)
     lbl((x0 - 0.15, y), name, anchor: "east", fill: c-text, size: s-xs)
@@ -579,7 +590,7 @@
     circle((X(fdv), y), radius: 0.075, fill: c-vcad, stroke: none)
   }
   circle((x0 + 0.1, -1.0), radius: 0.075, fill: c-vcad, stroke: none)
-  lbl((x0 + 0.25, -1.0), [dV/dθ vs FD of a full rebuild], anchor: "west")
+  lbl((x0 + 0.25, -1.0), [dV/dθ vs same-plan FD], anchor: "west")
   circle((x0 + 0.1, -1.35), radius: 0.07, stroke: 0.7pt + c-label, fill: c-bg)
   lbl((x0 + 0.25, -1.35), [worst node, dx/dθ], anchor: "west")
 })
@@ -650,6 +661,102 @@
   }
 })
 
+// ---- figures for the referee's experiments ------------------------------------------
+// log10 helper and a generic log-log plot frame
+// Typst writes negative integers with a Unicode minus; data keys use ASCII
+#let ks(e) = if e < 0 { "-" + str(-e) } else { str(e) }
+#let lg(x) = calc.log(calc.max(calc.abs(x), 1e-300), base: 10)
+#let lmap(W, H, x0, x1, y0, y1) = (
+  v => W * (lg(v) - x0) / (x1 - x0),
+  v => H * (calc.max(y0, calc.min(y1, lg(v))) - y0) / (y1 - y0),
+)
+#let loglog-frame(W, H, x0, x1, y0, y1, xlabel, ylabel, xticks: (), yticks: ()) = {
+  import cetz.draw: *
+  let (X, Y) = lmap(W, H, x0, x1, y0, y1)
+  for e in yticks {
+    line((0, Y(calc.pow(10.0, e))), (W, Y(calc.pow(10.0, e))), stroke: 0.3pt + c-line)
+    lbl((-0.12, Y(calc.pow(10.0, e))), [$10^(#str(e))$], anchor: "east")
+  }
+  for e in xticks { lbl((X(calc.pow(10.0, e)), -0.3), [$10^(#str(e))$]) }
+  line((0, 0), (W, 0), stroke: 0.6pt + c-line-hi)
+  lbl((W / 2, -0.72), xlabel)
+  lbl((0, H + 0.3), ylabel, anchor: "west")
+}
+#let series-line(pts, col, w: 0.9pt, dash: none, dots: true) = {
+  import cetz.draw: *
+  if pts.len() > 1 { line(..pts, stroke: (paint: col, thickness: w, dash: dash)) }
+  if dots { for p in pts { circle(p, radius: 0.05, fill: col, stroke: none) } }
+}
+
+// FD error against step size: a converged FD flattens onto the seam, a wrong row stays on a plateau
+#let fig-sweep() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let W = 6.4
+  let (X, Y) = lmap(W, 3.8, -8.3, -0.7, -12, -1)
+  loglog-frame(W, 3.8, -8.3, -0.7, -12, -1, [finite-difference step h (mm)], [|FD − seam| / |seam|], xticks: (-8, -6, -4, -2), yticks: (-12, -9, -6, -3))
+  let rel(a, b) = calc.abs(a - b) / calc.abs(b)
+  let legend(k, col, label, dash: none) = {
+    let y = 3.6 - k * 0.4
+    line((W + 0.3, y), (W + 0.75, y), stroke: (paint: col, thickness: 1pt, dash: dash))
+    lbl((W + 0.85, y), label, anchor: "west", fill: col)
+  }
+  let fresh(k, name, col, label) = {
+    let s = V("rebuild::" + name + "::seam")
+    let pts = range(-6, 0).filter(e => ("rebuild::" + name + "::fd::" + ks(e)) in measured).map(e => (X(calc.pow(10.0, e)), Y(rel(V("rebuild::" + name + "::fd::" + ks(e)), s))))
+    series-line(pts, col)
+    legend(k, col, label)
+  }
+  fresh(0, "torus_r", c-text, [torus · r, rebuild FD])
+  fresh(1, "hole_r", c-label, [box − cylinder · r, rebuild FD])
+  fresh(2, "fillet_r", c-vcad, [filleted cube · r, rebuild FD])
+  let s3 = V("sweep::seam::3")
+  let plan = range(-8, -3).filter(e => ("sweep::plan::3::" + ks(e)) in measured).map(e => (X(calc.pow(10.0, e)), Y(rel(V("sweep::plan::3::" + ks(e)), s3))))
+  series-line(plan, c-warn, w: 1.2pt)
+  legend(3, c-warn, [five-parameter box · fillet r, same-plan FD])
+  let fr = range(-4, 0).map(e => (X(calc.pow(10.0, e)), Y(rel(V("sweep::fresh::3::" + ks(e)), s3))))
+  series-line(fr, c-warn, dash: "dashed", dots: false)
+  legend(4, c-warn, [five-parameter box · fillet r, rebuild FD], dash: "dashed")
+})
+
+// parameter error against wall-clock time for the same problem and line search, different oracles
+#let fig-baselines() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let (X, Y) = lmap(8.0, 3.8, -1.3, 3.2, -8, 1)
+  loglog-frame(8.0, 3.8, -1.3, 3.2, -8, 1, [wall-clock time (s)], [max |θ − θ\*| (mm)], xticks: (-1, 0, 1, 2, 3), yticks: (-8, -6, -4, -2, 0))
+  let runs = (("lm_seam", c-vcad, [Levenberg–Marquardt · seam Jacobian], 1.4pt), ("lbfgs_seam", c-text, [L-BFGS · seam gradient], 1.1pt), ("lbfgs_fd4", c-label, [L-BFGS · rebuild FD, $h = 10^(-4)$], 0.8pt), ("lbfgs_fd6", c-line-hi, [L-BFGS · rebuild FD, $h = 10^(-6)$], 0.8pt), ("lbfgs_fd2", c-info, [L-BFGS · rebuild FD, $h = 10^(-2)$], 0.8pt))
+  for (k, (name, col, label, w)) in runs.enumerate() {
+    let pts = ()
+    let i = 1
+    while ("base::" + name + "::" + str(i)) in measured {
+      let key = "base::" + name + "::" + str(i)
+      pts.push((X(calc.max(V(key, i: 0) / 1000, 0.05)), Y(V(key, i: 2))))
+      i += 1
+    }
+    if pts.len() > 1 { line(..pts, stroke: w + col) }
+    lbl((8.2, 3.6 - k * 0.38), label, anchor: "west", fill: col)
+    line((7.75, 3.6 - k * 0.38), (8.1, 3.6 - k * 0.38), stroke: w + col)
+  }
+})
+
+// the fillet's gap to the continuum derivative against blend resolution
+#let fig-gap() = cetz.canvas(length: 1cm, {
+  import cetz.draw: *
+  let (X, Y) = lmap(6.0, 3.2, 0.8, 2.5, -4, 0)
+  loglog-frame(6.0, 3.2, 0.8, 2.5, -4, 0, [circle segments N (a quarter-blend gets N / 4)], [relative gap to continuum dV/dr], xticks: (), yticks: (-4, -3, -2, -1, 0))
+  for n in (8, 16, 32, 64, 128, 256) { lbl((X(n), -0.3), [#n]) }
+  let c = V("gap::continuum")
+  let pts = (8, 16, 32, 64, 128, 256).map(n => (X(n), Y((V("gap::" + str(n) + "::dv") - c) / c)))
+  // N^-2 guide through the N = 64 point
+  let g64 = (V("gap::64::dv") - c) / c
+  line((X(8), Y(g64 * 64.0 * 64.0 / 64.0)), (X(256), Y(g64 * 64.0 * 64.0 / (256.0 * 256.0))), stroke: (paint: c-label, thickness: 0.5pt, dash: "dashed"))
+  lbl((X(200), Y(g64 * 64.0 * 64.0 / (200.0 * 200.0)) + 0.3), [$N^(-2)$], fill: c-label)
+  series-line(pts, c-vcad, w: 1.1pt)
+  lbl((X(16) + 0.2, Y((V("gap::16::dv") - c) / c) + 0.15), [16, the resolution used above], anchor: "west", fill: c-vcad)
+})
+
+// a large torus for the title page
+#let fig-torus-hero() = cetz.canvas(length: 2.2cm, { torus-panel(0, "R", [], []) })
+
 // ---- title page -----------------------------------------------------------------
 #if not web {page(margin: (x: 0.75in, top: 0.7in, bottom: 0.65in))[
   #set par(leading: 0.5em)
@@ -660,11 +767,11 @@
   #v(1.6em)
   #image("images/muni-logo.svg", width: 0.95in)
   #v(0.5in)
-  #align(center, fig-lbfgs(width: 16.5, height: 8.5, legend: false))
+  #align(center, fig-torus-hero())
   #v(0.1in)
   #grid(columns: (1fr, auto), align: (left, right),
-    caps[Five CAD parameters of a filleted, drilled box · objective per iterate],
-    caps(fill: c-sel)[L-BFGS on exact BRep gradients])
+    caps[make_torus(8, 3) · design velocity dx/dR on its own mesh],
+    caps(fill: c-sel)[red: outward · pale: inward])
   #v(1fr)
   #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display, tracking: -0.02em)[Exact Gradients\ Through a BRep Kernel])
   #v(0.5em)
@@ -675,10 +782,24 @@
   #caps[Cam Pedersen · Municipal Robotics]
 ]}
 
-#let abstract-text = [
-  Gradient-based design needs the derivative of a downstream quantity with respect to the parameters a designer actually edits: a hole radius, a fillet radius, an extrude depth. In a boundary-representation (BRep) CAD kernel those parameters pass through Boolean operations, filleting and tessellation, all of which make discrete choices, so the kernel is not differentiable as written. We describe the differentiable seam in vcad, an open-source Rust BRep kernel: rather than differentiating the kernel's combinatorics, we freeze the tessellation's topology at the current parameter value and differentiate the positions of its nodes exactly, by evaluating the kernel's analytic surfaces on dual numbers and by implicit differentiation of the surface equations at vertices and trim curves. The seam detects changes of topology and reports them as errors instead of returning wrong gradients.
+// time and iterations for an optimizer run to first reach a parameter error below tol
+#let ttt(name, tol) = {
+  let i = 0
+  let hit = none
+  while ("base::" + name + "::" + str(i)) in measured {
+    let k = "base::" + name + "::" + str(i)
+    if V(k, i: 2) < tol { hit = (i, V(k, i: 0) / 1000); break }
+    i += 1
+  }
+  hit
+}
+#let ttt-cell(name, tol) = { let h = ttt(name, tol); if h == none [not reached] else [#h.at(0) it · #fx(h.at(1), 1) s] }
+#let relc(a, b) = sci(calc.abs(a - b) / calc.abs(b))
 
-  The seam covers planes, cylinders, spheres, cones and tori, including composite motions such as a fillet radius that moves twenty surfaces at once; exact first and directional second derivatives of volume, mass, centroid and inertia; a reverse-mode transpose that prices every parameter from one pass; seeding synthesized from the build function; L-BFGS; gradients of a named parameter of a `.vcad` document; and, through an exact trajectory adjoint in the phyz simulator, gradients of rigid-body rollouts including penalty contact against the CAD surface. Every derivative is validated against finite differences of a full rebuild. Fillet-radius volume gradients agree to #E(K-m4 + "@L132::rel_fd"), reverse mode prices both parameters of a filleted cube from one pass and matches forward mode to rounding, and a contact rollout's shape gradient to #E("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel"). L-BFGS recovers all five parameters of a filleted, drilled box in #V("m9::lbfgs::iters") iterations where projected gradient descent does not converge in #V("m9::gd::iters"). The gradients are those of the frozen tessellation: they are exact for the mesh the kernel produces and differ from the continuum shape derivative by the polygonization error, and they say nothing across a change of topology. We present the seam as one operator with its own adjoint, the geometry node in a planned architecture in which vcad's physics is written once as math and the tang compiler derives kernels and gradients for every device; today the seam, mass properties and the rollout adjoint are composed by hand, and that composition is the graph the architecture will make general.
+#let abstract-text = [
+  Gradient-based design needs the derivative of an objective with respect to the parameters a designer edits, such as a hole radius or a fillet radius. In a boundary-representation (BRep) kernel those parameters pass through Boolean operations, filleting and tessellation, which make discrete choices. We freeze the tessellation's topology at the current parameters and differentiate its node positions: surface nodes by evaluating the kernel's analytic surfaces on dual numbers, vertices and trim curves by implicit differentiation of the surface equations, with tangency rows for fillet blends. The result is exact for the frozen mesh, extends to directional second derivatives and to a transposed (reverse) pass, and feeds mass properties and a rigid-body adjoint with penalty contact. A change of topology is reported as an error.
+
+  We validate against finite differences of fresh rebuilds that share no tessellation with the seam, and state where the method falls short: the derivative of the frozen mesh differs from the continuum by the polygonization error (6.7% for a fillet at 16 segments per circle, #fx(100 * calc.abs((V("gap::128::dv") - V("gap::continuum")) / V("gap::continuum")), 2)% at 128), a plan stays valid for parameter steps up to #sci(V("radius::0::h")) mm, and on a filleted, drilled box the fillet-radius derivative disagrees with a converged finite difference by $1.4 times 10^(-4)$, which we have not resolved.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -696,97 +817,88 @@
 
 = Introduction
 
-A mechanical designer works in parameters: the depth of a pocket, the radius of a bore, the radius of a fillet. An optimizer that should help that designer needs $d J \/ d theta$, the derivative of an objective $J$ (a mass, an inertia, a simulated trajectory) with respect to those same parameters. Production CAD kernels do not provide it. Between $theta$ and anything measurable sit Boolean operations, fillet construction and tessellation, each of which makes discrete decisions: which faces survive a Boolean, in which order they are sewn, how many segments approximate a circle, where a triangulation inserts a vertex. Practitioners fall back on finite differences of full rebuilds, which cost one rebuild per parameter and, as we show, are noisy on filleted parts, because two rebuilds can enumerate the same topology in different orders.
+A mechanical designer works in parameters: the depth of a pocket, the radius of a bore, the radius of a fillet. An optimizer that serves that designer needs $d J \/ d theta$, the derivative of an objective $J$ (a mass, an inertia, the outcome of a simulation) with respect to those parameters. Between $theta$ and anything measurable sit Boolean operations, fillet construction and tessellation, each of which makes discrete decisions: which faces survive a Boolean, in which order they are sewn, how many segments approximate a circle. Mainstream commercial kernels expose no parameter derivatives, so users fall back on finite differences of full rebuilds, at two rebuilds per parameter.
 
-Most differentiable-geometry work avoids the problem by changing the representation: signed distance fields, constructive solid geometry over smooth primitives, or meshes optimized directly. These are well suited to learning and to rendering, but the designer's model is a BRep with fillets, and its parameters are the ones in the feature tree.
+This is not a new problem, and our approach is not new in outline. Engineering Sketch Pad computes *tessellation sensitivities* on a parametric BRep: the motion of every grid point with respect to every design parameter, on a tessellation whose topology is kept consistent between the base and perturbed models, with sensitivities found on Nodes, then Edges, then Faces @dannenhoffer2015sensitivity @dannenhoffer2017adjoint. Those sensitivities are analytic for most construction operations and fall back to finite differences for others, filleting among them @dannenhoffer2015sensitivity. Banović et al. differentiate the Open CASCADE kernel itself by operator overloading @banovic2018occt @mykhaskiv2017nurbs.
 
-We take the opposite approach and differentiate the production kernel without changing it. The idea, which we call the *seam*, is to cut the chain at the tessellated mesh. At the current parameter $theta_0$ we record a *frozen plan*: the tessellation's connectivity and, for every mesh node, a recipe that says how that node is determined by the BRep (a topology vertex, a point at fixed surface coordinates, or a point on the intersection of two surfaces). Within the neighbourhood where the topology does not change, node positions are smooth functions of $theta$, and we compute their derivatives $d x_i \/ d theta$ exactly. Everything downstream (mass properties, objectives, a physics adjoint) is an ordinary smooth function of node positions.
+We describe the same idea, which we call the *seam*, in vcad, our open-source Rust BRep kernel, and extend it in four directions:
 
-Our contributions are:
+- *Fillets analytically.* A fillet radius moves every blend's radius and axis at once, and its blends meet their support faces tangentially, which makes the implicit system at their corner vertices rank-deficient. We add tangency rows that complete it (@sec:implicit), so one fillet parameter, moving 20 surfaces, is differentiated without finite differences.
+- *Second order.* Directional second derivatives of mass properties, with the node accelerations of cones and tori (@sec:qoi).
+- *A transposed pass.* Node velocities are linear in per-surface seed values; transposing those maps gives the derivative for every parameter from one pass (@sec:reverse).
+- *Rigid-body dynamics.* Mass-property and contact cotangents from a discrete trajectory adjoint pulled back through the seam (@sec:physics).
 
-- *A frozen-tessellation seam for a production BRep kernel* (vcad), with exact node sensitivities from dual-number evaluation of the kernel's analytic surfaces and implicit differentiation of surface equations at vertices and trims, covering planes, cylinders, spheres, cones and tori, and composite motions such as a fillet radius (@sec:seam).
-- *Exact derivatives of mass properties*, first order and directional second order including node accelerations on cones and tori, and a Gauss–Newton Hessian for least-squares objectives (@sec:qoi).
-- *A reverse mode* obtained by transposing the seam's per-node linear maps, so one pass prices every parameter, and an L-BFGS optimizer over it that treats topology changes as failed steps (@sec:reverse).
-- *Seeding synthesized from the build function*, which removes the last hand-written step, and gradients of named parameters of `.vcad` documents (@sec:synth).
-- *Gradients through rigid-body rollouts*, exact for contact-free rollouts and for a penalty-contact model whose contact cotangent on the CAD surface is pulled back through the seam (@sec:physics).
+We validate every derivative against central finite differences of rebuilds tessellated from scratch, which share nothing with the seam's code (@sec:results), and report the cases where the two disagree. A script regenerates every number in this paper from a fresh clone (@sec:repro).
 
-Every derivative is validated against central finite differences of a full CAD rebuild (@sec:results), and a script regenerates every number in this paper from a fresh clone (@sec:repro).
+== Scope and limits <sec:limits>
 
-The seam also fits an operator-graph design. It takes CAD parameters and returns a mesh together with a vector–Jacobian product, which is the contract of an opaque operator node in a differentiable program. @sec:operator places it in the architecture we are building for vcad and phyz on the tang compiler, where engineering physics is written once as tensor comprehensions and gradients through solves and rollouts come from operator nodes with known adjoints. The results in this paper are for the seam and its hand-wired consumers as they exist today; the architecture is stated as the plan they plug into, not as a result.
-
-== Scope and limits
-
-We state the limits first, because they define what the gradients mean.
-
-- *Gradients of the frozen tessellation.* The seam differentiates the mesh the kernel actually produces at $theta_0$, with its segment counts and triangulation held fixed. It is exact for that mesh. It differs from the continuum shape derivative by the polygonization error: for a 112-segment hole the gap is #E(K-m2 + "@L129::gap"), and for 16-segment fillet blends #fx(100 * V(K-m4 + "@L195::gap"), 1)% (@tab:fd). Refining the mesh closes this gap; the seam does not.
-- *No derivatives across topology changes.* When a perturbation would change the topology (a blind hole breaking through, a fillet consuming a face), the derivative of the frozen mesh does not exist in any useful sense. The seam detects this with a topology signature and per-node correspondence checks and returns an error. The optimizer treats such a step as failed and shrinks it.
-- *The contact adjoint covers phyz's differentiable penalty model*, a per-vertex spring–damper against a ground plane with no friction. It does not differentiate the GJK/EPA collision pipeline used by vcad's production physics world @gilbert1988gjk.
-- *Round-off agreement is on CPU in f64.* Every gate in this paper runs on CPU in double precision. No GPU result is claimed.
-- *The trajectory adjoint supports single-degree-of-freedom joints* (revolute, prismatic, fixed), open-loop control and objectives on the final state only.
+- *The derivative is that of the frozen mesh.* The seam differentiates the mesh the kernel produces at $theta_0$, with segment counts and triangulation held fixed. It differs from the continuum shape derivative by the polygonization error, which falls as $N^(-2)$ in the number of segments: for a filleted cube at 16 segments per full circle (four per quarter-blend) the fillet-radius derivative is 6.7% larger in magnitude than the continuum one, and #fx(100 * calc.abs((V("gap::128::dv") - V("gap::continuum")) / V("gap::continuum")), 2)% at 128 (@fig:gap).
+- *A plan is valid only near where it was captured.* Re-evaluating a plan matches every node to its capture-time position within $10^(-3)$ mm. On the five-parameter box of @sec:box, every parameter can move by #sci(V("radius::0::h")) mm before that match fails. The optimizer therefore captures a fresh plan at every iterate.
+- *Segment counts can change between iterates.* vcad's Boolean rims are sag-adaptive: their arc count depends on the radius. Sweeping the box's hole radius from 1.6 to 2.4 mm changes the node count #V("sag::changes") times, and each change moves the volume by up to #sci(V("sag::max_jump_rel")) of its value. Across iterates $J$ is therefore piecewise smooth with small jumps. The optimizer does not reject a step because its node count differs from the last iterate's, because each iterate's gradient is taken on its own plan; the jumps show up as noise in the line search.
+- *No derivatives across topology changes.* When a perturbation would change the topology (a blind hole breaking through, a fillet consuming a face), the seam detects it with a topology signature and per-node correspondence checks and returns an error, and the optimizer shrinks the step (@fig:wall).
+- *Seedings synthesized from the build function are not exact.* They are central differences of surface fields, accurate to $O(h^2)$, and they cost two rebuilds per parameter (@sec:synth).
+- *Contact is phyz's differentiable penalty model*, a per-vertex spring–damper against a ground plane without friction, not a GJK/EPA collision pipeline @gilbert1988gjk. The trajectory adjoint supports single-degree-of-freedom joints, open-loop control and objectives on the final state only.
+- *Everything runs on CPU in double precision.*
 
 #figure(fig-wall(),
-  caption: [#lead[What the gradient is a gradient of.] Within one topology class the frozen plan's volume is smooth in the parameter and the seam returns its exact derivative (red tangent). When a blind hole breaks through, the plan's topology signature changes and the seam returns `TopologyChanged`; an optimizer treats that as a failed step and shrinks it. Schematic.],
+  caption: [#lead[What the gradient is a gradient of.] Within one topology class the frozen plan's volume is smooth in the parameter and the seam returns its derivative (red tangent). When a blind hole breaks through, the plan's topology signature changes and the seam returns an error; an optimizer treats that as a failed step and shrinks it. Schematic.],
 ) <fig:wall>
 
 = Background and related work
 
-*Differentiable rendering and mesh optimization.* Differentiable rasterizers @kato2018nmr @liu2019softras and path tracers @li2018edge compute derivatives of images with respect to mesh vertices. They operate on a mesh whose connectivity is held fixed, as ours is; the difference is where the vertex positions come from. Worchel and Alexa extract a mesh from parametric curves and surfaces and pass it to a differentiable mesh renderer @worchel2023parametric; they report that naive differentiable tessellation is fragile, which our correspondence machinery addresses for BRep solids.
+*Parametric CAD sensitivities.* Structural shape optimization has long used design velocities, the sensitivity of boundary points to design variables @haftka1986shape @sokolowski1992shape. For CAD models these come from three routes. Finite differences of rebuilds with point correspondence are the most general and the most expensive; Robinson et al. and Agarwal et al. compute parametric design velocities this way for use with adjoint solvers @robinson2012adjoint @agarwal2018designvelocity. Differentiating the kernel by operator overloading gives exact derivatives of the kernel's operations: Banović et al. and Mykhaskiv et al. differentiate Open CASCADE and couple it to a discrete adjoint CFD solver @banovic2018occt @mykhaskiv2017nurbs, and Xu et al. differentiate a NURBS-based design chain @xu2014adjoint. Engineering Sketch Pad differentiates its own constructive solid geometry process analytically where it can and uses finite differences elsewhere, and maps the result onto a consistent tessellation @dannenhoffer2015sensitivity @dannenhoffer2017adjoint. Our seam is closest to Engineering Sketch Pad: we leave the kernel's combinatorial code undifferentiated and differentiate the map from parameters to a tessellation of fixed topology. What we add is the analytic treatment of fillets, second derivatives, a transposed pass, and the coupling to rigid-body dynamics with contact. Isogeometric analysis avoids the tessellation by computing on the CAD basis @hughes2005iga.
 
-*Implicit and CSG representations.* Signed distance fields, learned @park2019deepsdf or analytic, are differentiable almost everywhere and can be rendered differentiably @vicini2022sdf. Program-synthesis approaches recover CSG trees from shapes @sharma2018csgnet @du2018inversecsg. Commercial implicit-modeling optimizers work in the same representation (TODO: find a citable reference for a production implicit-modeling optimizer). These representations trade the BRep's exact faces, trims and fillets for differentiability; we keep the BRep.
+*Differentiable CAD programs.* Cascaval et al. write CAD programs in an automatically differentiable language for bidirectional editing, and do not optimize across changes of topology @cascaval2022bidirectional. Michel and Boubekeur compute parameter updates for direct manipulation of procedural shapes @michel2021dag. Schulz et al. precompute a design space of CAD parameters for interactive optimization @schulz2017designspace.
 
-*Differentiable CAD programs.* Cascaval et al. write CAD programs in an automatically differentiable language for bidirectional editing; they do not optimize across changes of topology @cascaval2022bidirectional. Michel and Boubekeur compute parameter updates for direct manipulation of procedural shapes @michel2021dag. Schulz et al. precompute a design space of CAD parameters for interactive optimization @schulz2017designspace. The closest work in engineering is the algorithmic differentiation of the Open CASCADE kernel with ADOL-C by Banović et al., coupled to an adjoint CFD solver @banovic2018occt. They differentiate the kernel's operations by operator overloading; we leave the kernel's combinatorial code undifferentiated and differentiate only the geometric map from parameters to the frozen mesh, which is why a nondeterministic Boolean or fillet is not a problem for us.
+*Differentiable rendering and other representations.* Differentiable rasterizers @kato2018nmr @liu2019softras and path tracers @li2018edge compute derivatives of images with respect to the vertices of a mesh of fixed connectivity, as ours is. Worchel and Alexa extract a mesh from parametric curves and surfaces for a differentiable mesh renderer and report that naive differentiable tessellation is fragile @worchel2023parametric. Signed distance fields, learned @park2019deepsdf or analytic, are differentiable almost everywhere and can be rendered differentiably @vicini2022sdf, and program synthesis recovers CSG trees from shapes @sharma2018csgnet @du2018inversecsg. These representations give up the BRep's exact faces, trims and fillets.
 
-*CAD-parameterized shape optimization.* Structural shape optimization has long used design velocities, the sensitivity of boundary points to design variables @haftka1986shape @sokolowski1992shape. Agarwal et al. compute parametric design velocities for CAD models for use with adjoint solvers @agarwal2018designvelocity, and isogeometric analysis removes the mesh by computing on the CAD basis @hughes2005iga. Our node velocities $d x_i \/ d theta$ are design velocities; what we add is computing them exactly inside a general-purpose BRep kernel, including fillets, and carrying them to mass properties and rigid-body dynamics.
-
-*Differentiable physics and co-design.* Differentiable simulators include rigid-body formulations with contact @belbute2018diffphys @geilinger2020add @werling2021nimble and differentiable programming systems @hu2020difftaichi. Robot co-design work optimizes morphology and control jointly @ha2017joint @xu2021codesign, usually over parametric primitives rather than CAD models. Our physics consumer is a discrete adjoint over Featherstone's articulated-body algorithm @featherstone2008; the contribution here is the interface, which prices CAD parameters through two channels, the ten mass-property scalars per body and the contact cotangent on the CAD surface.
-
-*Differentiable array compilers.* The architecture in @sec:operator builds on tang, our tensor compiler, whose single compute primitive is the comprehension $"out"[i] = plus.o.big_k "body"(x["view"(i, k)])$ with a traced scalar body, a monoid combine and affine, guarded or gather views; tang derives gradients of comprehension programs and generates code for CUDA, Metal, WGSL, OpenCL, GLSL and C, checked against an f64 reference interpreter (TODO: cite the tang paper once it has an arXiv identifier). Operator nodes with user-supplied adjoints, such as a linear solve differentiated by the implicit function theorem, are the standard way to place solvers inside such programs (TODO: cite implicit-differentiation libraries, e.g. JAX custom VJPs, after verifying a reference).
+*Differentiable physics and co-design.* Differentiable simulators include rigid-body formulations with contact @belbute2018diffphys @geilinger2020add @werling2021nimble and differentiable programming systems @hu2020difftaichi. Robot co-design work optimizes morphology and control jointly @ha2017joint @xu2021codesign, usually over parametric primitives rather than CAD models. Placing a solver or a simulation inside a differentiable program as one step with a known adjoint is standard @blondel2022implicit; our rollout coupling is such a step written by hand.
 
 = The differentiable seam <sec:seam>
 
 #figure(fig-seam(),
-  caption: [#lead[Where the chain is cut.] The BRep build is never differentiated. At the current parameters a frozen plan records the tessellation; node sensitivities $d x \/ d theta$ come from the kernel's analytic surfaces. Downstream quantities differentiate as smooth functions of node positions, and reverse mode runs the same maps transposed.],
+  caption: [#lead[Where the chain is cut.] The BRep build is never differentiated. At the current parameters a frozen plan records the tessellation; node velocities $d x \/ d theta$ come from the kernel's analytic surfaces. Downstream quantities differentiate as smooth functions of node positions, and the transposed pass runs the same maps backwards.],
 ) <fig:seam>
 
 == Frozen plans
 
-vcad's kernel represents solids as BReps whose faces carry analytic surfaces (plane, cylinder, cone, sphere, torus, bilinear patch, B-spline), Boolean operations, filleting and a tessellator. Two properties of the kernel, both found by running it, shaped the design. First, the Boolean pipeline and the fillet kernel are order-nondeterministic: two builds of the same model can enumerate isomorphic topology in different orders, flip a blend cylinder's axis or rotate its reference direction. Traversal order therefore cannot carry node identity from one build to another. Second, the stock mesh stores 32-bit positions, at which a central difference with $h = 10^(-6)$ is meaningless, so the seam emits its own 64-bit mesh.
+vcad represents solids as BReps whose faces carry analytic surfaces (plane, cylinder, cone, sphere, torus, bilinear patch, B-spline), with Boolean operations, filleting and a tessellator. Two properties of the kernel shaped the design. First, its Boolean and fillet code is order-nondeterministic: two builds of the same model can enumerate isomorphic topology in different orders, flip a blend cylinder's axis or rotate its reference direction, so traversal order cannot carry node identity from one build to another. Second, the stock mesh stores 32-bit positions, at which a central difference with $h = 10^(-6)$ is meaningless, so the seam emits its own 64-bit mesh.
 
-`capture_plan` tessellates once at $theta_0$ and classifies every node:
+Capturing a plan tessellates once at $theta_0$ and classifies every node:
 
-- *TopoVertex*: the node coincides with a topology vertex. Its velocity comes from implicit differentiation (@sec:implicit).
-- *SurfaceUv*: the node is interior to a face, stored as fixed surface coordinates $(u, v)$. Its position is $S(u, v; phi(theta))$ for the surface's fields $phi$ (offset, radius, axis, half-angle).
-- *Boundary*: the node lies on the intersection of two faces with independent normals but is not a topology vertex, for example a ring on a cylinder's cap. Its position is the Newton solution of ${g_a(x) = 0, g_b(x) = 0, t dot (x - x_0) = 0}$, with $t$ the intersection tangent, so the node follows the moving trim whichever surface carries $theta$.
+- *Vertex nodes* coincide with a topology vertex. Their velocity comes from implicit differentiation (@sec:implicit).
+- *Surface nodes* are interior to a face, stored as fixed surface coordinates $(u, v)$. Their position is $S(u, v; phi(theta))$ for the surface's fields $phi$ (offset, radius, axis, half-angle).
+- *Trim nodes* lie on the intersection of two faces with independent normals but are not topology vertices, for example a ring on a cylinder's cap. Their position is the Newton solution of ${g_a (x) = 0, g_b (x) = 0, t dot (x - x_0) = 0}$, with $t$ the intersection tangent, so a trim node follows the moving trim whichever surface carries $theta$.
 
-A plan carries a topology signature (a sorted multiset of per-face descriptors, which is invariant to isomorphic reordering) and each node's capture-time position. Re-evaluating at a nearby $theta$ resolves vertices and faces geometrically, by nearest match after transporting the stored $(u, v)$ through the rebuilt surface's frame, and fails with `CorrespondenceLost` when any node lands more than $10^(-3)$ mm from where it should. A changed signature fails with `TopologyChanged`. Both are errors, never a mesh.
+A plan carries a topology signature (a sorted multiset of per-face descriptors, invariant to isomorphic reordering) and each node's capture-time position. Re-evaluating at a nearby $theta$ resolves vertices and faces geometrically, by nearest match after transporting the stored $(u, v)$ through the rebuilt surface's frame. If any node lands more than $10^(-3)$ mm from where it should, evaluation fails with a lost-correspondence error; if the signature changes, it fails with a topology error.
 
 #figure(fig-recipes(),
-  caption: [#lead[Node recipes on a Boolean result.] Left: the top cap of a plate minus a cylinder, θ = hole radius. Rim vertices are topology vertices; their velocity comes from the implicit rows and is exactly radial. Plane-interior samples sit on a surface that does not move and have zero velocity. Right: the rows at one rim vertex. The cap plane and the hole wall give two independent rows; the tangent direction is unconstrained and stays frozen, so the rim keeps its angular parameter.],
+  caption: [#lead[Node recipes on a Boolean result.] Left: the top cap of a plate minus a cylinder, θ = hole radius. Rim vertices are topology vertices; their velocity comes from the implicit rows and is radial. Plane-interior samples lie on a surface that does not move and have zero velocity. Right: the rows at one rim vertex. The cap plane and the hole wall give two independent rows; the tangent direction is unconstrained and stays frozen, so the rim keeps its angular parameter.],
 ) <fig:recipes>
 
-== Surface nodes: the lift bridge
+== Surface nodes
 
-Every analytic surface in the kernel is generic over a scalar type, so it can be evaluated on dual numbers $a + b epsilon$ with $epsilon^2 = 0$ @griewank2008. A parameter is connected to the surfaces it moves by a *seeding*: a map from surface index to field velocities (translate by $bold(v)$, grow the radius at rate $dot(r)$, open the cone at rate $dot(alpha)$, and so on). Seeds compose additively, which matters for fillets: when the fillet radius grows, each blend cylinder's radius grows at rate 1 while its axis retreats from the edge, and each corner sphere does the same in three coordinates. For a SurfaceUv node, the dual part of $S(u, v; phi + dot(phi) epsilon)$ is exactly $d x \/ d theta$.
+Every analytic surface in vcad is generic over a scalar type, so it can be evaluated on dual numbers $a + b epsilon$ with $epsilon^2 = 0$ @griewank2008. A parameter is connected to the surfaces it moves by a *seeding*: a map from surface index to field velocities (translate by $bold(v)$, grow the radius at rate $dot(r)$, open the cone at rate $dot(alpha)$). Seeds on one surface add, which is what a fillet needs: when the fillet radius grows, each blend cylinder's radius grows at rate 1 while its axis retreats from the edge, and each corner sphere does the same in three coordinates. For a surface node, the dual part of $S(u, v; phi + dot(phi) epsilon)$ is $d x \/ d theta$.
 
-== Vertices and trims: implicit differentiation <sec:implicit>
+== Vertices and trims <sec:implicit>
 
 A topology vertex lies on every surface incident to it. Each incident surface has an implicit form $g(x; phi) = 0$: for a plane $n dot (x - o)$, a cylinder $norm(x_perp)^2 - r^2$, a sphere $norm(x - c)^2 - r^2$, and for a cone with apex $a$, axis $d$ and half-angle $alpha$,
-$ g = norm(x_perp)^2 - tan^2 alpha (( x - a) dot d)^2 . $
+$ g = norm(x_perp)^2 - tan^2 alpha ((x - a) dot d)^2 . $
 Differentiating $g(x(theta); phi(theta)) = 0$ gives one linear row per surface,
 $ nabla g dot dot(x) = - (partial g) / (partial theta) . $
-We solve the rows by Gram–Schmidt, carrying the right-hand side. Independent rows fix components of $dot(x)$, dependent rows must agree within tolerance (otherwise the solve fails), and directions no row constrains stay at zero. The last rule is the frozen-branch convention: a node on a circular rim keeps its angular parameter. Three planes at a box corner give a full $3 times 3$ solve; a plane and a cylinder at a hole rim give a rank-2 solve with a frozen tangent.
+We solve the rows by Gram–Schmidt, carrying the right-hand side. Independent rows fix components of $dot(x)$, dependent rows must agree within tolerance (otherwise the solve fails), and directions no row constrains stay at zero, so a node on a circular rim keeps its angular parameter. Three planes at a box corner give a full $3 times 3$ solve; a plane and a cylinder at a hole rim give a rank-2 solve with a frozen tangent.
 
-The rows needed two refinements. Boolean sewing does not always pair the half-edges around a rim, so topological adjacency under-constrains some vertices, and the seam also collects rows by geometric incidence. And a fillet blend touches its support face *tangentially*, so the blend's row is parallel to the plane's and the system is rank-deficient exactly where the corner vertex slides along the face. The missing information is that the vertex must stay on the tangent curve; for a cylinder of axis $a$ tangent to a plane of normal $n$ we add the row $q dot dot(x) = q dot dot(bold(v))_"translate"$ with $q = a times n$, and two such rows for a sphere. With these rows the corner of a filleted cube slides at exactly $(1, 1, 0)$ per unit radius.
+Two refinements were needed. Boolean sewing does not always pair the half-edges around a rim, so topological adjacency under-constrains some vertices, and the seam also collects rows by geometric incidence. And a fillet blend touches its support face tangentially, so the blend's row is parallel to the plane's and the system is rank-deficient exactly where the corner vertex slides along the face. The vertex must stay on the tangent curve; for a cylinder of axis $a$ tangent to a plane of normal $n$ we add the row $q dot dot(x) = q dot dot(bold(v))_"translate"$ with $q = a times n$, and two such rows for a sphere. With these rows the corner vertex of a filleted cube at $(r, r, L)$ moves at $(1, 1, 0)$ per unit radius, as the closed form requires.
 
 #figure(fig-fillet(),
-  caption: [#lead[A fillet radius is a composite seed.] Growing the radius by δ grows each blend cylinder's radius at rate 1 while its axis retreats at $(-1, -1)$ in the section plane; the two motions compose so that the tangent lines slide along the support faces at exactly unit rate. On the all-edges-filleted cube one parameter moves 20 surfaces this way.],
+  caption: [#lead[A fillet radius is a composite seed.] A section through the blend on the edge at $(L, L)$. Growing the radius by δ grows the blend cylinder's radius at rate 1 while its axis retreats at $(-1, -1)$; the two motions compose so that the tangent lines slide along the support faces at unit rate. (On the opposite edge, at the origin, every sign flips, which is the $(1, 1, 0)$ of the text.) On the filleted cube one parameter moves 20 surfaces.],
 ) <fig:fillet>
 
 = Quantities of interest <sec:qoi>
 
 == Mass properties
 
-Volume, mass, centroid and inertia tensor follow from signed-tetrahedron integrals over the closed mesh @mirtich1996mass. The integrals are written once over a generic scalar, so evaluating them at dual-number node positions gives every quantity and its derivative along $theta$ in one pass. A physics functional plugs in through the contraction
+Volume, mass, centroid and inertia tensor follow from signed-tetrahedron integrals over the closed mesh @mirtich1996mass. The integrals are written once over a generic scalar, so evaluating them at dual-number node positions gives every quantity and its derivative along $theta$ in one pass. A downstream functional enters through the contraction
 $ (d J) / (d theta) = sum_i (partial J) / (partial x_i) dot (d x_i) / (d theta) , $
 with $partial V \/ partial x_i$ known in closed form from the divergence theorem.
 
@@ -794,201 +906,209 @@ with $partial V \/ partial x_i$ known in closed form from the divergence theorem
 
 For one direction in parameter space,
 $ (d^2 V) / (d theta^2) = sum_(i j) (partial^2 V) / (partial x_i partial x_j) dot(x)_i dot(x)_j + sum_i (partial V) / (partial x_i) dot.double(x)_i . $
-Evaluating the volume integral on nested duals $((x, dot(x)), (dot(x), dot.double(x)))$ carries both terms. The work is in the node accelerations $dot.double(x)$. A surface node on a plane, cylinder or sphere is linear in its fields, so its acceleration is the first-order lift fed the field accelerations. Cone and torus points are not linear in their fields ($tan alpha$, the two torus radii), so surface nodes are lifted on nested duals. Vertex and trim nodes solve the implicit system differentiated twice,
+Evaluating the volume integral on nested duals $((x, dot(x)), (dot(x), dot.double(x)))$ carries both terms; the work is in the node accelerations $dot.double(x)$. A surface node on a plane, cylinder or sphere is linear in its fields, so its acceleration is the first-order lift fed the field accelerations. Cone and torus points are not linear in their fields ($tan alpha$, the two torus radii), so their surface nodes are lifted on nested duals. Vertex and trim nodes solve the implicit system differentiated twice,
 $ nabla g dot dot.double(x) = - ( (partial^2 g) / (partial theta^2) + 2 dot(x)^top nabla_x (partial g) / (partial theta) + dot(x)^top nabla^2 g space dot(x) ) , $
-with the same row gradients as the first-order solve; the cone and torus contribute closed-form curvature terms because their $nabla^2 g$ is not constant. For least-squares objectives $J = sum_q r_q^2$ we also provide the Gauss–Newton Hessian $2 J_r^top J_r$, which drops the residual-curvature term and is therefore exact at zero residual.
+with the same row gradients as the first-order solve; cones and tori contribute closed-form curvature terms because their $nabla^2 g$ is not constant. For least-squares objectives $J = sum_q r_q^2$ we also form the Gauss–Newton Hessian $2 J_r^top J_r$, which drops the residual-curvature term and is exact at zero residual.
 
 #figure(fig-torus(),
-  caption: [#lead[The torus's two design velocities] on its own mesh, front half. Growing the minor radius moves every node along the tube normal. Growing the major radius moves every node away from the axis, so the wall moves outward on the outer equator and inward on the inner one, which is why $d V \/ d R = 2 pi^2 r^2$ is smaller than $d V \/ d r = 4 pi^2 R r$ here. Values are the seam's, on the 24-segment mesh of `make_torus(8, 3)`.],
+  caption: [#lead[The torus's two design velocities] on its own mesh, front half. Growing the minor radius moves every node along the tube normal. Growing the major radius moves every node away from the axis, so the wall moves outward on the outer equator and inward on the inner one, which is why $d V \/ d R = 2 pi^2 r^2$ is smaller than $d V \/ d r = 4 pi^2 R r$ here. Values are the seam's, on the 24-segment mesh of a torus with $R = 8$, $r = 3$ mm.],
 ) <fig:torus>
 
-= Reverse mode and optimization <sec:reverse>
+= The transposed pass and optimization <sec:reverse>
 
-Node velocities are linear in the seed values. For each node there is a fixed linear map from the per-surface seed slots (a translation in $RR^3$ and one slot per scalar field) to $dot(x)_i$. Reverse mode is the transpose of these maps contracted with $partial J \/ partial x$:
-$ (partial J) / (partial s) = sum_i A_(i s)^top (partial J) / (partial x_i), quad (d J) / (d theta_k) = sum_s chevron.l (partial J) / (partial s), "seed"_k (s) chevron.r . $
-One `evaluate_with_pullback` computes the per-surface cotangents; each parameter then costs a few dot products. No tape or graph is recorded. The transposed vertex solve runs the same Gram–Schmidt elimination carrying each coefficient as a linear functional of the rows, and each row's dependence on its seeds is read off by calling the forward row constructor with unit seeds, so forward and reverse mode cannot disagree about a row.
+A seeding $sigma_k$ assigns to each surface $s$ a vector of seed values: a translation in $RR^3$ and one rate per scalar field of that surface's kind. Each node's velocity is linear in the seed values of the surfaces that determine it: $dot(x)_i = sum_s A_(i s) sigma_k (s)$, where $A_(i s)$ is the Jacobian of node $i$'s recipe with respect to surface $s$'s fields at the frozen plan. The transposed pass contracts the transposes with $partial J \/ partial x$:
+$ c_s = sum_i A_(i s)^top (partial J) / (partial x_i), quad (d J) / (d theta_k) = sum_s chevron.l c_s, sigma_k (s) chevron.r . $
+One pass computes every per-surface cotangent $c_s$; each parameter then costs a few dot products. No tape is recorded. The transposed vertex solve runs the same Gram–Schmidt elimination, carrying each coefficient as a linear functional of the rows, and each row's dependence on its seeds is read off by calling the forward row constructor with unit seeds. Forward and transposed passes therefore share the rows: their agreement checks the linear algebra, not the rows.
 
-The optimizer is L-BFGS with memory 8 @liu1989lbfgs, box projection and an Armijo line search on the projected step. The objective is smooth only within a topology class, so three rules keep bad curvature out of the memory: pairs with $s dot y <= 10^(-12) norm(s) norm(y)$ are dropped; a pair is dropped when the line search that produced it had to shrink past a `TopologyChanged` or `CorrespondenceLost` error, since its $y$ mixes two branches; and a direction that is not a descent direction clears the memory and falls back to projected steepest descent. Each iterate rebuilds the part and captures a fresh plan.
+The optimizer is L-BFGS with memory 8 @liu1989lbfgs, box projection and an Armijo line search on the projected step. Each iterate rebuilds the part and captures a fresh plan. A trial step that fails with a topology or correspondence error counts as a failed step. A curvature pair is dropped when $s dot y <= 10^(-12) norm(s) norm(y)$ or when its line search had to shrink past such an error, and a direction that is not a descent direction clears the memory.
 
 = Seeding synthesis and documents <sec:synth>
 
-Writing a seeding by hand ("this radius moves these twenty surfaces, each at radius rate 1 with a center retreat of $(plus.minus 1, plus.minus 1, 0)$") is error-prone on real parts. `synthesize_seeding` derives it from the build function. It rebuilds at $theta plus.minus h$, matches each base surface to its counterparts by frame-invariant geometric identity (a plane by its normal up to sign and its offset; a cylinder by its axis line and radius; a sphere by center and radius), and reads the field velocities off central differences of the matched fields. Surface fields, unlike mesh nodes, have no combinatorial structure, so this difference is accurate to $O(h^2)$. Only observable components are kept: in-plane drift of a plane's origin and axial drift of a cylinder's center are gauge and are projected out, while a cone's apex slide is observable because it changes the radius at every height. Everything downstream of the seeding remains exact.
+Writing a seeding by hand is error-prone on real parts. Synthesis derives it from the build function: it rebuilds at $theta plus.minus h$, matches each base surface to its counterparts by frame-invariant geometric identity (a plane by its normal up to sign and its offset, a cylinder by its axis line and radius, a sphere by center and radius), and reads field velocities off central differences of the matched fields. Surface fields have no combinatorial structure, so the difference is accurate to $O(h^2)$, but the seeding, and every gradient computed with it, carries that error. It also costs two rebuilds per parameter: on the five-parameter box, synthesizing all five seedings takes #F("cost::synthesize_all", 0) ms, slightly more than a finite-difference gradient of the whole objective (#F("cost::fd_gradient", 0) ms). Synthesis pays off only when a seeding is reused across many evaluations at one $theta$; deriving seedings symbolically from the feature tree would remove both costs and is not implemented.
 
-`document_parameter_gradient` applies this to a `.vcad` document: a named parameter is bound, the document is evaluated to one BRep per part, the seeding is synthesized, and each solid part returns $d(V, m, c, I) \/ d theta$. Evaluations at $theta plus.minus h$ are checked to produce the same number of parts, so a parameter value that adds or removes a part errors instead of returning a gradient.
+A named parameter of a `.vcad` document is differentiated the same way: the parameter is bound, the document is evaluated to one BRep per part, the seeding is synthesized, and each solid part returns $d(V, m, c, I) \/ d theta$. Evaluations at $theta plus.minus h$ must produce the same number of parts, or the call fails.
 
 = Gradients through rigid-body rollouts <sec:physics>
 
-In a rollout of an articulated rigid-body system without contact, the geometry of body $b$ enters the dynamics only through its ten mass-property scalars $p_b = (m, c, I)$. The chain rule is exact:
-$ (d J) / (d theta) = sum_b (partial J) / (partial p_b) dot (d p_b) / (d theta) + sum_b "pullback"_b ((partial J) / (partial x)) . $
-The first factor of the first term, $partial J \/ partial p_b$, comes from a discrete adjoint over semi-implicit Euler in phyz @featherstone2008. Its within-step Jacobian columns are themselves exact: the articulated-body algorithm, forward kinematics and contact law are generic over the scalar type and are evaluated on dual numbers, one lane per column. The second factor, $d p_b \/ d theta$, is the seam's mass-property derivative. The second term is the contact channel: phyz's differentiable rollout applies a penalty force $f_z = max(0, k delta - c v_z)$ at every vertex of the body's frozen-plan mesh below the ground, and its adjoint returns $partial J \/ partial x$ on those vertices, which the seam's reverse mode turns into $d J \/ d theta$ (@sec:reverse). Vertices reach the dynamics only through each body's six-component contact wrench, so the adjoint prices the wrench cotangent once per body and contracts it against each vertex's local wrench Jacobian rather than carrying $3N$ dual lanes. A rollout that the structured specification cannot express (state feedback, multi-DOF joints) falls back to central differences on the ten scalars, which needs about twenty re-simulations per body and no CAD rebuild.
-
-= The seam as an operator node <sec:operator>
-
-Viewed from outside, everything in @sec:seam to @sec:physics is a small set of operators, each with a forward map and an exact vector–Jacobian product:
-
-- *SeamEval*: $theta |-> x$, node positions of the frozen plan; VJP by the transposed seam (@sec:reverse). It fails, rather than returning a value, outside its topology class.
-- *MassProps*: $x |-> p$, the ten mass-property scalars per body; VJP from the divergence-theorem gradients.
-- *Rollout*: $(p, x) |-> J$, a phyz trajectory with penalty contact on the seam mesh; VJP from the discrete adjoint, returning both $partial J \/ partial p$ and the contact cotangent $partial J \/ partial x$.
-
-In vcad today these three are composed by hand: `adjoint_gradient_core` in `vcad-kernel-physics` runs a nominal seam pass per body, computes mass properties, runs one phyz adjoint pass and contracts the two channels. That function is a three-node operator graph written out manually, and every rollout result in @tab:physics comes from it.
-
-The architecture we are building makes that graph general. Engineering physics in vcad (thermal and electromagnetic time steps, finite-element assembly, sparse matrix–vector products) has the shape of tang comprehensions: affine views and a map for a stencil step, a gather view with a scatter-add monoid for assembly. What a comprehension IR cannot express is "solve this system" or "run this simulation" as a single step with a known gradient, so the one new construct is an opaque operator node that runs native code forward and takes a user-supplied adjoint backward: `LinearSolve` (adjoint: one more solve with $A^top$), `NonlinearSolve`, a checkpointed `TimeLoop`, phyz's `Rollout` and the `SeamEval` of this paper. ABA and contact stay native Rust inside `Rollout`; they are sequential recursions that already have a correct adjoint and gain nothing from being traced.
-
-#figure(fig-showpiece(),
-  caption: [#lead[The planned showpiece], not a result of this paper. CAD parameters of a leg (wall thickness, fillet radius, foot pad) pass through SeamEval, MassProps and a phyz contact rollout to jump height, with a motor housing's steady-state temperature as a coupled constraint through assembly and a linear solve. One reverse pass gives $partial J \/ partial theta$ for L-BFGS. The orange path exists today, composed by hand (@tab:physics); the thermal branch and the general graph are planned.],
-) <fig:showpiece>
-
-The plan is staged so that each step has a numeric gate: one tang version across vcad, phyz and tang; a sparse conjugate-gradient solver written in the IR and `LinearSolve` proved on steady thermal against vcad's hand adjoint to $10^(-12)$; thermal and FEA assembly as comprehensions on GPU; `Rollout` and `SeamEval` as nodes, matching today's hand-wired numbers to round-off before the hand wiring is deleted; coupled thermal stress through one graph; and Revolve-style checkpointing for long rollouts and transients. None of these gates has passed at the time of writing, and no result in @sec:results depends on them.
+In a rollout of an articulated rigid-body system without contact, the geometry of body $b$ enters the dynamics only through its ten mass-property scalars $p_b = (m, c, I)$. With contact, it also enters through the positions of the vertices that touch. The chain rule is
+$ (d J) / (d theta) = sum_b (partial J) / (partial p_b) dot (d p_b) / (d theta) + sum_b sum_s chevron.l c_s^((b)), sigma_k (s) chevron.r , quad c_s^((b)) = sum_i A_(i s)^top (partial J) / (partial x_i^((b))) . $
+$partial J \/ partial p_b$ comes from a discrete adjoint over semi-implicit Euler in the phyz simulator, written over Featherstone's articulated-body algorithm @featherstone2008; its within-step Jacobian columns are evaluated on dual numbers, one lane per column. $d p_b \/ d theta$ is the seam's mass-property derivative. For contact, phyz applies a penalty force $f_z = max(0, k delta - c v_z)$ at every vertex of the body's frozen-plan mesh that lies below the ground, its adjoint returns $partial J \/ partial x$ on those vertices, and the transposed pass turns that into $d J \/ d theta$. A rollout the adjoint cannot express (state feedback, multi-DOF joints) falls back to central differences on the ten scalars, which needs about twenty re-simulations per body and no CAD rebuild.
 
 = Results <sec:results>
 
-All results come from vcad's gate tests at commit #raw(env.at("vcad_rev").slice(0, 10)), run in the release profile on a single thread (#env.at("cpu"), #env.at("rustc")). Each test asserts its bound; the values below are what the tests measured (@sec:repro). "FD" is a central difference with $h = 10^(-6)$ in the parameter unless stated: the part is rebuilt at $theta plus.minus h$ and re-evaluated under the same frozen plan, so FD and the seam differentiate the same discrete object. Relative errors are taken against the larger of the two magnitudes.
+All results come from vcad's test suite at commit #raw(env.at("vcad_rev").slice(0, 10)) and from the experiments in `repro/` (@sec:repro), run in the release profile on one thread of a #env.at("cpu") (#env.at("rustc")). Each test asserts a tolerance, $10^(-6)$ for most first-order checks; the values below are what the tests measured. We use two finite-difference references. *Same-plan FD* rebuilds the part at $theta plus.minus h$ and re-evaluates the frozen plan captured at $theta_0$; it checks the seam's derivative of its own plan evaluator. *Rebuild FD* tessellates each rebuild from scratch and shares no code with the seam beyond the kernel itself; it is the independent check, but it is noisy at small $h$, where node placements differ between rebuilds, and it carries truncation error at large $h$. Relative errors are taken against the larger magnitude.
 
 == Validation against finite differences
 
-#let fdrow(name, theta, dv, dvfd, rel, nodes) = (name, theta, dv, dvfd, rel, nodes)
+The models are: an extruded $4 times 3$ mm rectangle, depth $d = 2$ mm; a $10 times 8 times 5$ mm box minus a through-hole of radius $r = 2.5$ mm (32 circle segments, whose sag-adaptive rim has 112); a cylinder of radius 5 mm and height 8 mm (24 segments); a 10 mm cube with every edge filleted at $r = 1.5$ mm (16 segments per full circle, 836 nodes); a cone frustum with base radius 5, top radius 3 and height 8 mm (apex at 20 mm, 24 segments), parameterized by half-angle and by height; and a torus with $R = 8$, $r = 3$ mm (24 segments).
+
 #figure(
   table(
-    columns: (1.55fr, 0.75fr, 0.95fr, 0.85fr, 0.85fr),
-    align: (left, left, right, right, right),
-    table.header([*Model*], [*θ*], [*dV/dθ (seam)*], [*vs FD*], [*node-wise*]),
-    [Extrusion], [depth], [#F(K-m0 + "@L80::dv", 3)], [#E(K-m0 + "@L80::rel_fd")], [#E(K-m0 + "::cmp.max_rel_err")],
-    [Box − cylinder], [hole r], [#F(K-m2 + "@L119::dv", 3)], [#E(K-m2 + "@L119::rel_fd")], [#E("m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd::cmp.max_rel_err")],
-    [Cylinder], [height], [#F(K-m3b + "@L118::dv", 3)], [#E(K-m3b + "@L118::rel_fd")], [#E(K-m3b + "::cmp.max_rel_err")],
-    [Filleted cube], [fillet r], [#F(K-m4 + "@L195::dv", 3)], [#E(K-m4 + "@L132::rel_fd")], [#E(K-m4 + "::cmp.max_rel_err")],
-    [Filleted cube], [edge a], [#F(K-m5 + "@L311::dv_da_rev", 3)], [#E(K-m5 + "@L311::rel_a")], [–],
-    [Cone frustum], [half-angle], [#F(K-m7a + "@L163::dv", 2)], [#E(K-m7a + "@L163::rel_fd")], [#E(K-m7a + "::cmp.max_rel_err")],
-    [Cone frustum], [height], [#F(K-m7h + "@L208::dv", 3)], [#E(K-m7h + "@L208::rel_fd")], [#E(K-m7h + "::cmp.max_rel_err")],
-    [Torus], [minor r], [#F("m7_cone_torus::torus_gate@L269::torus minor r::dv_fd", 2)], [#E("m7_cone_torus::torus_gate@L269::torus minor r::rel_fd")], [#E("m7_cone_torus::torus_gate::torus minor r::cmp.max_rel_err")],
-    [Torus], [major R], [#F("m7_cone_torus::torus_gate@L269::torus major R::dv_fd", 2)], [#E("m7_cone_torus::torus_gate@L269::torus major R::rel_fd")], [#E("m7_cone_torus::torus_gate::torus major R::cmp.max_rel_err")],
+    columns: (1.4fr, 0.7fr, 0.95fr, 0.8fr, 0.8fr, 0.85fr),
+    align: (left, left, right, right, right, right),
+    table.header([*Model*], [*θ*], [*dV/dθ (seam)*], [*same-plan FD*], [*node-wise*], [*rebuild FD, $h = 10^(-2)$*]),
+    [Extrusion], [depth], [#F(K-m0 + "@L80::dv", 3)], [#E(K-m0 + "@L80::rel_fd")], [#E(K-m0 + "::cmp.max_rel_err")], [#relc(V("rebuild::extrude::fd::-2"), V("rebuild::extrude::seam"))],
+    [Box − cylinder], [hole r], [#F(K-m2 + "@L119::dv", 3)], [#E(K-m2 + "@L119::rel_fd")], [#E("m2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd::cmp.max_rel_err")], [#relc(V("rebuild::hole_r::fd::-3"), V("rebuild::hole_r::seam"))#super[a]],
+    [Cylinder], [height], [#F(K-m3b + "@L118::dv", 3)], [#E(K-m3b + "@L118::rel_fd")], [#E(K-m3b + "::cmp.max_rel_err")], [#relc(V("rebuild::cyl_h::fd::-2"), V("rebuild::cyl_h::seam"))],
+    [Filleted cube], [fillet r], [#F(K-m4 + "@L195::dv", 3)], [#E(K-m4 + "@L132::rel_fd")], [#E(K-m4 + "::cmp.max_rel_err")], [#relc(V("rebuild::fillet_r::fd::-2"), V("rebuild::fillet_r::seam"))],
+    [Filleted cube], [edge a], [#F(K-m5 + "@L311::dv_da_rev", 3)], [#E(K-m5 + "@L311::rel_a")], [–], [#relc(V("rebuild::fillet_a::fd::-2"), V("rebuild::fillet_a::seam"))],
+    [Cone frustum], [half-angle], [#F(K-m7a + "@L163::dv", 2)], [#E(K-m7a + "@L163::rel_fd")], [#E(K-m7a + "::cmp.max_rel_err")], [#relc(V("rebuild::cone_a::fd::-5"), V("rebuild::cone_a::seam"))#super[b]],
+    [Cone frustum], [height], [#F(K-m7h + "@L208::dv", 3)], [#E(K-m7h + "@L208::rel_fd")], [#E(K-m7h + "::cmp.max_rel_err")], [#relc(V("rebuild::cone_h::fd::-4"), V("rebuild::cone_h::seam"))#super[b]],
+    [Torus], [minor r], [#F("m7_cone_torus::torus_gate@L269::torus minor r::dv", 2)], [#E("m7_cone_torus::torus_gate@L269::torus minor r::rel_fd")], [#E("m7_cone_torus::torus_gate::torus minor r::cmp.max_rel_err")], [#relc(V("rebuild::torus_r::fd::-2"), V("rebuild::torus_r::seam"))],
+    [Torus], [major R], [#F("m7_cone_torus::torus_gate@L269::torus major R::dv", 2)], [#E("m7_cone_torus::torus_gate@L269::torus major R::rel_fd")], [#E("m7_cone_torus::torus_gate::torus major R::cmp.max_rel_err")], [#relc(V("rebuild::torus_R::fd::-2"), V("rebuild::torus_R::seam"))],
   ),
-  caption: [#lead[First-order volume gradients against finite differences of a full rebuild.] Node-wise is the worst relative error of $d x_i \/ d theta$ over all mesh nodes. Torus rows list the FD value; the seam agrees to the error shown. Every row passes vcad's $10^(-6)$ gate. The filleted cube moves 20 surfaces with one parameter. `data/measured.tsv`.],
+  caption: [#lead[First-order volume gradients.] Same-plan FD uses $h = 10^(-6)$. Node-wise is the worst relative error of $d x_i \/ d theta$ over all mesh nodes against same-plan FD. Rebuild FD compares against the seam with a synthesized seeding; #super[a] $h = 10^(-3)$, because the hole's sag-adaptive rim changes its segment count between $r plus.minus 10^(-2)$; #super[b] $h = 10^(-5)$ and $10^(-4)$, below the cone's truncation error. @fig:sweep shows every step size. `data/measured.tsv`.],
 ) <tab:fd>
 
-Where a discrete closed form exists the seam meets it to rounding. The hole's mesh cross-section is the inscribed 112-gon, so $d V \/ d r = -N sin(2 pi \/ N) r t$; the seam matches it to #E(K-m2 + "@L111::rel_closed"). The cone's half-angle derivative matches the prismatoid formula to #E(K-m7a + "@L156::rel_closed"), the cylinder-height derivative the N-gon cap area to #E(K-m3b + "@L112::rel_closed"), and the extrusion's $d V \/ d d$ the cross-section area exactly (#E(K-m0 + "@L72::rel_analytic")). The continuum shape derivatives differ by the polygonization error and no more: #E(K-m2 + "@L129::gap") for the hole (bounded by $x^2 \/ 6$ with $x = 2 pi \/ N$), and #fx(100 * V(K-m4 + "@L195::gap"), 1)% for the fillet's Minkowski-sum derivative at 16 segments per quarter-blend.
-
-The mass-property derivatives behave the same way: $d I_(z z) \/ d d$ of the extrusion meets its closed form to #E("m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L63::rel") and FD to #E("m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L80::rel"); the cylinder's inertia derivative with respect to radius meets FD to #E(K-m3m + "@L129::rel").
+Every model passes both checks, and the rebuild FD, which is independent of the seam, confirms the same-plan results to the accuracy its noise and truncation allow. Where a discrete closed form exists the seam meets it to rounding: the hole's mesh cross-section is the inscribed 112-gon, so $d V \/ d r = -N sin(2 pi \/ N) r t$, met to #E(K-m2 + "@L111::rel_closed"); the cone's half-angle derivative meets the prismatoid volume $V = (h k \/ 3)(R_b^2 + R_t^2 + R_b R_t)$ with $k = N sin(2 pi \/ N) \/ 2$ to #E(K-m7a + "@L156::rel_closed"); the cylinder-height derivative meets the N-gon cap area to #E(K-m3b + "@L112::rel_closed"); and the extrusion's $d V \/ d d$ is exactly the cross-section area. The mass-property derivatives behave the same way: $d I_(z z) \/ d d$ of the extrusion meets its closed form to #E("m3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L63::rel"), and the cylinder's inertia derivative with respect to radius meets same-plan FD to #E(K-m3m + "@L129::rel").
 
 #figure(fig-ladder(),
-  caption: [#lead[Every first-order gate on one axis.] Filled: the seam's $d V \/ d theta$ (or $d J \/ d theta$ for the contact rollout) against a central difference of a full rebuild. Open: the worst node-wise $d x \/ d theta$. All sit two or more orders below vcad's $10^(-6)$ gate. `data/measured.tsv`.],
+  caption: [#lead[Every first-order same-plan check on one axis.] Filled: the seam's $d V \/ d theta$ (or $d J \/ d theta$ for the contact rollout) against same-plan FD. Open: the worst node-wise $d x \/ d theta$. All are below the $10^(-6)$ tolerance; the cone-height node-wise error (#E(K-m7h + "::cmp.max_rel_err")) and the contact rollout (#E("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel")) are less than an order below it, the first because the cap-rim nodes ride a sloped ruling and their FD difference is small, the second because its reference re-simulates a penalty contact. `data/measured.tsv`.],
 ) <fig:ladder>
 
-== Reverse mode, synthesis and second order
+#figure(fig-sweep(),
+  caption: [#lead[Finite-difference error against step size.] Solid lines: rebuild FD for three models of @tab:fd. Each falls until the rebuilds' node placements stop agreeing (left) or truncation takes over (right), and at its best step it meets the seam. Yellow: same-plan FD of the fillet-radius component of the five-parameter box's objective, which stays at $1.4 times 10^(-4)$ from $h = 10^(-8)$ to $10^(-6)$; the dashed yellow line is rebuild FD for the same component. A plateau that does not move with $h$ is not finite-difference noise (@sec:box). `data/measured.tsv`.],
+) <fig:sweep>
+
+== The polygonization gap <sec:gap>
+
+The seam's derivative is that of the mesh, so it differs from the continuum derivative by the polygonization error. For the hole that error is the factor $sin x \/ x$ with $x = 2 pi \/ N$, #E(K-m2 + "@L129::gap") at 112 segments. For the filleted cube it is larger, and larger in magnitude than the continuum value, because an inscribed polygon removes more material than the circular blend and removes it faster as $r$ grows. At 16 segments per full circle (four per quarter-blend) the seam's $d V \/ d r = #F("gap::16::dv", 3)$ against the continuum #F("gap::continuum", 3), a gap of 6.7%; the gap falls as $N^(-2)$ (@fig:gap). Mass properties at four segments per quarter-blend are a coarse model of a filleted part, and the remedy is resolution, not a different derivative.
+
+#figure(fig-gap(),
+  caption: [#lead[The fillet's polygonization gap.] Relative difference between the seam's $d V \/ d r$ on the filleted cube and the continuum derivative of $V(r) = a^3 + 6 a^2 r + 3 pi a r^2 + 4 pi r^3 \/ 3$, $a = L - 2 r$, against the circle segment count. The dashed line is $N^(-2)$. At 128 segments the gap is #fx(100 * calc.abs((V("gap::128::dv") - V("gap::continuum")) / V("gap::continuum")), 2)%. `data/measured.tsv`.],
+) <fig:gap>
+
+== Transposed pass, synthesis and second order
 
 #figure(
   table(
-    columns: (2.1fr, 1fr, 1fr),
+    columns: (2.2fr, 1fr, 1fr),
     align: (left, right, right),
-    table.header([*Check*], [*Value*], [*Rel. error*]),
-    [Reverse vs forward, hole dV/dr], [#F("m5_reverse_mode::agree::hole dV/dr::rev", 4)], [#sci(calc.abs(V("m5_reverse_mode::agree::hole dV/dr::rev") - V("m5_reverse_mode::agree::hole dV/dr::fwd")) / calc.abs(V("m5_reverse_mode::agree::hole dV/dr::fwd")))],
-    [Reverse vs forward, fillet dV/dr], [#F("m5_reverse_mode::agree::rounded cube dV/dr::rev", 4)], [#sci(calc.abs(V("m5_reverse_mode::agree::rounded cube dV/dr::rev") - V("m5_reverse_mode::agree::rounded cube dV/dr::fwd")) / calc.abs(V("m5_reverse_mode::agree::rounded cube dV/dr::fwd")))],
+    table.header([*Check*], [*Seam value*], [*Rel. difference*]),
+    [Transposed vs forward, hole dV/dr], [#F("m5_reverse_mode::agree::hole dV/dr::rev", 4)], [#relc(V("m5_reverse_mode::agree::hole dV/dr::rev"), V("m5_reverse_mode::agree::hole dV/dr::fwd"))],
+    [Transposed vs forward, fillet dV/dr], [#F("m5_reverse_mode::agree::rounded cube dV/dr::rev", 4)], [#relc(V("m5_reverse_mode::agree::rounded cube dV/dr::rev"), V("m5_reverse_mode::agree::rounded cube dV/dr::fwd"))],
     [Synthesized vs hand seeding, fillet dV/dr], [#F(K-m6 + "::dv_dr_syn", 4)], [#E(K-m6 + "::rel_dv_dr_syn_vs_dv_dr_hand")],
     [Synthesized vs hand seeding, edge dV/da], [#F(K-m6 + "::dv_da_syn", 3)], [#E(K-m6 + "::rel_dv_da_syn_vs_dv_da_hand")],
-    [Synthesized, cone/torus composite vs FD], [#F("m6_synthesized_seeding::cone_and_torus_parameters_synthesized::dv", 2)], [#E("m6_synthesized_seeding::cone_and_torus_parameters_synthesized::rel_dv_vs_fd")],
-    [Reverse on synthesized seeding vs forward], [#F(K-m6 + "::dv_dr_rev", 4)], [#E(K-m6 + "::rel_dv_dr_rev_vs_dv_dr_syn")],
+    [Synthesized, torus vs same-plan FD], [#F("m6_synthesized_seeding::cone_and_torus_parameters_synthesized::dv", 2)], [#E("m6_synthesized_seeding::cone_and_torus_parameters_synthesized::rel_dv_vs_fd")],
     [d²V/dr², hole vs closed form], [#F(K-m10 + "m10_hole_second_derivative_matches_closed_form_and_fd@L140::ddv", 3)], [#E(K-m10 + "m10_hole_second_derivative_matches_closed_form_and_fd@L132::rel_closed")],
     [d²V/dα², cone vs closed form], [#F(K-m10 + "m10_cone_half_angle_second_derivative_matches_closed_form@L370::ddv", 1)], [#E(K-m10 + "m10_cone_half_angle_second_derivative_matches_closed_form@L355::rel")],
-    [d²V/dα², cone vs FD of dV/dα], [], [#E(K-m10 + "m10_cone_half_angle_second_derivative_matches_closed_form@L370::rel_fd")],
-    [d²V/dr², torus minor vs FD of dV/dr], [#F(K-m10 + "m10_torus_minor_radius_second_derivative@L444::fd", 2)], [#E(K-m10 + "m10_torus_minor_radius_second_derivative@L444::rel")],
-    [d²V/dθ², torus with r = θ² (chain rule)], [#F(K-m10 + "m10_torus_nonlinear_field_chain_rule@L505::ddv_dthth", 1)], [#E(K-m10 + "m10_torus_nonlinear_field_chain_rule@L505::rel2")],
-    [d²V/dr², filleted cube vs FD (h = 10⁻³)], [#F(K-m10 + "m10_rounded_cube_second_derivative_matches_fd@L284::fd", 2)], [#E(K-m10 + "m10_rounded_cube_second_derivative_matches_fd@L284::rel")],
+    [d²V/dr², torus minor vs rebuild FD of dV/dr, $h = 10^(-1)$], [#F(K-m10 + "m10_torus_minor_radius_second_derivative@L444::ddv", 3)], [#relc(V("second::torus::-1"), V(K-m10 + "m10_torus_minor_radius_second_derivative@L444::ddv"))],
+    [d²V/dθ², torus with r = θ² vs chain rule], [#F(K-m10 + "m10_torus_nonlinear_field_chain_rule@L505::ddv_dthth", 1)], [#E(K-m10 + "m10_torus_nonlinear_field_chain_rule@L505::rel2")],
+    [d²V/dr², filleted cube vs rebuild FD of dV/dr, $h = 10^(-1)$], [#F(K-m10 + "m10_rounded_cube_second_derivative_matches_fd@L284::ddv", 3)], [#relc(V("second::fillet::-1"), V(K-m10 + "m10_rounded_cube_second_derivative_matches_fd@L284::ddv"))],
     [Gauss–Newton vs full Hessian (Frobenius)], [], [#E(K-m10 + "m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::rel_frob")],
   ),
-  caption: [#lead[Reverse mode, synthesized seedings and second derivatives.] Reverse and forward mode use the same rows in a different order and agree to rounding. Synthesized seedings carry the $O(h^2)$ error of the field differences. The filleted cube's second derivative is checked with a wider FD step because re-capturing a filleted solid at $r plus.minus h$ adds about $10^(-4)$ of correspondence jitter (@sec:discussion). The Gauss–Newton comparison is on the five-parameter box near its optimum, where the dropped residual term vanishes. `data/measured.tsv`.],
+  caption: [#lead[Transposed pass, synthesized seedings and second derivatives.] The transposed and forward passes share their rows, so their agreement checks the linear algebra only. Synthesized seedings carry the $O(h^2)$ error of the field differences. Second derivatives are checked against central differences of the seam's own first derivative on fresh rebuilds, at the step where that difference has converged. The Gauss–Newton comparison is on the five-parameter box near its optimum. `data/measured.tsv`.],
 ) <tab:rev>
 
-The cone gate is the first in which node accelerations are nonzero: opening the half-angle moves every rim vertex along a curved path, and the nested-dual lift and the cone's curvature rows reproduce the closed form to rounding.
+For the torus the rebuild difference of $d V \/ d r$ converges onto the seam's second derivative as $h$ grows (from #relc(V("second::torus::-4"), V(K-m10 + "m10_torus_minor_radius_second_derivative@L444::ddv")) at $h = 10^(-4)$ to #relc(V("second::torus::-1"), V(K-m10 + "m10_torus_minor_radius_second_derivative@L444::ddv")) at $10^(-1)$); the $1.7 times 10^(-6)$ in vcad's own test is its smaller step. For the filleted cube it does not: the difference settles at #F("second::fillet::-2", 3) for $h$ between $10^(-3)$ and $10^(-1)$, while the seam gives #F(K-m10 + "m10_rounded_cube_second_derivative_matches_fd@L284::ddv", 3), a disagreement of $10^(-3)$ that does not move with the step. The seam assumes every node of the filleted cube is linear in $r$ and computes zero acceleration; the plateau suggests that some nodes, likely those at the blend–sphere corners, are not. We report this second derivative as unverified.
 
-== L-BFGS on a five-parameter part
+== Five parameters of a filleted, drilled box <sec:box>
 
-The test part is a box of dimensions $(s_x, s_y, s_z)$ with all edges filleted at radius $r$ and a centered through-hole of radius $r_h$: 6 planes, 12 blend cylinders, 8 corner spheres and a hole wall, 916 mesh nodes. The objective is the squared relative miss of five quantities (volume, the three centroid coordinates and $I_(z z)$) against their values at $theta^* = (10, 12, 8, 1.8, 2.2)$ mm, starting from $theta_0 = (8, 14, 6, 1.2, 1.6)$ mm. The five-by-five Jacobian of the quantities has determinant #F("m9::jac::det", 0) and smallest pivot #F("m9::jac::min_pivot", 2), so all five parameters are locally identifiable.
+The part is a box of dimensions $(s_x, s_y, s_z)$ with every edge filleted at radius $r$ and a centered through-hole of radius $r_h$: 6 planes, 12 blend cylinders, 8 corner spheres and the hole wall, #V("cost::nodes") mesh nodes at $theta^*$ (16 segments per circle). The objective is the squared relative miss of five quantities (volume, the three centroid coordinates and $I_(z z)$) against their values at $theta^* = (10, 12, 8, 1.8, 2.2)$ mm, starting from $theta_0 = (8, 14, 6, 1.2, 1.6)$ mm. The five-by-five Jacobian of the quantities has determinant #F("m9::jac::det", 0) and smallest pivot #F("m9::jac::min_pivot", 2), so the parameters are locally identifiable.
 
-#figure(fig-lbfgs(),
-  caption: [#lead[L-BFGS against projected gradient descent], same gradients (reverse mode), same line search. L-BFGS stops on the gradient tolerance after #V("m9::lbfgs::iters") iterations (#V("m9::lbfgs::evals") objective evaluations) with $norm(theta - theta^*)_infinity =$ #E("m9::lbfgs::err_inf"). Gradient descent reaches its #V("m9::gd::iters")-iteration limit (#V("m9::gd::evals") evaluations) at $norm(theta - theta^*)_infinity =$ #E("m9::gd::err_inf"): steepest descent zig-zags between the dimension and radius directions, whose scales differ. `data/measured.tsv`.],
-) <fig:lbfgs>
+*An unresolved discrepancy.* At $theta_0$, the seam's gradient components for the hole radius and $s_z$ agree with same-plan FD to #relc(V("sweep::plan::4::-6"), V("sweep::seam::4")) and #relc(V("sweep::plan::2::-6"), V("sweep::seam::2")). For the fillet radius and $s_x$ they do not: same-plan FD gives #F("sweep::plan::3::-6", 5) against the seam's #F("sweep::seam::3", 5) (#relc(V("sweep::plan::3::-6"), V("sweep::seam::3"))) and holds that value from $h = 10^(-8)$ to $10^(-6)$ (@fig:sweep), and rebuild FD, independent of the plan evaluator, lands nearer the same-plan value than the seam's (#F("sweep::fresh::3::-3", 5) at $h = 10^(-3)$). On the filleted cube without the hole the same parameter agrees to #E(K-m4 + "@L132::rel_fd"). The error therefore appears where the Boolean meets the filleted solid, and we have not located it. It is small next to the polygonization gap and does not prevent convergence below, but it is a wrong derivative, not noise.
 
-Reverse and forward gradients agree per component to at most #sci(calc.max(..range(5).map(k => V("m9::fwd_vs_rev::" + str(k), i: 2)))). Per iterate, the shared rebuild and capture take #F("m9::ms::build_capture", 1) ms; differentiation takes #F("m9::ms::forward", 2) ms in forward mode (five seam passes) and #F("m9::ms::reverse", 2) ms in reverse mode (one seam pass, one pullback, five dot products). The rebuild dominates at this size; the differentiation cost is the part that grows with the number of parameters, linearly in forward mode and by one dot product per parameter in reverse mode.
+#figure(
+  table(
+    columns: (2fr, 1fr, 1fr, 1fr),
+    align: (left, right, right, right),
+    table.header([*Method (same driver)*], [*to $10^(-3)$ mm*], [*to $10^(-6)$ mm*], [*final error*]),
+    [Levenberg–Marquardt, seam Jacobian], [#ttt-cell("lm_seam", 1e-3)], [#ttt-cell("lm_seam", 1e-6)], [#E("base::lm_seam::err")],
+    [L-BFGS, seam gradient], [#ttt-cell("lbfgs_seam", 1e-3)], [#ttt-cell("lbfgs_seam", 1e-6)], [#E("base::lbfgs_seam::err")],
+    [L-BFGS, rebuild FD, $h = 10^(-4)$], [#ttt-cell("lbfgs_fd4", 1e-3)], [#ttt-cell("lbfgs_fd4", 1e-6)], [#E("base::lbfgs_fd4::err")],
+    [L-BFGS, rebuild FD, $h = 10^(-6)$], [#ttt-cell("lbfgs_fd6", 1e-3)], [#ttt-cell("lbfgs_fd6", 1e-6)], [#E("base::lbfgs_fd6::err")],
+    [L-BFGS, rebuild FD, $h = 10^(-2)$], [#ttt-cell("lbfgs_fd2", 1e-3)], [#ttt-cell("lbfgs_fd2", 1e-6)], [#E("base::lbfgs_fd2::err")],
+  ),
+  caption: [#lead[Recovering θ\* on the five-parameter box.] Iterations and wall-clock time until $max |theta - theta^*|$ first falls below the tolerance. All L-BFGS runs share one driver (memory 8, Armijo line search on rebuilt-from-scratch objective values, 200 iterations); only the gradient differs. Levenberg–Marquardt uses the seam's exact $5 times 5$ Jacobian of the residuals. `data/measured.tsv`.],
+) <tab:opt>
 
-A finite-difference check of the same gradient shows why finite differences are a poor substitute on filleted parts. For the hole radius and $s_z$ FD agrees to #E("m9::fd::4", i: 2) and #E("m9::fd::2", i: 2), but for $s_x$ and the fillet radius the agreement is only #E("m9::fd::0", i: 2) and #E("m9::fd::3", i: 2). The error is in FD, not in the seam. Rebuilding a filleted solid under a plan captured elsewhere carries the fillet kernel's frame and correspondence noise, while reverse and forward mode, two independent implementations, agree to rounding.
+#figure(fig-baselines(),
+  caption: [#lead[Parameter error against wall-clock time] for the runs of @tab:opt. Every curve rebuilds the part at each objective evaluation; the gradient source is the only difference. `data/measured.tsv`.],
+) <fig:baselines>
 
-== A fillet radius and a flywheel by gradient descent
+What exact derivatives buy here is not that L-BFGS converges: with rebuild FD at a well-chosen step ($h = 10^(-4)$) it reaches $10^(-6)$ in a similar number of iterations. They buy cost and robustness. A seam gradient (rebuild, capture, one pass and one transposed pass) takes #F("cost::seam_gradient", 0) ms on this part against #F("cost::fd_gradient", 0) ms for a rebuild-FD gradient, a factor of #fx(V("cost::fd_gradient") / V("cost::seam_gradient"), 0) at five parameters that grows with the parameter count; and FD at a too-small ($10^(-6)$) or too-large ($10^(-2)$) step never reaches $10^(-6)$. Because the residuals are square and vanish at $theta^*$, Gauss–Newton with the exact Jacobian is the natural method, and Levenberg–Marquardt reaches $10^(-6)$ in #ttt("lm_seam", 1e-6).at(0) iterations and #fx(ttt("lm_seam", 1e-6).at(1), 2) s.
 
-Projected gradient descent on the fillet radius alone recovers the radius whose rounded cube hits a target volume, $r^* = 2.2$ mm from $r_0 = 1$ mm, landing at #F("m4_fillet_radius::optimize::r", 6) mm in #V("m4_fillet_radius::optimize::iters") accepted iterates.
+The rebuild dominates each iterate: #F("cost::build", 0) ms against #F("cost::capture", 1) ms for the capture, #F("cost::seam", 2) ms for one forward pass, #F("cost::dual_qoi", 2) ms for the dual mass properties of that pass, and #F("cost::pullback", 2) ms for the transposed pass. The transposed pass costs about #fx(V("cost::pullback") / V("cost::seam"), 1) forward passes on this part, so it pays from two parameters up. (On the filleted cube without the hole, @fig:cost, it costs about three, because that part has fewer vertex rows to transpose relative to its surface nodes.)
+
+== A fillet radius and a flywheel
+
+Projected gradient descent on the fillet radius of the 10 mm cube alone recovers the radius whose volume matches a target, $r^* = 2.2$ mm from $r_0 = 1$ mm, landing at #F("m4_fillet_radius::optimize::r", 6) mm in #V("m4_fillet_radius::optimize::iters") accepted iterates.
 
 #figure(fig-flywheel(),
-  caption: [#lead[A flywheel design brief.] A disc (radius 40 mm, thickness 10 mm) with a center bore and four lightening holes on a 25 mm bolt circle; θ = (bore radius, hole radius). Objective: mass over a reference mass plus $100 dot$ the squared relative miss of a target spin inertia, the inertia of θ\* = (8, 5). Projected gradient descent, each iterate rebuilding the part through five Booleans and capturing a fresh plan. The bounds keep the holes inside the disc and clear of each other, so the topology does not change. Descent is monotone over #context { let n = 0; while ("m3_flywheel::iter::" + str(n + 1)) in measured { n += 1 }; [#n accepted iterates, ending at θ = (#F("m3_flywheel::iter::" + str(n), 2, i: 0), #F("m3_flywheel::iter::" + str(n), 2, i: 1)) mm] } with the bore on its upper bound: θ\* only sets the target inertia, and a larger bore reaches it with less mass. The zig-zag in hole radius is steepest descent on an anisotropic objective; the analytic gradient matched FD at θ₀ to #E("m3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::rel"). `data/measured.tsv`.],
+  caption: [#lead[A flywheel design brief.] A disc (radius 40 mm, thickness 10 mm) with a center bore and four lightening holes on a 25 mm bolt circle; θ = (bore radius, hole radius). Objective: mass over a reference mass plus $100 dot$ the squared relative miss of a target spin inertia, the inertia of the design at (8, 5) mm. The bounds keep the holes inside the disc and clear of each other. L-BFGS (bold) stops after #V("base::fly_lbfgs::iters") iterations with the inertia within #fx(100 * V("fly::inertia_miss"), 1)% of the target and #fx(100 * (1 - V("fly::mass_ratio_final")), 1)% less mass than the (8, 5) design, the bore on its upper bound; projected gradient descent (faint) takes #context { let n = 0; while ("m3_flywheel::iter::" + str(n + 1)) in measured { n += 1 }; [#n] } steps along a zig-zag to a similar design. `data/measured.tsv`.],
 ) <fig:flywheel>
 
-== A named parameter of a document
+Each flywheel iterate takes seconds because the build does: five Booleans at 24 segments take #fx(V("cost::fly::build") / 1000, 1) s, against #F("cost::fly::capture", 0) ms to capture its #V("cost::fly::nodes")-node plan.
 
-A `.vcad` document whose cylinder radius is bound to the named parameter `r` differentiates end to end with no hand seeding: $d V \/ d r =$ #F(K-doc + "ir::dv", 3) against the N-gon closed form #F(K-doc + "parametric_document_cylinder_gradient@L119::dv_exact", 3) (#E(K-doc + "parametric_document_cylinder_gradient@L119::rel")), and $d I_(z z) \/ d r$ agrees with a document-rebuild FD to #E(K-doc + "parametric_document_cylinder_gradient@L140::rel_izz"). A document authored in vcad's loon language and one whose parameter is declared with `defparam` reach the same closed form to #E(K-doc + "loon_authored_document_gradient@L251::rel") and #E(K-doc + "defparam_makes_the_gradient_reachable_without_hand_binding@L281::rel").
+== A named document parameter
+
+A `.vcad` document whose cylinder radius is bound to the named parameter `r` differentiates with no hand seeding: $d V \/ d r =$ #F(K-doc + "ir::dv", 3) against the N-gon closed form #F(K-doc + "parametric_document_cylinder_gradient@L119::dv_exact", 3) (#E(K-doc + "parametric_document_cylinder_gradient@L119::rel")), and $d I_(z z) \/ d r$ agrees with FD of document rebuilds to #E(K-doc + "parametric_document_cylinder_gradient@L140::rel_izz"). A document written in vcad's loon language and one whose parameter is declared with `defparam` reach the same closed form to #E(K-doc + "loon_authored_document_gradient@L251::rel") and #E(K-doc + "defparam_makes_the_gradient_reachable_without_hand_binding@L281::rel"). These gradients use synthesized seedings and carry their $O(h^2)$ error.
 
 == Shape through dynamics and contact
 
 #figure(
   table(
-    columns: (1.9fr, 1fr, 1fr),
+    columns: (2.1fr, 1fr, 1fr),
     align: (left, right, right),
-    table.header([*Rollout (θ = cylinder radius)*], [*dJ/dθ*], [*vs end-to-end FD*]),
+    table.header([*Rollout*], [*dJ/dθ*], [*vs rebuild-and-resimulate FD*]),
     [Flywheel spin-up, $J = omega(T)$, FD on p], [#F("m8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::grad", 4)], [#E("m8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::rel")],
     [Gravity pendulum, $J = q(T)$, FD on p], [#F("m8_rollout_gradient::gravity_pendulum_gradient_matches_end_to_end_fd@L240::grad", 5)], [#E("m8_rollout_gradient::gravity_pendulum_gradient_matches_end_to_end_fd@L240::rel")],
     [Flywheel, adjoint], [#F("m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::g", 4)], [#E("m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L248::rel")],
-    [Pendulum on body-x revolute, adjoint], [#F("m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::g", 5)], [#E("m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::rel")],
-    [Cylinder resting on its side, contact adjoint], [#sci(V("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad"), digits: 3)], [#E("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel")],
+    [Pendulum on a body-x revolute, adjoint], [#F("m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::g", 5)], [#E("m11_adjoint_rollout::adjoint_matches_end_to_end_fd@L258::rel")],
+    [Cylinder resting on its side, contact], [#sci(V("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad"), digits: 3)], [#E("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel")],
+    [Filleted box resting on a blend, contact], [#sci(V("cbox::grad"), digits: 3)], [#relc(V("cbox::fd::-2"), V("cbox::grad"))],
   ),
-  caption: [#lead[Gradients of rollouts with respect to a CAD radius]: J in rad/s, rad and m; θ in mm. The reference rebuilds the CAD at $theta plus.minus h$, re-tessellates, recomputes mass properties and re-simulates, with contact where the rollout has it. The adjoint's pendulum is the same cylinder re-expressed for the adjoint's specification (revolute about the body x axis instead of a rotated inertia), so its value differs from the first pendulum's. The adjoint agrees with the finite-difference path on $p$ to #E("m11_adjoint_rollout::adjoint_matches_fd_path@L198::rel") (flywheel) and #E("m11_adjoint_rollout::adjoint_matches_fd_path@L219::rel") (pendulum). `data/measured.tsv`.],
+  caption: [#lead[Gradients of rollouts with respect to a CAD radius]: J in rad/s, rad and m; θ in mm. The first five rows use a cylinder (radius 10 mm, height 8 mm, density 2700 kg/m³) on one joint, θ its radius; the last uses a 20 mm cube filleted at $r = 2$ mm, θ the fillet radius. The reference rebuilds the CAD, re-tessellates, recomputes mass properties and re-simulates, at $h = 10^(-3)$ mm (cylinder) and $10^(-2)$ mm (filleted box). Contact: $k = 100$ N/m and $c = 0.5$ N·s/m per vertex. The adjoint's pendulum mounts the same cylinder on a revolute about the body x axis instead of rotating its inertia, so its value differs from the first pendulum's. `data/measured.tsv`.],
 ) <tab:physics>
 
-The contact case is the shape-through-contact co-design problem in its smallest form. A CAD cylinder lies on its side on a vertical prismatic joint and settles onto the ground; $J$ is its settled height. Growing the radius moves the contact line down the body by exactly $d theta$, which alone would give $d J \/ d theta = 10^(-3)$ m per mm (the surface channel), and adds mass that sinks the body further into the penalty spring (the mass channel, negative). The two channels have opposite signs. The gradient, #sci(V("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad"), digits: 3), is #fx(100 * (1 - V("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::grad") / 1e-3), 1)% below the surface channel alone, and matches a rebuild-and-resimulate FD to #E("m11_contact_gradient::contact_chain_matches_end_to_end_fd@L166::rel") with no finite difference anywhere in the analytic chain. The test also asserts that doubling the density lowers the gradient, so the mass channel contributes to the result.
+The cylinder rows are a check of the chain on a body whose mass properties have closed forms. The last row exercises the seam through dynamics: a 20 mm cube with every edge filleted at 2 mm rests on one blended edge, held by a vertical prismatic joint, and $J$ is its settled height. The fillet radius moves 20 surfaces. Growing it raises the lowest point of the blend by $sqrt(2) - 1$ per unit radius, so the surface channel alone would give $d J \/ d theta = #sci(V("cbox::surface_only"), digits: 3)$ m per mm; the gradient, #sci(V("cbox::grad"), digits: 3), adds the mass channel and the change in which blend vertices touch, and matches a rebuild-and-resimulate FD to #relc(V("cbox::fd::-2"), V("cbox::grad")).
 
 #figure(fig-contact(),
-  caption: [#lead[Shape through contact.] A CAD cylinder (θ = radius) rests on its side on phyz's per-vertex penalty springs; $J$ is its settled height. Growing the radius raises the body through the surface channel and sinks it through the mass channel. Both factors are exact, so the chain has no finite difference in it. `data/measured.tsv`.],
+  caption: [#lead[Shape through contact.] The cylinder of @tab:physics rests on its side on phyz's per-vertex penalty springs; $J$ is its settled height. Growing the radius raises the body through the surface channel and sinks it through the mass channel. `data/measured.tsv`.],
 ) <fig:contact>
 
-== Pixels to CAD parameters: a shared benchmark with irys <sec:irys>
+== Pixels to CAD parameters <sec:irys>
 
-The seam's reverse mode accepts any cotangent on the frozen plan's nodes, including one from a renderer. With the irys differentiable path tracer (TODO: cite the irys paper once it has an arXiv identifier) we ran a shared benchmark on a real robot part: the left shoulder-pitch output plate of the rose arm, a 3 mm rounded plate with a 49 mm bearing bore and twelve 4.4 mm bolt holes. θ is the bore diameter. The frozen plan has 4942 nodes and 9932 triangles at 32 circle segments, with a synthesized seeding. irys renders the plan's mesh as it is, without re-tessellating, against an empty background at 160 × 128, so the whole derivative comes from visibility edges; its edge sampler returns $partial cal(L) \/ partial x$ on every plan node for a fixed smooth image loss.
+The transposed pass accepts any cotangent on the plan's nodes, including one from a renderer. With the irys differentiable path tracer @irys we pulled an image gradient back to a CAD dimension on a real part: the left shoulder-pitch output plate of the rose robot arm, a 3 mm rounded plate with a 49 mm bearing bore and twelve 4.4 mm bolt holes. θ is the bore diameter; the plan has #V("irys::nodes") nodes at 32 circle segments and a synthesized seeding. irys renders the plan's mesh as it is against an empty background at 160 × 128 pixels, so the whole derivative comes from visibility edges, and its edge sampler returns $partial cal(L) \/ partial x$ on every node for a fixed smooth image loss ($#V("irys::samples")$ samples, #V("irys::seeds") seeds).
 
 #figure(
   table(
-    columns: (2fr, 1fr, 1fr),
+    columns: (2.2fr, 1fr, 1fr),
     align: (left, right, right),
-    table.header([*Path to dL/dθ*], [*Value*], [*vs pullback*]),
-    [Seam pullback (reverse mode)], [+40.16864], [–],
-    [Seam forward mode, $sum partial cal(L) \/ partial x dot dot(x)$], [+40.16864], [$1.1 times 10^(-15)$],
-    [vcad FD node velocities ($h = 10^(-5)$ mm)], [+40.17028], [$4.3 times 10^(-5)$],
-    [End-to-end render FD ($h = 0.1$ mm)], [+40.0144], [$3.9 times 10^(-3)$],
+    table.header([*Path to dL/dθ*], [*Value*], [*vs transposed pass*]),
+    [Transposed pass], [#F("irys::pullback", 5)], [–],
+    [Forward pass, $sum partial cal(L) \/ partial x dot dot(x)$], [#F("irys::forward", 5)], [#E("irys::forward_rel")],
+    [Same-plan FD node velocities, $h = 10^(-5)$ mm], [#F("irys::fdvel", 5)], [#E("irys::fdvel_rel")],
+    [Render FD with nodes moved along FD velocities, $h = #V("irys::render_h")$ mm], [#F("irys::render", 4)], [#E("irys::render_rel")],
   ),
-  caption: [#lead[Shared rose-arm benchmark], measured by the irys session at irys `103e3da` and vcad `d10f279` rose `832192f`; not regenerated by `repro.sh`. The pullback's Monte Carlo standard error over 8 edge-sampling seeds is ±0.0226. The render FD itself moves by about 0.5% between $h = 0.02$ and $0.1$ mm, so the pullback agrees with it within the FD's own error.],
+  caption: [#lead[The rose-arm benchmark] at irys `103e3da`, rose `832192f` and vcad `d10f279`, regenerated by `repro/irys.sh`. The transposed pass's Monte Carlo standard error over the seeds is ±#V("irys::pullback_se"). The render FD moves by about 0.5% between $h = 0.02$ and $0.1$ mm, so the transposed pass agrees with it within the FD's own error.],
 ) <tab:irys>
 
-The benchmark also shows why an end-to-end finite difference through a real part is a poor reference. A true rebuild at $theta plus.minus h$ fails with `CorrespondenceLost` for $h >= 2 times 10^(-3)$ mm and with `TopologyChanged` at $0.05$ mm, because the bore rim's arc count is sag-adaptive and drops from 4942 to 4940 vertices; at $h = 5 times 10^(-4)$ mm the render FD is dominated by quadrature noise. The end-to-end check therefore moves the plan's nodes along their FD velocities rather than rebuilding. The seam has no such step-size window: its pullback is exact for the frozen mesh, and the renderer's sampling error is the only noise left.
+A rebuild FD is not possible here. A rebuild at $theta plus.minus h$ loses correspondence for $h >= 2 times 10^(-3)$ mm and changes topology at 0.05 mm, where the bore rim's sag-adaptive arc count drops by two vertices, while at $h = 5 times 10^(-4)$ mm the render FD is dominated by quadrature noise. The last row therefore moves the plan's nodes along their same-plan FD velocities instead of rebuilding, which checks the renderer's derivative but not the seam's; the seam's part of the chain is checked by the third row.
 
 == Cost
 
 #figure(fig-cost(),
-  caption: [#lead[Per-call cost on the filleted cube] at three blend resolutions, release build, median. Capture, one forward seam pass and one pullback are all linear in the number of mesh nodes; the pullback prices every parameter at once. `data/measured.tsv`.],
+  caption: [#lead[Per-call cost on the filleted cube] at three blend resolutions, median. Capturing a plan, one forward pass and one transposed pass are all linear in the number of mesh nodes. `data/measured.tsv`.],
 ) <fig:cost>
 
 = Discussion <sec:discussion>
 
-*Why freeze the tessellation.* The alternative, differentiating the kernel's code, has to give some answer at every branch: which face a Boolean keeps, how a fillet orders its blends, how many segments a circle gets. Those answers are piecewise constant in $theta$, so their derivatives are zero almost everywhere and undefined at the switches, and they are entangled with the nondeterminism we observed in the Boolean and fillet code. Freezing the plan turns the discrete state into an object the seam can check. Inside the plan's topology class the derivative is exact, and outside it the seam returns an error.
+*Why freeze the tessellation.* Differentiating the kernel's code has to give some answer at every branch: which face a Boolean keeps, how a fillet orders its blends, how many segments a circle gets. Those answers are piecewise constant in $theta$, and in vcad they are also order-nondeterministic. Freezing the plan makes the discrete state explicit and checkable. The cost is the limits of @sec:limits: a plan is valid for steps of #sci(V("radius::0::h")) mm on the five-parameter box, segment counts change between iterates, and the derivative is that of the mesh. For optimization this has been enough on every part we tried, because each iterate captures a new plan and the jumps between plans are of order $10^(-6)$ of the objective; for an objective that depends on fine surface detail, the polygonization gap would dominate before the jumps do.
 
-*What the gradient is a gradient of.* The seam's derivative is that of the mesh vcad produces, which is the object a mesh-based simulation consumes. For mass properties at practical resolutions the gap to the continuum is small (@tab:fd); for objectives that depend on fine surface detail it may not be, and the remedy is resolution.
+*What the finite differences show.* On every plane, cylinder, cone and torus model, same-plan FD, rebuild FD and the seam agree. On filleted solids rebuild FD is noisy at small steps, because rebuilds place nodes differently, and has to be read at a step of $10^(-3)$ to $10^(-2)$ mm (@fig:sweep). At those steps it confirms the seam on the filleted cube, and it disagrees with the seam by about $10^(-4)$ on the filleted, drilled box and by $10^(-3)$ on the filleted cube's second derivative. Those two cases are open.
 
-*Finite differences are not a reliable reference on filleted solids.* On every plane, cylinder, cone and torus gate, FD and the seam agree to $10^(-8)$ or better. On filleted solids FD at $h = 10^(-6)$ degrades to $10^(-4)$–$10^(-5)$ for some parameters (@fig:lbfgs) because a rebuild at $theta plus.minus h$ carries correspondence jitter of that order; we validated those cases by agreement between independent forward and reverse implementations and by FD with a wider step.
+*Toward an operator graph.* The rollout coupling of @sec:physics composes three steps by hand: the seam (parameters to node positions, with its transposed pass), mass properties (node positions to ten scalars per body) and the phyz adjoint (scalars and contact vertices to $J$). Each is a step with a forward map and an exact vector–Jacobian product, which is the shape of an operator node in a differentiable program @blondel2022implicit. We are building that graph on the tang tensor compiler @tang, where linear solves and simulations become nodes with their own adjoints; none of that is evaluated here.
 
-*From a seam to a graph.* The natural next result is the showpiece of @fig:showpiece: the rollout path of @tab:physics with the thermal branch added, through operator nodes rather than hand composition, and validated by the same rebuild-and-resimulate differences. Because the seam returns an error outside its topology class instead of a wrong value, a graph that contains it never receives a wrong gradient from it.
-
-*Remaining gaps.* Cone-tangent-to-plane tangency rows are not implemented, because no gate model has produced one. Fillets whose corners are asymmetric or meet three blends fall back to the kernel's older pipeline. The contact model is frictionless; friction's kink at sticking would need smoothing. Running costs in the rollout objective, multi-DOF joints and state-feedback control are mechanical extensions of the adjoint recursion that nothing has needed yet.
+*Remaining gaps.* Besides the two discrepancies above: cone-tangent-to-plane tangency rows are not implemented; fillets with asymmetric corners or three blends at a vertex fall back to an older pipeline that is not differentiated; the contact model is frictionless; and the method is demonstrated only on vcad. Nothing in it depends on vcad beyond analytic surfaces that evaluate on dual numbers and a tessellator that can classify its nodes.
 
 = Reproducibility <sec:repro>
 
-`paper/vcad/repro/repro.sh` clones vcad at commit #raw(env.at("vcad_rev")) (its lockfile pins phyz, loon and tang), applies `report.patch`, runs the gate tests listed above with `--nocapture`, and writes `data/measured.tsv`. The patch is generated by `instrument.py` and only adds `eprintln!` lines after statements that already compute a measured quantity, so each gate still asserts its own bound and the printed value is the one it checks. This document reads every measured number, table cell and plotted point from that file; rebuilding the PDF after a run updates them. The run used for this draft took place on #env.at("date") on #env.at("host").
+`repro/repro.sh` clones vcad at #raw(env.at("vcad_rev")) (its lockfile pins phyz, loon and tang) and applies `report.patch`, which adds `eprintln!` lines after statements in vcad's tests that already compute a measured quantity, so each test still asserts its own tolerance and prints the value it checks. It then copies in `paper_experiments.rs` and `paper_contact_fillet.rs`, the experiments added for this paper (rebuild FD, step sweeps, resolution study, optimizer baselines, costs, plan radius, segment-count jumps, second-order sweeps, the flywheel L-BFGS run and the filleted-box contact rollout), runs everything, runs `irys.sh` for the rose-arm benchmark, and writes `data/measured.tsv`. This document reads every measured number, table cell and plotted point from that file. The run used for this draft took place on #env.at("date") on #env.at("host").
 
 = Conclusion
 
-Exact parameter gradients through a production BRep kernel are attainable without making the kernel differentiable. Cutting the chain at a frozen tessellation, and differentiating only the geometric map from parameters to mesh nodes, yields derivatives that are exact for the mesh, cover the parameters designers edit (including fillet radii), compose with reverse mode, second order and L-BFGS, and carry through to rigid-body dynamics and contact. They do not cross a change of topology. The kernel reports that case as an error. In the architecture we are building, the seam is the geometry operator in a graph where vcad's physics is written once as math and tang derives the kernels and gradients for every device. vcad, including the seam, is open source.
+Freezing a BRep's tessellation and differentiating its node positions gives derivatives of CAD parameters, fillet radii included, that are exact for the mesh, extend to second order and a transposed pass, and carry through to mass properties and rigid-body dynamics with contact. The approach follows Engineering Sketch Pad's tessellation sensitivities; our additions are analytic fillets, second derivatives, the transposed pass and the dynamics coupling. Its limits are those of the frozen mesh, a polygonization gap that falls as $N^(-2)$ and plans valid for small steps, and two disagreements with finite differences on filleted, drilled parts and fillet second derivatives remain to be explained. vcad, the experiments and the data are open source.
 
 #heading(outlined: true, numbering: none)[References]
 #show bibliography: it => { show "?.": "?"; show "!.": "!"; it }
