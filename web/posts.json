@@ -33,11 +33,11 @@
   },
   {
     "slug": "irys",
-    "title": "Seeing Is Measuring",
-    "subtitle": "From pixels to the dimensions of a CAD model, through a bit-exact differentiable renderer",
+    "title": "irys",
+    "subtitle": "A spectral differentiable renderer with exact replay",
     "date": "2026-11-06",
     "author": "Cam Pedersen",
-    "description": "A photograph of a part already contains its dimensions. irys reads them out: a differentiable renderer whose replay is bit-exact, whose gradients reach through instanced CAD to the dimensions in the model, and which recovers editable CAD programs from three photographs to half a millimetre on most test parts.",
+    "description": "irys is an open-source spectral path tracer whose differentiable core replays the forward pass bit for bit, so its gradients are identical across runs, checked against an f64 reference, and reach through instanced CAD to the dimensions in the model.",
     "root": "../paper/irys",
     "source": "irys.typ",
     "cover": "pavilion"

@@ -63,7 +63,7 @@
   }))
 }
 
-#set document(title: "irys", author: "Cam Pedersen (Municipal Robotics)")
+#set document(title: "irys: A Spectral Differentiable Renderer with Exact Replay", author: "Cam Pedersen (Municipal Robotics)")
 
 #let hf-out() = { let m = page.margin; let l = if type(m) == dictionary { m.at("left", default: m.at("x", default: 0.75in)) } else { 0.75in }; calc.max(0in, l - 0.7in) }
 
@@ -336,7 +336,7 @@
     #v(0.5em)
     #line(length: 22%, stroke: 2pt + c-label)
     #v(0.7em)
-    #text(size: s-lg, fill: c-label)[From pixels to the dimensions of a CAD model, through a bit-exact differentiable renderer]
+    #text(size: s-lg, fill: c-label)[A spectral differentiable renderer with exact replay]
     #v(0.55in)
     #grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
       caps[Cam Pedersen · Municipal Robotics],
