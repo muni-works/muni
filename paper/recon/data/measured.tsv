@@ -1,0 +1,74 @@
+recon.1v.p05	2	irys docs/image-to-cad.md "v1" @845f34a, docs/recon-v1-report.md (recon_v1 gate, 1 photo per part, 20 parts)
+recon.1v.p1	6	same
+recon.1v.topo	11	same
+recon.3v.p05	10	irys docs/recon-v1-3view-report.json @527f046 (recon_v1 gate --views 3, 20 parts)
+recon.3v.p1	13	same
+recon.3v.topo	15	same
+recon.3v.err_lo	0.171	same: smallest max-dimension error among parts passing at 0.5 mm
+recon.3v.err_hi	0.488	same: largest
+recon.3v.err_med	0.351	same: median
+recon.3v.pose_med	0.134	same: median of max(|dx|,|dy|) pose error on the tag plane, mm, all 20 parts
+recon.3v.yaw_max	0.065	same: worst yaw error, degrees
+recon.3v.focal_max	0.61	same: worst focal error from EXIF + tag, percent
+recon.parts	20	the gate's parts, generate::program(3000..3020)
+recon.3a.p05	10	irys docs/recon-v1-3view-ao-report.json @de62b0a (recon_v1 gate --views 3 --no-fd, AO differentiated, 20 parts)
+recon.3a.p1	15	same
+recon.3a.topo	16	same
+recon.3a.err_lo	0.157	same: smallest max-dimension error among parts passing at 0.5 mm
+recon.3a.err_hi	0.382	same: largest
+recon.3a.err_med	0.265	same: median
+recon.3a.err1_med	0.320	same: median among parts passing at 1 mm
+recon.3a.s_part	187	same: mean seconds per part (3 photos, CPU)
+recon.3v.s_part	409	docs/recon-v1-3view-report.json @527f046: mean seconds per part with forward-difference AO columns
+recon.3a.p1_ci	0.531	0.888	Wilson 95% interval for 15/20
+recon.3a.p05_ci	0.299	0.701	Wilson 95% interval for 10/20
+recon.1v.p1_ci	0.145	0.519	Wilson 95% interval for 6/20
+recon.pt.p05	11	irys docs/recon-v1-3view-pt-hybrid-report.md @e2fec74 (recon_v1 gate --views 3 --no-fd --renderer hybrid: G-buffer search, final fit through irys's path tracer; 20 parts)
+recon.pt.p1	14	same
+recon.pt.topo	16	same
+recon.g.parts	100	irys docs/recon-v1-gate100-report.md @812dc62 (recon_v1 gate --views 3 --no-fd, AO differentiated; in-grammar seeds 3000..3099; first 20 = recon.3a)
+recon.g.p05	40	same
+recon.g.p1	52	same
+recon.g.topo	60	same
+recon.g.p1_ci	0.42	0.62	same: Wilson 95%
+recon.g.p05_ci	0.31	0.50	same: Wilson 95%
+recon.g.topo_ci	0.50	0.69	same: Wilson 95%
+recon.g.new_p1	37	same: seeds 3020..3099, within 1 mm (of 80)
+recon.g.given_topo	87	same: % within 1 mm given correct topology (52/60)
+recon.g.given_topo_ci	0.76	0.93	same: Wilson 95%
+recon.g.hole_cb	19	same: parts with hole<->counterbore confusion (of 40 topology failures incl. 4 tag misses)
+recon.g.notag	4	same: parts failing before recon (no tag36h11 found in one photo)
+recon.g.med_ok	0.383	same: median worst-dimension error, mm, correct-topology parts
+recon.g.p90_ok	1.406	same: p90
+recon.g.h_bias	0.18	same: mean plate-height error, mm (low)
+recon.o.parts	24	same: out-of-grammar seeds 9000..9023, 6 kinds x 4
+recon.o.p05	5	same
+recon.o.p1	9	same
+recon.o.topo	10	same
+recon.o.p1_ci	0.21	0.57	same: Wilson 95%
+recon.sig.c	17.8	same: sigma' = c * sigma_Fisher, fitted on even seeds
+recon.sig.c_ci	12.7	21.8	same: bootstrap
+recon.sig.cov1	68	same: % of odd-seed dimensions within 1 sigma'
+recon.sig.k95	6.72	same: 95% half-width in sigma'
+recon.sig.cov95	96	same: % of odd-seed dimensions within k95 sigma'
+recon.sig.rho	-0.15	same: Spearman rank correlation of sigma_Fisher with |error|
+recon.sig.opt	6	same: median factor by which Fisher sigma is optimistic
+recon.fm.missed_hole	11	irys docs/recon-v1-gate100-report.md @812dc62, failure modes (a part can show several)
+recon.fm.cb_to_hole	10	same
+recon.fm.extra_hole	10	same
+recon.fm.hole_to_cb	9	same
+recon.fm.extra_cb	7	same
+recon.fm.sharp_to_fillet	7	same
+recon.fm.extra_boss	5	same
+recon.err.slot_len_med	0.304	irys docs/recon-v1-gate100-report.md @812dc62: |error| of slot length, correct-topology parts, median mm
+recon.err.slot_len_p90	2.454	same: p90
+recon.err.slot_len_n_over	11	same: of 29 slot lengths above 0.5 mm
+recon.err.cb_depth_med	0.228	same: counterbore depth median mm (n 22)
+recon.err.cb_depth_p90	0.780	same: p90
+recon.err.hole_r_med	0.038	same: hole radius median mm (n 37)
+recon.err.circ_r_med	0.019	same: circular-pattern hole radius median mm (n 16)
+recon.all.p1	61	same: all 124 parts within 1 mm
+recon.all.parts	124	same
+recon.g.s_part_mew	675	same: median s per part per process on mew (24 cores, 6 processes x 4 threads)
+recon.o.overlap_p1	0	same: keyhole kind, of 4
+recon.o.unround_p1	3	same: off-grid kind, of 4
