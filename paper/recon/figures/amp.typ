@@ -27,8 +27,8 @@
   lbl((9.2, 1.95), [1], anchor: "north")
   lbl((7.0 + 0.45 * 2.2, 1.95), [$a$], anchor: "north", fill: c-irys)
   // the gradients
-  note((0.0, 1.75), width: 6.4cm)[*Amplitude.* $partial I \/ partial a = I_1 - I_0$: two renders, no edge term, exact.]
+  note((0.0, 1.75), width: 6.4cm)[*Amplitude.* $partial I \/ partial a = I_1 - I_0$ is exact and needs two renders and no edge term.]
   note((0.0, 1.05), width: 6.4cm)[*Dimensions.* $partial I \/ partial theta = a thin partial I_1 \/ partial theta$, edge-sampled in the $a = 1$ branch. At $a = 0$ the column vanishes.]
-  note((0.0, 0.35), width: 6.4cm)[*Length.* The feature pays $a L$ nats; an anneal $beta thin a (1 - a)$ drives $a$ to 0 or 1, then the ordinary program is emitted.]
-  note((7.0, 1.2), width: 3.6cm, fill: c-label)[A counterbore at depth 0 is a hole: the two meet on a shared face of the relaxation.]
+  note((0.0, 0.35), width: 6.4cm)[*Length.* The feature costs $a L$ nats. An anneal $beta thin a (1 - a)$ drives $a$ to 0 or 1, and the fit then emits the ordinary program.]
+  note((7.0, 1.2), width: 3.6cm, fill: c-label)[A counterbore at depth 0 is a hole, so the hole lies on the boundary of the counterbore's parameters.]
 })
