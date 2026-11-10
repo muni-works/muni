@@ -38,6 +38,12 @@ const K_FLYBY = (A1 - A0) / (A2 - A0); // fraction of the path at Mars
 // One launch per stage of the plan, Desk to Star; the fleet resets when the climb reaches the star.
 const STAGES = 8;
 
+// The Dyson swarm: collectors are made at Mercury and fly out to orbits around the sun.
+// It fills in over the whole climb, so the shell closes as the eighth stage, Star, ends.
+const SWARM = 280;
+const FLY = 2.6; // seconds from Mercury to a collector's orbit
+const ZK = Math.sqrt(1 - TILT * TILT); // screen height of one unit out of the ecliptic
+
 // Accelerates off Earth, reaches Mars at T_FLYBY, then leaves faster after the slingshot
 function probeProgress(t: number) {
   if (t <= 0) return 0;
@@ -87,6 +93,20 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
       a: rand(i, 7) * Math.PI * 2,
       s: 0.4 + rand(i, 8) * 1.1,
     }));
+    // each collector has its own orbit: twelve planes, tilted evenly from the ecliptic to the poles
+    const swarm = Array.from({ length: SWARM }, (_, k) => {
+      const plane = k % 12;
+      const r = 0.78 + 0.12 * rand(k, 9);
+      return {
+        r,
+        inc: ((plane + 0.5) / 12) * Math.PI,
+        node: plane * 2.4,
+        ph: rand(k, 10) * Math.PI * 2,
+        w: 0.32 * Math.pow(r, -1.5),
+        at: rand(k, 11) * 0.12 + (k / SWARM) * 0.86, // launch time, as a share of the climb
+        gl: rand(k, 12) * Math.PI * 2,
+      };
+    });
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
     const onMove = (e: PointerEvent) => {
       pointer.tx = (e.clientX / window.innerWidth) * 2 - 1;
@@ -191,8 +211,67 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
         }
         ctx.globalAlpha = 1;
       };
+      // the swarm builds itself over the climb: a share of the collectors per launch window
+      const climbCycle = Math.floor(time / SYNODIC);
+      const CLIMB = SYNODIC * STAGES;
+      const climbT = reduce ? CLIMB : climbCycle < 1 ? -1 : ((((climbCycle - 1) % STAGES) + STAGES) % STAGES) * SYNODIC + (time - climbCycle * SYNODIC);
+      const climbFade = climbT > CLIMB - 2.5 ? Math.max(0, (CLIMB - climbT) / 2.5) : 1; // the shell dissolves as the climb restarts
+      const S3 = (X: number, Y: number, Z: number): [number, number, boolean, number] => {
+        const a = Math.atan2(Y, X) + yaw;
+        const rr = Math.hypot(X, Y);
+        return [cx + u * rr * Math.cos(a), cy - u * tilt * rr * Math.sin(a) - u * ZK * Z, Math.sin(a) > 0, (1 - Math.sin(a)) / 2];
+      };
+      const slot = (c: (typeof swarm)[number], t: number): [number, number, number] => {
+        const th = c.ph + c.w * t;
+        const ct = Math.cos(th);
+        const st = Math.sin(th) * Math.cos(c.inc);
+        return [ct * Math.cos(c.node) - st * Math.sin(c.node), ct * Math.sin(c.node) + st * Math.cos(c.node), Math.sin(th) * Math.sin(c.inc)];
+      };
+      const mercA = (t: number) => 2.1 + (Math.PI * 2 * t) / 5;
+      const swarmPass = (far: boolean) => {
+        if (climbT < 0) return;
+        for (const c of swarm) {
+          const since = climbT - c.at * (CLIMB - 4);
+          if (since < 0) continue;
+          if (since < FLY && !reduce) {
+            // in flight: spiral out of Mercury's orbit and settle onto the slot
+            const k = smooth(since / FLY);
+            const ma = mercA(time - since);
+            const [sx, sy, sz] = slot(c, time);
+            const sa = Math.atan2(sy, sx);
+            let da = sa - ma;
+            da = ((da % (Math.PI * 2)) + Math.PI * 3) % (Math.PI * 2) - Math.PI;
+            const rr = 1.15 + (Math.hypot(sx, sy) - 1.15) * k;
+            const a = ma + da * k;
+            const [x, y, isFar] = S3(rr * Math.cos(a), rr * Math.sin(a), sz * k);
+            if (isFar !== far) continue;
+            ctx.globalCompositeOperation = "lighter";
+            const glow = ctx.createRadialGradient(x, y, 0, x, y, 6);
+            glow.addColorStop(0, `rgba(255,212,0,${0.7 * climbFade})`);
+            glow.addColorStop(1, "rgba(255,212,0,0)");
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(x, y, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalCompositeOperation = "source-over";
+            continue;
+          }
+          // on station: a small panel that catches the light as it turns
+          const [X, Y, Z] = slot(c, time);
+          const [x, y, isFar, depth] = S3(X, Y, Z);
+          if (isFar !== far) continue;
+          const glint = reduce ? 0.7 : 0.55 + 0.45 * Math.sin(time * 1.3 + c.gl);
+          const born = reduce ? 1 : Math.min(1, (since - FLY) / 0.6 + 0.3);
+          ctx.fillStyle = glint > 0.92 ? "#fff4e8" : C.warn;
+          ctx.globalAlpha = Math.min(1, (0.4 + 0.7 * depth) * glint * born * climbFade);
+          ctx.fillRect(x - 1.6, y - 0.8, 3.2, 1.6);
+        }
+        ctx.globalAlpha = 1;
+      };
+
       ORBITS.forEach((r) => orbit(r, true));
       beltPass(true);
+      swarmPass(true);
 
       // bearing ring: ticks every 10°, labels at the cardinal bearings
       ctx.strokeStyle = C.line;
@@ -239,6 +318,7 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
 
       ORBITS.forEach((r) => orbit(r, false));
       beltPass(false);
+      swarmPass(false);
 
       // planets, lit from the sun
       const planet = (r: number, a: number, rad: number, col: string) => {
