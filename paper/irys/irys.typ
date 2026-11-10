@@ -142,7 +142,6 @@
 #import "figures/edge.typ": fig-edge
 #import "figures/frames.typ": fig-frames
 #import "figures/secondary.typ": fig-secondary
-#import "figures/recon.typ": fig-recon
 #import "figures/rosefit.typ": fig-rosefit
 // Web figures: drawn bodies become inline SVG via html.frame (as vision.typ); tables stay <table>s.
 #show figure: it => if web and it.kind != table {
@@ -324,24 +323,6 @@
   })
 }
 
-// Recovery examples: three of the gate's parts, each from its three photographs (the first shown
-// large), the fit's overlay (model outline on the crop, and the residual), and the programs.
-#let fig-recon-examples() = {
-  let ex = json("data/recon-examples.json")
-  let verdict(e) = if e.p05 { text(fill: c-ok)[PASS · WORST #calc.round(e.max, digits: 2) MM] } else if e.p1 { text(fill: c-ok)[PASS AT 1 MM · #calc.round(e.max, digits: 2) MM] } else if e.topo { text(fill: c-fault)[FAIL · #calc.round(e.max, digits: 2) MM] } else { text(fill: c-fault)[FAIL · WRONG FEATURES] }
-  let mono-s(body, fill: c-label) = text(font: mono, size: 5.6pt, fill: fill, body)
-  align(left, grid(columns: (1fr,), row-gutter: 1.1em, ..ex.map(e => grid(
-    columns: (1.05fr, 0.36fr, 1.9fr), column-gutter: 0.5em, row-gutter: 0.35em,
-    image("images/recon/" + str(e.seed) + "-v0.jpg", width: 100%),
-    stack(spacing: 0.3em, image("images/recon/" + str(e.seed) + "-v1.jpg", width: 100%), image("images/recon/" + str(e.seed) + "-v2.jpg", width: 100%)),
-    image("images/recon/" + str(e.seed) + "-overlay.png", width: 100%),
-    grid.cell(colspan: 3, stack(spacing: 0.35em,
-      text(font: mono-m, size: s-xs, tracking: track)[PART #e.seed #h(0.6em) #verdict(e)],
-      mono-s[TRUTH #h(0.5em) #e.truth],
-      mono-s(fill: c-text)[FOUND #h(0.5em) #e.recovered.split("; pose").at(0)])),
-  ))))
-}
-
 // ---- title page -----------------------------------------------------------------
 #if not web {page(margin: 0in)[
   #set par(leading: 0.5em)
@@ -371,7 +352,7 @@
 
   Its differentiable core is path replay backpropagation on a GPU wavefront. Materials are written once as graphs in the tang tensor compiler and lowered both to GPU kernels and to an f64 CPU reference. An integer random-number generator, fixed-order reductions and a ray-only BVH walk make the replay reproduce the forward pass bit for bit: #V("gpu.replay_lanes") of #V("gpu.replay_lanes") lanes, with gradients identical across runs. GPU f32 gradients agree with the f64 reference to #E("gpu.dtheta_max"). On top of the material gradient sit pose gradients through instanced CAD meshes (primary edges, an interior term with attached frames, and secondary edges that move shadows and reflections) and a per-vertex image gradient that the vcad BRep kernel pulls back to the dimensions of a part.
 
-  Each layer is a measurement. A robot arm read from its CAD source gives back three joint angles and its anodised finish from a render, to #fx(max-deg-err, 2)° and #fx(theta-err, 3). A bearing bore's diameter gets its image gradient through the BRep kernel, matching vcad's forward mode to #E("brep.fwd_rel"). And from three synthetic phone photographs beside a printed tag, a recovery search over editable CAD programs finds #V("recon.g.p1") of #V("recon.g.parts") test parts to within 1 mm in every dimension (95% interval #calc.round(100 * V("recon.g.p1_ci"))–#calc.round(100 * V("recon.g.p1_ci", i: 1))%), and #V("recon.g.given_topo")% of the parts whose features it reads correctly; topology, not measurement, is what fails. Its error bars are calibrated: a 95% interval covers #V("recon.sig.cov95")% of held-out dimensions. We state the instrument's limits alongside its readings: replay is bit-exact per device and driver, the pose fit converges only near the answer, and real photographs are the next experiment, not a result of this paper.
+  Each layer is a measurement. A robot arm read from its CAD source gives back three joint angles and its anodised finish from a render, to #fx(max-deg-err, 2)° and #fx(theta-err, 3). A bearing bore's diameter gets its image gradient through the BRep kernel, matching vcad's forward mode to #E("brep.fwd_rel"). We state the instrument's limits alongside its readings: replay is bit-exact per device and driver, the pose fit converges only near the answer, and recovering whole CAD programs from photographs is the subject of a companion paper.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -400,7 +381,6 @@ This paper describes irys, the renderer behind vcad and our robotics tools, and 
 - *Bit-exact replay by construction.* An integer RNG that is exact on both tiers, fixed-order reductions with no float atomics, and a BVH walk that depends only on the ray (@sec:det).
 - *Pose gradients through instanced CAD meshes.* Primary edge sampling with crease ownership and visibility-aware importance, an interior term by forward-mode duals with attached frames, and secondary edge sampling for moving shadows and reflections (@sec:pose).
 - *Validation at every layer and a fit on a real robot.* Gradients against central differences with common random numbers, GPU against CPU f64, and a joint pose and finish recovery on an arm read from its CAD source (@sec:results).
-- *Dimensions from photographs.* A search over editable CAD programs, scored by description length and fitted with the same edge-sampling estimator, recovers the dimensions of parts from synthetic phone photographs beside a printed tag (@sec:recon).
 - *A bridge to CAD parameters.* A per-vertex image gradient that the vcad BRep kernel pulls back to the dimensions of the part, shared as a benchmark with the companion paper @pedersen2026vcad (@sec:brep).
 
 == Scope and limits
@@ -410,7 +390,6 @@ This paper describes irys, the renderer behind vcad and our robotics tools, and 
 - *Lights.* The environment is the only emitter (a sky and a von Mises–Fisher sun lobe).
 - *Pose parameters are rigid.* Joint angles and the camera move instances rigidly. Non-rigid shape change enters only through the BRep bridge of @sec:brep.
 - *The pose fit has a basin.* The elbow converges from within about ±#V("basin.deg")° of the answer and fails from outside it; the blur and pyramid schedules we tried did not widen it reliably.
-- *Photographs are synthetic.* Every photograph in @sec:recon is rendered, with a camera model applied. Real photographs of printed parts, checked with calipers, are the next experiment.
 - *Hardware.* All timings come from one Apple M-series machine through Metal; the exact chip was not recorded in the source logs, and timings in this draft are not yet regenerated on a single pinned machine (@sec:repro).
 
 = Background and related work
@@ -423,9 +402,7 @@ This paper describes irys, the renderer behind vcad and our robotics tools, and 
 
 *Differentiable rendering systems.* Mitsuba 3 @jakob2022mitsuba3 implements path replay with next-event estimation and multiple importance sampling, projective sampling and reparameterisation on Dr.Jit, and is the closest system to irys's differentiable core. irys differs in what it guarantees rather than in the estimator: a replay that is bit-identical to the forward pass by construction, an f64 reference that runs the same material source, spectral transport with hero wavelengths, and visibility terms adapted to CAD tessellations (coplanar slivers, crease ownership, attached frames).
 
-*Inverse CAD and program synthesis.* Recovering an editable CAD description from observations is usually posed as program synthesis. CSGNet parses shapes into CSG programs with a recurrent network @sharma2018csgnet; InverseCSG converts meshes to compact CSG trees with a solver-based synthesizer @du2018inversecsg; Szalinski rewrites flat CSG into programs with loops by equality saturation @nandi2020szalinski; DeepCAD generates sketch-and-extrude sequences @wu2021deepcad; ShapeAssembly writes part-assembly programs @jones2020shapeassembly; and Point2CAD recovers BRep surfaces from point clouds @liu2024point2cad. Ellis et al. infer graphics programs from images by proposing primitives and synthesizing a program over them @ellis2018graphics, and DreamCoder learns a library of program components alongside the search @ellis2021dreamcoder. These methods take meshes, point clouds or clean drawings as input, or learn a prior from a dataset; ours starts from photographs and scores each candidate program by rendering it, with gradients through the renderer for its dimensions and a description length that weighs residual, parameter cost and program length in one unit. CAD parameters upstream of the mesh are differentiated by our companion paper's BRep kernel @pedersen2026vcad, joined to irys in @sec:brep.
-
-*Measurement from images.* Close-range photogrammetry measures manufactured objects from calibrated images, usually by triangulating targets or features and adjusting the cameras and points together @luhmann2019photogrammetry. Our recovery shares its tools (a calibration target, bundle-adjustment-style least squares, Fisher-information error estimates) but fits a parametric model of the whole part to its pixels rather than to sparse points, so a hole's diameter is read from its outline and shading rather than from markers.
+*Inverse CAD and measurement from images.* Recovering an editable CAD description from observations is usually posed as program synthesis over meshes, point clouds or drawings @sharma2018csgnet @du2018inversecsg @ellis2018graphics, and close-range photogrammetry measures manufactured parts by triangulating targets and features @luhmann2019photogrammetry. irys supplies what both lack for photographs: exact gradients of a rendered image with respect to a part's pose, finish and dimensions. CAD parameters upstream of the mesh are differentiated by our companion paper's BRep kernel @pedersen2026vcad, joined to irys in @sec:brep.
 
 = Materials as compiled graphs <sec:ir>
 
@@ -555,58 +532,13 @@ The edge sampler's velocity is a projection of the material point's motion, so r
 
 A finite difference that rebuilds the part is not a usable reference here. Rebuilding at $theta plus.minus h$ loses node correspondence for $h >= 2 times 10^(-3)$ mm and changes topology at $0.05$ mm, where the bore rim's segment count, chosen from the circle's size, drops by one; below that the render difference is quadrature noise. The pullback has no step size. It is exact for the frozen mesh, and irys's sampling error is the only noise in the result.
 
-== Dimensions from photographs <sec:recon>
-
-The last reading is the one the title promises: the dimensions of a part from photographs of it. The recovery searches over editable CAD programs. A program is a plate with a corner treatment and a list of features (holes, counterbores, slots, bosses and hole patterns), each with its dimensions, plus the part's pose on the table. A program is scored by its description length in nats,
-
-$ "score"("program", theta) = -log p("photos" | "render"("program", theta)) + 1/2 log det F(theta) - log p("program") $
-
-the residual under a robust noise model, a Laplace parameter cost from the Fisher information $F$, and the program's own length under a grammar prior. An edit to the program (add a feature, remove one, turn a hole into a counterbore or a slot, merge holes into a pattern) is kept only if it shortens the description, so the search cannot buy residual with a feature per pixel. Inside each edit, Levenberg–Marquardt fits the continuous parameters with a Jacobian from the edge-sampling estimator of @sec:pose, applied to a deterministic photo model (a G-buffer with closed-form OpenPBR shading, spherical-harmonic light, a fitted key light and ambient occlusion). This photo model is not the path tracer of the preceding sections: a search makes thousands of fits, and the photo model is noise-free and about six times cheaper per evaluation. So we also run the search's result through irys itself. After the search, the appearance is refitted under the path tracer and the final fit runs on the path-traced residual, with PRB for the radiance and the per-vertex edge sampling of @sec:brep for the geometry; the program, its score and its dimensions are then the path tracer's. The last column of @tab:recon is that hybrid: it matches the photo model to within one part at every threshold.
-
-#figure(fig-recon(),
-  caption: [#lead[Seeing is measuring.] The recovery edits an editable CAD program, fits each edit's dimensions with irys's edge-sampling Jacobian, scores it in nats, and keeps it only if the description of the photographs gets shorter. A feature has to pay for itself.],
-) <fig:recon>
-
-A printed tag beside the part fixes the camera's pose, its focal length and the metric scale. The test photographs are synthetic phone photographs: irys's OpenPBR scene kernel renders each part in PLA beside the tag, under a captured or synthetic environment and a key light, then adds defocus, shot and read noise, a tone curve and JPEG compression. We developed the method on #V("recon.parts") parts drawn from the program grammar, each recovered independently from either one photograph or three photographs from different directions (@tab:recon), and then measured it once on #V("recon.g.parts") grammar parts and #V("recon.o.parts") parts outside the grammar (@tab:recon-gate).
-
-#figure(
-  table(
-    columns: (1.9fr, 0.8fr, 0.8fr, 1fr, 1.1fr),
-    align: (left, right, right, right, right),
-    table.header([*Recovered*], [*1 photo*], [*3 photos*], [*+ AO grad*], [*+ path-traced fit*]),
-    [every dimension within 0.5 mm], [#V("recon.1v.p05")/#V("recon.parts")], [#V("recon.3v.p05")/#V("recon.parts")], [#V("recon.3a.p05")/#V("recon.parts")], [#V("recon.pt.p05")/#V("recon.parts")],
-    [every dimension within 1 mm], [#V("recon.1v.p1")/#V("recon.parts")], [#V("recon.3v.p1")/#V("recon.parts")], [*#V("recon.3a.p1")/#V("recon.parts")*], [#V("recon.pt.p1")/#V("recon.parts")],
-    [the right features (topology)], [#V("recon.1v.topo")/#V("recon.parts")], [#V("recon.3v.topo")/#V("recon.parts")], [#V("recon.3a.topo")/#V("recon.parts")], [#V("recon.pt.topo")/#V("recon.parts")],
-  ),
-  caption: [#lead[The development set: dimensions from synthetic phone photographs], per part, worst dimension, after the plate's quarter-turn symmetry. With #V("recon.parts") parts the counts are coarse: the Wilson 95% interval on #V("recon.3a.p1")/#V("recon.parts") is #calc.round(100 * V("recon.3a.p1_ci"), digits: 0)–#calc.round(100 * V("recon.3a.p1_ci", i: 1), digits: 0)%, against #calc.round(100 * V("recon.1v.p1_ci"), digits: 0)–#calc.round(100 * V("recon.1v.p1_ci", i: 1), digits: 0)% for one photograph. The last column differentiates the photo model's ambient occlusion (below) instead of estimating those Jacobian columns by finite differences; there the parts that pass at 0.5 mm have worst-dimension errors from #F("recon.3a.err_lo", 2) to #F("recon.3a.err_hi", 2) mm (median #F("recon.3a.err_med", 2)), and a part takes #V("recon.3a.s_part") s on average against #V("recon.3v.s_part") s. Across all #V("recon.parts") parts the pose on the tag plane is recovered to a median #F("recon.3v.pose_med", 2) mm and yaw within #F("recon.3v.yaw_max", 2)°, and the focal length from EXIF and the tag within #F("recon.3v.focal_max", 1)%. `data/measured.tsv`.],
-) <tab:recon>
-
-#figure(fig-recon-examples(),
-  caption: [#lead[Three parts, three photographs each.] Left, the synthetic phone photographs the recovery sees (each beside the printed tag); right, the fit's overlay: the recovered part's outline on the crop, and the residual (red brighter, blue darker than the model). Part 3009 passes at 0.16 mm and 3012, with a four-hole circle and a counterbore, at 0.32 mm. Part 3016 fails: its second hole is read as a counterbore, the confusion the text traces. Programs in millimetres: a plate `base w d h`, then each feature with its centre and radii; FOUND omits the pose. `data/recon-examples.json`.],
-) <fig:recon-examples>
-
-A single photograph cannot separate a plate's height from a boss's, or see the floor of a counterbore; three photographs mostly can. With three, the main remaining error was a confusion between holes and counterbores. We traced one case: the correct program reached the full-resolution finalists and lost by 27 nats to a counterbore whose depth never moved from its starting value. A counterbore's step shows in a photograph mostly as ambient occlusion, and the photo model's occlusion was a fixed set of 16 rays per point, a step function of the geometry whose derivative is zero almost everywhere. On a flat receiver those 16 directions are fixed in the world, so each is a directional light of weight $1 \/ 16$, and its derivative is the moving-shadow term of @fig:secondary, with the receiver allowed to move too (a counterbore's floor moves with its depth). With that term the Jacobian's column for a counterbore's depth goes from cosine 0.88 against central differences to 0.97, every other column improves or holds, and the development set reaches #V("recon.3a.p1") of #V("recon.parts") parts within 1 mm with no finite differences at all.
-
-#figure(
-  table(
-    columns: (1.5fr, 1fr, 1fr, 1fr, 1fr),
-    align: (left, right, right, right, right),
-    table.header([*Set*], [*≤ 0.5 mm*], [*≤ 1 mm*], [*topology*], [*≤ 1 mm \ given topology*]),
-    [in grammar (#V("recon.g.parts"))], [#V("recon.g.p05")% #text(size: 0.85em)[(#calc.round(100 * V("recon.g.p05_ci"))–#calc.round(100 * V("recon.g.p05_ci", i: 1)))]], [*#V("recon.g.p1")%* #text(size: 0.85em)[(#calc.round(100 * V("recon.g.p1_ci"))–#calc.round(100 * V("recon.g.p1_ci", i: 1)))]], [#V("recon.g.topo")% #text(size: 0.85em)[(#calc.round(100 * V("recon.g.topo_ci"))–#calc.round(100 * V("recon.g.topo_ci", i: 1)))]], [#V("recon.g.given_topo")% #text(size: 0.85em)[(#calc.round(100 * V("recon.g.given_topo_ci"))–#calc.round(100 * V("recon.g.given_topo_ci", i: 1)))]],
-    [out of grammar (#V("recon.o.parts"))], [#V("recon.o.p05")/#V("recon.o.parts")], [#V("recon.o.p1")/#V("recon.o.parts")], [#V("recon.o.topo")/#V("recon.o.parts")], [#V("recon.o.p1")/#V("recon.o.topo")],
-  ),
-  caption: [#lead[The held-out gate.] Three photographs, AO differentiated, no finite differences, every default frozen before the run. Wilson 95% intervals in parentheses. The first 20 grammar parts are the development set and reproduce its counts exactly; the #(V("recon.g.parts") - V("recon.parts")) new parts score #V("recon.g.new_p1") within 1 mm, so the development set was a favourable draw. Among parts with the right topology the worst dimension has a median error of #F("recon.g.med_ok", 2) mm (90th percentile #F("recon.g.p90_ok", 2)). Out of grammar, six kinds of four parts each: off-grid dimensions pass (3 of 4 within 1 mm, 4 of 4 topology); keyholes, two holes cut into each other, never do. `data/measured.tsv`.],
-) <tab:recon-gate>
-
-*Held out.* Development sets flatter. So, with every default frozen, we grew the gate to #V("recon.g.parts") grammar parts and #V("recon.o.parts") outside the grammar (@tab:recon-gate). Within 1 mm falls from #V("recon.3a.p1") of #V("recon.parts") to #V("recon.g.p1") of #V("recon.g.parts"). The fall is almost entirely topology: given the right features, #V("recon.g.given_topo")% of parts measure within 1 mm. The commonest error remains a hole read as a counterbore or the reverse (#V("recon.g.hole_cb") parts); #V("recon.g.notag") parts fail before the search because the tag is not found in one photograph. The plate's height comes back #F("recon.g.h_bias", 2) mm low on average, a bias we have not yet traced. So the instrument measures well what it identifies, and identification is where the next work is.
-
-*Error bars.* The Fisher information gives each dimension a standard deviation, and on this gate those are optimistic by a median factor of #V("recon.sig.opt") and do not rank the errors (Spearman $rho = #V("recon.sig.rho")$). One scale fixes the coverage. Fitted on the even seeds, $sigma' = #V("recon.sig.c") sigma_F$ (bootstrap #F("recon.sig.c_ci", 1)–#F("recon.sig.c_ci", 1, i: 1)) covers #V("recon.sig.cov1")% of the odd seeds' dimensions at $1 sigma'$, and the errors' heavy tails put the 95% interval at $plus.minus #F("recon.sig.k95", 2) sigma'$, which covers #V("recon.sig.cov95")%. The recovery reports $sigma'$. The photographs here are rendered, so all of this is the instrument read against a known standard. Printed parts, phone photographs and calipers are the next experiment.
-
 = Discussion <sec:discussion>
 
 *Why insist on bit-exact replay.* With an exact replay, a gradient that disagrees with its reference is a bug in the estimator, not an artefact of the replay. We could therefore set every gate in this paper tight and debug failures by bisection. That is how we found the crease-ownership bug in our first edge sampler. It inflated one parameter's edge term by a factor of five on a shaded arm while the mask-only test passed.
 
 *The f64 reference.* Running the same tang graph in f64 on the CPU separates three error sources that are otherwise entangled: estimator bias (CPU against frozen CD), device rounding (GPU against CPU), and Monte Carlo noise (live sampler against CD over seeds).
+
+*Future work: from photographs to CAD programs.* The readings in this paper fit parameters of a model we already have. The harder reading is the model itself: given a few photographs of a part, find the editable CAD program, its features and their dimensions, with error bars. irys's gradients make the dimensions tractable inside such a search, and a printed tag fixes the camera and the scale. What remains open is topology: which features the part has. We take that up in a companion paper @pedersen2026recon, with a held-out evaluation and a continuous relaxation over a program's optional features.
 
 *Remaining gaps.* The secondary term runs on the CPU in f64 and costs about a quarter of an iteration; its estimate is heavy-tailed, and the rose check passes at 64 seeds but not at 256. The device edge sampler is biased low on the robot by a few percent for a cause we have not found, so the fits use host samples. The adjoint's reduction is not fused. Splats are not differentiated, and only the environment emits light. The elbow's narrow basin limits the fit to starts near the answer.
 
@@ -616,7 +548,7 @@ irys is open source under Apache-2.0. Each row of `data/measured.tsv` names the 
 
 = Conclusion
 
-Seeing becomes measuring when the renderer that explains a photograph is exact and its gradients can be trusted. irys makes the gradient exact where it can be: a replay that reproduces the forward pass bit for bit, materials compiled from one graph to a GPU tier and an f64 reference, and pose and shape gradients through the instanced CAD a kernel produces, down to the dimensions in the model. With them, a search over editable CAD programs reads the dimensions of three in four test parts from three photographs to within a millimetre, half of them to within half a millimetre. The next readings are photographs of real parts, held against calipers. irys is open source.
+Seeing becomes measuring when the renderer that explains a photograph is exact and its gradients can be trusted. irys makes the gradient exact where it can be: a replay that reproduces the forward pass bit for bit, materials compiled from one graph to a GPU tier and an f64 reference, and pose and shape gradients through the instanced CAD a kernel produces, down to the dimensions in the model. With them, a robot's joints and finish read back from its render, and a bore's diameter gets a gradient from its pixels. The next reading is the CAD program itself, from photographs of a real part. irys is open source.
 
 #heading(outlined: true, numbering: none)[References]
 #show bibliography: it => { show "?.": "?"; show "!.": "!"; it }
