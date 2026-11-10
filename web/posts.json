@@ -34,10 +34,10 @@
   {
     "slug": "tang",
     "title": "Don't Write Kernels, Derive Them",
-    "subtitle": "A Tensor IR of Views and Comprehensions",
-    "date": "2026-11-06",
+    "subtitle": "Chasing the Speed of Light: Kernels from a Tensor IR of Views and Comprehensions",
+    "date": "2026-11-10",
     "author": "Cam Pedersen",
-    "description": "tang's tensor IR has two primitives: affine views and monoid comprehensions. Fusion, flash attention and a flash-style backward pass fall out as rewrites, and the same graphs lower to WGSL, CUDA, Metal, OpenCL, GLSL and C. A derived transformer block runs 1.37x faster than PyTorch with TF32 on an RTX 3090, and Qwen3-8B decodes as one graph at 55% of bandwidth speed of light.",
+    "description": "tang's tensor IR has two constructs, affine views and monoid comprehensions. Fusion, flash attention and its backward pass are derived as rewrites, and one graph lowers to CUDA, Metal, WGSL, OpenCL, GLSL and C. The least memory traffic and the optimal tile are dual solutions of one linear program, and a time floor built on it never exceeds measured time on the kernels we checked against hardware counters. Wins and losses against PyTorch, llama.cpp and FlashAttention are both reported.",
     "root": "../paper/tang",
     "source": "tang.typ",
     "cover": "flash-tiles"

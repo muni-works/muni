@@ -3757,7 +3757,7 @@ Decode ms per step (context ~1380):
 
 The N=48 token-agreement figure moves with the mix of narrow and wide windows: 98.58% in rounds 4–5, 99.28% in round 6 (derived at every width) and 98.93% here. The hand engine itself scores exactly at the bar, and derived's mean \|dlogit\| is at or below hand's in every round.
 
-## Blind-review measurements (2026-11-09/10)
+## Idle-GPU measurements (2026-11-09/10)
 
 All runs are from branch `claude/review-measurements`; the commit is recorded in each raw `machine.txt`. Every number below has its raw output under `crates/tang-llm/docs/bench/review/`:
 - `3090/`: idle rented RTX 3090 (RunPod secure EU-CZ-1, driver 595.91.07, torch 2.8.0+cu128, commit 6ebfccd8, 2026-11-10 00:36 UTC). `idle.txt` holds `nvidia-smi` samples taken before each step: 1 MiB used, no other process.
@@ -3802,10 +3802,10 @@ All runs are from branch `claude/review-measurements`; the commit is recorded in
 | fwd+bwd 128 | 0.482 [0.503] | 3.774 / 3.127 | 2.148 / 1.553 | 0.663 / 0.484 [0.484] |
 | fwd+bwd 512 | 1.127 [1.132] | 4.209 / 2.947 | 1.524 / 1.724 | 1.621 / 1.142 [1.144] |
 
-- **This gets worse for the paper.** With a CUDA graph and TF32, PyTorch's forward at seq 128 (0.162 ms) beats tang's (0.196 ms) by 1.2×. fwd+bwd at seq 128 is a tie (0.484 vs 0.482 best, 0.503 median), and so is seq 512 (1.142 vs 1.127).
+- **The fair baseline is closer.** With a CUDA graph and TF32, PyTorch's forward at seq 128 (0.162 ms) beats tang's (0.196 ms) by 1.2×. fwd+bwd at seq 128 is a tie (0.484 vs 0.482 best, 0.503 median), and so is seq 512 (1.142 vs 1.127).
 - tang still wins the seq-512 forward against every PyTorch mode: 0.331 ms vs 0.396 (graph TF32) and 0.407 (compile TF32).
-- Eager PyTorch on this pod is slower than the paper's numbers (0.79 vs 0.306 ms at fwd 128) because the eager path is CPU-launch bound and this pod's CPU differs. The CUDA-graph rows remove that.
-- The paper's table should compare against the CUDA-graph TF32 column.
+- Eager PyTorch on this pod is slower than the earlier shared-GPU numbers (0.79 vs 0.306 ms at fwd 128) because the eager path is CPU-launch bound and this pod's CPU differs. The CUDA-graph rows remove that.
+- The CUDA-graph TF32 column is the baseline to compare against.
 
 ### 6. Floors beyond GEMVs: flash attention and matmul tiles (3090)
 
@@ -3818,7 +3818,7 @@ Bytes come from ncu on mew (`scripts/ncu/ncu_kernels.sh … --profile-from-start
 | matmul tile 1024³ TF32 | 0.098 ms | 12.5 MB | 13.4 µs (0.14) | 2.15 G | 60 µs (**0.62**) |
 | matmul tile 512×576×1536 TF32 | 0.054 ms | 8.9 MB | 9.6 µs (0.18) | 0.91 G | 25 µs (**0.47**) |
 
-These kernels are compute-shaped: their traffic floors are 2–15% of their time, so the GEMV-style "light" says nothing about them. Against the TF32 roof, the matmul tile reaches 0.47–0.62 and flash 0.25–0.28. Flash's fused backward kernel alone takes 0.476 ms of its 0.743 ms. Full ncu tables, including occupancy, L1 requests and stalls, are in `mew-ncu/*.md`.
+These kernels are compute-shaped: their traffic floors are 2–18% of their time, so the GEMV-style "light" says nothing about them. Against the TF32 roof, the matmul tile reaches 0.47–0.62 and flash 0.25–0.28. Flash's fused backward kernel alone takes 0.476 ms of its 0.743 ms. Full ncu tables, including occupancy, L1 requests and stalls, are in `mew-ncu/*.md`.
 
 ### 7. Greedy equivalence, Qwen3-8B, 256 tokens (idle 3090)
 
@@ -3850,8 +3850,8 @@ The hand `cx_moe_add_norm` also does the residual add, the next RMSNorm and the 
 - **Which B=1 number is right:** both, for different stages.
   - 0.036 is the `Stage::Gemv` schedule (fused producers): 0.0356 here, 0.0354 when forced.
   - BENCHMARKS.md:2810's 0.0484 is the Fragment (int8 MMA) stage at B=1, before `Stage::Gemv` existed: 0.0504 here with `CODER_MOE_STAGE=frag`.
-  - The paper's table uses the Gemv number for B=1/4 and states it.
-- **But with equal work the derived layer loses at B = 1 and 4,** by 18% and 7%. The paper's "beats the hand kernels at batch 1" holds only for the unequal comparison its caption warns about. At B = 8 it is a tie and at B = 64 a 5% win.
+  - The MoE table in the paper uses the Gemv number for B=1/4 and states it.
+- **But with equal work the derived layer loses at B = 1 and 4,** by 18% and 7%. An earlier "beats the hand kernels at batch 1" held only for the unequal comparison. At B = 8 it is a tie and at B = 64 a 5% win.
 - Gemv at B=8: 0.1167, slower than Fragment's 0.1062, as the default chooses.
 
 ### 3. Attention at d = 256 on the H200: tang against FlashAttention-3 and SDPA
@@ -3871,8 +3871,8 @@ The hand `cx_moe_add_norm` also does the residual add, the next RMSNorm and the 
 | 4096 | yes | 0.885 | 0.377 | 0.963 | 2.35× | 5.075 | 1.620 | 3.154 | 3.13× |
 | 16384 | no | 5.177 | 2.783 | 6.785 | 1.86× | 29.30 | 11.79 | 21.60 | 2.49× |
 
-- At d = 256, tang's forward runs at 0.43–0.54 of FA3's speed, inside the paper's 0.42–0.60.
-- Its backward runs at 0.22–0.40 of FA3's, the low end of the paper's "about 0.4×". The backward is below 0.3 at N ≤ 4096.
+- At d = 256, tang's forward runs at 0.43–0.54 of FA3's speed, inside the earlier 0.42–0.60.
+- Its backward runs at 0.22–0.40 of FA3's, the low end of the earlier "about 0.4×". The backward is below 0.3 at N ≤ 4096.
 - Against SDPA, tang's forward wins from N = 4096 up (1.24×, 1.09×, 1.31×) and loses at N = 1024 causal. Its backward loses to SDPA everywhere.
 - The FA3 fp8 path was not built.
 
@@ -3891,8 +3891,8 @@ The hand `cx_moe_add_norm` also does the residual add, the next RMSNorm and the 
 | 48 | 30.00 30.00 30.08 30.00 30.02 (30.00, 0.08) | 28.43 28.43 28.43 28.43 28.46 (28.43, 0.03) | 5.2–5.5% |
 
 - **On one machine the round-to-round swing (at most 0.47 ms, 3%) is far below the gain (5–15%), in every round.**
-- The swing the review saw came from comparing different pods: hand N=48 has read 29.67, 30.01, 30.20 and 30.26 ms on four different H200 pods in earlier rounds.
-- Paired comparisons need one machine. The paper's in-model numbers should be these medians.
+- Earlier single runs disagreed because they compared different pods: hand N=48 has read 29.67, 30.01, 30.20 and 30.26 ms on four different H200 pods in earlier rounds.
+- Paired comparisons need one machine. These medians are the in-model numbers.
 - Batch-check tolerance at each N is the same every round. Hand: 99.16 / 99.23 / 99.00%. Derived: 99.02 / 99.06 / 98.93%; at N=48 derived sits 0.07 points under the 99% bar and hand exactly at it.
 
 ### 8. TTFT against vLLM (H200)
@@ -3912,19 +3912,18 @@ tang ran `flash-batch-check` with `TANG_BATCH_N=1 TANG_BATCH_CTX=N TANG_CODER_KV
 | 44,000 tokens | **1.082–1.088 s** | 13.8 s | 12.9 s |
 
 - **vLLM is 12.4× faster to first token at 8k and 12.7× at 44k.** These are different weight formats (FP8 vs a 4.5-bit GGUF), so the comparison is not precision-matched. But the gap is an order of magnitude and does not come from the format.
-- tang's 13.8 s here is also slower than the paper's 8.33 s (hand) / 5.54 s (derived attention + scan) TTFT. That table came from a warm server, and batch-check's prefill path may include work the server path skips. This was not reconciled within the budget.
-- The paper's prefill claims are relative to tang's own engine. Against vLLM they do not hold, and the paper should say so.
+- tang's 13.8 s here is also slower than the warm-server 8.33 s (hand) / 5.54 s (derived attention + scan) TTFT. That table came from a warm server, and batch-check's prefill path may include work the server path skips. This was not reconciled.
+- The prefill gains are relative to tang's own engine. Against vLLM they do not hold.
 - SGLang was not tried.
 
 ### What this costs and what was not done
 
-- GPU spend: RTX 3090 secure about 0.4 h ($0.2), H200 secure about 7.0 h ($37). All pods were terminated.
 - FA3 fp8 was not built, and SGLang was not run.
 - The flash backward's bf16 kernel is reported, not fixed.
 - The wrong Smem/Recompute/Hbm/Fuse placement is caught by the check but not root-caused.
-- The 13.8 s vs 8.33 s TTFT gap between batch-check and the paper's warm-server measurement is not reconciled.
+- The 13.8 s vs 8.33 s TTFT gap between batch-check and the warm-server measurement is not reconciled.
 
-### For the theory review (Prove): launch, latency and the 3090 attention tile
+### Launch, latency and the 3090 attention tile
 
 **Empty kernel and DRAM latency, H200 SXM** (`scripts/review/latency.cu`, `nvcc -O2 -arch=sm_90a`, idle RunPod secure H200, 2026-11-10; raw: `review/prove/latency_h200.txt`). Three runs agree to within 0.5 ns.
 

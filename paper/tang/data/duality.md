@@ -9,7 +9,7 @@ Experiment: `cargo run --release -p tang-bench --example io_dual`
 (`TUNE=1` adds the GPU autotuner's pick on the local device). Lean:
 `proofs/TangProofs/Duality.lean`, `Trace*.lean`.
 
-## Corrections after the paper review (read this first)
+## Corrections (read this first)
 
 This section overrides the rounds below where they disagree. Rounds 2–4 are
 kept as history. Their machine constants (600 ns H200 latency, 1–2 µs launch
@@ -27,15 +27,15 @@ python3 scripts/ncu/floor_table.py
 cargo run --release -p tang-bench --example io_dual
 ```
 
-| claim in the paper | verdict | right number |
+| earlier claim | verdict | right number |
 |---|---|---|
 | Q8 GEMV "63.5 µs measured" | **not one kernel** | `dop00_gemv_q8_0` in `ops_t1` is the mean of three shapes launched under one name, grouped by name in #186's table. See the shapes below. |
 | Q8 GEMV "58.7 µs / 0.92" (round 4) | **withdraw** | Computed from that mean, with a hypothesized L1 term. |
 | Q8 GEMV "26.5 µs / 0.42" (round 3) | **superseded** | Same mean, older constants. |
 | "0.92" in `fraction-of-light.md` | different quantity | The vocab head's 3090 throughput as a fraction of peak (864 / 936 GB/s), not predicted/measured. |
 | attention traffic "2–2.8×" | **should be 2.0–3.0×** | `schedule_auto` / single-level dual tile: 3090 2.83× (N=1024), 2.95× (N=4096); M4 1.97×, 1.99×. |
-| reviewer's 1.76× | a different ratio | Single-level dual / two-level dual on the 3090 at N=4096 (1460 / 830 MB). |
-| reviewer's 2.0× | correct for the M4 | |
+| "1.76×" for the same ratio | a different ratio | Single-level dual / two-level dual on the 3090 at N=4096 (1460 / 830 MB). |
+| "2.0×" for the same ratio | correct for the M4 Max | |
 
 Q8_0 GEMV by shape, H200 (#186 raw trace, `ops_t1`). The floor is defined below:
 
@@ -78,7 +78,7 @@ S = SMs · min(threads_per_SM / block, regs_per_SM / (regs · block), hw limit)
 over peak, `G` workgroups. The Little's-law term
 `B·λ / (resident threads · bytes per thread)` lives only in `TimeFloor`; it is
 not in this formula, and it never bound with bytes per thread counted from the
-schedule (round 2). The paper's formula should be this one.
+schedule (round 2). This is the formula the paper uses.
 
 Justifying `⌈G/S⌉·λ`: if every workgroup makes at least one DRAM round trip,
 each occupies a slot for at least `λ`. A slot then hosts at most `⌊T/λ⌋`
@@ -212,7 +212,40 @@ driver, so it used CUDA lowerings, not wgpu.
 - Matmul time is flat across traffic: the top 5 tiles span 1.5× in LP traffic but ≤3.5% in time. The traffic objective does not rank these tiles.
 - Attention: the one-level dual tile loses on both sizes. At N=1024 the lowest-traffic tile (64×64, 71 MB) is 29% slower than the 273 MB winner. Traffic is not what decides attention on the M4 either.
 - matmul 4096³ lists a split-K=256 subgroup candidate at 0.098 ms; that is faster than peak FLOPs allow, so the kernel is wrong (not checked for correctness in RACE mode) and is excluded.
-- 3090 per-tile race not run yet (needs an idle 3090: `RACE=1 TUNE=3090 cargo run --release -p tang-bench --features cuda --example io_dual`).
+- The 3090 per-tile race is in the next section.
+
+### Sound floor and estimate pick vs the race (`RACE=1`, M4 Max local, 3090 on mew)
+
+The race times every autotuner candidate and checks two figures against it.
+
+- **Sound floor**: `L + max(λ + B_comp/β(B_comp), λ + B_HBL(C)/β_DRAM, F/π, ⌈G/S⌉λ)`. It does not depend on how a candidate stages its data, so one value holds for every tile of a kernel. `sound_floor` in io_dual.rs computes it.
+- **Per-tile estimate**: the earlier per-tile figure, `L + max(λ + B_LP/β_cache(ws), λ + B_comp/β_DRAM, F/π, ⌈G/S⌉λ)`. It charges each candidate the LP traffic of its own tile. It is an estimate, not a floor, and the race counts how many candidates beat it. The **estimate pick** is its argmin over the candidates. Ties within 0.1% go to lower traffic.
+
+S (resident workgroups) comes from each candidate's lowered source: threads per block, registers counted from its arrays (+24 base, assumed), and smem, all against the device limits. Run with `RACE=1 TUNE=1` (M4 Max) or `RACE=1 TUNE=3090 … --features cuda` (mew, under `flock ~/tang-gpu.lock`).
+
+| machine | kernel | floor violations | tightest measured / floor | faster than estimate | estimate pick | pick's rank | pick / winner |
+|---|---|---|---|---|---|---|---|
+| M4 Max | matmul 1024³ | 0/104 | 4.13 | 1/104 | 16×16×32, reg 4×4 | 5/104 | 1.017 |
+| M4 Max | matmul 4096³ | 0/102 | 3.89 | 1/102 | 16×16×16, reg 4×4 | 1/102 | 1.000 |
+| M4 Max | attention N=1024 | 0/120 | 52.81 | 0/120 | 16×16×32, reg 4×4 | 20/120 | **1.268 (loses)** |
+| M4 Max | attention N=4096 | 0/120 | 55.98 | 0/120 | 16×16×16, reg 4×4 | 1/120 | 1.000 |
+| 3090 | matmul 1024³ | 0/104 | 1.66 | 64/104 | 16×16×32, reg 4×4 | 1/104 | 1.000 |
+| 3090 | matmul 4096³ | 0/102 | 1.44 | 99/102 | 16×16×16, reg 4×4 | 21/102 | 1.007 |
+| 3090 | attention N=1024 | 0/120 | 2.34 | 15/120 | 16×16×16, reg 4×4 | 1/120 | 1.000 |
+| 3090 | attention N=4096 | 0/120 | 1.38 | 113/120 | 16×16×32, reg 4×4 | 27/120 | 1.025 |
+
+What this does and doesn't show:
+- **The sound floor holds.** No candidate on either machine runs faster than it, 0 of 892 timings. On the 3090 it is tight: the fastest candidate is 1.38–2.34× the floor. On the M4 Max matmul is about 4× the floor and attention 53–56×, so no term in the floor limits attention there.
+- **The per-tile estimate is not a floor on the 3090.** 64/104, 99/102, 15/120 and 113/120 candidates beat it. The CUDA lowering stages differently from the WGSL tile that `io_report` maps onto the LP (double-buffered cp.async, 56 KB smem), and the 128 KB L1 absorbs re-reads the LP charges to L2. On the M4 Max 2 of 446 candidates beat it.
+- **The estimate pick is within 2.5% of the winner on 7 of 8.** On the 3090 many candidates tie, so ranks 21 and 27 are 0.7% and 2.5% off.
+- **It loses attention N=1024 on the M4 Max by 1.27×.** The pick has 128 workgroups and 3.2 waves, with 4×4 register tiles that give each thread a long serial online-softmax chain. The 12 fastest candidates use 512 workgroups, 6.4 waves and small register tiles (1–4 × 1–2), at 4.03–4.21 ms against the pick's 5.108 ms. The kernel is latency-bound, and the estimate has no term for per-thread chain length. At N=4096 the same tile shape has 512 workgroups and 12.8 waves, and it wins (59.9 ms against 63.4 ms for the next candidate).
+- **Kernels left out**: matmul 4096³ has 2 split-K candidates with an empty grid on each machine. They launch no work, so the race does not time them.
+
+Provenance of the constants. Nothing was fitted to race times, but several changes were made **after seeing the first race**, and are disclosed as such:
+- β_cache(ws) comes from standalone probes, `scripts/review/cachebw.swift` and `cachebw.cu`. The tables are in `cache_table` in io_dual.rs. They were written after the first race showed LP traffic at DRAM β was not a floor.
+- The local host is an **M4 Max** (40 cores, 546 GB/s), not the 10-core M4 that `Machine::M4` (and every earlier "M4" floor in this doc) assumed. `Machine::M4_MAX` is spec values.
+- The rule "a kernel with no smem staging reuses per point" was added after the untiled kernel was picked on the first run.
+- Register count base (24) is assumed.
 
 ### What else does not hold up
 
