@@ -351,7 +351,7 @@
 
   Its differentiable core is path replay backpropagation on a GPU wavefront. We write each material once as a graph in the tang tensor compiler, and tang lowers it both to GPU kernels and to an f64 CPU reference. An integer random-number generator, fixed-order reductions and a ray-only BVH walk make the replay exact on #V("gpu.replay_lanes") of #V("gpu.replay_lanes") lanes, and two runs give identical gradients. GPU f32 gradients agree with the f64 reference to #E("gpu.dtheta_max"). irys also computes pose gradients through instanced CAD meshes (primary edges, an interior term with attached frames, and secondary edges that move shadows and reflections) and a per-vertex image gradient that the vcad BRep kernel pulls back to the dimensions of a part.
 
-  We check every layer against a reference: the GPU's f32 gradients against the f64 tier, the edge terms against central differences with common random numbers, and the shadows a moving part casts against the same differences with and without the secondary term. The pulled-back derivative with respect to a part's dimension matches vcad's forward mode to #E("brep.fwd_rel"). The limits are that replay is bit-exact per device and driver, irys does not yet differentiate splats or diffuse surfaces, and only the environment emits light. A companion paper covers inverse problems built on irys, starting with editable CAD from photographs.
+  We check every layer against a reference: the GPU's f32 gradients against the f64 tier, the edge terms against central differences with common random numbers, and the shadows a moving part casts against the same differences with and without the secondary term. The pulled-back derivative with respect to a part's dimension matches vcad's forward mode to #E("brep.fwd_rel"). irys also differentiates a diffuse surface's spectral albedo and each Gaussian splat's colour and opacity, under the sky, a sun and area emitters, and the GPU tier runs on Vulkan as well as Metal. The remaining limits are that replay is bit-exact per device and driver, pose parameters are rigid, and the secondary-edge term runs on the CPU only. A companion paper covers inverse problems built on irys, starting with editable CAD from photographs.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -385,10 +385,10 @@ This paper describes irys, the renderer behind vcad and our robotics tools, and 
 == Scope and limits
 
 - *Determinism is per device and driver.* The GPU tier runs in f32, so its results agree with the f64 reference to rounding, not bitwise; it is bit-identical against itself on one device and driver.
-- *Materials.* The differentiable material is a GGX conductor with a three-band spectral Fresnel. irys does not differentiate diffuse surfaces or the environment. It renders Gaussian splats but does not differentiate them.
-- *Lights.* The environment is the only emitter (a sky and a von Mises–Fisher sun lobe).
+- *Materials.* The differentiable materials are a GGX conductor with a three-band spectral Fresnel, a diffuse surface's three-band spectral albedo, and each Gaussian splat's DC colour and base opacity (@sec:ext). irys does not differentiate the environment or a splat's position or shape. On the GPU a replay records at most #V("ext.splat.cap") splat crossings per path.
+- *Lights.* The emitters are the environment (a sky and a von Mises–Fisher sun lobe) and area emitters, sampled with next-event estimation and multiple importance sampling on both tiers.
 - *Pose parameters are rigid.* Joint angles and the camera move instances rigidly. Non-rigid shape change enters only through the BRep pullback of @sec:brep.
-- *Hardware.* All timings come from one Apple M-series machine through Metal; the source logs did not record the exact chip, and we have not yet regenerated this draft's timings on a single pinned machine (@sec:repro).
+- *Hardware.* The GPU tier runs on Metal and on Vulkan (checked on an NVIDIA RTX 3090). All timings come from one Apple M-series machine through Metal; the source logs did not record the exact chip, and we have not yet regenerated this draft's timings on a single pinned machine (@sec:repro).
 
 = Background and related work
 
@@ -496,6 +496,21 @@ Unless stated, we check gradients against central differences (CD) of the same e
 
 At equal samples per pixel, NEE with MIS lowers per-pixel variance #F("nee.var_ratio", 1)× against BSDF sampling alone on a scene of two instanced boxes, with image means agreeing within noise. A gradient of the 96×96, 8 spp frame at depth 4 (#paths-96 paths, four wavelengths each) costs #F("rel.grad_ms", 1) ms on the GPU without NEE and #F("rel.grad_nee_ms", 1) ms with it; the forward pass alone takes #F("rel.fwd_ms", 2) ms, about #fx(mpaths, 0) million paths per second. The same gradient through the compiled-C CPU tier costs #V("rel.cpu_grad_lo")–#V("rel.cpu_grad_hi") ms, so the GPU tier is about #fx(cpu-speedup, 0)× faster end to end. Most of the gradient's time is the replay, because the adjoint's four-parameter reduction is not yet fused and NEE doubles the batch.
 
+== Diffuse albedo, splats and emitters <sec:ext>
+
+The same replay differentiates two more kinds of parameter. A Lambertian BSDF is linear in its albedo, so a diffuse vertex adds $delta L thin (L - L^-) thin b_k \/ A$ to band $k$ of the albedo's gradient, with $L^-$ the radiance before the vertex. A splat's colour is linear too. Its opacity $alpha_s$ also scales everything behind it, so $partial L \/ partial alpha_s = tau T_s c_s - (E_s + R) \/ (1 - alpha_s)$, where $E_s$ is the emission composited behind splat $s$ on its segment and $R$ the light beyond the segment. On the GPU the replay writes one record per splat crossed and the host sums the records in a fixed order, so there are still no float atomics. Area emitters with next-event estimation and multiple importance sampling run on both tiers, and their #V("ext.emit.gates") gates pass on Vulkan.
+
+#figure(
+  table(
+    columns: (2.2fr, 1.2fr, 1.2fr, 1.4fr),
+    align: (left, right, right, right),
+    table.header([*Parameter*], [*CPU f64 vs CD*], [*GPU f32 vs CPU f64*], [*Replay lanes identical*]),
+    [diffuse albedo, three bands], [#E("ext.diff.cd")], [#E("ext.diff.gpu")], [#V("ext.diff.lanes") / #V("ext.diff.lanes")],
+    [splat colour and opacity], [#E("ext.splat.cd")], [#E("ext.splat.gpu")], [#V("ext.splat.lanes") / #V("ext.splat.lanes")],
+  ),
+  caption: [#lead[Diffuse and splat gradients], the worst disagreement each test reports, on an NVIDIA RTX 3090 through Vulkan. Diffuse: a Cornell box with next-event estimation and a quad emitter. Splats: the garden scene; the splat parameters are f32 and the central-difference step is $3 times 10^(-3)$, which sets the first column, and the GPU column compares the 16 largest gradients, with no records dropped. Two replays give bitwise-equal gradients in both cases. `data/measured.tsv`.],
+) <tab:ext>
+
 == Pose gradients
 
 On a box against the sky, where the edge term is the whole derivative, edge sampling matches CD within #V("edge.box_z1"), #V("edge.box_z2") and #V("edge.box_z3") standard errors on its three pose parameters, and the device's f32 edge term matches the CPU's f64 to #E("edge.dev_vs_cpu"). On the shaded arm over a floor, the edge and interior terms alone miss CD by z = #V("sec.no_sec_z1"), #V("sec.no_sec_z2"), #V("sec.no_sec_z3"). The arm's shadow on the floor accounts for about 15% of the gradient. With secondary edges the same check gives z = #V("sec.floor_z1"), #V("sec.floor_z2"), #V("sec.floor_z3").
@@ -531,7 +546,7 @@ A finite difference that rebuilds the part is not a usable reference here. Rebui
 
 *Future work: from photographs to CAD programs.* This paper validates gradients; it does not use them to recover anything. Their use is in inverse problems, and the hardest is recovering the model itself. Given a few photographs of a part, the task is to find the editable CAD program, its features and their dimensions, with error bars. irys's gradients make the dimensions tractable inside such a search, and a printed tag fixes the camera and the scale. The open problem is topology, meaning which features the part has. We take that up in a companion paper @pedersen2026recon, with a held-out evaluation and a continuous relaxation over a program's optional features.
 
-*Remaining gaps.* The secondary term runs on the CPU in f64 and costs about a quarter of an iteration; its estimate is heavy-tailed, and the rose check passes at 64 seeds but not at 256. The device edge sampler is biased low on the robot by a few percent for a cause we have not found, so the robot checks use host samples. The adjoint's reduction is not fused. Splats are not differentiated, and only the environment emits light.
+*Remaining gaps.* The secondary term runs on the CPU in f64 and costs about a quarter of an iteration; its estimate is heavy-tailed, and the rose check passes at 64 seeds but not at 256. The device edge sampler is biased low on the robot by a few percent for a cause we have not found, so the robot checks use host samples. The adjoint's reduction is not fused. Splat gradients cover colour and opacity only, and the GPU replay sums their records on the host. The look renderer's hair tests fail on Vulkan; they are not on the differentiable path. Timings are from Apple hardware only.
 
 = Reproducibility <sec:repro>
 

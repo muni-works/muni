@@ -126,3 +126,11 @@ recon.sig.k95	6.72	same: 95% half-width in sigma'
 recon.sig.cov95	96	same: % of odd-seed dimensions within k95 sigma'
 recon.sig.rho	-0.15	same: Spearman rank correlation of sigma_Fisher with |error|
 recon.sig.opt	6	same: median factor by which Fisher sigma is optimistic
+ext.diff.cd	1.0e-9	irys docs/design.md "The paper's limits, overcome (2026-11-10)" @f8b9070 (branch claude/irys-landing-6d5530), RTX 3090 Vulkan; crates/irys-diff/tests/diffuse.rs @6c279d4: diffuse albedo, CPU f64 vs central differences, worst of three bands (6.0e-10, 6.3e-10, 1.0e-9), Cornell box with NEE and a quad emitter
+ext.diff.gpu	2.4e-6	same, @12174b4: GPU f32 vs CPU f64, worst of three bands (4.9e-7, 1.0e-6, 2.4e-6)
+ext.diff.lanes	65536	same: replay bit-identical lanes (of 65536); two replays give bitwise-equal gradients
+ext.splat.cd	5.1e-4	irys docs/design.md "The paper's limits, overcome (2026-11-10)" @f8b9070 (branch claude/irys-landing-6d5530), RTX 3090 Vulkan; crates/irys-diff/tests/splats.rs @1603172: splat colour and opacity, CPU vs central differences, worst (f32 parameters, h = 3e-3; colours about 1e-5), garden scene
+ext.splat.gpu	5.0e-5	same, @0ce7385: GPU f32 vs CPU f64 on the 16 largest gradients; 0 records dropped
+ext.splat.lanes	65536	same: replay bit-identical lanes (of 65536); two replays give bitwise-equal gradients
+ext.splat.cap	256	same: splat records per path slot on the GPU replay
+ext.emit.gates	16	irys docs/design.md "The paper's limits, overcome (2026-11-10)" @f8b9070 (branch claude/irys-landing-6d5530), RTX 3090 Vulkan; crates/irys-diff/tests/phase3.rs: emitter (NEE + MIS) gates passing on Vulkan, of 16
