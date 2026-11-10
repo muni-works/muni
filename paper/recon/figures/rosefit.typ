@@ -31,15 +31,16 @@
     for i in (0, 300, 600) { lbl((lx(i), -0.25), [#i], anchor: "north") }
     lbl((W / 2, -0.65), [ITERATION], anchor: "north")
     lbl((0, H + 0.25), [(A) WORST JOINT ERROR], anchor: "south-west", fill: c-text)
-    let order = (head, "context; 2f; 300 its", "control; 2f", "context; no secondary", "context; 2f + pyramid")
+    // the 300-iteration run is identical to the first 300 iterations of the headline run, so it is not drawn
+    let order = (head, "control; 2f", "context; no secondary", "context; 2f + pyramid")
     for (k, run) in order.enumerate() {
       let pts = rows.filter(r => r.at(0) == run).map(r => (lx(float(r.at(1))), calc.clamp(ly(err(r)), 0, H)))
       let hot = run == head
-      let col = if hot { c-sel } else { (c-text, c-info, c-label, c-irys).at(calc.rem(k - 1, 4)).transparentize(30%) }
-      line(..pts, stroke: (paint: col, thickness: if hot { 1pt } else { 0.5pt }))
+      let col = if hot { c-sel } else { (c-info, c-ok, c-irys).at(calc.rem(k - 1, 3)) }
+      line(..pts, stroke: (paint: col, thickness: if hot { 1pt } else { 0.7pt }))
       let (gx, gy) = (calc.rem(k, 2) * 5.6, -1.25 - calc.floor(k / 2) * 0.36)
       line((gx, gy), (gx + 0.35, gy), stroke: (paint: col, thickness: if hot { 1pt } else { 0.6pt }))
-      lbl((gx + 0.45, gy), names.at(run), anchor: "west", fill: if hot { c-sel } else { c-label })
+      lbl((gx + 0.45, gy), names.at(run), anchor: "west", fill: col)
     }
     // (b) joint angles of the headline run
     let ox = W + 1.5

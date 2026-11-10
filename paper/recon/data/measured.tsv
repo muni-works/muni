@@ -115,3 +115,24 @@ amp.c.r	3.841	same: hole radius mm (truth 3.800)
 amp.c.pos_err	0.29	same: hole centre max |dx|,|dy| vs truth after the half turn, mm
 amp.c.s	93	same: amplitude fit seconds
 amp.c.evals	213	same: renders
+recon.n.parts	80	irys docs/recon-v1-gate100-parts.csv @812dc62, in-grammar seeds 3020..3099 only (the 80 parts never used in development)
+recon.n.p05	30	same
+recon.n.p1	37	same
+recon.n.topo	44	same
+recon.n.p05_ci	0.28	0.48	same: Wilson 95%
+recon.n.p1_ci	0.36	0.57	same: Wilson 95%
+recon.n.topo_ci	0.44	0.65	same: Wilson 95%
+recon.n.given_ci	0.71	0.92	same: Wilson 95% for 37/44
+recon.n.med_ok	0.385	same: median worst-dimension error, correct-topology parts, mm
+recon.n.p90_ok	1.374	same: p90
+recon.n.hole_cb	12	irys docs/recon-v1-gate100-report.json @812dc62 topology_failures_by_part: parts among the 80 with a hole<->counterbore mode
+recon.n.topo_fail	36	same: parts among the 80 with wrong topology (incl. 4 tag misses)
+recon.all.hole_cb	19	same: parts among all 124 with a hole<->counterbore mode
+recon.all.topo_fail	54	same: parts among all 124 with wrong topology
+recon.gi.hole_cb	15	same: among the 100 in-grammar parts (of 40 wrong)
+recon.g.s_part_med	576	irys docs/recon-v1-gate100-parts.csv @812dc62: median seconds per in-grammar part, process time, both machines
+recon.nsig.c	14.0	irys docs/recon-v1-gate100-dims.csv @812dc62, in-grammar seeds >= 3020 only: 68.27th percentile of |err|/sigma_F on even seeds (266 dims)
+recon.nsig.cov1	65	same: % of odd-seed dims (226) within 1 sigma-prime
+recon.nsig.k95	9.15	same: 95th percentile of |err|/sigma-prime on even seeds
+recon.nsig.cov95	97	same: % of odd-seed dims within k95 sigma-prime
+recon.nsig.rho	-0.12	same: Spearman of sigma_F with |err|, 492 dims

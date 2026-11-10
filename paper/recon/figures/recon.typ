@@ -73,6 +73,6 @@
   ar((0.9, 3.05), (2.3, 1.9))
   // the one exit
   ar((7.0, 0.35), (8.0, 0.35), col: c-sel)
-  lbl((8.1, 0.47), [DIMENSIONS ± √(F⁻¹)], anchor: "west", fill: c-sel)
+  lbl((8.1, 0.47), [DIMENSIONS WITH ERROR BARS], anchor: "west", fill: c-sel)
   lbl((8.1, 0.15), [WHEN NO EDIT IS SHORTER], anchor: "west")
 })
