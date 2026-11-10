@@ -1,4 +1,4 @@
-# irys: A Spectral Differentiable Renderer with Exact Replay
+# Differentiable Rendering with Exact Replay
 
 Draft preprint on irys's differentiable renderer (`crates/irys-diff` in ecto/irys): PRB on a GPU
 wavefront with tang-compiled BSDFs, bit-exact replay, pose gradients through instanced CAD, and the

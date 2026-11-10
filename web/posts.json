@@ -33,8 +33,8 @@
   },
   {
     "slug": "irys",
-    "title": "irys",
-    "subtitle": "A spectral differentiable renderer with exact replay",
+    "title": "Differentiable Rendering with Exact Replay",
+    "subtitle": "irys, an open-source spectral path tracer",
     "date": "2026-11-06",
     "author": "Cam Pedersen",
     "description": "irys is an open-source spectral path tracer whose differentiable core replays the forward pass bit for bit, so its gradients are identical across runs, checked against an f64 reference, and reach through instanced CAD to the dimensions in the model.",
