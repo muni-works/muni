@@ -86,3 +86,25 @@ amp.al.a	1.000	irys claude/recon-amplitudes @HEAD, recon_amp with AMP_LONG=1 (be
 amp.al.err	0.032	same: worst dim error mm
 amp.bl.a	0.000	irys claude/recon-amplitudes @HEAD, recon_amp with AMP_LONG=1 (beta to 1e5) b: final amplitude
 amp.bl.dnll	30	same: nats of residual given up between a=0.03 (75955.6) and a=0 (75985.1)
+fit.phi_pitch	-25.73	design.md L1033 @9069ea3 rose_fit --vis --iters 600, IRYS_SEC_N=4, --release
+fit.phi_roll	16.07	design.md L1033
+fit.phi_elbow	-60.23	design.md L1033
+fit.true_pitch	-25.78	design.md L719 (truth = arm::TRUE_PHI in degrees)
+fit.true_roll	16.04	design.md L719
+fit.true_elbow	-60.16	design.md L719
+fit.init_pitch	-8.6	design.md L719
+fit.init_roll	3.4	design.md L719
+fit.init_elbow	-37.2	design.md L719
+fit.alpha	0.303	design.md L1034 @9069ea3
+fit.f0_450	0.855	design.md L1034
+fit.f0_550	0.876	design.md L1034
+fit.f0_650	0.895	design.md L1034
+fit.mse	8.57e-4	design.md L1035 @9069ea3
+fit.mse_truth	8.60e-4	design.md L1035
+fit.iters	600	design.md L1163
+fit.ms_theta	111.6	design.md L1171 @9069ea3 --release
+fit.ms_edge	166.8	design.md L1171
+fit.ms_intsec	66.2	design.md L1171
+fit.seconds	244	design.md L1175
+fit.tris	2.4	design.md L683-688 (millions of triangles, whole robot)
+basin.deg	5	design.md L1008 (elbow basin half-width)

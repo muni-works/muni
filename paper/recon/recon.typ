@@ -137,6 +137,7 @@
 #import "@preview/cetz:0.4.2"
 #import "figures/recon.typ": fig-recon
 #import "figures/amp.typ": fig-amp
+#import "figures/rosefit.typ": fig-rosefit
 // Web figures: drawn bodies become inline SVG via html.frame (as vision.typ); tables stay <table>s.
 #show figure: it => if web and it.kind != table {
   let lab = if it.has("label") { str(it.label) } else { "" }
@@ -177,6 +178,11 @@
 #let fx(x, d) = str(calc.round(x, digits: d))
 #let E(key, i: 0) = sci(V(key, i: i))
 #let F(key, d, i: 0) = fx(V(key, i: i), d)
+#let deg-err(k) = calc.abs(V("fit.phi_" + k) - V("fit.true_" + k))
+#let max-deg-err = calc.max(deg-err("pitch"), deg-err("roll"), deg-err("elbow"))
+#let theta-err = calc.max(
+  calc.abs(V("fit.alpha") - 0.30), calc.abs(V("fit.f0_450") - 0.86),
+  calc.abs(V("fit.f0_550") - 0.88), calc.abs(V("fit.f0_650") - 0.90))
 // a Wilson interval stored as two fractions, printed as percentages
 #let ci(key) = [#calc.round(100 * V(key))–#calc.round(100 * V(key, i: 1))]
 // a pending result: never a number the data does not support
@@ -259,6 +265,10 @@
 
 = Introduction
 
+To measure a part, you usually touch it: calipers, a coordinate-measuring machine, a gauge pin. A photograph touches nothing, yet it already contains the part's dimensions, mixed up with its pose, its finish, the light in the room and the lens. Separating them is inverse rendering: find the parameters whose rendering matches the photograph. For an engineered object those parameters are not free-form vertices or a neural field. They are the dimensions in a CAD model, the angles of a mechanism's joints and the finish of its surfaces. If a renderer can recover them, and say how well it knows each one, it is a measuring instrument.
+
+An instrument has two obligations. It must be *exact*: the same input gives the same reading, and the reading means what it says. And it must be *precise*: its error is small and known. The companion paper @pedersen2026irys makes the renderer exact: a replay that is bit-identical to its forward pass, gradients validated against central differences, down to the dimensions of a BRep. This paper asks for precision, first of a model we already have (@sec:warmup), then of a model we must find.
+
 A drawing of a part is a short program. "A 74 by 67 by 17 mm plate with three 3 mm holes on a 17 mm circle" is a dozen numbers and a few words, and from it anyone can make the part. A photograph of the same part is millions of pixels. Turning the photograph back into the program is two problems at once. One is *identification*: which features the part has. The other is *measurement*: their dimensions. Measurement is continuous and has gradients; identification is discrete and does not.
 
 The companion paper @pedersen2026irys built the measuring half: irys, a differentiable spectral path tracer whose edge-sampled gradients reach the dimensions of a CAD model, and whose replay is bit-exact so a gradient that fails its test is a bug and not noise. This paper is the identifying half, and the bridge between them. We search over editable CAD programs, fit each candidate's dimensions through irys's estimator, and choose between candidates by *description length* @rissanen1978mdl @grunwald2007mdl: the number of nats it takes to say the photographs given the program, plus the program and its parameters. A feature is worth adding exactly when it shortens that total. It has to pay for itself.
@@ -269,6 +279,7 @@ The second half of the paper gives it some. *Feature amplitudes* relax the choic
 
 Our contributions are:
 
+- *A warm-up with a known model.* Three joint angles and an anodised finish of a robot arm read from one render, to #fx(max-deg-err, 2)° and #fx(theta-err, 3) (@sec:warmup).
 - *Recovery by description length through a differentiable renderer.* A search over a CAD grammar whose every candidate is fitted by Levenberg–Marquardt with an edge-sampled Jacobian and scored in nats, with three photographs and a printed tag as the only input (@sec:method).
 - *An honest gate.* A development set of #V("recon.parts") parts, a held-out gate of #V("recon.g.parts") in-grammar and #V("recon.o.parts") out-of-grammar parts with every default frozen, per-feature error, failure modes, and error bars calibrated against the gate's own errors (@sec:results).
 - *Feature amplitudes*, a continuous relaxation over the discrete part of a CAD program with an exact amplitude gradient and a continuous description length, and the smallest experiments that test it (@sec:amp, @sec:amp-results).
@@ -279,6 +290,7 @@ Our contributions are:
 - *The photographs are synthetic.* They are rendered by irys's OpenPBR scene kernel with a phone camera model. No number in this paper comes from a real photograph yet (@sec:real).
 - *The grammar is a plate.* One extruded block with a corner treatment and features cut into or standing on its top face. The out-of-grammar parts of @tab:gate test its edges, not a different family.
 - *The search is the method's weakest part*, and the amplitude relaxation addresses only its choosing, not its proposing.
+- *The arm fit has a basin.* The elbow converges from within about ±#V("basin.deg")° of the answer and fails from outside it; the blur and pyramid schedules we tried did not widen it reliably.
 - *Compute.* A part costs minutes of CPU (@sec:results); nothing here runs on the GPU path of the companion paper except the final path-traced fit.
 
 = Related work
@@ -290,6 +302,17 @@ Our contributions are:
 *Relaxing discrete structure.* Continuous relaxations of a discrete choice are common where the choice has no gradient. DARTS mixes candidate operations with softmax weights and anneals to one @liu2019darts; the Gumbel-softmax samples from a relaxed categorical @jang2017gumbel; DiffCSG differentiates CSG by rasterization so the boolean structure can be optimized @yuan2024diffcsg. The amplitude's length term $a L$ is an $ell_1$ penalty on a selection variable, the relaxation of a count that the lasso made familiar @tibshirani1996lasso. What is particular here is the image: a feature's effect on the render is local and nearly additive, so the blend factors per feature and its gradient is exact, and the description length gives the penalty its weight in the same unit as the residual, with no tuning knob.
 
 *Differentiable rendering.* Edge sampling @li2018edge and path replay @vicini2021prb, and their implementation in irys, are described in the companion paper @pedersen2026irys; Mitsuba 3 @jakob2022mitsuba3 is the closest general system. CAD parameters upstream of the mesh are differentiated by the BRep kernel of @pedersen2026vcad.
+
+= A model you already have <sec:warmup>
+
+Before recovering a model, recover the parameters of one. Our humanoid's left arm is read from its CAD source with its joints; the unknowns are three joint angles and the finish of its anodised links, and the photograph is a path-traced render with fresh noise. This is the inverse problem the companion paper's gradients were built for, with nothing discrete in it, and it shows how far the continuous half goes on its own.
+
+#figure(fig-rosefit(),
+  caption: [#lead[Recovering three joint angles and a finish from a render.] The left arm of our humanoid robot, in context, 192×192, 8 spp, depth 5 with NEE. (a) The worst of the three joint errors for every configuration we ran: all terms for 600 and for 300 iterations, the arm alone in frame (the control), without secondary edges, and with a coarse-to-fine pyramid schedule; the last two diverge, which is why secondary edges are in and the pyramid is out. (b) The all-terms run's joint angles against the truth (dashed). One run per configuration. `data/rose-fit.csv`, from irys `docs/phase2f-rose-loss.csv`.]) <fig:rose>
+
+The target is the arm at shoulder pitch, shoulder roll and elbow (#V("fit.true_pitch"), #V("fit.true_roll"), #V("fit.true_elbow"))° with a bead-blasted clear-anodised finish $theta = (0.30, 0.86, 0.88, 0.90)$. From (#V("fit.init_pitch"), #V("fit.init_roll"), #V("fit.init_elbow"))° and a default finish, Adam on the image MSE for #V("fit.iters") iterations reaches (#V("fit.phi_pitch"), #V("fit.phi_roll"), #V("fit.phi_elbow"))°, an error of at most #fx(max-deg-err, 2)°, and $theta = (#V("fit.alpha"), #V("fit.f0_450"), #V("fit.f0_550"), #V("fit.f0_650"))$, within #fx(theta-err, 3) of the truth. The final MSE, #E("fit.mse"), equals that of the true parameters re-rendered with fresh noise (#E("fit.mse_truth")), so the fit has converged to the noise floor. An iteration costs #F("fit.ms_theta", 0) ms for the material gradient on the GPU, #F("fit.ms_edge", 0) ms for the primary edge term and #F("fit.ms_intsec", 0) ms for the interior and secondary terms on the CPU; the run takes #V("fit.seconds") s. This is one run. We have not measured convergence over seeds or starting points, and starts outside the elbow's ±#V("basin.deg")° basin fail.
+
+The lesson for what follows is the basin. A continuous fit of a known model is precise near the answer and blind outside it; everything below that is discrete, the features and their kinds, is about getting the fit into its basin.
 
 = The recovery <sec:method>
 
