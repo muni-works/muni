@@ -166,7 +166,7 @@
       "family": "power",
       "maturity": "concept",
       "note": "one compute module",
-      "stage": "road"
+      "stage": "shop"
     },
     {
       "num": 18,
@@ -174,7 +174,7 @@
       "family": "power",
       "maturity": "concept",
       "note": "bus, hub and BMS boards",
-      "stage": "road"
+      "stage": "shop"
     },
     {
       "num": 19,
@@ -189,19 +189,11 @@
       "name": "frog",
       "family": "mind",
       "maturity": "exists",
-      "note": "free coding agent for local models",
+      "note": "coding agent: free locally, paid in the cloud",
       "stage": "desk"
     },
     {
       "num": 21,
-      "name": "pond",
-      "family": "mind",
-      "maturity": "concept",
-      "note": "model gateway for frog: ours and others'",
-      "stage": "desk"
-    },
-    {
-      "num": 22,
       "name": "loom",
       "family": "silicon",
       "maturity": "concept",
@@ -209,7 +201,7 @@
       "stage": "home"
     },
     {
-      "num": 23,
+      "num": 22,
       "name": "rune",
       "family": "silicon",
       "maturity": "concept",
@@ -217,7 +209,7 @@
       "stage": "home"
     },
     {
-      "num": 24,
+      "num": 23,
       "name": "chyp",
       "family": "silicon",
       "maturity": "concept",

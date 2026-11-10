@@ -35,8 +35,8 @@ export const layout: [string, number[][]][] = [
   ["world", [[5, 6, 7]]],
   ["body", [[8, 9, 10], [11, 12, 13], [14, 15]]],
   ["power", [[16, 17, 18]]],
-  ["mind", [[19, 20, 21]]],
-  ["silicon", [[22, 23, 24]]],
+  ["mind", [[19, 20]]],
+  ["silicon", [[21, 22, 23]]],
 ];
 
 /** Public homes for the projects that have one. */
