@@ -63,7 +63,7 @@
   }))
 }
 
-#set document(title: "Seeing Is Measuring", author: "Cam Pedersen (Municipal Robotics)")
+#set document(title: "irys", author: "Cam Pedersen (Municipal Robotics)")
 
 #let hf-out() = { let m = page.margin; let l = if type(m) == dictionary { m.at("left", default: m.at("x", default: 0.75in)) } else { 0.75in }; calc.max(0in, l - 0.7in) }
 
@@ -76,7 +76,7 @@
   numbering: "1",
   header: context {
     if counter(page).get().first() > 1 {
-      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Seeing Is Measuring], caps[Municipal Robotics]))
+      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[irys], caps[Municipal Robotics]))
     }
   },
   footer: context {
@@ -142,7 +142,6 @@
 #import "figures/edge.typ": fig-edge
 #import "figures/frames.typ": fig-frames
 #import "figures/secondary.typ": fig-secondary
-#import "figures/rosefit.typ": fig-rosefit
 // Web figures: drawn bodies become inline SVG via html.frame (as vision.typ); tables stay <table>s.
 #show figure: it => if web and it.kind != table {
   let lab = if it.has("label") { str(it.label) } else { "" }
@@ -333,7 +332,7 @@
       line(length: 100%, stroke: 0.5pt + c-line-hi),
       caps[November 2026 · Draft])
     #v(0.45in)
-    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.35, tracking: -0.025em)[Seeing Is\ Measuring])
+    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.35, tracking: -0.025em)[irys])
     #v(0.5em)
     #line(length: 22%, stroke: 2pt + c-label)
     #v(0.7em)
@@ -348,11 +347,11 @@
 ]}
 
 #let abstract-text = [
-  A photograph of a machined part already contains its dimensions. Reading them out means running a renderer backwards: finding the CAD parameters whose image matches the photograph, and knowing how sure we are. That makes a renderer a measuring instrument, and an instrument has to be exact before it can be precise. We describe irys, an open-source Rust renderer built to that standard.
+  A renderer turns a scene into an image. A differentiable renderer also says how the image would change if the scene did, and that answer is only as good as the renderer's ability to retrace its own steps. We describe irys, an open-source spectral path tracer in Rust, built for the scenes we design (instanced CAD meshes, spectral metals, robots in rooms) and built to retrace exactly.
 
   Its differentiable core is path replay backpropagation on a GPU wavefront. Materials are written once as graphs in the tang tensor compiler and lowered both to GPU kernels and to an f64 CPU reference. An integer random-number generator, fixed-order reductions and a ray-only BVH walk make the replay reproduce the forward pass bit for bit: #V("gpu.replay_lanes") of #V("gpu.replay_lanes") lanes, with gradients identical across runs. GPU f32 gradients agree with the f64 reference to #E("gpu.dtheta_max"). On top of the material gradient sit pose gradients through instanced CAD meshes (primary edges, an interior term with attached frames, and secondary edges that move shadows and reflections) and a per-vertex image gradient that the vcad BRep kernel pulls back to the dimensions of a part.
 
-  Each layer is a measurement. A robot arm read from its CAD source gives back three joint angles and its anodised finish from a render, to #fx(max-deg-err, 2)° and #fx(theta-err, 3). A bearing bore's diameter gets its image gradient through the BRep kernel, matching vcad's forward mode to #E("brep.fwd_rel"). We state the instrument's limits alongside its readings: replay is bit-exact per device and driver, the pose fit converges only near the answer, and recovering whole CAD programs from photographs is the subject of a companion paper.
+  Every layer is checked against a reference: the GPU's f32 gradients against the f64 tier, the edge terms against central differences with common random numbers, and the shadows a moving part casts against the same differences with and without the secondary term. Through vcad's BRep kernel a per-vertex image gradient becomes the derivative with respect to a part's dimension, matching vcad's forward mode to #E("brep.fwd_rel"). We state the limits alongside: replay is bit-exact per device and driver, splats and diffuse surfaces are not yet differentiated, and only the environment emits light. Inverse problems built on irys, starting with editable CAD from photographs, are the subject of a companion paper.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -370,17 +369,17 @@
 
 = Introduction
 
-To measure a part, you usually touch it: calipers, a coordinate-measuring machine, a gauge pin. A photograph touches nothing, yet it already contains the part's dimensions, mixed up with its pose, its finish, the light in the room and the lens. Separating them is inverse rendering: find the parameters whose rendering matches the photograph. For an engineered object those parameters are not free-form vertices or a neural field. They are the dimensions in a CAD model, the angles of a mechanism's joints and the finish of its surfaces. If a renderer can recover them, and say how well it knows each one, it is a measuring instrument.
+A renderer is judged first by its images. A differentiable renderer is judged also by its gradients: how each pixel would change if a material, a pose or a dimension changed. Those gradients feed optimisers, so an error in them does not show as a wrong pixel; it shows as an optimiser that wanders, and nobody can tell whether the estimator is biased, the device rounded, or the sampler was unlucky.
 
-An instrument has two obligations. It must be *exact*: the same input gives the same reading, and the reading means what it says. And it must be *precise*: its error is small and known. For a differentiable renderer, exactness is a property of the gradient. Path replay backpropagation @vicini2021prb made physically based differentiable rendering practical by replacing the stored path tape with a second, replayed pass. That only works if the replay regenerates exactly the paths the forward pass drew; otherwise the gradient belongs to a different estimator from the one rendered. Systems built on general array compilers @jakob2022drjit meet this contract inside one process and one backend. We wanted a GPU tier and an f64 CPU reference that run the same material source and agree to rounding, with each tier bit-identical across runs. Then a failing gradient test is a bug, never noise, and a reading can be trusted.
+Path replay backpropagation @vicini2021prb made physically based differentiable rendering practical by replacing the stored path tape with a second, replayed pass. That only works if the replay regenerates exactly the paths the forward pass drew; otherwise the gradient belongs to a different estimator from the one rendered. Systems built on general array compilers @jakob2022drjit meet this contract inside one process and one backend. We wanted more: a GPU tier and an f64 CPU reference that run the same material source and agree to rounding, with each tier bit-identical across runs. Then a failing gradient test is a bug, never noise.
 
-This paper describes irys, the renderer behind vcad and our robotics tools, and how it meets both obligations. Its contributions are:
+This paper describes irys, the renderer behind vcad and our robotics tools, and how it keeps that contract. Its contributions are:
 
 - *One BSDF source, two lowerings, two tiers.* Materials are tang tensor graphs. tang lowers each one to an evaluation program and an adjoint program, emitting WGSL kernels for the GPU and running the same graph in its f64 interpreter for the CPU reference. The path logic (ray generation, traversal, bounce, accumulation) is hand-written (@sec:ir).
 - *PRB on a deterministic wavefront with hero wavelengths and NEE.* The estimator is Vicini et al.'s with next-event estimation, as in Mitsuba 3; what is new is a wavefront whose replay is bit-identical, with four wavelengths per path and the light-sampled lanes folded into the same graph batch (@sec:prb).
 - *Bit-exact replay by construction.* An integer RNG that is exact on both tiers, fixed-order reductions with no float atomics, and a BVH walk that depends only on the ray (@sec:det).
 - *Pose gradients through instanced CAD meshes.* Primary edge sampling with crease ownership and visibility-aware importance, an interior term by forward-mode duals with attached frames, and secondary edge sampling for moving shadows and reflections (@sec:pose).
-- *Validation at every layer and a fit on a real robot.* Gradients against central differences with common random numbers, GPU against CPU f64, and a joint pose and finish recovery on an arm read from its CAD source (@sec:results).
+- *Validation at every layer.* Gradients against central differences with common random numbers, and GPU against CPU f64, on boxes, on a shaded robot arm read from its CAD source, and on the shadows it casts (@sec:results).
 - *A bridge to CAD parameters.* A per-vertex image gradient that the vcad BRep kernel pulls back to the dimensions of the part, shared as a benchmark with the companion paper @pedersen2026vcad (@sec:brep).
 
 == Scope and limits
@@ -389,7 +388,6 @@ This paper describes irys, the renderer behind vcad and our robotics tools, and 
 - *Materials.* The differentiable material is a GGX conductor with a three-band spectral Fresnel. Diffuse surfaces and the environment are not differentiated. Gaussian splats are rendered but not differentiated.
 - *Lights.* The environment is the only emitter (a sky and a von Mises–Fisher sun lobe).
 - *Pose parameters are rigid.* Joint angles and the camera move instances rigidly. Non-rigid shape change enters only through the BRep bridge of @sec:brep.
-- *The pose fit has a basin.* The elbow converges from within about ±#V("basin.deg")° of the answer and fails from outside it; the blur and pyramid schedules we tried did not widen it reliably.
 - *Hardware.* All timings come from one Apple M-series machine through Metal; the exact chip was not recorded in the source logs, and timings in this draft are not yet regenerated on a single pinned machine (@sec:repro).
 
 = Background and related work
@@ -502,13 +500,6 @@ At equal samples per pixel, NEE with MIS lowers per-pixel variance #F("nee.var_r
 
 On a box against the sky, where the edge term is the whole derivative, edge sampling matches CD within #V("edge.box_z1"), #V("edge.box_z2") and #V("edge.box_z3") standard errors on its three pose parameters, and the device's f32 edge term matches the CPU's f64 to #E("edge.dev_vs_cpu"). On the shaded arm over a floor, the edge and interior terms alone miss CD by z = #V("sec.no_sec_z1"), #V("sec.no_sec_z2"), #V("sec.no_sec_z3"): the arm's shadow on the floor carries about 15% of the gradient. With secondary edges the same check gives z = #V("sec.floor_z1"), #V("sec.floor_z2"), #V("sec.floor_z3").
 
-== Joint pose and finish recovery on a robot arm
-
-#figure(fig-rosefit(),
-  caption: [#lead[Recovering three joint angles and a finish from a render.] The left arm of our humanoid robot, in context, 192×192, 8 spp, depth 5 with NEE. (a) The worst of the three joint errors for every configuration we ran: all terms for 600 and for 300 iterations, the arm alone in frame (the control), without secondary edges, and with a coarse-to-fine pyramid schedule; the last two diverge, which is why secondary edges are in and the pyramid is out. (b) The all-terms run's joint angles against the truth (dashed). One run per configuration. `data/rose-fit.csv`, from irys `docs/phase2f-rose-loss.csv`.]) <fig:rose>
-
-The target is the arm at shoulder pitch, shoulder roll and elbow (#V("fit.true_pitch"), #V("fit.true_roll"), #V("fit.true_elbow"))° with a bead-blasted clear-anodised finish $theta = (0.30, 0.86, 0.88, 0.90)$. From (#V("fit.init_pitch"), #V("fit.init_roll"), #V("fit.init_elbow"))° and a default finish, Adam on the image MSE for #V("fit.iters") iterations reaches (#V("fit.phi_pitch"), #V("fit.phi_roll"), #V("fit.phi_elbow"))°, an error of at most #fx(max-deg-err, 2)°, and $theta = (#V("fit.alpha"), #V("fit.f0_450"), #V("fit.f0_550"), #V("fit.f0_650"))$, within #fx(theta-err, 3) of the truth. The final MSE, #E("fit.mse"), equals that of the true parameters re-rendered with fresh noise (#E("fit.mse_truth")), so the fit has converged to the noise floor. An iteration costs #F("fit.ms_theta", 0) ms for the material gradient on the GPU, #F("fit.ms_edge", 0) ms for the primary edge term and #F("fit.ms_intsec", 0) ms for the interior and secondary terms on the CPU; the run takes #V("fit.seconds") s. This is one run. We have not measured convergence over seeds or starting points, and starts outside the elbow's ±#V("basin.deg")° basin fail.
-
 == From pixels to CAD parameters <sec:brep>
 
 The edge sampler's velocity is a projection of the material point's motion, so replacing the pose's velocity with a unit translation per axis yields $partial cal(L) \/ partial x_i$ for every mesh vertex. vcad's differentiable seam @pedersen2026vcad takes exactly that cotangent on the nodes of a frozen tessellation and returns the derivative with respect to a CAD parameter in one reverse pass. The shared benchmark uses rose's left shoulder-pitch output plate, a 3 mm rounded plate with a 49 mm bearing bore and twelve bolt holes, with $theta$ the bore diameter. irys renders vcad's frozen tessellation, the mesh whose connectivity the kernel holds fixed while it differentiates node positions (#V("brep.nodes") nodes, #V("brep.tris") triangles) as it is, against the sky at 160×128, under a fixed smooth image loss.
@@ -538,17 +529,17 @@ A finite difference that rebuilds the part is not a usable reference here. Rebui
 
 *The f64 reference.* Running the same tang graph in f64 on the CPU separates three error sources that are otherwise entangled: estimator bias (CPU against frozen CD), device rounding (GPU against CPU), and Monte Carlo noise (live sampler against CD over seeds).
 
-*Future work: from photographs to CAD programs.* The readings in this paper fit parameters of a model we already have. The harder reading is the model itself: given a few photographs of a part, find the editable CAD program, its features and their dimensions, with error bars. irys's gradients make the dimensions tractable inside such a search, and a printed tag fixes the camera and the scale. What remains open is topology: which features the part has. We take that up in a companion paper @pedersen2026recon, with a held-out evaluation and a continuous relaxation over a program's optional features.
+*Future work: from photographs to CAD programs.* This paper validates gradients; it does not use them to recover anything. The inverse problems are where they pay off, and the hardest is the model itself: given a few photographs of a part, find the editable CAD program, its features and their dimensions, with error bars. irys's gradients make the dimensions tractable inside such a search, and a printed tag fixes the camera and the scale. What remains open is topology: which features the part has. We take that up in a companion paper @pedersen2026recon, with a held-out evaluation and a continuous relaxation over a program's optional features.
 
-*Remaining gaps.* The secondary term runs on the CPU in f64 and costs about a quarter of an iteration; its estimate is heavy-tailed, and the rose check passes at 64 seeds but not at 256. The device edge sampler is biased low on the robot by a few percent for a cause we have not found, so the fits use host samples. The adjoint's reduction is not fused. Splats are not differentiated, and only the environment emits light. The elbow's narrow basin limits the fit to starts near the answer.
+*Remaining gaps.* The secondary term runs on the CPU in f64 and costs about a quarter of an iteration; its estimate is heavy-tailed, and the rose check passes at 64 seeds but not at 256. The device edge sampler is biased low on the robot by a few percent for a cause we have not found, so the robot checks use host samples. The adjoint's reduction is not fused. Splats are not differentiated, and only the environment emits light.
 
 = Reproducibility <sec:repro>
 
-irys is open source under Apache-2.0. Each row of `data/measured.tsv` names the test or example in `crates/irys-diff` that measures it and the commit that introduced it; the rose-arm fit and the BRep benchmark need the rose CAD checkout. This draft's rows are collected from irys's design log at the commits listed. They were measured on different days, and every timing quoted is a release build. Before submission they will be regenerated in one pass on one recorded machine by a script in `paper/irys/repro`, as for the companion paper.
+irys is open source under Apache-2.0. Each row of `data/measured.tsv` names the test or example in `crates/irys-diff` that measures it and the commit that introduced it; the robot-arm checks and the BRep benchmark need the rose CAD checkout. This draft's rows are collected from irys's design log at the commits listed. They were measured on different days, and every timing quoted is a release build. Before submission they will be regenerated in one pass on one recorded machine by a script in `paper/irys/repro`, as for the companion paper.
 
 = Conclusion
 
-Seeing becomes measuring when the renderer that explains a photograph is exact and its gradients can be trusted. irys makes the gradient exact where it can be: a replay that reproduces the forward pass bit for bit, materials compiled from one graph to a GPU tier and an f64 reference, and pose and shape gradients through the instanced CAD a kernel produces, down to the dimensions in the model. With them, a robot's joints and finish read back from its render, and a bore's diameter gets a gradient from its pixels. The next reading is the CAD program itself, from photographs of a real part. irys is open source.
+A differentiable renderer is only as trustworthy as its replay. irys makes the replay exact by construction: an integer random-number generator, fixed-order reductions and a ray-only traversal reproduce the forward pass bit for bit, materials compile from one graph to a GPU tier and an f64 reference, and pose and shape gradients run through the instanced CAD a kernel produces, down to the dimensions in the model. Every gradient in this paper is checked against an independent reference. What those gradients can recover, starting with editable CAD from photographs, is the companion paper's subject. irys is open source.
 
 #heading(outlined: true, numbering: none)[References]
 #show bibliography: it => { show "?.": "?"; show "!.": "!"; it }
