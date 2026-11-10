@@ -232,7 +232,7 @@
     #v(0.5em)
     #line(length: 22%, stroke: 2pt + c-label)
     #v(0.7em)
-    #text(size: s-lg, fill: c-label)[Editable CAD programs from photographs: a feature must pay for itself]
+    #text(size: s-lg, fill: c-label)[Editable CAD programs from photographs]
     #v(0.45in)
     #grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
       caps[Cam Pedersen · Municipal Robotics],

@@ -19,7 +19,7 @@ as `[TODO: …]` in the PDF; never a number the data does not support.
 ## Title
 
 "Seeing Is Measuring" (Cam, 2026-11-10; moved here from the irys paper). Subtitle: "Editable CAD
-programs from photographs: a feature must pay for itself".
+programs from photographs".
 
 ## Status
 
