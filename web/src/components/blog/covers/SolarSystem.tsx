@@ -38,6 +38,12 @@ const K_FLYBY = (A1 - A0) / (A2 - A0); // fraction of the path at Mars
 // One launch per stage of the plan, Desk to Star; the fleet resets when the climb reaches the star.
 const STAGES = 8;
 
+// The Dyson swarm: collectors are made at Mercury and fly out to orbits around the sun.
+// It fills in over the whole climb, so the shell closes as the eighth stage, Star, ends.
+const SWARM = 280;
+const FLY = 2.6; // seconds from Mercury to a collector's orbit
+const ZK = Math.sqrt(1 - TILT * TILT); // screen height of one unit out of the ecliptic
+
 // Accelerates off Earth, reaches Mars at T_FLYBY, then leaves faster after the slingshot
 function probeProgress(t: number) {
   if (t <= 0) return 0;
@@ -87,6 +93,32 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
       a: rand(i, 7) * Math.PI * 2,
       s: 0.4 + rand(i, 8) * 1.1,
     }));
+    // each collector has its own orbit: twelve planes, tilted evenly from the ecliptic to the poles
+    const swarm = Array.from({ length: SWARM }, (_, k) => {
+      const plane = k % 12;
+      const r = 0.78 + 0.12 * rand(k, 9);
+      return {
+        r,
+        inc: ((plane + 0.5) / 12) * Math.PI,
+        node: plane * 2.4,
+        ph: rand(k, 10) * Math.PI * 2,
+        w: 0.32 * Math.pow(r, -1.5),
+        at: rand(k, 11) * 0.12 + (k / SWARM) * 0.86, // launch time, as a share of the climb
+        gl: rand(k, 12) * Math.PI * 2,
+      };
+    });
+    const glowSprite = document.createElement("canvas");
+    glowSprite.width = glowSprite.height = 24;
+    {
+      const g = glowSprite.getContext("2d");
+      if (g) {
+        const grad = g.createRadialGradient(12, 12, 0, 12, 12, 12);
+        grad.addColorStop(0, "rgba(255,212,0,0.7)");
+        grad.addColorStop(1, "rgba(255,212,0,0)");
+        g.fillStyle = grad;
+        g.fillRect(0, 0, 24, 24);
+      }
+    }
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
     const onMove = (e: PointerEvent) => {
       pointer.tx = (e.clientX / window.innerWidth) * 2 - 1;
@@ -99,12 +131,15 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
 
     function draw(now: number) {
       if (!canvas || !ctx) return;
-      const dpr = window.devicePixelRatio || 1;
+      // cap and round: a fractional size never matches canvas.width, and reallocating the buffer every frame crashes tabs
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
-      if (canvas.width !== w * dpr) {
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
+      const bw = Math.round(w * dpr);
+      const bh = Math.round(h * dpr);
+      if (canvas.width !== bw || canvas.height !== bh) {
+        canvas.width = bw;
+        canvas.height = bh;
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.globalCompositeOperation = "source-over";
@@ -134,9 +169,8 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
         const tw = reduce ? 1 : 0.55 + 0.45 * Math.sin(time * s.sp + s.tw);
         ctx.fillStyle = s.z === 2 && s.tw < 0.5 ? "rgba(200,225,255,1)" : "rgba(232,215,190,1)";
         ctx.globalAlpha = (0.18 + 0.2 * z) * tw;
-        ctx.beginPath();
-        ctx.arc(x, y, 0.35 + 0.3 * z, 0, Math.PI * 2);
-        ctx.fill();
+        const sr = 0.35 + 0.3 * z;
+        ctx.fillRect(x - sr, y - sr, sr * 2, sr * 2);
       }
       ctx.globalAlpha = 1;
 
@@ -164,18 +198,18 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
 
       // orbits, split by depth so the near halves pass in front of the sun
       const orbit = (r: number, far: boolean) => {
-        for (let k = 0; k < 160; k++) {
-          const a = (k / 160) * Math.PI * 2;
-          const b = ((k + 1) / 160) * Math.PI * 2;
-          const mid = (a + b) / 2;
-          if (Math.sin(mid + yaw) > 0 !== far) continue;
-          const depth = depthOf(mid);
-          ctx.strokeStyle = r === 2.75 ? C.label : C.line;
+        ctx.strokeStyle = r === 2.75 ? C.label : C.line;
+        const BANDS = 24;
+        const STEPS = 4; // segments per band
+        const base = far ? 0 : Math.PI; // far half: screen angles 0..π
+        for (let k = 0; k < BANDS; k++) {
+          const a0 = base - yaw + (k / BANDS) * Math.PI;
+          const depth = depthOf(a0 + Math.PI / BANDS / 2);
           ctx.globalAlpha = 0.25 + 0.65 * depth;
           ctx.lineWidth = (r === 2.75 ? 1.1 : 0.8) * (0.6 + 0.8 * depth);
           ctx.beginPath();
-          ctx.moveTo(...P(r, a));
-          ctx.lineTo(...P(r, b));
+          ctx.moveTo(...P(r, a0));
+          for (let j = 1; j <= STEPS; j++) ctx.lineTo(...P(r, a0 + (j / STEPS) * (Math.PI / BANDS)));
           ctx.stroke();
         }
         ctx.globalAlpha = 1;
@@ -191,8 +225,63 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
         }
         ctx.globalAlpha = 1;
       };
+      // the swarm builds itself over the climb: a share of the collectors per launch window
+      const climbCycle = Math.floor(time / SYNODIC);
+      const CLIMB = SYNODIC * STAGES;
+      const climbT = reduce ? CLIMB : climbCycle < 1 ? -1 : ((((climbCycle - 1) % STAGES) + STAGES) % STAGES) * SYNODIC + (time - climbCycle * SYNODIC);
+      const climbFade = climbT > CLIMB - 2.5 ? Math.max(0, (CLIMB - climbT) / 2.5) : 1; // the shell dissolves as the climb restarts
+      const S3 = (X: number, Y: number, Z: number): [number, number, boolean, number] => {
+        const a = Math.atan2(Y, X) + yaw;
+        const rr = Math.hypot(X, Y);
+        return [cx + u * rr * Math.cos(a), cy - u * tilt * rr * Math.sin(a) - u * ZK * Z, Math.sin(a) > 0, (1 - Math.sin(a)) / 2];
+      };
+      const slot = (c: (typeof swarm)[number], t: number): [number, number, number] => {
+        const th = c.ph + c.w * t;
+        const ct = Math.cos(th);
+        const st = Math.sin(th) * Math.cos(c.inc);
+        return [ct * Math.cos(c.node) - st * Math.sin(c.node), ct * Math.sin(c.node) + st * Math.cos(c.node), Math.sin(th) * Math.sin(c.inc)];
+      };
+      const mercA = (t: number) => 2.1 + (Math.PI * 2 * t) / 5;
+      const swarmPass = (far: boolean) => {
+        if (climbT < 0) return;
+        for (const c of swarm) {
+          const since = climbT - c.at * (CLIMB - 4);
+          if (since < 0) continue;
+          if (since < FLY && !reduce) {
+            // in flight: spiral out of Mercury's orbit and settle onto the slot
+            const k = smooth(since / FLY);
+            const ma = mercA(time - since);
+            const [sx, sy, sz] = slot(c, time);
+            const sa = Math.atan2(sy, sx);
+            let da = sa - ma;
+            da = ((da % (Math.PI * 2)) + Math.PI * 3) % (Math.PI * 2) - Math.PI;
+            const rr = 1.15 + (Math.hypot(sx, sy) - 1.15) * k;
+            const a = ma + da * k;
+            const [x, y, isFar] = S3(rr * Math.cos(a), rr * Math.sin(a), sz * k);
+            if (isFar !== far) continue;
+            ctx.globalCompositeOperation = "lighter";
+            ctx.globalAlpha = climbFade;
+            ctx.drawImage(glowSprite, x - 6, y - 6, 12, 12);
+            ctx.globalAlpha = 1;
+            ctx.globalCompositeOperation = "source-over";
+            continue;
+          }
+          // on station: a small panel that catches the light as it turns
+          const [X, Y, Z] = slot(c, time);
+          const [x, y, isFar, depth] = S3(X, Y, Z);
+          if (isFar !== far) continue;
+          const glint = reduce ? 0.7 : 0.55 + 0.45 * Math.sin(time * 1.3 + c.gl);
+          const born = reduce ? 1 : Math.min(1, (since - FLY) / 0.6 + 0.3);
+          ctx.fillStyle = glint > 0.92 ? "#fff4e8" : C.warn;
+          ctx.globalAlpha = Math.min(1, (0.4 + 0.7 * depth) * glint * born * climbFade);
+          ctx.fillRect(x - 1.6, y - 0.8, 3.2, 1.6);
+        }
+        ctx.globalAlpha = 1;
+      };
+
       ORBITS.forEach((r) => orbit(r, true));
       beltPass(true);
+      swarmPass(true);
 
       // bearing ring: ticks every 10°, labels at the cardinal bearings
       ctx.strokeStyle = C.line;
@@ -239,6 +328,7 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
 
       ORBITS.forEach((r) => orbit(r, false));
       beltPass(false);
+      swarmPass(false);
 
       // planets, lit from the sun
       const planet = (r: number, a: number, rad: number, col: string) => {
@@ -338,17 +428,17 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
         // the wake, brightest at the probe
         ctx.lineCap = "round";
         ctx.globalCompositeOperation = "lighter";
-        for (let i = 1; i <= n; i++) {
-          const k = i / n;
+        ctx.strokeStyle = C.sel;
+        const CHUNK = 8;
+        for (let i0 = 0; i0 < n; i0 += CHUNK) {
+          const i1 = Math.min(n, i0 + CHUNK);
+          const k = i1 / n;
           const a = Math.pow(k, 2.2) * fade;
-          const [x0, y0] = Q(path[i - 1]);
-          const [x1, y1] = Q(path[i]);
-          ctx.strokeStyle = C.sel;
+          ctx.beginPath();
+          ctx.moveTo(...Q(path[i0]));
+          for (let i = i0 + 1; i <= i1; i++) ctx.lineTo(...Q(path[i]));
           ctx.globalAlpha = a * 0.12;
           ctx.lineWidth = 9;
-          ctx.beginPath();
-          ctx.moveTo(x0, y0);
-          ctx.lineTo(x1, y1);
           ctx.stroke();
           ctx.globalAlpha = 0.25 + a * 0.75 * fade;
           ctx.lineWidth = 1.6;
@@ -451,8 +541,20 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
         callout(Q([px, py]), [`MSN-${String(stage + 1).padStart(2, "0")}`, `T+${tau.toFixed(1).padStart(4, "0")} S`, `R ${(Math.hypot(px, py) / AU).toFixed(2)} AU`, `V ${speed.toFixed(1)} KM/S`], C.sel, 9);
       }
 
-      if (!og && !reduce) raf = requestAnimationFrame(draw);
+      if (!og && !reduce && visible) raf = requestAnimationFrame(draw);
     }
+    let visible = true;
+    const io = og
+      ? null
+      : new IntersectionObserver(([entry]) => {
+          const was = visible;
+          visible = entry.isIntersecting;
+          if (visible && !was && !reduce) {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(draw);
+          }
+        });
+    io?.observe(canvas);
     // og mode: no clock of its own; the capture script steps it frame by frame
     const uninstall = og
       ? installOgClock(
@@ -466,6 +568,7 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
     if (!og) raf = requestAnimationFrame(draw);
     return () => {
       uninstall?.();
+      io?.disconnect();
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
     };
