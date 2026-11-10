@@ -526,6 +526,45 @@ html.post-rail-on::-webkit-scrollbar { display: none; }
 .irys-callout.is-on text:first-of-type { fill: #ff5f00; }
 @media (prefers-reduced-motion: reduce) { .irys-joint, .irys-callout { animation: none; opacity: 1; } }
 @media (max-width: 48rem) { .irys-callout { display: none; } .irys-cover-art { transform: translateX(8%) scale(1.5); } }
+/* Seeing Is Measuring cover: irys renders of one test part blended by feature amplitude, with the
+   amplitudes of its recorded fit beside each undecided feature */
+.sim-cover { overflow: hidden; }
+.sim-cover-art { position: absolute; inset: 0; }
+.sim-cover .sim-cover-art svg { position: absolute; inset: 0; width: 100% !important; height: 100% !important; max-width: none !important; display: block; }
+.sim-cover-dim { fill: #0b0907; fill-opacity: 0.42; pointer-events: none; }
+.sim-cover-scrim { position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    linear-gradient(90deg, #0b0907 0%, rgba(11, 9, 7, 0.9) 20%, rgba(11, 9, 7, 0.5) 40%, rgba(11, 9, 7, 0) 58%),
+    linear-gradient(0deg, #0b0907 0%, rgba(11, 9, 7, 0) 30%),
+    linear-gradient(180deg, rgba(11, 9, 7, 0.75) 0%, rgba(11, 9, 7, 0) 22%),
+    radial-gradient(120% 90% at 66% 48%, rgba(11, 9, 7, 0) 38%, rgba(11, 9, 7, 0.72) 100%); }
+.sim-cover-count { position: absolute; right: 1.5rem; bottom: 1.4rem; text-align: right; font-family: var(--p-mono); font-size: 0.66rem; letter-spacing: 0.12em; color: #e8e1d2; font-variant-numeric: tabular-nums; }
+.sim-cover-count span { display: block; color: #a08d70; margin-top: 0.3rem; }
+.sim-feature { opacity: 0; animation: sim-in 0.9s ease-out 0.5s forwards; }
+@keyframes sim-in { to { opacity: 1; } }
+.sim-leader { fill: none; stroke: #e8e1d2; stroke-opacity: 0.55; stroke-width: 1.6; transition: stroke 0.4s, stroke-opacity 0.4s; }
+.sim-dot { fill: #e8e1d2; transition: fill 0.4s; }
+.sim-rim { fill: none; stroke: #ff5f00; stroke-width: 2.4; stroke-opacity: 0; transition: stroke-opacity 0.8s; }
+.sim-feature.is-decided .sim-rim { stroke-opacity: 0.9; }
+.sim-feature.is-decided .sim-leader { stroke: #ff5f00; stroke-opacity: 0.9; }
+.sim-feature.is-decided .sim-dot { fill: #ff5f00; }
+.sim-row text { fill: #e8e1d2; font-size: 22px; font-family: var(--p-mono); letter-spacing: 2.5px; transition: fill 0.4s; }
+.sim-row text.sim-num { text-anchor: end; font-variant-numeric: tabular-nums; }
+.sim-row.is-win text { fill: #ff5f00; }
+.sim-meter-bg { stroke: #e8e1d2; stroke-opacity: 0.18; stroke-width: 2; }
+.sim-meter { stroke: #e8e1d2; stroke-width: 2; transition: stroke 0.4s; }
+.sim-row.is-win .sim-meter { stroke: #ff5f00; }
+.sim-dim-text { fill: #e8e1d2; font-size: 22px; font-family: var(--p-mono); letter-spacing: 2px; opacity: 0; transition: opacity 0.8s; }
+.sim-feature.is-decided .sim-dim-text { opacity: 1; }
+.sim-cap { fill: #a08d70; font-size: 18px; font-family: var(--p-mono); letter-spacing: 2.5px; }
+.sim-inset-frame { fill: none; stroke: #e8e1d2; stroke-opacity: 0.35; stroke-width: 1.5; transition: stroke 0.6s, stroke-opacity 0.6s; }
+.sim-feature.is-decided .sim-inset-frame { stroke: #ff5f00; stroke-opacity: 0.8; }
+.sim-program { position: absolute; z-index: 1; left: clamp(1.25rem, 6vw, 6rem); bottom: clamp(5.5rem, 16vh, 10rem); font-family: var(--p-mono); font-size: 0.72rem; line-height: 1.75; letter-spacing: 0.04em; color: #e8e1d2; white-space: pre; pointer-events: none; }
+.sim-program .sim-prog-base { color: #a08d70; }
+.sim-caret { color: #ff5f00; animation: sim-blink 0.9s steps(1) infinite; }
+@keyframes sim-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .sim-feature { animation: none; opacity: 1; } }
+@media (max-width: 48rem) { .sim-feature, .sim-program { display: none; } .sim-cover-art { transform: translateX(-6%) scale(1.25); } }
 .post-cover-text.is-left { margin: 0; max-width: min(36rem, 42vw); padding-left: clamp(1.25rem, 6vw, 6rem); text-align: left; }
 .post-cover-text.is-left .post-subtitle { margin-left: 0; }
 .post-cover-text.is-left .post-byline { justify-content: flex-start; }

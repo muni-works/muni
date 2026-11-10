@@ -136,3 +136,9 @@ recon.nsig.cov1	65	same: % of odd-seed dims (226) within 1 sigma-prime
 recon.nsig.k95	9.15	same: 95th percentile of |err|/sigma-prime on even seeds
 recon.nsig.cov95	97	same: % of odd-seed dims within k95 sigma-prime
 recon.nsig.rho	-0.12	same: Spearman of sigma_F with |err|, 492 dims
+recon.wsig.n	76	irys-assets/recon-v1-gate100/{ig-merged,ood/report}.json (irys @812dc62 gate), per-part judge sigma; seeds 3020..3099 that ran (76, 4 tag misses excluded)
+recon.wsig.tight	37	same: parts whose every mm dimension has calibrated sigma' = 17.8 sigma_F <= 1 mm
+recon.wsig.tight_wrong	17	same: of those, wrong (wrong topology or worst dimension > 1 mm)
+recon.wsig.tight_wtopo	14	same: of those, wrong topology
+recon.wsig.auc	0.58	same: AUC of a part's largest sigma for telling wrong parts from right ones (0.5 is chance)
+recon.wsig.auc_all	0.65	same over all 120 parts that ran (in and out of grammar)
