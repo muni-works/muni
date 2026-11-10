@@ -41,6 +41,14 @@ not be 0. The gradient of a guarded read eliminates a coordinate rather
 than scattering: for `x[c, t + 3k − 9]`, `dx[c, τ]` reads `dy[o, τ − 3k + 9]`
 through a guard, so padding contributions never reach `x`.
 
+A view can also *gather*: one source coordinate is data. `View::gather`
+adds `coef · round(index)` to a source dim's form, the index being the
+value of a sibling arg of the same comprehension (an integer-valued tensor
+read through its own affine view). An embedding lookup is
+`table[ids[t], j]`, a paged KV read `cache[table[s, blk], off, c]`, an MoE
+expert read `W[sel[t, k], f, d]`. See [Gather views](#gather-views) for
+what the passes do with them.
+
 **Comprehensions.** The only compute op:
 
 ```
@@ -140,7 +148,8 @@ dropped, since a kernel would still bind them.
 
 **Flash backward is nesting.** A short contraction (one reduce dim, at most
 128) whose every reader is a tile, or a map recomputed in tiles, is inlined
-(`schedule_nested_contractions`, applied by `to_cuda`). The attention
+(`schedule_nested_contractions`, applied by `to_cuda`, `to_wgsl` and
+`to_msl`). The attention
 backward then reads `S = Q·Kᵀ` and `dP = dO·Vᵀ` only through `P̃` and `dS`,
 which the dQ, dK and dV tiles recompute, so nothing n×n is written.
 `cuda_mma_kernel` runs each nested contraction as `mma` per staged block:
@@ -155,6 +164,24 @@ the same sum the forward reduced. Chunks where a staged operand of every
 term is a masked exponential, zero by an affine condition (`map_zero_cond`),
 are left out of the k range. `merge_reduce_dims` leaves a map over a
 contraction this big unmerged, since a reshape would pin it to memory.
+
+The scalar tiled lowering (WGSL, and MSL translated from it) has no nested
+GEMM. It nests through `schedule_nested_contractions_scalar`. That version
+also reads through a tile's epilogue-inlined reduction (dK = (Σ dS·Q)·c),
+which is a reader `to_cuda` does not nest into. The tiled emitter already
+computes a shared comp once per chunk into workgroup memory: an inlined
+producer that varies along the reduce and row axes but not the lanes, here
+dS and P̃. So each dS element in the chunk evaluates S and dP as a 64-FMA
+dot, on one thread. A tile that recomputes a nested contraction is
+reshaped from 4 rows × 64 lanes to 16 rows × 16 threads of 4 lanes, so a
+chunk has one dS element per thread instead of 128 elements across 256
+threads. Nothing n×n is written on any backend. The cost is time: the
+scalar dots run 1.3× (MSL) to 4× (Vulkan on a 3090) slower than reading
+the materialized buffers (BENCHMARKS.md, "Flash backward without n×n on
+WGSL and MSL"). `to_wgsl_with(outputs, false)` and `to_msl_with(…, false)`
+lower the materialized schedule. Staging the chunk side (K, V rows) of the
+nested dots in workgroup memory was measured slower on both GPUs. It
+needs a second barrier, and the 16 KiB budget then halves the chunk.
 
 **Schedules are separate from algebra.** A comprehension says *what*. The
 schedule fields on a node say *how*, and can't change the answer:
@@ -186,6 +213,108 @@ hand-written kernel is as an intrinsic: "this comprehension shape has a
 fast implementation on this chip". The compiler picks it when it wins and
 derives one when it doesn't. The existing kernels keep their speed and stop
 being forks.
+
+## Gather views
+
+Affine views cover every layout, but not data-dependent addressing: MoE
+token→expert routing, paged KV caches and token embeddings read a source
+at a coordinate held in another tensor. A gather view makes that a
+comprehension read rather than a special op:
+
+```
+out[t, k, f] = Σ_d x[t, d] · W[sel[t, k], f, d]
+             = Σ_d x[view₀] · W[forms + 1·round(arg₂)] ,  arg₂ = sel[t, k]
+```
+
+**Representation.** `View.gather: Option<Gather { arg, coefs }>`: source
+coordinate `d` is `forms[d] + coefs[d] · round(args[arg])`. The index is
+named by *arg position*, not by tensor: it is an ordinary arg of the
+comprehension, so dependency tracking, liveness and every pass that
+renumbers nodes (`eliminate_dead`, `substitute_maps`, …) handle it with
+no new code. The index arg must itself be affine (`push_comp` rejects a
+gathered index: one level, no pointer chasing). `coefs` per source dim
+allow a scaled, offset address: a paged read iterates `(blk, off)` and
+reads row `bs · table[blk] + off`. A gathered dim cannot be range-checked
+at construction; with `guard` set, an out-of-range index (a `-1` pad)
+reads 0, otherwise it is a caller bug (the interpreter panics). Index
+tensors are f32 like everything else: exact below 2²⁴.
+
+**Interpreter.** Affine args are read first, then gathered args read
+their index from them (`eval` and `eval_emulated` alike).
+
+**Backward.** A gathered dim of the differentiated arg is a scatter dim:
+the gradient comprehension iterates the source coordinate as an out dim
+and gates the body by `[coord == form + coef · index]`, the index read
+through the renamed index arg. That is a scatter-add — `dtable[v, :] =
+Σ_t [ids[t] == v] · dy[t, :]`, repeated ids summed, guarded pads
+dropped — written as a dense gated sum: it costs `|source dim| ×
+|iteration space|`, a one-hot matmul. Correct (tests check it against
+hand scatter-adds), fine for small vocabularies, not for a 150k-entry
+embedding; a segmented-sum or atomic lowering of the same comprehension
+is the follow-up. The gradient with respect to the index is 0 (it only
+addresses).
+
+**Fusion.** Composition carries a gather linearly: an affine map read
+through a gather has the gather pushed into its own args (`2·table` read
+at `ids[t]` becomes `2·table[ids[t]]`), and a gathering map read through
+an affine view brings its gather and its index arg into the reader. So
+`x[tok]`, an activation and the GEMM that consumes them are one kernel.
+What `substitute_maps` keeps materialized, and why:
+
+- *Index tensors* are pinned leaves: an address needs a value in memory,
+  not an expression to recompute per read.
+- *Nested gathers*: a gathering map read through a gather (directly or
+  through a chain of substituted maps) stays a buffer — inlining it would
+  make an index read data-dependent.
+
+Everything else fuses. Passes that drop, reorder, or split a comp's args
+(`hoist_invariant_factors`, `merge_siblings`, the softmax rewrite) skip
+gathered comps; `relayout`, `merge_reduce_dims` and `through_reshape`
+leave a gathered source's layout alone (its `coefs` name source dims);
+iteration-space rewrites (`split_reduce_dims`, `shard_reduction`) carry
+the gather through unchanged; CSE keys on it.
+
+**Schedules and lowering.** Tiles stage affine regions of their operands
+and a gathered read has none, so `schedule_auto` gives gathered comps a
+workgroup split (few points) or one thread per point, never a tile or a
+tensor-core fragment. Every backend that emits through the WGSL arg read
+(WGSL; CUDA's generic path, which transpiles it; MSL; OpenCL) reads the
+index inline as `i32(round(read_idx(…)))`. The C backend rejects gathers.
+
+**Worked example.** `crates/tang-bench/examples/moe_gather.rs` builds a
+top-k MoE FFN as one graph — router GEMM, top-k as k rounds of argmax
+with the earlier picks masked, softmax over the selected logits, SwiGLU
+experts reading `W[sel[t, k]]` through gather views, weighted combine —
+checks it against the f64 interpreter and a plain-Rust reference (top-k
+indices exact; output within 4e-6 on Metal, 4e-5 on CUDA, whose router GEMM is a TF32 tile), and times it against the same
+expert math over host-pre-gathered (affine) weights. The data-dependent
+address costs nothing measurable on either chip (BENCHMARKS.md, "MoE
+through gather views"). The token-major form is the decode shape; an
+expert-major dispatch (tokens grouped per expert, then grouped GEMMs)
+needs a compaction — a scan — which is not a comprehension.
+
+## Integer MMA and block formats (schedule fields)
+
+Quantized expert GEMMs need no new op. Three storage formats join `Precision`:
+
+- `Format::Q4K`, `Format::Q5K`: GGUF k-quant super-blocks (256 along the last dim), input storage
+  only. The graph's values are the dequantized weights; the buffer holds the GGUF bytes as they are.
+- `Format::Q8x32`: int8 codes with one f32 scale a 32 (`d = amax / 127`) and `d · Σcodes` beside it.
+  The writer quantizes (any one-thread-per-point kernel: its store becomes a warp-level quantize);
+  `eval_emulated` rounds the same way, so the interpreter predicts the int8 error.
+
+and one field on the node, `TNode::int_mma: Option<IntMma { stage, ksplit }>`, for a contraction
+`out[p…, r] = Σ_k W[idx(p), r, k] · X[p…, k]` with `W` Q4K/Q5K (first dim optionally gathered) and
+`X` Q8x32 (rows optionally gathered). The CUDA lowering (`tensor_cuda_int8.rs`) generates the kernel
+from the comp's views: a warp owns 16 rows × 8 consecutive positions (`mma.sync.m16n8k32.s8`), the
+4/5-bit codes are the A fragment after one shift and mask, scales/mins are unpacked once a
+super-block, and `acc += dₓ·(d·sc)·dot − (dmin·m)·(dₓ·Σc)` (the mins need no second MMA because
+`Σc` is stored with the activation). Consecutive positions with the same gather index share A
+fragments, so a position dim *sorted by the index* reads each expert once a tile; the sort is
+ordinary IR (a rank comp and its inverse permutation). `stage: Fragment` loads each lane's B as 8
+consecutive bytes (A takes the same column permutation); `Stage::Mma` uses the MMA's own k order.
+`ksplit` warps split a tile's reduction. `crates/tang-bench/examples/coder_moe_ir.rs` builds a whole
+Coder-Next MoE layer this way; BENCHMARKS.md has it against the hand kernels.
 
 ## Precision is a schedule
 
@@ -514,6 +643,175 @@ schedule per target is not just as good as hand kernels, it is the only
 way to be right on every chip at once. A hand kernel is one point in the
 schedule space; the compiler searches it.
 
+## Hopper: asynchrony as schedule fields
+
+On sm_90 the flash forward has a second lowering, chosen by the schedule
+and not by an attention API. `FlashShape` gained one field,
+`sm90: Option<Sm90Flash { consumers, producer_regs, consumer_regs }>`;
+`SM90_FLASH_SHAPES` lists four candidates (64 or 128 keys per step, 2 or 3
+ring stages, 1 or 2 consumer warpgroups), and `Program::tuned` adds them
+as variants after `MMA_SHAPES` when the device reports sm_90 (nvrtc then
+targets `sm_90a`). The comp recognized is the same one `cuda_flash_kernel`
+already lowers; what changes is how its pieces map onto the machine:
+
+- **Warp specialization.** Warpgroup 0 is a producer: it gives up
+  registers (`setmaxnreg.dec`) and only moves data. The consumers
+  (`setmaxnreg.inc`) each own 64 query rows. A ring of `stages` K/V
+  buffers is guarded by two mbarriers per slot (full: 128 producer
+  arrivals; empty: every consumer thread), so copies for chunk c + 1
+  overlap math on chunk c without a block-wide barrier.
+- **Staging.** The producer issues 16-byte `cp.async` into tiles laid out
+  `[cols/64][rows][64]` with the 128-byte swizzle (chunk `c ^ (row % 8)`),
+  waits on its own group, fences the async proxy
+  (`fence.proxy.async.shared::cta`), and arrives on the full barrier. The
+  address of every copy is the operand's affine view, so the layout
+  generality of the `mma.sync` path is kept (any head-dim-contiguous K,
+  V, Q). TMA (`cp.async.bulk.tensor`) would need a host-encoded tensor
+  map per operand; it is not done (see below).
+- **`wgmma`.** S = Q·Kᵀ is `wgmma.m64nBNk16` with both operands from
+  shared-memory descriptors (K-major, SBO 1024, advancing 32 bytes per
+  k16 step inside a swizzle atom). The mask and the online softmax run on
+  the accumulator registers exactly as on `mma.sync` (same C layout per
+  n8 group), in exp2 with the max kept in log2 units. P is packed to bf16
+  straight from those registers into `wgmma`'s A-register fragments (the
+  accumulator's n8 groups 2k, 2k + 1 are the A fragment of keys
+  16k..16k + 15), and O += P·V is `wgmma.m64nDk16` with B = V from an
+  MN-major descriptor (`imm-trans-b`, LBO = one 64-column block).
+- The 1/√d scale is no longer required to be outside the score: both
+  `flash_tile` and `bilinear_tile` accept a literal factor on the
+  products and apply it to the accumulator.
+
+The flash backward needed three generic fixes to reach tensor cores in a
+plain attention graph (the transformer block had hidden them):
+`schedule_nested_contractions` counts an inline reduction under a tiled
+epilogue map as a tile reader, so S and dP nest instead of being written
+as n×n tensors; `bilinear_tile` takes the scale factor as above; and the
+nested-GEMM register budget is 192 (`TANG_NEST_REGS`; the tuner still
+times each variant, so a tile that spills loses).
+
+Not done, and what it costs (BENCHMARKS.md, "Flash attention on Hopper"):
+- TMA copies. (FP8 storage: see [FP8](#fp8-the-scale-is-part-of-the-type).)
+- `wgmma` for the GEMM tiles, so the backward's dQ/dK/dV tiles (with S
+  and dP nested) still run on `mma.sync`.
+- Intra-warpgroup overlap (issuing the next S before this softmax) and
+  ping-pong between consumer warpgroups. These are the two FA3
+  scheduling tricks the derived kernel lacks; short causal rows show it.
+- One fused backward kernel: tang's backward is separate dV, dK and dQ
+  tiles, each recomputing S (and dK, dQ also dP). FlashAttention computes
+  dK and dV in one pass over queries and dQ with atomics. Deriving that
+  needs a merge of sibling reductions that read the same nested
+  contractions but reduce over different axes.
+
+## FP8: the scale is part of the type
+
+`Format::E4M3(block)` and `Format::E5M2(block)` are 8-bit storage formats
+with one f32 scale per `block` consecutive elements (`0`: one scale for
+the tensor). The scale is not a separate tensor the graph threads through
+every consumer; it is part of the format, the same way the MLX 4-bit
+dequantization map is part of a quantized weight's view. A block's scale is
+its largest magnitude over the format's largest finite value (448, 57344);
+the stored byte is `x / scale` rounded to nearest even, saturating. The
+buffer holds the bytes (padded to 16), then the scales
+(`Format::buffer_bytes`, `scale_offset`), so element `a` is byte `a` and
+scale `a / block`: the scale map is one more affine view of the operand,
+and a kernel reads it as such. `tang_gpu::program` packs and unpacks the
+layout (`precision::pack_fp8` / `unpack_fp8`), so a program's inputs stay
+f32 slices.
+
+- **Emulation.** `eval_emulated` rounds an FP8 input as a whole buffer
+  (`Format::round_buf`: the scales depend on the block), so
+  `precision_error` predicts the cost of a schedule before it runs. Two
+  more things the tensor cores do had to become types to be predicted:
+  - `Precision::operand`: the format a reduction rounds a multiplicand it
+    computes itself to — the softmax weights `exp(s − m)` of an
+    online-softmax reduction, which an FP8 attention tile feeds to the
+    tensor cores as P. The emulator rounds each weight (scaled by
+    `2^FP8_SOFTMAX_SHIFT` into E4M3's normal range, as FlashAttention-3
+    does) before it scales v and joins the row sum.
+  - `Format::Fp8Accum`, an accumulation format: Hopper's FP8 `wgmma`
+    accumulator without promotion keeps about 14 mantissa bits,
+    truncated. Calibrated on an H100 (`examples/hopper_fp8.rs`,
+    `MM_ACC=fast`): truncation to 14 bits matches the GPU to 4e-4, 13 and
+    15 bits are off by 1e-2 and 4e-3. A reduction with `accum: F32` gets
+    f32 accumulation: the tile promotes every 128 elements.
+- **Matmul** (`tensor_cuda_fp8.rs`, `SM90_FP8_SHAPES`). Any single-term
+  contraction `bilinear_tile` recognizes, with both operands FP8 and
+  contiguous along k (FP8 `wgmma` reads K-major operands only), lowers to
+  a warp-specialized tile: a producer warpgroup copies 128-byte k chunks
+  of A and B (one 128-byte swizzle row each) plus the chunk's scales
+  (`cp.async` with `cp.async.mbarrier.arrive.noinc`: the ring stays full);
+  consumer warpgroups of 64 rows issue `wgmma.m64nNk32` into a scratch
+  accumulator and fold it into the f32 sum times `sa[row] · sb[col]` —
+  the block scale is constant over a chunk when the block is a multiple
+  of 128. With per-tensor scales and `accum: Fp8Accum` the fold is
+  skipped (the whole reduction in the tensor cores, scales applied once).
+  Rows, columns and the reduction may be ragged; other point dims,
+  epilogue maps and a literal factor work as on the half tiles.
+- **Attention** (the Hopper flash schedule, `SM90_FP8_FLASH_SHAPES`). FP8
+  Q, K and V (each with its own blocks) and an E4M3 `operand` on the
+  online-softmax reduction: S = Q·Kᵀ on FP8 `wgmma` scaled by
+  `sq[row] · sk[key]`, P rounded to e4m3 and staged through shared memory
+  (K-major, swizzled), O += P·V on FP8 `wgmma` with V's scales folded in
+  per 128 keys. P·V reduces over keys, so V must be contiguous along keys:
+  the graph stores V as `[d, n]` (FlashAttention-3 transposes V in its
+  kernel instead). Head dim 128.
+- **Search.** `ir_precision::tune_precision` takes FP8 formats like f16 /
+  bf16: a move that covers an attention kernel's Q, K, V also sets its
+  `operand` (`apply_for`); an FP8 candidate never reaches the GPU when no
+  FP8 tile lowers it (`cuda_fp8_lowers`: a B stored `[k, n]`, a block that
+  straddles chunks, FP8 on a computed buffer) or when the emulator
+  predicts it over budget. `Program::tuned` sweeps the FP8 tile and flash
+  shapes through the same variant indices as the other tiles.
+
+Numbers (H200): `docs/bench/fp8-hopper.md`.
+
+## Scans: prefix monoids and the chunked delta rule
+
+`Op::Scan` (`tensor_scan.rs`) is the third construct next to views and
+comprehensions: `out[…, t, …] = e[…, 0, …] ⊕ … ⊕ e[…, t, …]` along one
+dim, inclusive or exclusive, forward or reverse, for an associative `⊕`.
+Two monoids:
+
+- a **tuple monoid** (`TensorGraph::scan`), the same `Monoid` a reduction
+  uses: cumulative sums, running maxima, the scalar affine `(a, b)` of a
+  gated recurrence;
+- the **matrix affine monoid** (`linear_scan`): `S_t = A_t·S_{t−1} + U_t`
+  with `A [P…, n, n]`, `U [P…, n, m]`, combine `(A₂, U₂)∘(A₁, U₁) =
+  (A₂A₁, A₂U₁ + U₂)`. Linear attention (`A = I`), Mamba-2's SSD
+  (`A = αI`) and the gated delta rule (`A = α(I − β·k·kᵀ)`) are this scan
+  with `U = β·k·vᵀ`; `delta_scan` builds `A` and `U` as comprehensions
+  and records the structure (`DeltaForm`), `scan_readout` is `o = Sᵀq`.
+
+The **backward is derived**: the cotangent of a scan is a reverse scan
+with the transposed combine. For the affine monoid that is closed —
+`λ_t = G_t + A_{t+1}ᵀλ_{t+1}` (an affine scan the other way), `∂U = λ`,
+`∂A_t = λ_t·S_{t−1}ᵀ`. A tuple monoid becomes the same thing over `w×w`
+matrices: the combine's Jacobians come from `tang-expr` derivatives, so
+`λ_t = G_t + J_{t+1}ᵀλ_{t+1}` and `∂e_t = J^eᵀ_t·λ_t`. Finite differences
+check every variant (inclusive/exclusive × forward/reverse, max, the
+gated delta rule end to end). The interpreter evaluates scans directly;
+the WGSL lowering (so Metal and CUDA through the transpiler) runs one
+thread per scanned line.
+
+**Chunked schedule** (`tensor_cuda_scan.rs`). `chunked_scan_plan`
+recognizes a readout over a delta scan and lowers it to the SSD /
+chunked-delta-rule form on bf16 tensor cores: inside a chunk of 64 steps
+the product of the `I − β·k·kᵀ` factors is one unit-triangular solve (the
+WY/UT transform: `W = T·diag(β e^γ)k`, `U = T·diag(β)v`, `T = (I +
+tril(β kkᵀ ⊙ e^{γᵢ−γⱼ}))⁻¹`, solved in 16×16 blocks with columns in
+registers), and only the `n×m` state crosses chunks in a sequential scan
+(`V' = U − W·S`, `S ← e^{γ_C}S + kᵀ·(e^{γ_C−γ}V')`, next chunk's fragments
+prefetched into registers); the readout `o = e^γ q·S + tril(q kᵀ ⊙
+e^{γᵢ−γⱼ})·V'` is a third, fully parallel kernel. The backward is the
+derived reverse scan at chunk granularity — the transposed chunk map
+`dS₀ = e^{γ_C}dS − Wᵀ·dV' + (e^γ q)ᵀ·dO` with `dV' = e^{γ_C−γ}k·dS +
+A_qkᵀ·dO` — plus one parallel kernel per chunk that pushes `dV'`,
+`dS_end` and `dO` back through `W`, `T`, the masked Gram matrices and the
+decays to `dq dk dv dβ dα`. `examples/scan_bench.rs` checks the forward
+and all five gradients against the f64 interpreter (rel. err 2–5e-3,
+bf16) and times them; BENCHMARKS.md has the comparison with fla and
+mamba_ssm.
+
 ## Not yet
 
 - Fragments for attention on Metal (QKᵀ and PV under the online-softmax
@@ -538,8 +836,15 @@ schedule space; the compiler searches it.
 - Scatter gradients reduce over the whole source coordinate they gate on;
   a stride-2 read pays 2× in the backward pass. Fine for rope, not for a
   large gather.
-- Non-affine indexing — KV-cache paging, MoE routing — needs a `Gather`
-  view that reads an index tensor, which blocks some fusion.
+- Gathers ([above](#gather-views)): the backward is a dense gated sum
+  (a segmented-sum or atomic lowering is the follow-up); gathered reads
+  never tile, so a prefill-sized MoE GEMM runs one thread per point;
+  the C backend rejects them.
+- Scans: the chunked schedule is CUDA-only and pattern-matched on
+  `delta_scan` + `scan_readout` (graph inputs `[H, T, ·]`, `T % 64 == 0`,
+  `n = m = 128` for the backward); other scans run the sequential WGSL
+  kernel. No `wgmma` variant yet (Hopper runs the `wmma` kernels). The C
+  backend rejects scans.
 - Placement is a transform now (`shard_reduction` + `fold_partials`:
   partial reductions over slices, the all-reduce as a comprehension over
   the monoid's combine; `examples/shard_attention.rs` runs flash
