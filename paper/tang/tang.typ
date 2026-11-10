@@ -497,7 +497,7 @@ We propose writing the model once, as math, and letting the compiler derive ever
 Contributions:
 + *Kernels from rewrites.* Fusion, flash attention, logsumexp and Welford variance are instances of a small set of rewrites (§2).
 + *Derived backward passes.* Reverse-mode differentiation maps comprehensions to comprehensions, including the online-softmax monoid. A proof procedure removes the stabilizing max's gradient, and with nested contractions this yields an attention backward with no $n times n$ tensors (§3).
-+ *Precision as a schedule.* An emulating interpreter predicts the error of a format choice before it runs (§4).
++ *Precision as a schedule.* An emulating interpreter checks a format choice against an error budget before it runs, with failure modes we report (§4).
 + *One graph, six targets.* Lowerings from shared emitters, measured against hand kernels, PyTorch and the bandwidth limit on four chips (§5, §7).
 + *A production engine, derived.* Top-$k$ routing as one monoid, integer tensor-core and narrow GEMV schedules, a segmented-sum gather backward, chunked scans, and Hopper attention schedules. With them, derived kernels replace hand kernels in an 80B MoE engine on an H200 (§8, §11).
 + *The speed of light.* The traffic lower bound and the optimal tile are dual solutions of one linear program read off a kernel's views, with weak duality in Lean. A time floor built on it is a true lower bound on 9 GEMV-class kernels on two GPUs (§9).
