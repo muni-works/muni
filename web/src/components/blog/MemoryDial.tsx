@@ -5,7 +5,8 @@ import { useEffect, useMemo, useState } from "react";
 // The memory-placement figure in the tang post. One attention graph (q·k → softmax → ·v); the only
 // thing that changes between stops is where the intermediates S and P live and where kernel
 // boundaries fall. The schematic is drawn from that placement; the table holds measurements from
-// `paper/tang/data/memory-axis.json` (served at /derive/), never typed in. Unmeasured cells say "—".
+// `paper/tang/data/figure1-cuda.json` (the paper's Figure 1) and `memory-axis.json` (earlier WGSL
+// runs), both served at /derive/, never typed in. Unmeasured cells say "—".
 
 type Row = {
   point: string;
@@ -57,6 +58,11 @@ const STOPS: Stop[] = [
   { key: "autotune", name: "Autotuned", short: "Tuned", s: 2, p: 3, cuts: [], tuned: true },
 ];
 
+const DEVICE_NAME: Record<string, string> = {
+  cuda3090: "RTX 3090, CUDA, idle",
+  rtx3090: "RTX 3090, WGSL, shared",
+  m4: "M4 Max, WGSL",
+};
 const LEVELS = ["HBM", "L2", "SMEM", "Registers"];
 const OPS = ["S = q·kᵀ", "P = softmax(S)", "O = P·v"];
 
@@ -143,17 +149,34 @@ export function MemoryDial() {
   const [n, setN] = useState(4096);
 
   useEffect(() => {
-    fetch("/derive/memory-axis.json")
-      .then((r) => (r.ok ? r.json() : []))
-      .then((d: Row[]) => {
-        setRows(d);
-        if (d.length) setDevice(d[0].device);
-      })
-      .catch(() => setRows([]));
+    const get = (f: string) =>
+      fetch(`/derive/${f}`)
+        .then((r) => (r.ok ? r.json() : []))
+        .catch(() => []);
+    // Figure 1's CUDA rows come first so the dial opens on the same numbers as the paper's figure.
+    Promise.all([get("figure1-cuda.json"), get("memory-axis.json")]).then(([cuda, wgsl]: [Row[], Row[]]) => {
+      const d = [
+        ...cuda
+          .filter((r) => r.point !== "flash_fp32")
+          .map((r) => ({ ...r, device: "cuda3090", point: r.point === "searched" ? "autotune" : r.point })),
+        ...wgsl,
+      ];
+      setRows(d);
+      if (d.length) {
+        setDevice(d[0].device);
+        setN(d[0].n);
+      }
+    });
   }, []);
 
   const devices = useMemo(() => [...new Set((rows ?? []).map((r) => r.device))], [rows]);
-  const ns = useMemo(() => [...new Set((rows ?? []).map((r) => r.n))].sort((a, b) => a - b), [rows]);
+  const ns = useMemo(
+    () => [...new Set((rows ?? []).filter((r) => r.device === device).map((r) => r.n))].sort((a, b) => a - b),
+    [rows, device],
+  );
+  useEffect(() => {
+    if (ns.length && !ns.includes(n)) setN(ns.includes(4096) ? 4096 : ns[0]);
+  }, [ns, n]);
   const cell = (key: string) => rows?.find((r) => r.point === key && r.device === device && r.op === op && r.n === n && r.d === 64);
   const base = cell("naive")?.ms ?? null;
   const metrics: { label: string; v: (r: Row | undefined) => string }[] = [
@@ -162,6 +185,7 @@ export function MemoryDial() {
     { label: "HBM bytes", v: (r) => (r?.hbm_bytes != null ? fmtBytes(r.hbm_bytes) : "—") },
     { label: "kernels", v: (r) => (r?.kernels != null ? String(r.kernels) : "—") },
     { label: "n×n bufs", v: (r) => (r?.nxn_buffers != null ? String(r.nxn_buffers) : "—") },
+    { label: "f64 check", v: (r) => (r?.correct == null ? "—" : r.correct ? "pass" : "fail") },
   ];
 
   return (
@@ -206,12 +230,14 @@ export function MemoryDial() {
           <span className="md-controls">
             <select value={device} onChange={(e) => setDevice(e.target.value)} aria-label="Device">
               {devices.map((d) => (
-                <option key={d}>{d}</option>
+                <option key={d} value={d}>
+                  {DEVICE_NAME[d] ?? d}
+                </option>
               ))}
             </select>
             <select value={op} onChange={(e) => setOp(e.target.value)} aria-label="Pass">
               <option value="fwd">forward</option>
-              <option value="fwd+bwd">forward + backward</option>
+              <option value="fwdbwd">forward + backward</option>
             </select>
             <select value={n} onChange={(e) => setN(+e.target.value)} aria-label="Sequence length">
               {ns.map((v) => (
