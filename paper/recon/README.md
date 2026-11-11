@@ -38,7 +38,7 @@ added (written from memory: verify each before submission).
 
 ## What the paper needs, in order
 
-1. **Amplitude finals on fresh held-out parts.** Wire `amp::fit` into `search::recover`'s final
+1. ~~**Amplitude finals on held-out parts.**~~ Done 2026-11-10 on the 80 held-out synth3 parts: worse than greedy (topology 37 vs 44 of 80, fixed 0, broke 7; `ampg.*`). Cause: per-amplitude anneal deletes features whose alternatives split the evidence. Next: presence p and choice q annealed separately, a proper parameter cost, rerun on fresh seeds 4000..4099 (rendered on mew, `assets/fresh3`). Original plan: Wire `amp::fit` into `search::recover`'s final
    stage (relax each finalist's optional features, seeded from the search's proposals). Render a
    new set (seeds 4000..4099, never looked at), run greedy and amplitude finals on the same photos,
    3 seeds each. Reports: <= 1 mm, topology, hole/counterbore confusions, paired (McNemar). About

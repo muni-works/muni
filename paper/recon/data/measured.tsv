@@ -142,3 +142,16 @@ recon.wsig.tight_wrong	17	same: of those, wrong (wrong topology or worst dimensi
 recon.wsig.tight_wtopo	14	same: of those, wrong topology
 recon.wsig.auc	0.58	same: AUC of a part's largest sigma for telling wrong parts from right ones (0.5 is chance)
 recon.wsig.auc_all	0.65	same over all 120 parts that ran (in and out of grammar)
+ampg.n	80	irys claude/recon-amplitudes @90b372d, recon_v1 gate --views 3 --no-fd --amp on synth3 (seeds 3000..3099), mew; greedy and amplitude finals on the same recovery: held-out seeds 3020..3099
+ampg.g_topo	44	same: greedy, right features
+ampg.a_topo	37	same: amplitude finals, right features
+ampg.g_p1	37	same: greedy, every dimension within 1 mm
+ampg.a_p1	31	same: amplitude finals, within 1 mm
+ampg.fixed	0	same: parts amplitude finals turned from wrong to right features
+ampg.broke	7	same: parts amplitude finals turned from right to wrong features
+ampg.relaxed	55	same: parts with a loose hole or counterbore to relax (of 80)
+ampg.s_med	288	same: median seconds of the amplitude finals per relaxed part
+ampg.dev_fixed	1	same, development seeds 3000..3019: fixed
+ampg.dev_broke	1	same: broke
+ampg.a_topo_ci	0.36	0.57	same: Wilson 95% for 37/80
+ampg.g_topo_ci	0.44	0.65	same: Wilson 95% for 44/80
