@@ -155,3 +155,9 @@ ampg.dev_fixed	1	same, development seeds 3000..3019: fixed
 ampg.dev_broke	1	same: broke
 ampg.a_topo_ci	0.36	0.57	same: Wilson 95% for 37/80
 ampg.g_topo_ci	0.44	0.65	same: Wilson 95% for 44/80
+chk.odd.wrong	37	fresh seeds 4001-4099 odd, wrong answers
+chk.odd.right	13	fresh odd, right answers
+chk.fit.caught	4	odd wrong caught, thresholds fitted on even seeds
+chk.fit.fa	0	odd false alarms, fitted thresholds
+chk.ph.caught	14	odd wrong caught, placeholder thresholds
+chk.ph.fa	3	odd false alarms, placeholder thresholds
