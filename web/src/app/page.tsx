@@ -39,10 +39,10 @@ export default function HomePage() {
   const cards = [
     { e: element(2), href: links.tang, blurb: "fast inference on any GPU", cta: "tang.toys ↗", color: "#ffd400" },
     { e: element(3), href: links.vcad, blurb: "CAD you can take the derivative of", cta: "vcad.io ↗", color: "#ff2052" },
-    { e: element(7), href: links.phyz, blurb: "physics with gradients, even through contact", cta: "phyz.dev ↗", color: "#00f0ff" },
-    { e: element(21), href: "https://frog.toys", blurb: "a coding agent that runs on your own machine", cta: "frog.toys ↗", color: "#39ff14" },
+    { e: element(6), href: links.phyz, blurb: "physics with gradients, even through contact", cta: "phyz.dev ↗", color: "#00f0ff" },
+    { e: element(20), href: "https://frog.toys", blurb: "a coding agent that runs on your own machine", cta: "frog.toys ↗", color: "#39ff14" },
     // ribt is Ipse's voice, so it carries Ipse's number rather than a new element of its own
-    { e: { ...element(20), name: "ribt" }, href: "https://ribt.dev", blurb: "a voice that answers in 18 ms", cta: "ribt.dev ↗", color: "#b388ff" },
+    { e: { ...element(19), name: "ribt" }, href: "https://ribt.dev", blurb: "a voice that answers in 18 ms", cta: "ribt.dev ↗", color: "#b388ff" },
   ];
   return (
     <div className="post-page home-page home-one">

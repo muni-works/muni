@@ -1,0 +1,24 @@
+GPU: NVIDIA RTX PRO 6000 Blackwell Server Edition, 595.91.07, 97887 MiB
+commit: 7df5cf7 75f6bc61 (rsync copy)
+
+tiny (worst relative logit error, GPU vs interpreter):
+  hand     f16: tiny: worst relative logit error 5.39e-5 (decode), 2.42e-4 (prefill), caches within 1.0 ulp (f16)
+  derived  f16: tiny --derived: worst relative logit error 1.53e-4 (decode), 5.26e-4 (window); argmax 9/9 (f16 caches)
+  hand     f32: tiny: worst relative logit error 3.18e-5 (decode), 1.98e-4 (prefill), caches within 0.0 ulp (f32)
+  derived  f32: tiny --derived: worst relative logit error 8.88e-5 (decode), 5.58e-4 (window); argmax 9/9 (f32 caches)
+
+Qwen3-8B device step time:
+  decode step at len 128 (hand): 4.821 ms device (207.4 tok/s)
+  window of 4 at len 128 (hand): 27.096 ms device (147.6 tok/s)
+  decode step at len 4096 (hand): 5.187 ms device (192.8 tok/s)
+  window of 4 at len 4096 (hand): 28.215 ms device (141.8 tok/s)
+  decode step at len 128 (derived): 4.719 ms device (211.9 tok/s)
+  window of 4 at len 128 (derived): 28.549 ms device (140.1 tok/s)
+  decode step at len 4096 (derived): 5.122 ms device (195.2 tok/s)
+  window of 4 at len 4096 (derived): 29.813 ms device (134.2 tok/s)
+
+end to end (not like for like, see the header):
+  hand     decode 63 tokens in 0.305s: 206.4 tok/s end to end (run + state readback per token)
+  derived  decode 63 tokens in 0.310s: 203.3 tok/s end to end (run + state readback per token)
+
+greedy ids: identical (64 tokens)
