@@ -14,6 +14,7 @@ Snapshots of the tang files the numbers in `../tang.typ` come from, taken from
 | `figure1-cuda.json` | Figure 1 on the RTX 3090, from `crates/tang-bench/examples/figure1_cuda.rs` |
 | `memory-axis.json` | the memory-axis sweep behind the dial on the web page |
 | `derive-gallery.csv` | the derived-kernel gallery table |
+| `whole-step/` | the whole derived decode step against the hand engine on an idle RTX PRO 6000 (§8): `qwen3-8b-rtx-pro-6000.txt` from tang main `bench/results/derived-race/rtx-pro-6000.txt` (tang#205), and the Qwen3-Coder-Next rows of `bench/results/board.jsonl` at commit `5f930c7c` (tang#219). Copied from tang main at `aee773f6`, 2026-11-11. |
 
 Raw outputs for the idle-GPU measurements are in the tang repository under
 `crates/tang-llm/docs/bench/review/`.
