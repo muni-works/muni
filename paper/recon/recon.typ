@@ -208,6 +208,43 @@
   ))))
 }
 
+// Part 3000: one photograph, the wrong answer's overlay, and the two programs.
+#let fig-part3000() = {
+  let mono-s(body, fill: c-text.transparentize(25%)) = text(font: mono, size: 6.4pt, fill: fill, body)
+  align(left, grid(columns: (1fr, 1.6fr), column-gutter: 0.5em, row-gutter: 0.5em,
+    image("images/recon/3000-v0.jpg", width: 100%),
+    image("images/recon/3000-overlay.png", width: 100%),
+    grid.cell(colspan: 2, stack(spacing: 0.35em,
+      text(font: mono-m, size: s-xs, tracking: track)[PART 3000 #h(0.6em) #text(fill: c-fault)[WRONG · EVERY σ ≤ 0.11 MM · RESIDUAL EXCESS 0.75]],
+      mono-s[TRUTH #h(0.5em) base 69.000 56.200 7.200 chamfer 7.200; hole 30.100 6.800 2.600; boss 16.400 4.500 6.900 5.500],
+      mono-s(fill: c-text)[FOUND #h(0.5em) base 66.848 55.691 8.281 chamfer 7.117; boss 15.049 3.156 6.131 5.693])),
+  ))
+}
+
+// The agreement check on three fresh parts: the two base photographs and the third, then the
+// truth and both recoveries.
+#let fig-agree-examples() = {
+  let ex = json("data/agree-examples.json")
+  let mono-s(body, fill: c-text.transparentize(25%)) = text(font: mono, size: 6.2pt, fill: fill, body)
+  let one(t) = t.split("\n").join("; ")
+  let verdict(e) = {
+    let flag = if e.agree { text(fill: c-ok)[TRUSTED] } else { text(fill: c-warn)[FLAGGED: FEATURES CHANGED] }
+    let truth = if e.two_ok { text(fill: c-ok)[2-PHOTO ANSWER RIGHT] } else { text(fill: c-fault)[2-PHOTO ANSWER WRONG] }
+    [#flag #h(0.6em) #truth]
+  }
+  align(left, grid(columns: (1fr,), row-gutter: 1.0em, ..ex.map(e => grid(
+    columns: (1fr, 1fr, 1fr), column-gutter: 0.35em, row-gutter: 0.35em,
+    image("images/recon/" + str(e.seed) + "-b0.jpg", width: 100%),
+    image("images/recon/" + str(e.seed) + "-b3.jpg", width: 100%),
+    image("images/recon/" + str(e.seed) + "-b5.jpg", width: 100%),
+    grid.cell(colspan: 3, stack(spacing: 0.32em,
+      text(font: mono-m, size: s-xs, tracking: track)[PART #e.seed #h(0.6em) #verdict(e)],
+      mono-s[TRUTH #h(0.5em) #one(e.truth)],
+      mono-s(fill: c-text)[2 PHOTOS #h(0.5em) #one(e.two)],
+      mono-s(fill: c-text)[3 PHOTOS #h(0.5em) #one(e.three)])),
+  ))))
+}
+
 // The cover: the object the grammar cannot yet say. Cam's photo of a printed retro enclosure.
 #let fig-cover(width: 21.59) = {
   let height = width * 1600 / 1200
@@ -329,7 +366,11 @@ If the error bars cannot see a wrong program, perhaps the residual can. A missin
 
 Here a part is wrong if it has the wrong features or any dimension off by more than 1 mm, so the #(V("fresh.parts") - V("fresh.p1")) wrong parts of @tab:acc include #(V("fresh.parts") - V("fresh.topo")) with wrong features. On the fresh set we fitted thresholds on the even seeds, allowing at most 20% false alarms, and tested on the odd seeds. The fitted rule caught #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers with #V("chk.fit.fa") false alarms among #V("chk.odd.right") right ones. Looser hand-set thresholds caught #V("chk.ph.caught") of #V("chk.odd.wrong") at #V("chk.ph.fa") of #V("chk.odd.right") false alarms. Neither is a usable trust signal (@fig:check). (The odd half happens to be harder, #V("chk.odd.wrong") wrong of 50 against 22 on the even half, so these rates are noisy.)
 
-Part 3000 shows why. Its recovered plate is #F("p3000.dw", 2) mm too narrow and #F("p3000.dh", 2) mm too tall, and its hole is missing. Every Fisher $sigma$ is at most #F("p3000.sig", 2) mm, the residual on the part is #F("p3000.excess", 2) times the table's (that is, no excess), and no blob remains. From its photographs' viewpoints the wrong program explains the images. No function of the residual can flag an answer that leaves no residual.
+Part 3000 shows why. Its recovered plate is #F("p3000.dw", 2) mm too narrow and #F("p3000.dh", 2) mm too tall, and its hole is missing. Every Fisher $sigma$ is at most #F("p3000.sig", 2) mm, the residual on the part is #F("p3000.excess", 2) times the table's (that is, no excess), and no blob remains. From the one photograph it was recovered from (@fig:p3000), the wrong program explains the image. No function of the residual can flag an answer that leaves no residual.
+
+#figure(fig-part3000(),
+  caption: [#lead[A confident wrong answer.] Part 3000 from one synthetic photograph (left) and the recovery's overlay (right: the recovered outline on the crop, and the residual, red brighter and blue darker than the model). The plate comes back 2.15 mm short and 1.08 mm tall, and the hole at its far edge, seen at a grazing angle, is missing. The residual is clean and every error bar is tight. From irys commit `084d424`, the version vcad used.],
+) <fig:p3000>
 
 #figure(fig-check(),
   caption: [#lead[Residual checks on #V("fresh.parts") fresh parts.] Each dot is a part, split by whether the recovery was right. The two groups overlap on every signal; a threshold that flags many wrong parts flags many right ones too. The fourth signal, an unexplained residual blob, was zero on 97 of the 100 parts and is not drawn; its fitted threshold flags two wrong parts and no right ones. `data/check-fresh.csv`.],
@@ -355,6 +396,10 @@ Part 3000 suggests the test: a wrong program that explains two photographs need 
   ),
   caption: [#lead[Flagging wrong answers.] A part is flagged when recovering it again with one more photograph changes its features. The last row is the best in-sample check of @sec:check, on three-photograph recoveries from a different run of the fresh set and at no extra compute, so it is a reference rather than a like-for-like comparison. `data/measured.tsv`.],
 ) <tab:agree>
+
+#figure(fig-agree-examples(),
+  caption: [#lead[The agreement check on three fresh parts.] Each row shows the two base photographs and the third, then the truth and the recoveries from two photographs and from all three. Part 4035: two photographs miss both bosses and shrink the plate; the third view finds them, the features change, and the part is flagged. Part 4022: both recoveries agree and are right. Part 4036: both miss a 2.5 mm hole and a counterbore the same way, so the check trusts a wrong answer, which is the failure that leaves a third of trusted answers wrong. Programs in millimetres, pose omitted. `data/agree-examples.json`.],
+) <fig:agree>
 
 *Does the answer change?* Flag the part if the recovery with the third photograph has different features from the recovery without it. This flags (@tab:agree) #V("nbv.caught") of the #V("nbv.wrong") wrong two-photograph answers (#ci("nbv.caught_ci")%) and #V("nbv.fa") of the #V("nbv.right") right ones. It has no threshold to fit, so we report both halves of the parts: on the even seeds it flags #V("nbv.even_caught") of #V("nbv.even_wrong") wrong answers and #V("nbv.even_fa") of #V("nbv.even_right") right ones, on the odd seeds #V("nbv.odd_caught") of #V("nbv.odd_wrong") and #V("nbv.odd_fa") of #V("nbv.odd_right"). Among the #V("nbv.trusted") parts it does not flag, #V("nbv.trusted_right") of the two-photograph answers are right, against #V("nbv.right") of #V("nbv.n") overall. It cannot catch an error that the third photograph repeats, which is why a third of the unflagged answers are still wrong.
 

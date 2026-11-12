@@ -1,0 +1,44 @@
+[
+ {
+  "seed": 4035,
+  "kind": "flagged",
+  "truth": "base 59.700 49.600 14.400\nboss 0.200 -5.800 6.200 3.500\nboss 18.900 -14.900 5.200 11.900",
+  "two": "base 62.256 30.159 14.279",
+  "three": "base 59.610 49.727 14.328\nboss 18.952 -14.879 5.204 11.927\nboss 0.222 -5.816 6.275 3.584",
+  "two_ok": false,
+  "two_topo": false,
+  "two_err": null,
+  "three_ok": true,
+  "three_topo": true,
+  "three_err": 0.12660670923601458,
+  "agree": false
+ },
+ {
+  "seed": 4022,
+  "kind": "trusted-right",
+  "truth": "base 64.300 60.000 7.600\nsloty -9.000 12.100 15.400 2.600",
+  "two": "base 64.154 59.888 7.440\nsloty -8.999 12.186 15.238 2.649",
+  "three": "base 64.041 59.889 7.483\nsloty -9.017 12.094 14.947 2.653",
+  "two_ok": true,
+  "two_topo": true,
+  "two_err": 0.1616349293915338,
+  "three_ok": true,
+  "three_topo": true,
+  "three_err": 0.45346761753343756,
+  "agree": true
+ },
+ {
+  "seed": 4036,
+  "kind": "trusted-wrong",
+  "truth": "base 52.600 64.400 8.300\nhole 5.400 -25.600 2.500\ncounterbore -17.800 6.300 1.900 3.800 2.300",
+  "two": "base 52.478 64.285 8.002 fillet 0.811",
+  "three": "base 52.592 64.380 8.197 fillet 0.500",
+  "two_ok": false,
+  "two_topo": false,
+  "two_err": null,
+  "three_ok": false,
+  "three_topo": false,
+  "three_err": null,
+  "agree": true
+ }
+]
