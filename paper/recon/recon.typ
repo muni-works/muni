@@ -61,7 +61,7 @@
   }))
 }
 
-#set document(title: "Seeing Is Measuring", author: "Cam Pedersen (Municipal Robotics)")
+#set document(title: "Tight Error Bars, Wrong Parts", author: "Cam Pedersen (Municipal Robotics)")
 
 #let hf-out() = { let m = page.margin; let l = if type(m) == dictionary { m.at("left", default: m.at("x", default: 0.75in)) } else { 0.75in }; calc.max(0in, l - 0.7in) }
 
@@ -74,7 +74,7 @@
   numbering: "1",
   header: context {
     if counter(page).get().first() > 1 {
-      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Seeing Is Measuring], caps[Municipal Robotics]))
+      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Tight Error Bars, Wrong Parts], caps[Municipal Robotics]))
     }
   },
   footer: context {
@@ -138,6 +138,7 @@
 #import "figures/recon.typ": fig-recon
 #import "figures/amp.typ": fig-amp
 #import "figures/rosefit.typ": fig-rosefit
+#import "figures/sigma.typ": fig-sigma, fig-check
 // Web figures: drawn bodies become inline SVG via html.frame (as vision.typ); tables stay <table>s.
 #show figure: it => if web and it.kind != table {
   let lab = if it.has("label") { str(it.label) } else { "" }
@@ -284,6 +285,10 @@ The search starts from a box, proposes edits (add a feature at a residual blob, 
 
 Test photographs are irys path-traced renders of a part in PLA of one of six colours beside the tag, under a random environment or a synthetic room, at 2016×1512, passed through a phone camera model (defocus, shot and read noise, tone curve, JPEG). Parts are drawn from the grammar's generator. Every setting was frozen on a 20-part development set before any held-out run.
 
+#figure(fig-recon(),
+  caption: [#lead[The recovery loop.] The search edits a CAD program, fits each edit's dimensions through the renderer's edge-sampled Jacobian, scores it in nats, and keeps it only if the description of the photographs gets shorter. Bar lengths are schematic.],
+) <fig:recon>
+
 = Accuracy <sec:acc>
 
 #figure(
@@ -297,13 +302,21 @@ Test photographs are irys path-traced renders of a part in PLA of one of six col
   caption: [#lead[Recovery accuracy on held-out synthetic parts.] Worst dimension per part, after the plate's quarter-turn symmetry. Wilson 95% intervals in parentheses. Most failures are wrong features, chiefly a hole read as a counterbore or the reverse; among parts with the right features the median worst-dimension error is #F("recon.n.med_ok", 2) mm. `data/measured.tsv`.],
 ) <tab:acc>
 
-About two in five parts come back within 1 mm on every dimension, and about half with the right features (@tab:acc). We compare against no other method; the point of this paper is not the accuracy but what the fit says about it.
+About two in five parts come back within 1 mm on every dimension, and about half with the right features (@tab:acc). We compare against no other method; the point of this paper is not the accuracy but what the fit says about it. @fig:examples shows two parts it gets right and one it gets wrong.
+
+#figure(fig-recon-examples(),
+  caption: [#lead[Three development parts, three synthetic photographs each.] Right of the photographs, the fit's overlay: the recovered outline on the crop, and the residual (red brighter, blue darker than the model). Parts 3009 and 3012 pass at 0.16 and 0.32 mm. Part 3016 fails: its hole is read as a counterbore of the hole's outer radius, the commonest confusion. `data/recon-examples.json`.],
+) <fig:examples>
 
 = Error bars do not flag wrong answers <sec:sigma>
 
 The Fisher standard deviations are too small by a median factor of #V("recon.sig.opt") and do not rank the errors (Spearman $rho = #V("recon.sig.rho")$). One scale, $sigma' = #V("recon.sig.c") sigma_F$, fitted on even seeds restores 68% coverage on odd seeds, as any fitted scale must; because $sigma_F$ does not rank errors, $sigma'$ is an average error with a unit, not a per-dimension error bar. The cause we suspect is bias from the appearance model, which moves an edge the same way in every photograph, so more pixels shrink $sigma_F$ without shrinking the error.
 
-The worse failure is that $sigma$ is conditional on the features being right. Among the #V("recon.wsig.n") held-out parts, #V("recon.wsig.tight") have $sigma' <= 1$ mm on every dimension, and #V("recon.wsig.tight_wrong") of those are wrong, #V("recon.wsig.tight_wtopo") with the wrong features. As a test for a wrong answer, a part's largest $sigma$ has an area under the ROC curve of #F("recon.wsig.auc", 2), where 0.5 is chance. This is the gap between aleatoric and model uncertainty @kendall2017uncertainties, in a setting where the model is a discrete program.
+The worse failure is that $sigma$ is conditional on the features being right. Among the #V("recon.wsig.n") held-out parts, #V("recon.wsig.tight") have $sigma' <= 1$ mm on every dimension, and #V("recon.wsig.tight_wrong") of those are wrong, #V("recon.wsig.tight_wtopo") with the wrong features. As a test for a wrong answer, a part's largest $sigma$ has an area under the ROC curve of #F("recon.wsig.auc", 2), where 0.5 is chance. This is the gap between aleatoric and model uncertainty @kendall2017uncertainties, in a setting where the model is a discrete program. @fig:sigma shows every part.
+
+#figure(fig-sigma(),
+  caption: [#lead[Error bars against errors.] Each of the #V("recon.wsig.n") held-out parts at its largest calibrated error bar $sigma' = #V("recon.sig.c") sigma_F$ and its actual worst error; parts with the wrong features, which have no worst error, sit in the top band. In the shaded region every error bar is under 1 mm, and #V("recon.wsig.tight_wrong") of its #V("recon.wsig.tight") parts are wrong. `data/sigma-vs-error.csv`.],
+) <fig:sigma>
 
 = Residual checks do not either <sec:check>
 
@@ -314,17 +327,21 @@ If the error bars cannot see a wrong program, perhaps the residual can. A missin
 - *unexplained blob*: the largest residual blob left on the top face, as an equivalent radius;
 - *finalist margin*: the score gap in nats from the winner to the runner-up program.
 
-On #V("fresh.parts") fresh parts we fitted thresholds on the even seeds, allowing at most 20% false alarms, and tested on the odd seeds. The fitted rule caught #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers with #V("chk.fit.fa") false alarms among #V("chk.odd.right") right ones. Looser hand-set thresholds caught #V("chk.ph.caught") of #V("chk.odd.wrong") at #V("chk.ph.fa") of #V("chk.odd.right") false alarms. Neither is a usable trust signal. (The odd half happens to be harder, #V("chk.odd.wrong") wrong of 50 against 22 on the even half, so these rates are noisy.)
+On #V("fresh.parts") fresh parts we fitted thresholds on the even seeds, allowing at most 20% false alarms, and tested on the odd seeds. The fitted rule caught #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers with #V("chk.fit.fa") false alarms among #V("chk.odd.right") right ones. Looser hand-set thresholds caught #V("chk.ph.caught") of #V("chk.odd.wrong") at #V("chk.ph.fa") of #V("chk.odd.right") false alarms. Neither is a usable trust signal (@fig:check). (The odd half happens to be harder, #V("chk.odd.wrong") wrong of 50 against 22 on the even half, so these rates are noisy.)
 
 Part 3000 shows why. Its recovered plate is #F("p3000.dw", 2) mm too narrow and #F("p3000.dh", 2) mm too tall, and its hole is missing. Every Fisher $sigma$ is at most #F("p3000.sig", 2) mm, the residual on the part is #F("p3000.excess", 2) times the table's (that is, no excess), and no blob remains. From its photographs' viewpoints the wrong program explains the images. No function of the residual can flag an answer that leaves no residual.
 
+#figure(fig-check(),
+  caption: [#lead[Residual checks on #V("fresh.parts") fresh parts.] Each dot is a part, split by whether the recovery was right. The two groups overlap on every signal; a threshold that flags many wrong parts flags many right ones too. The fourth signal, an unexplained residual blob, was zero on 97 of the 100 parts and is not drawn; its fitted threshold flags two wrong parts and no right ones. `data/check-fresh.csv`.],
+) <fig:check>
+
 = Photographs do <sec:views>
 
-What separates part 3000's answer from the truth is a view the photographs did not take. On the 20-part development set, one photograph per part put #V("recon.1v.p1") within 1 mm and three photographs #V("recon.3v.p1"); the features were right on #V("recon.1v.topo") against #V("recon.3v.topo"). #todo[same comparison on the fresh parts, 1 photo vs 3, run in progress on mew (runs/one).] The only check we keep in the released code flags any recovery from fewer than three photographs.
+What separates part 3000's answer from the truth is a view the photographs did not take. On the 20-part development set, one photograph per part put #V("recon.1v.p1") within 1 mm and three photographs #V("recon.3v.p1")\; the features were right on #V("recon.1v.topo") against #V("recon.3v.topo"). #todo[same comparison on the fresh parts, 1 photo vs 3, run in progress on mew (runs/one).] The only check we keep in the released code flags any recovery from fewer than three photographs.
 
 = A relaxation that made identification worse <sec:amp>
 
-Since most failures are a hole-or-counterbore choice, we tried making that choice continuous. Each loose hole or counterbore became a pair of alternatives with amplitudes $a in [0, 1]$ on a simplex; the model image blends renders without and with each, $I = I_0 + sum_k a_k (I_k - I_0)$, whose derivative in $a_k$ is exact; the score charges $a_k L_k$ plus an anneal $beta a (1 - a)$ that drives amplitudes to 0 or 1 @liu2019darts @louizos2018l0. On three small problems it behaved. On the #V("ampg.n") held-out parts, paired against the greedy choice on the same recoveries, it found the right features on #V("ampg.a_topo") against #V("ampg.g_topo"), fixing #V("ampg.fixed") and breaking #V("ampg.broke"); on the fresh parts, #V("fresh.amp_topo") against #V("fresh.topo"), fixing #V("fresh.amp_fixed") and breaking #V("fresh.amp_broke"). The main cause is the anneal: a real hole whose two alternatives split the evidence near 0.45 each loses both. Annealing presence and choice separately ($a_"hole" = p q$, $a_"cbore" = p(1-q)$) is the obvious fix and is untested.
+Since most failures are a hole-or-counterbore choice, we tried making that choice continuous. Each loose hole or counterbore became a pair of alternatives with amplitudes $a in [0, 1]$ on a simplex; the model image blends renders without and with each, $I = I_0 + sum_k a_k (I_k - I_0)$, whose derivative in $a_k$ is exact; the score charges $a_k L_k$ plus an anneal $beta a (1 - a)$ that drives amplitudes to 0 or 1 @liu2019darts @louizos2018l0. On three small problems it behaved. On the #V("ampg.n") held-out parts, paired against the greedy choice on the same recoveries, it found the right features on #V("ampg.a_topo") against #V("ampg.g_topo"), fixing #V("ampg.fixed") and breaking #V("ampg.broke")\; on the fresh parts, #V("fresh.amp_topo") against #V("fresh.topo"), fixing #V("fresh.amp_fixed") and breaking #V("fresh.amp_broke"). The main cause is the anneal: a real hole whose two alternatives split the evidence near 0.45 each loses both. Annealing presence and choice separately ($a_"hole" = p q$, $a_"cbore" = p(1-q)$) is the obvious fix and is untested.
 
 = Limitations
 
