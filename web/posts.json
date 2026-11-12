@@ -57,7 +57,7 @@
     "slug": "seeing-is-measuring",
     "title": "Seeing Is Measuring",
     "subtitle": "Editable CAD programs from photographs",
-    "date": "2026-11-10",
+    "date": "2026-11-12",
     "author": "Cam Pedersen",
     "description": "Draft. Editable CAD programs recovered from photographs through irys, and a measurement of when to trust them: on held-out synthetic parts, tight error bars are wrong almost as often as loose ones, residual checks catch few wrong answers, and only more photographs help.",
     "root": "../paper/recon",
