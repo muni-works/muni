@@ -202,3 +202,11 @@ nbv.trusted	31	same: unflagged answers
 nbv.trusted_right	21	same: of those, right (two-photograph answer)
 nbv.trusted3_right	20	same: of those, the three-photograph answer right
 nbv.hold_auc	0.51	same: AUC of the held-out view's residual excess for wrong vs right two-photograph answers (look fitted to the scored program)
+recon.wsig.auc_ci	0.45	0.71	Hanley-McNeil 95% interval for the sigma AUC (39 wrong, 37 right of 76)
+nbv.hold_auc_ci	0.36	0.66	Hanley-McNeil 95% interval for the held-out residual AUC (40 wrong, 23 right)
+fresh.topo_ci	0.44	0.63	Wilson 95% interval for 54/100
+nbv.trusted_ci	0.50	0.81	Wilson 95% interval for 21/31
+nbv.sub_right	24	the 63 nbv parts in the earlier three-photograph run (runs/fresh): right
+nbv.sub_topo	32	same: right features
+nbv.rest_right	17	the other 37 parts in that run: right
+nbv.rest_topo	22	same: right features
