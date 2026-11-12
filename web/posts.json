@@ -43,10 +43,21 @@
     "cover": "plasma-torus"
   },
   {
+    "slug": "irys",
+    "title": "Differentiable Rendering with Exact Replay",
+    "subtitle": "irys, an open-source spectral path tracer",
+    "date": "2026-11-12",
+    "author": "Cam Pedersen",
+    "description": "irys is an open-source spectral path tracer. Its backward pass replays the forward pass bit for bit, so two runs give identical gradients. We check those gradients against an f64 reference, and vcad's BRep kernel pulls them back to the dimensions of a CAD part.",
+    "root": "../paper/irys",
+    "source": "irys.typ",
+    "cover": "pavilion"
+  },
+  {
     "slug": "tang",
     "title": "Don't Write Kernels, Derive Them",
     "subtitle": "Chasing the Speed of Light: Kernels from a Tensor IR of Views and Comprehensions",
-    "date": "2026-11-10",
+    "date": "2026-11-11",
     "author": "Cam Pedersen",
     "description": "tang's tensor IR has two constructs, affine views and monoid comprehensions. Fusion, flash attention and its backward pass are derived as rewrites, and one graph lowers to CUDA, Metal, WGSL, OpenCL, GLSL and C. The least memory traffic and the optimal tile are dual solutions of one linear program, and a time floor built on it never exceeds measured time on the kernels we checked against hardware counters. Wins and losses against PyTorch, llama.cpp and FlashAttention are both reported.",
     "root": "../paper/tang",

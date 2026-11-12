@@ -1,0 +1,102 @@
+p1.cd_frozen_lo	5.059e-11	repro irys 9155391
+p1.cd_frozen_hi	8.43e-10	repro irys 9155391
+p1.c_vs_interp	9.403e-07	repro irys 9155391
+hero.words_4l	71.12	repro irys 9155391
+hero.var_total	7.421	repro irys 9155391
+hero.var_chroma	28.69	repro irys 9155391
+hero.cd_frozen	8.43e-10	repro irys 9155391
+gpu.replay_lanes	65536	repro irys 9155391
+gpu.l_median	1.178e-07	repro irys 9155391
+gpu.l_p99	9.798e-06	repro irys 9155391
+gpu.loss_rel	7.22e-07	repro irys 9155391
+gpu.dtheta_max	0.0001708	repro irys 9155391
+nee.cpu_cd_max	1.428e-09	repro irys 9155391
+nee.gpu_l_p99	3.915e-06	repro irys 9155391
+nee.gpu_dtheta_max	2.82e-05	repro irys 9155391
+nee.var_ratio	7.521	repro irys 9155391
+rel.fwd_ms	0.8202	repro irys 9155391
+rel.fwd_nee_ms	1.26	repro irys 9155391
+rel.grad_ms	1.099	repro irys 9155391
+rel.grad_nee_ms	2.613	repro irys 9155391
+rel.cpu_grad_lo	550.8	repro irys 9155391
+rel.cpu_grad_hi	608.1	repro irys 9155391
+rel.gpu_grad_lo	0.9898	repro irys 9155391
+rel.gpu_grad_hi	4.745	repro irys 9155391
+mega.lanes	16777216	repro irys 9155391
+edge.host_ms	269.5	repro irys 9155391
+edge.dev_ms	10.22	repro irys 9155391
+edge.total_before_ms	273.1	repro irys 9155391
+edge.total_after_ms	15.29	repro irys 9155391
+edge.box_z1	3.405	repro irys 9155391
+edge.box_z2	0.2918	repro irys 9155391
+edge.box_z3	0.03869	repro irys 9155391
+edge.dev_vs_cpu	1.132e-05	repro irys 9155391
+int.dual_vs_fwd	7.707e-15	repro irys 9155391
+idbuf.var	2.01	repro irys 9155391
+sec.floor_z1	0.2321	repro irys 9155391
+sec.floor_z2	-0.7142	repro irys 9155391
+sec.floor_z3	0.3933	repro irys 9155391
+sec.no_sec_z1	3.559	repro irys 9155391
+sec.no_sec_z2	-4.706	repro irys 9155391
+sec.no_sec_z3	3.714	repro irys 9155391
+sec.var_vs_warp	21.06	repro irys 9155391
+fit.phi_pitch	-8.974	repro irys 9155391
+fit.phi_roll	64.22	repro irys 9155391
+fit.phi_elbow	14.16	repro irys 9155391
+fit.true_pitch	-25.78	design.md L719 (truth = arm::TRUE_PHI in degrees)
+fit.true_roll	16.04	design.md L719
+fit.true_elbow	-60.16	design.md L719
+fit.init_pitch	-8.6	design.md L719
+fit.init_roll	3.4	design.md L719
+fit.init_elbow	-37.2	design.md L719
+fit.alpha	0.2856	repro irys 9155391
+fit.f0_450	0.8273	repro irys 9155391
+fit.f0_550	0.843	repro irys 9155391
+fit.f0_650	0.8594	repro irys 9155391
+fit.mse	0.004724	repro irys 9155391
+fit.mse_truth	0.0004189	repro irys 9155391
+fit.iters	600	repro irys 9155391
+fit.ms_theta	20.62	repro irys 9155391
+fit.ms_edge	730.5	repro irys 9155391
+fit.ms_intsec	282.8	repro irys 9155391
+fit.seconds	899	repro irys 9155391
+fit.tris	2.4	design.md L683-688 (millions of triangles, whole robot)
+basin.deg	5	design.md L1008 (elbow basin half-width)
+brep.pull	40.17	repro irys 9155391
+brep.pull_se	0.02264	repro irys 9155391
+brep.fwd_rel	1.241e-15	repro irys 9155391
+brep.fd	40.17	repro irys 9155391
+brep.fd_rel	4.275e-05	repro irys 9155391
+brep.e2e	40.01	repro irys 9155391
+brep.e2e_rel	0.003855	repro irys 9155391
+brep.nodes	4942	repro irys 9155391
+brep.tris	9932	repro irys 9155391
+ext.diff.cd	1e-09	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/diffuse.rs diffuse_cpu_gradient_matches_central_differences: worst of three bands (6.0e-10, 6.3e-10, 1.0e-9)
+ext.diff.gpu	1.8e-06	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/diffuse.rs gpu_tier::diffuse_gpu_matches_cpu_f64: worst of three bands (4.1e-7, 1.1e-6, 1.8e-6)
+ext.diff.lanes	65536	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/diffuse.rs gpu_tier::diffuse_replay_is_bit_exact: 65536 of 65536 lanes bit-identical
+ext.splat.cd	0.00051	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/splats.rs splat_cpu_gradient_matches_central_differences: worst rel (f32 parameters, h = 3e-3)
+ext.splat.gpu	5.1e-05	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/splats.rs gpu_tier::splat_gpu_matches_cpu_f64: worst rel over the 16 largest; records dropped 0
+ext.splat.lanes	65536	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/splats.rs gpu_tier::splat_replay_is_bit_exact: 65536 of 65536 lanes bit-identical
+ext.splat.cap	256	same: splat records per path slot on the GPU replay
+ext.emit.gates	16	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/phase3.rs: 16 passed, 0 failed
+rel.gpu_grad_ms	1.034	repro irys 9155391
+rel.cpu_grad_ms	554.1	repro irys 9155391
+rel.fwd_lo	0.8065	repro irys 9155391
+rel.fwd_hi	2.437	repro irys 9155391
+rel.grad_lo	1.056	repro irys 9155391
+rel.grad_hi	4.665	repro irys 9155391
+rel.fwd_nee_lo	1.26	repro irys 9155391
+rel.fwd_nee_hi	2.655	repro irys 9155391
+rel.grad_nee_lo	2.613	repro irys 9155391
+rel.grad_nee_hi	5.508	repro irys 9155391
+rel.cpu_grad_med	554.8	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2a::gpu_throughput, CPU compiled C
+rel.gpu_grad_med	1.042	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs, device-scored (the first includes pipeline compilation)
+edge.box_rel1	5.83	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); phase2d::box_silhouette_gradient_matches_central_differences, φ0 rel 5.83e-2 (log line "φ0: edge ...")
+sec.share1	13.24	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); phase2f::shaded_arm_on_a_floor_with_secondary_edges, φ0 secondary / sum
+sec.share2	34.05	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); same, φ1
+sec.share3	23.13	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); same, φ2
+mega.chunks	9	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); phase2c::megapixel_in_one_call "1024² × 4 spp in 9 chunks"
+rel.fwd_med	0.8247	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2c::nee_throughput
+rel.grad_med	1.098	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2c::nee_throughput
+rel.fwd_nee_med	1.654	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2c::nee_throughput
+rel.grad_nee_med	3.876	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2c::nee_throughput
