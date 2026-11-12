@@ -178,7 +178,7 @@ fresh.1v.p1_ci	0.10	0.24	Wilson 95% interval for 16/100
 fresh.p1_ci	0.32	0.51	Wilson 95% interval for 41/100
 fresh.3over1	27	parts right with 3 photographs and wrong with 1
 fresh.1over3	2	parts right with 1 photograph and wrong with 3
-nbv.n	63	irys @c88e1b2 recon_v1 nbv, out/nbv-100 (assets/bank8: seeds 4000-4099, 8 rendered views each; base views v0,v3; random third view v5); the 63 parts that finished
+nbv.n	63	irys @c88e1b2 recon_v1 nbv, data/nbv/nbv-fresh.json (assets/bank8: seeds 4000-4099, 8 rendered views each; base views v0,v3; random third view v5); the 63 parts that finished
 nbv.two	23	same: right (right features, every dimension within 1 mm) from the two base photographs
 nbv.chosen	31	same: right with the chosen third view added
 nbv.random	32	same: right with the random third view added
