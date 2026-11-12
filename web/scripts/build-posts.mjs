@@ -51,7 +51,10 @@ function colorNames(html, names) {
     .join("");
 }
 
+// ONLY=<slug> builds one post.
+const only = process.env.ONLY;
 for (const post of posts) {
+  if (only && post.slug !== only) continue;
   const root = resolve(web, post.root);
   const src = join(root, post.source);
   const common = ["--root", root, "--font-path", join(root, "fonts"), "--ignore-system-fonts"];

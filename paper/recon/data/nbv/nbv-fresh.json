@@ -1,0 +1,4097 @@
+[
+ {
+  "seed": 4000,
+  "truth": "base 67.600 48.900 10.100\nhole -24.300 -6.200 4.400\nlinear 2 7.200 -10.700 16.000 0.000 3.100\ncounterbore -0.500 -0.200 2.000 5.200 5.000",
+  "two": {
+   "recovered": "base 67.327 48.857 9.781\nlinear 2 23.137 -10.783 -15.990 -0.021 3.146\ncounterbore -0.515 -0.184 1.806 5.261 4.767\ncounterbore -24.299 -6.220 2.675 4.415 7.003\npose 2.001 86.190 -119.236",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 2554.293119629
+  },
+  "disagreement": [
+   [
+    1,
+    153.17268151226372
+   ],
+   [
+    2,
+    323.9122673318236
+   ],
+   [
+    4,
+    88.61205203306777
+   ],
+   [
+    5,
+    122.1274687356921
+   ],
+   [
+    6,
+    110.10048140902462
+   ],
+   [
+    7,
+    92.09424658732112
+   ]
+  ],
+  "chosen": 2,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 67.396 48.829 9.853\nhole -24.323 -6.053 4.203\nlinear 2 23.151 -10.736 -15.976 -0.035 3.121\ncounterbore -0.486 -0.071 1.912 5.267 4.884\npose 2.032 86.165 -119.248",
+   "topology_ok": true,
+   "max_error_mm": 0.24748563270592783,
+   "pass_1": true,
+   "seconds": 3372.92105164
+  },
+  "with_random": {
+   "recovered": "base 67.301 48.705 9.984\nlinear 2 23.147 -10.675 -15.973 -0.027 3.142\ncounterbore -0.549 -0.155 1.856 5.225 4.771\ncounterbore -24.307 -6.224 3.192 4.367 7.040\npose 2.062 86.192 -119.279",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1814.453529613
+  },
+  "hold_chosen": [
+   4.577560727597727,
+   1.0792207792207793
+  ],
+  "hold_random": [
+   1.1542551755982966,
+   0.9551526717557252
+  ],
+  "agree_chosen": false,
+  "agree_random": true,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4003,
+  "truth": "base 51.900 59.300 9.800\nhole -0.400 -11.500 3.400\nboss -11.900 5.900 6.800 5.400",
+  "two": {
+   "recovered": "base 51.727 59.104 9.734\nhole -0.275 -11.571 3.359\nboss -11.365 5.707 6.788 6.213\npose -43.275 79.502 29.387",
+   "topology_ok": true,
+   "max_error_mm": 0.8127802050563488,
+   "pass_1": true,
+   "seconds": 596.419028534
+  },
+  "disagreement": [
+   [
+    1,
+    81.51662022721453
+   ],
+   [
+    2,
+    120.28582793215931
+   ],
+   [
+    4,
+    92.52260642105637
+   ],
+   [
+    5,
+    67.337928463056
+   ],
+   [
+    6,
+    171.50203809941524
+   ],
+   [
+    7,
+    220.62070146799442
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 51.806 59.119 9.652\nhole -0.244 -11.526 3.343\nboss -11.818 5.959 6.803 5.613\npose -43.254 79.503 29.397",
+   "topology_ok": true,
+   "max_error_mm": 0.21349322189315512,
+   "pass_1": true,
+   "seconds": 1094.251985948
+  },
+  "with_random": {
+   "recovered": "base 51.717 59.068 9.702\nhole -0.284 -11.498 3.387\nboss -11.645 5.879 6.786 5.691\npose -43.279 79.502 29.380",
+   "topology_ok": true,
+   "max_error_mm": 0.29099781683707615,
+   "pass_1": true,
+   "seconds": 718.959019574
+  },
+  "hold_chosen": [
+   0.8497331761947036,
+   0.7099589322381931
+  ],
+  "hold_random": [
+   0.45396331093834896,
+   0.7262569832402235
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4004,
+  "truth": "base 52.600 41.800 14.600 chamfer 6.000\nsloty 6.800 5.400 10.400 3.100\nboss -10.600 4.000 7.000 8.700",
+  "two": {
+   "recovered": "base 52.561 41.642 14.308 chamfer 6.045\nsloty 6.798 5.431 10.689 3.009\nboss -10.979 4.227 7.139 9.862\npose 81.285 -25.034 56.340",
+   "topology_ok": true,
+   "max_error_mm": 1.1622741205391023,
+   "pass_1": false,
+   "seconds": 633.433517576
+  },
+  "disagreement": [
+   [
+    1,
+    289.9721290327814
+   ],
+   [
+    2,
+    366.5520606250118
+   ],
+   [
+    4,
+    247.61072646993182
+   ],
+   [
+    5,
+    435.7220770627014
+   ],
+   [
+    6,
+    422.8387455318616
+   ],
+   [
+    7,
+    504.3200704885944
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 52.547 41.680 14.360 chamfer 6.057\nsloty 6.895 5.341 10.548 3.052\nboss -11.707 4.630 6.938 10.081\npose 81.287 -25.038 56.331",
+   "topology_ok": true,
+   "max_error_mm": 1.3809369644667573,
+   "pass_1": false,
+   "seconds": 969.769383238
+  },
+  "with_random": {
+   "recovered": "base 52.530 41.652 14.335 chamfer 6.047\nsloty 6.630 5.387 9.950 3.036\nboss -11.623 4.491 6.921 10.253\npose 81.310 -25.020 56.373",
+   "topology_ok": true,
+   "max_error_mm": 1.5531685179084782,
+   "pass_1": false,
+   "seconds": 929.920912565
+  },
+  "hold_chosen": [
+   1.0004244361919152,
+   0.7094272076372315
+  ],
+  "hold_random": [
+   1.2197090435271285,
+   0.9034090909090909
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4005,
+  "truth": "base 53.400 44.200 6.300\nlinear 2 -10.200 2.700 13.400 0.000 2.100\nsloty 6.900 12.700 6.800 2.500",
+  "two": {
+   "recovered": "base 53.346 44.229 6.082\nlinear 2 3.196 2.826 -13.332 0.016 2.070\nsloty 6.909 12.811 7.020 2.196\npose 33.313 -72.776 -154.236",
+   "topology_ok": true,
+   "max_error_mm": 0.3038297715499696,
+   "pass_1": true,
+   "seconds": 429.753704441
+  },
+  "disagreement": [
+   [
+    1,
+    159.68038769598158
+   ],
+   [
+    2,
+    204.268501321416
+   ],
+   [
+    4,
+    246.44545944132517
+   ],
+   [
+    5,
+    233.0788619997548
+   ],
+   [
+    6,
+    328.6800374498142
+   ],
+   [
+    7,
+    170.9477867788794
+   ]
+  ],
+  "chosen": 6,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 53.362 44.220 6.075\nlinear 2 3.197 2.898 -13.378 -0.034 1.665\nsloty 7.015 12.885 6.135 2.387\npose 33.288 -72.795 -154.311",
+   "topology_ok": true,
+   "max_error_mm": 0.6648482446415143,
+   "pass_1": true,
+   "seconds": 693.435032333
+  },
+  "with_random": {
+   "recovered": "base 53.437 44.215 6.046\nlinear 2 3.154 2.782 -13.341 0.025 1.836\nsloty 7.024 12.807 6.551 2.126\npose 33.241 -72.824 -154.406",
+   "topology_ok": true,
+   "max_error_mm": 0.3739211737361199,
+   "pass_1": true,
+   "seconds": 699.245030725
+  },
+  "hold_chosen": [
+   1.0597466705299101,
+   0.41728280961182995
+  ],
+  "hold_random": [
+   2.7706712959383446,
+   0.7408088235294118
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4006,
+  "truth": "base 66.700 56.000 13.100\nhole -27.400 -20.100 4.400",
+  "two": {
+   "recovered": "base 66.353 55.842 12.898\npose -80.790 48.464 -1.691",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 115.555285586
+  },
+  "disagreement": [
+   [
+    1,
+    9.779694181010731
+   ],
+   [
+    2,
+    3.5416935312660165
+   ],
+   [
+    4,
+    4.187245460142817
+   ],
+   [
+    5,
+    48.25222794678615
+   ],
+   [
+    6,
+    18.944523662036342
+   ],
+   [
+    7,
+    38.89224011670821
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 66.275 55.696 12.933\nhole -27.269 -20.131 4.368\npose -80.775 48.495 -1.731",
+   "topology_ok": true,
+   "max_error_mm": 0.4248538329371456,
+   "pass_1": true,
+   "seconds": 257.639533632
+  },
+  "with_random": {
+   "recovered": "base 66.275 55.696 12.933\nhole -27.269 -20.131 4.368\npose -80.775 48.495 -1.731",
+   "topology_ok": true,
+   "max_error_mm": 0.4248538329371456,
+   "pass_1": true,
+   "seconds": 257.639533632
+  },
+  "hold_chosen": [
+   0.4754749536186137,
+   1.0511168384879725
+  ],
+  "hold_random": [
+   0.4754749536186137,
+   1.0511168384879725
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4007,
+  "truth": "base 81.500 55.900 13.600\nhole -27.500 -15.900 4.800",
+  "two": {
+   "recovered": "base 81.568 56.173 13.224 fillet 0.943\nhole -27.552 -15.607 4.846\npose -47.113 -81.251 -163.808",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 370.268948789
+  },
+  "disagreement": [
+   [
+    1,
+    69.99402185581962
+   ],
+   [
+    2,
+    16.172223236325426
+   ],
+   [
+    4,
+    15.467948810243225
+   ],
+   [
+    5,
+    58.50167742149558
+   ],
+   [
+    6,
+    76.474030929871
+   ],
+   [
+    7,
+    52.452881564262945
+   ]
+  ],
+  "chosen": 6,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 81.473 56.103 13.382\nhole -27.362 -15.713 4.844\npose -47.201 -81.240 -163.785",
+   "topology_ok": true,
+   "max_error_mm": 0.21838353059200166,
+   "pass_1": true,
+   "seconds": 533.586715616
+  },
+  "with_random": {
+   "recovered": "base 81.453 55.968 13.294\nhole -27.481 -15.799 4.893\npose -47.143 -81.260 -163.756",
+   "topology_ok": true,
+   "max_error_mm": 0.3062832285550279,
+   "pass_1": true,
+   "seconds": 562.704084381
+  },
+  "hold_chosen": [
+   0.8392041454627813,
+   0.6489043824701195
+  ],
+  "hold_random": [
+   0.7557527379434821,
+   0.3470715835140998
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4008,
+  "truth": "base 84.100 46.300 12.300 fillet 8.400\nslotx -19.900 14.400 15.900 2.700\nslotx 2.500 -11.800 6.700 3.600",
+  "two": {
+   "recovered": "base 83.964 46.197 11.980 fillet 8.602\nslotx 2.500 -11.652 6.551 3.693\nslotx -19.848 14.520 15.801 2.788\npose 87.589 37.897 -94.188",
+   "topology_ok": true,
+   "max_error_mm": 0.3196444899945785,
+   "pass_1": true,
+   "seconds": 503.864151677
+  },
+  "disagreement": [
+   [
+    1,
+    233.94184435919215
+   ],
+   [
+    2,
+    312.42384609080784
+   ],
+   [
+    4,
+    426.37533243781434
+   ],
+   [
+    5,
+    499.9957738765519
+   ],
+   [
+    6,
+    394.73579035322166
+   ],
+   [
+    7,
+    991.1303018794616
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 83.930 46.098 12.029 fillet 8.464\nslotx 2.487 -11.800 6.319 3.629\nslotx -19.951 14.361 15.735 2.773\npose 87.543 37.912 -94.164",
+   "topology_ok": true,
+   "max_error_mm": 0.38058386671830124,
+   "pass_1": true,
+   "seconds": 853.859999037
+  },
+  "with_random": {
+   "recovered": "base 83.896 46.096 12.071 fillet 8.471\nslotx 2.478 -11.797 6.919 3.449\nslotx -19.986 14.340 15.307 2.874\npose 87.547 37.948 -94.151",
+   "topology_ok": true,
+   "max_error_mm": 0.5928105217038198,
+   "pass_1": true,
+   "seconds": 780.429842499
+  },
+  "hold_chosen": [
+   1.832279468304092,
+   1.3239277652370203
+  ],
+  "hold_random": [
+   1.6655593783359532,
+   0.9261710794297352
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4009,
+  "truth": "base 60.900 56.500 14.600\nlinear 3 -25.000 12.500 9.000 0.000 2.500\nslotx 2.900 -13.200 17.000 3.600",
+  "two": {
+   "recovered": "base 60.717 56.316 14.395\nlinear 3 -7.083 12.521 -8.963 -0.019 2.539\nslotx 1.689 -13.139 12.424 3.544\npose 74.792 46.635 -50.327",
+   "topology_ok": true,
+   "max_error_mm": 4.576305040939133,
+   "pass_1": false,
+   "seconds": 1014.814443118
+  },
+  "disagreement": [
+   [
+    1,
+    0.0
+   ],
+   [
+    2,
+    0.0
+   ],
+   [
+    4,
+    0.0
+   ],
+   [
+    5,
+    0.0
+   ],
+   [
+    6,
+    0.0
+   ],
+   [
+    7,
+    0.0
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 60.699 56.298 14.402\nlinear 2 -7.052 12.528 -17.992 0.014 2.539\nslotx 1.083 -13.082 11.238 3.499\nboss -17.351 11.873 2.034 3.811\npose 74.780 46.641 -50.330",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1166.177586704
+  },
+  "with_random": {
+   "recovered": "base 60.686 56.296 14.360\nslotx -1.508 -13.366 6.890 3.729\npose 74.776 46.624 -50.364",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 483.173119903
+  },
+  "hold_chosen": [
+   0.6948810945200842,
+   1.6650110375275937
+  ],
+  "hold_random": [
+   0.2736660850750636,
+   0.5367647058823529
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 1,
+  "error": null
+ },
+ {
+  "seed": 4011,
+  "truth": "base 85.900 52.700 13.100 fillet 7.000\ncounterbore 4.900 6.900 2.100 4.900 3.300\nslotx -16.000 -5.900 15.800 2.400\nboss 26.600 15.800 5.100 6.400",
+  "two": {
+   "recovered": "base 80.879 53.368 12.919\ncounterbore 7.376 10.723 2.753 5.034 1.198\nslotx -13.423 -2.489 15.617 2.452\nboss 25.096 12.137 1.995 4.267\npose 90.575 -0.806 -55.281",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1365.892608399
+  },
+  "disagreement": [
+   [
+    1,
+    193.49559236787854
+   ],
+   [
+    2,
+    219.947670581149
+   ],
+   [
+    4,
+    281.0316226657593
+   ],
+   [
+    5,
+    158.71581791790442
+   ],
+   [
+    6,
+    129.78362527009526
+   ],
+   [
+    7,
+    143.79844413302737
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 83.444 53.468 13.390 fillet 6.462\ncounterbore 6.607 8.990 1.899 4.654 2.432\nslotx -14.552 -3.260 15.912 2.448\nboss 27.940 16.745 4.630 6.399\npose 91.836 -0.779 -54.242",
+   "topology_ok": true,
+   "max_error_mm": 2.6399537147977266,
+   "pass_1": false,
+   "seconds": 3916.904708134
+  },
+  "with_random": {
+   "recovered": "base 81.078 52.512 13.322 fillet 6.281\ncounterbore 7.211 7.518 1.962 4.776 3.283\ncounterbore 24.464 11.605 1.103 5.443 2.754\nslotx -13.594 -5.376 15.764 2.468\npose 92.743 0.430 -56.705",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 2899.860141744
+  },
+  "hold_chosen": [
+   2.186061726104316,
+   22.0408
+  ],
+  "hold_random": [
+   3.2330452444375446,
+   3.9285714285714284
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4015,
+  "truth": "base 82.800 49.700 10.000 chamfer 6.000\nhole 9.000 -8.900 3.000\nhole 26.200 11.900 4.400\nboss -8.700 -0.800 8.800 6.700",
+  "two": {
+   "recovered": "base 82.402 49.580 9.984 chamfer 6.045\nhole 26.059 11.832 4.214\nboss -8.699 -0.356 8.658 6.016\nboss 8.243 -10.494 2.513 6.697\npose -96.304 -8.255 76.801",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1854.414318135
+  },
+  "disagreement": [
+   [
+    1,
+    31.026747480491498
+   ],
+   [
+    2,
+    46.10758262641773
+   ],
+   [
+    4,
+    50.63444308690562
+   ],
+   [
+    5,
+    36.84960946155211
+   ],
+   [
+    6,
+    41.376023427450114
+   ],
+   [
+    7,
+    75.71686898206443
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 82.559 49.607 9.902 chamfer 5.987\nhole 8.644 -8.862 3.357\nhole 26.002 11.850 4.213\nboss -8.342 -0.917 8.817 6.938\npose -96.283 -8.202 76.764",
+   "topology_ok": true,
+   "max_error_mm": 0.3580944194953197,
+   "pass_1": true,
+   "seconds": 1840.72378865
+  },
+  "with_random": {
+   "recovered": "base 82.450 49.478 9.886 chamfer 5.995\nhole 8.911 -8.826 3.332\nhole 26.049 11.930 4.261\nboss -8.386 -0.481 8.554 6.016\npose -96.261 -8.244 76.800",
+   "topology_ok": true,
+   "max_error_mm": 0.6838582496371508,
+   "pass_1": true,
+   "seconds": 1489.718328442
+  },
+  "hold_chosen": [
+   1.2927852869615064,
+   0.6243194192377496
+  ],
+  "hold_random": [
+   1.0701727956709597,
+   0.7386363636363636
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4018,
+  "truth": "base 86.200 60.200 17.300\nhole 23.300 -1.500 4.000\nlinear 4 -16.000 -12.800 0.000 13.100 2.000",
+  "two": {
+   "recovered": "base 119.014 59.594 17.396\nhole 6.655 -2.222 3.510\nsloty 42.635 -3.989 17.194 15.364\nboss -32.974 -0.022 1.024 4.000\nboss -32.832 -12.853 1.196 4.000\nboss -32.225 26.687 1.000 4.000\nboss -32.000 13.471 1.200 4.000\npose 10.865 -87.092 43.586",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1979.587560325
+  },
+  "disagreement": [
+   [
+    1,
+    27.408493221191424
+   ],
+   [
+    2,
+    61.1574292207974
+   ],
+   [
+    4,
+    179.31897006679208
+   ],
+   [
+    5,
+    66.24472609504258
+   ],
+   [
+    6,
+    53.53849145883315
+   ],
+   [
+    7,
+    44.158391786091144
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 85.853 59.862 17.321\nlinear 4 -16.021 -12.614 0.057 13.002 2.036\ncounterbore 23.328 -1.459 3.015 4.003 9.520\npose -1.106 -98.764 42.607",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 778.077375203
+  },
+  "with_random": {
+   "recovered": "base 85.896 59.974 17.311\nhole 23.324 -1.428 4.009\nlinear 4 -15.909 -12.779 -0.010 13.091 1.992\npose -1.064 -98.781 42.632",
+   "topology_ok": true,
+   "max_error_mm": 0.30369052860091017,
+   "pass_1": true,
+   "seconds": 1145.567088098
+  },
+  "hold_chosen": [
+   0.5649533213023034,
+   6.197089947089947
+  ],
+  "hold_random": [
+   0.6134383494915244,
+   4.5101279317697225
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4022,
+  "truth": "base 64.300 60.000 7.600\nsloty -9.000 12.100 15.400 2.600",
+  "two": {
+   "recovered": "base 64.154 59.888 7.440\nsloty -8.999 12.186 15.238 2.649\npose 66.689 -63.759 -210.723",
+   "topology_ok": true,
+   "max_error_mm": 0.1616349293915338,
+   "pass_1": true,
+   "seconds": 419.992025077
+  },
+  "disagreement": [
+   [
+    1,
+    2267.164617860167
+   ],
+   [
+    2,
+    1467.342864006892
+   ],
+   [
+    4,
+    1523.009767743999
+   ],
+   [
+    5,
+    1470.8757353166086
+   ],
+   [
+    6,
+    583.0600467004467
+   ],
+   [
+    7,
+    325.55373656519043
+   ]
+  ],
+  "chosen": 1,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 64.238 59.890 7.425\nsloty -9.154 12.111 15.231 2.534\npose 66.779 -63.797 -210.684",
+   "topology_ok": true,
+   "max_error_mm": 0.1753894185125331,
+   "pass_1": true,
+   "seconds": 920.220855167
+  },
+  "with_random": {
+   "recovered": "base 64.041 59.889 7.483\nsloty -9.017 12.094 14.947 2.653\npose 66.702 -63.753 -210.718",
+   "topology_ok": true,
+   "max_error_mm": 0.45346761753343756,
+   "pass_1": true,
+   "seconds": 515.898337395
+  },
+  "hold_chosen": [
+   2.3917327134980306,
+   1.1973684210526316
+  ],
+  "hold_random": [
+   0.27765063234128057,
+   0.9683388157894737
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4023,
+  "truth": "base 82.300 55.200 14.700 chamfer 7.100\nlinear 3 -29.400 -2.000 14.000 0.000 3.100\nslotx -2.900 -21.100 15.300 4.000\nboss 10.300 8.800 6.400 9.600",
+  "two": {
+   "recovered": "base 81.792 54.704 14.653 chamfer 6.964\npose -45.484 90.885 -140.436",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 159.807155894
+  },
+  "disagreement": [
+   [
+    1,
+    658.7664824960733
+   ],
+   [
+    2,
+    640.0365468778374
+   ],
+   [
+    4,
+    439.9349175475264
+   ],
+   [
+    5,
+    422.1050891212531
+   ],
+   [
+    6,
+    438.5765376466293
+   ],
+   [
+    7,
+    998.0933978067853
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 81.768 54.688 14.650 chamfer 6.925\npose -45.498 90.868 -140.423",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 251.490487692
+  },
+  "with_random": {
+   "recovered": "base 81.845 54.707 14.707 chamfer 6.941\nslotx -2.929 -20.939 16.197 4.013\npose -45.509 90.900 -140.450",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 621.984313705
+  },
+  "hold_chosen": [
+   0.9877912000372839,
+   0.9428429423459245
+  ],
+  "hold_random": [
+   2.3687246549634393,
+   0.9757109004739336
+  ],
+  "agree_chosen": true,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4024,
+  "truth": "base 75.500 39.700 12.100\nhole -13.000 1.500 3.600\nhole -5.100 13.300 2.900\ncounterbore -0.700 3.700 3.300 4.800 3.800",
+  "two": {
+   "recovered": "base 75.439 40.631 11.545\nhole -5.170 13.944 2.822\nlinear 2 -0.463 4.543 -12.568 -2.389 4.126\npose 81.407 45.401 -158.694",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 430.107241575
+  },
+  "disagreement": [
+   [
+    1,
+    52.787883567415165
+   ],
+   [
+    2,
+    84.03619795851695
+   ],
+   [
+    4,
+    40.038995952045994
+   ],
+   [
+    5,
+    58.01442761093249
+   ],
+   [
+    6,
+    90.13827460071033
+   ],
+   [
+    7,
+    262.09657470380296
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 75.617 42.824 11.593 fillet 3.228\nhole -12.990 3.061 3.463\ncounterbore -5.141 14.837 0.967 2.655 4.922\nboss 0.289 5.375 2.987 7.517\npose 80.979 46.466 -158.641",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 4327.27955504
+  },
+  "with_random": {
+   "recovered": "base 75.193 39.768 12.167\nhole -12.926 1.386 3.715\npose 81.400 45.011 -158.589",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 278.780986188
+  },
+  "hold_chosen": [
+   8.50961332431899,
+   5.463936430317848
+  ],
+  "hold_random": [
+   4.555275481757079,
+   1.4994845360824742
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4030,
+  "truth": "base 63.500 58.800 7.300\ncounterbore -24.200 -18.700 3.000 5.900 2.000\ncounterbore 21.500 12.900 2.600 6.000 3.000",
+  "two": {
+   "recovered": "base 63.236 58.462 7.210\ncounterbore -24.197 -18.770 2.949 5.920 2.049\ncounterbore 21.484 12.956 2.448 5.936 2.937\npose 1.206 -90.217 -67.283",
+   "topology_ok": true,
+   "max_error_mm": 0.33816912569410107,
+   "pass_1": true,
+   "seconds": 1010.672081468
+  },
+  "disagreement": [
+   [
+    1,
+    2101.593904194574
+   ],
+   [
+    2,
+    3619.589424712788
+   ],
+   [
+    4,
+    2481.6698078693307
+   ],
+   [
+    5,
+    1411.9956327346276
+   ],
+   [
+    6,
+    1902.4948128813026
+   ],
+   [
+    7,
+    1498.5879415486388
+   ]
+  ],
+  "chosen": 2,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 63.291 58.470 7.237\ncounterbore -24.250 -18.573 2.676 5.890 2.485\ncounterbore 21.631 12.895 2.388 6.054 3.033\npose 1.241 -90.192 -67.322",
+   "topology_ok": true,
+   "max_error_mm": 0.4850710430035998,
+   "pass_1": true,
+   "seconds": 1477.139478922
+  },
+  "with_random": {
+   "recovered": "base 63.250 58.518 7.144\ncounterbore -24.230 -18.802 2.961 5.881 1.979\ncounterbore 21.483 12.855 2.494 6.004 2.922\npose 1.217 -90.180 -67.266",
+   "topology_ok": true,
+   "max_error_mm": 0.28173029482020695,
+   "pass_1": true,
+   "seconds": 1163.777785303
+  },
+  "hold_chosen": [
+   2.5427623325217987,
+   0.8657407407407407
+  ],
+  "hold_random": [
+   0.665079796087459,
+   1.0271966527196652
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4031,
+  "truth": "base 66.300 41.400 16.200\nhole -17.500 -3.500 3.900\ncounterbore -12.500 -12.400 2.300 4.700 6.000",
+  "two": {
+   "recovered": "base 66.286 41.339 16.015\nhole -12.145 -12.634 4.270\ncounterbore -17.504 -3.536 2.119 3.859 8.032\npose -84.890 6.403 22.245",
+   "topology_ok": true,
+   "max_error_mm": 9.133574636551508,
+   "pass_1": false,
+   "seconds": 262.976599659
+  },
+  "disagreement": [
+   [
+    1,
+    88.20524643935366
+   ],
+   [
+    2,
+    58.7720229232973
+   ],
+   [
+    4,
+    215.142631513847
+   ],
+   [
+    5,
+    171.1236152392304
+   ],
+   [
+    6,
+    194.65402277885045
+   ],
+   [
+    7,
+    152.21297556453422
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 66.250 41.334 15.984\nhole -17.508 -3.492 3.861\ncounterbore -12.492 -12.371 1.759 4.624 4.476\npose -84.928 6.411 22.297",
+   "topology_ok": true,
+   "max_error_mm": 1.5238424288155157,
+   "pass_1": false,
+   "seconds": 608.087102739
+  },
+  "with_random": {
+   "recovered": "base 66.227 41.330 16.030\nhole -17.533 -3.519 3.869\nhole -12.458 -12.485 4.511\npose -84.898 6.420 22.323",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 527.676669634
+  },
+  "hold_chosen": [
+   0.3650316227074532,
+   0.3168058455114823
+  ],
+  "hold_random": [
+   0.6281848791889325,
+   0.2931235431235431
+  ],
+  "agree_chosen": true,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4032,
+  "truth": "base 54.300 55.200 14.700\ncounterbore -0.700 7.400 2.100 4.200 10.400\ncounterbore 1.700 -17.100 2.800 6.100 8.500",
+  "two": {
+   "recovered": "base 54.142 55.024 14.644\nhole -0.770 7.448 4.210\ncounterbore 1.657 -17.051 2.085 6.092 7.900\npose -64.113 59.831 -10.697",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 346.418113921
+  },
+  "disagreement": [
+   [
+    1,
+    329.2357693448955
+   ],
+   [
+    2,
+    18.759475875335053
+   ],
+   [
+    4,
+    34.736653179947346
+   ],
+   [
+    5,
+    298.2794304422718
+   ],
+   [
+    6,
+    92.02271913014778
+   ],
+   [
+    7,
+    34.65642757470685
+   ]
+  ],
+  "chosen": 1,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 54.112 55.013 14.656\nhole -0.720 7.443 4.232\ncounterbore 1.676 -17.032 2.502 6.087 8.042\npose -64.128 59.857 -10.679",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 746.024337197
+  },
+  "with_random": {
+   "recovered": "base 54.199 55.042 14.630\nhole -0.687 7.401 4.146\ncounterbore 1.678 -17.052 2.713 6.095 8.265\npose -64.135 59.849 -10.653",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 710.076142427
+  },
+  "hold_chosen": [
+   2.2739977566223244,
+   0.3793103448275862
+  ],
+  "hold_random": [
+   2.4768941615175137,
+   0.4867149758454106
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4033,
+  "truth": "base 83.700 48.600 6.400 fillet 8.200\nhole -24.200 -17.300 4.500\nboss 21.000 6.700 7.100 5.600",
+  "two": {
+   "recovered": "base 83.479 48.550 5.929 fillet 8.166\npose 77.855 -52.677 -68.696",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 119.667758862
+  },
+  "disagreement": [
+   [
+    1,
+    521.5453724113601
+   ],
+   [
+    2,
+    407.05418455087346
+   ],
+   [
+    4,
+    341.6442612934875
+   ],
+   [
+    5,
+    340.6410387913723
+   ],
+   [
+    6,
+    417.1879024072315
+   ],
+   [
+    7,
+    652.511551168275
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 83.333 48.448 6.074 fillet 8.029\nboss 20.919 7.011 6.792 5.653\npose 77.808 -52.568 -68.648",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 424.850577282
+  },
+  "with_random": {
+   "recovered": "base 83.448 48.489 6.110 fillet 8.193\nboss 20.797 6.913 7.056 6.054\npose 77.865 -52.597 -68.648",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 469.874270803
+  },
+  "hold_chosen": [
+   1.0303340319496455,
+   0.9036069651741293
+  ],
+  "hold_random": [
+   1.1497393561501037,
+   0.9978401727861771
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4034,
+  "truth": "base 81.000 68.500 9.000 chamfer 7.800\ncounterbore 27.500 -2.600 2.600 4.700 2.200",
+  "two": {
+   "recovered": "base 80.826 68.342 8.985 chamfer 7.686\ncounterbore 27.221 -2.749 2.924 4.475 1.992\npose -62.394 -83.078 -146.619",
+   "topology_ok": true,
+   "max_error_mm": 0.32357923097871844,
+   "pass_1": true,
+   "seconds": 476.037314955
+  },
+  "disagreement": [
+   [
+    1,
+    328.3223362064401
+   ],
+   [
+    2,
+    377.50703460327975
+   ],
+   [
+    4,
+    679.6124762593474
+   ],
+   [
+    5,
+    2503.2640011694525
+   ],
+   [
+    6,
+    1140.9398700315369
+   ],
+   [
+    7,
+    441.96834432914625
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 80.999 68.638 8.865 chamfer 7.826\ncounterbore 27.485 -2.684 2.595 4.661 1.976\npose -62.443 -82.945 -146.759",
+   "topology_ok": true,
+   "max_error_mm": 0.22351769568919932,
+   "pass_1": true,
+   "seconds": 641.573155696
+  },
+  "with_random": {
+   "recovered": "base 80.999 68.638 8.865 chamfer 7.826\ncounterbore 27.485 -2.684 2.595 4.661 1.976\npose -62.443 -82.945 -146.759",
+   "topology_ok": true,
+   "max_error_mm": 0.22351769568919932,
+   "pass_1": true,
+   "seconds": 641.573155696
+  },
+  "hold_chosen": [
+   3.316418198359156,
+   0.37451923076923077
+  ],
+  "hold_random": [
+   3.316418198359156,
+   0.37451923076923077
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4035,
+  "truth": "base 59.700 49.600 14.400\nboss 0.200 -5.800 6.200 3.500\nboss 18.900 -14.900 5.200 11.900",
+  "two": {
+   "recovered": "base 62.256 30.159 14.279\npose 80.971 -40.427 -19.866",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 92.580666357
+  },
+  "disagreement": [
+   [
+    1,
+    0.0
+   ],
+   [
+    2,
+    0.0
+   ],
+   [
+    4,
+    0.0
+   ],
+   [
+    5,
+    0.0
+   ],
+   [
+    6,
+    0.0
+   ],
+   [
+    7,
+    0.0
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 59.750 49.446 14.391\nboss 19.009 -14.940 5.149 11.883\nboss 0.315 -5.874 6.291 3.571\npose 85.192 -31.616 -19.305",
+   "topology_ok": true,
+   "max_error_mm": 0.15375206310782374,
+   "pass_1": true,
+   "seconds": 1065.291428131
+  },
+  "with_random": {
+   "recovered": "base 59.610 49.727 14.328\nboss 18.952 -14.879 5.204 11.927\nboss 0.222 -5.816 6.275 3.584\npose 85.327 -31.577 -19.386",
+   "topology_ok": true,
+   "max_error_mm": 0.12660670923601458,
+   "pass_1": true,
+   "seconds": 1128.039713588
+  },
+  "hold_chosen": [
+   4.029114730392296,
+   9.778571428571428
+  ],
+  "hold_random": [
+   10.688390942881838,
+   9.444550669216062
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 1,
+  "error": null
+ },
+ {
+  "seed": 4036,
+  "truth": "base 52.600 64.400 8.300\nhole 5.400 -25.600 2.500\ncounterbore -17.800 6.300 1.900 3.800 2.300",
+  "two": {
+   "recovered": "base 52.478 64.285 8.002 fillet 0.811\npose 81.887 25.217 -99.238",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 95.462175571
+  },
+  "disagreement": [
+   [
+    1,
+    30.06193234576725
+   ],
+   [
+    2,
+    44.085256986945936
+   ],
+   [
+    4,
+    12.004307744873877
+   ],
+   [
+    5,
+    22.45210665370714
+   ],
+   [
+    6,
+    21.49749450764437
+   ],
+   [
+    7,
+    9.314999929467142
+   ]
+  ],
+  "chosen": 2,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 52.486 64.246 8.044\npose 82.020 25.202 -99.243",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 150.253775172
+  },
+  "with_random": {
+   "recovered": "base 52.592 64.380 8.197 fillet 0.500\npose 81.949 25.196 -99.240",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 149.813169029
+  },
+  "hold_chosen": [
+   0.6110812413245511,
+   1.253199268738574
+  ],
+  "hold_random": [
+   0.4607541146933968,
+   0.2770034843205575
+  ],
+  "agree_chosen": false,
+  "agree_random": true,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4037,
+  "truth": "base 82.200 39.800 10.500 chamfer 4.500\ncounterbore 11.000 -5.900 2.600 4.300 2.200",
+  "two": {
+   "recovered": "base 82.087 39.940 10.212 chamfer 4.534\ncounterbore 10.876 -5.726 2.347 4.139 1.699\npose 89.799 34.304 -183.620",
+   "topology_ok": true,
+   "max_error_mm": 0.5009397988277069,
+   "pass_1": true,
+   "seconds": 199.885909688
+  },
+  "disagreement": [
+   [
+    1,
+    86.94469612353171
+   ],
+   [
+    2,
+    130.0678202858848
+   ],
+   [
+    4,
+    190.758945769151
+   ],
+   [
+    5,
+    148.09661837773945
+   ],
+   [
+    6,
+    173.71335330671488
+   ],
+   [
+    7,
+    160.28389051117279
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 82.126 39.886 10.280 chamfer 4.541\ncounterbore 10.707 -5.806 2.202 4.080 2.226\npose 89.821 34.294 -183.647",
+   "topology_ok": true,
+   "max_error_mm": 0.3977644493360719,
+   "pass_1": true,
+   "seconds": 344.334702879
+  },
+  "with_random": {
+   "recovered": "base 82.130 39.863 10.366 chamfer 4.570\ncounterbore 10.765 -5.878 2.245 3.999 2.294\npose 89.811 34.283 -183.638",
+   "topology_ok": true,
+   "max_error_mm": 0.35544012539243663,
+   "pass_1": true,
+   "seconds": 329.666728765
+  },
+  "hold_chosen": [
+   1.8202677634563011,
+   0.21597353497164462
+  ],
+  "hold_random": [
+   1.852635647716197,
+   0.27139874739039666
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4038,
+  "truth": "base 53.200 61.800 17.800 fillet 6.300\nhole -16.700 -19.700 3.000\nboss -17.900 -8.800 4.700 7.800\nboss 5.200 14.600 5.500 8.800",
+  "two": {
+   "recovered": "base 52.912 61.523 17.550 fillet 6.351\nboss -17.743 -9.409 4.915 8.919\nboss 5.201 14.509 5.499 8.828\npose 75.913 -51.588 -43.630",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 761.939442715
+  },
+  "disagreement": [
+   [
+    1,
+    1184.662771218756
+   ],
+   [
+    2,
+    1089.1258559739958
+   ],
+   [
+    4,
+    10586.803096525951
+   ],
+   [
+    5,
+    2700.584958140521
+   ],
+   [
+    6,
+    532.5542222978056
+   ],
+   [
+    7,
+    424.2207438999193
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 52.948 61.526 17.565 fillet 6.358\nboss -17.842 -9.524 4.719 8.882\nboss 5.148 14.551 5.403 8.645\npose 75.952 -51.563 -43.648",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1156.401611623
+  },
+  "with_random": {
+   "recovered": "base 52.911 61.547 17.603 fillet 6.330\nsloty -17.823 -14.129 6.402 4.638\nboss 5.243 14.392 5.440 8.860\npose 75.904 -51.574 -43.658",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1043.798987916
+  },
+  "hold_chosen": [
+   1.5176737889222212,
+   0.8984018264840182
+  ],
+  "hold_random": [
+   1.3400793900208967,
+   0.916860465116279
+  ],
+  "agree_chosen": true,
+  "agree_random": false,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4039,
+  "truth": "base 86.900 43.900 8.300 chamfer 5.700\nhole -11.200 -14.800 2.000\ncounterbore -21.400 0.400 2.500 4.800 2.900\nsloty 6.300 6.700 7.500 3.400",
+  "two": {
+   "recovered": "base 86.585 43.530 8.246 chamfer 5.574\nsloty 6.201 6.797 6.352 3.402\nboss -18.500 -1.191 2.655 7.204\npose 15.432 -98.976 82.838",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 448.227686912
+  },
+  "disagreement": [
+   [
+    1,
+    99.99005077845175
+   ],
+   [
+    2,
+    58.87351357609229
+   ],
+   [
+    4,
+    138.18258474944471
+   ],
+   [
+    5,
+    211.5007336064233
+   ],
+   [
+    6,
+    1482.8776840741302
+   ],
+   [
+    7,
+    139.01880473613377
+   ]
+  ],
+  "chosen": 6,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 86.788 43.735 8.161 chamfer 5.629\ncounterbore -21.272 0.363 2.488 4.788 2.863\nsloty 6.411 6.869 6.405 3.369\nboss -10.089 -14.934 1.704 2.451\npose 15.419 -99.070 82.842",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 954.461307276
+  },
+  "with_random": {
+   "recovered": "base 86.698 43.942 8.010 chamfer 5.671\nhole -11.109 -14.867 2.024\ncounterbore -21.084 0.372 3.203 4.948 3.018\nsloty 6.439 6.623 6.243 3.313\npose 15.256 -98.964 82.781",
+   "topology_ok": true,
+   "max_error_mm": 1.256723081158997,
+   "pass_1": false,
+   "seconds": 694.676955642
+  },
+  "hold_chosen": [
+   0.48698851345888633,
+   0.786046511627907
+  ],
+  "hold_random": [
+   2.2175677831130933,
+   0.8293726235741445
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4041,
+  "truth": "base 86.500 59.900 10.500\nlinear 3 5.100 -16.600 0.000 9.900 3.400\nsloty -37.900 -1.700 10.000 3.000",
+  "two": {
+   "recovered": "base 86.051 59.430 10.389\nsloty -37.839 -1.895 9.930 3.039\npose -40.471 -88.922 -7.092",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 158.859151212
+  },
+  "disagreement": [
+   [
+    1,
+    133.26067759393905
+   ],
+   [
+    2,
+    172.45039243751478
+   ],
+   [
+    4,
+    250.76890272119874
+   ],
+   [
+    5,
+    429.0852988017838
+   ],
+   [
+    6,
+    224.50344003616527
+   ],
+   [
+    7,
+    161.3133403949797
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 86.247 59.621 10.269\nlinear 3 5.153 -16.653 0.003 9.896 3.312\nsloty -37.878 -1.991 10.637 2.857\npose -40.577 -89.034 -7.017",
+   "topology_ok": true,
+   "max_error_mm": 0.6370637573667377,
+   "pass_1": true,
+   "seconds": 706.551038857
+  },
+  "with_random": {
+   "recovered": "base 86.247 59.621 10.269\nlinear 3 5.153 -16.653 0.003 9.896 3.312\nsloty -37.878 -1.991 10.637 2.857\npose -40.577 -89.034 -7.017",
+   "topology_ok": true,
+   "max_error_mm": 0.6370637573667377,
+   "pass_1": true,
+   "seconds": 706.551038857
+  },
+  "hold_chosen": [
+   1.1079372484311278,
+   1.0087912087912088
+  ],
+  "hold_random": [
+   1.1079372484311278,
+   1.0087912087912088
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4042,
+  "truth": "base 79.700 62.400 11.200 fillet 4.600\nhole 12.200 -5.100 4.200\nlinear 3 -1.200 -17.200 15.900 0.000 2.200",
+  "two": {
+   "recovered": "base 79.816 62.447 10.932 fillet 5.105\nhole 12.194 -4.601 3.572\npose -6.314 100.758 41.513",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 315.918192266
+  },
+  "disagreement": [
+   [
+    1,
+    13.45501916939113
+   ],
+   [
+    2,
+    24.48801170106864
+   ],
+   [
+    4,
+    19.42566853075441
+   ],
+   [
+    5,
+    38.083625522751426
+   ],
+   [
+    6,
+    16.343888307436874
+   ],
+   [
+    7,
+    21.507613281195297
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 79.880 62.526 11.045 fillet 5.035\nhole 12.182 -5.054 4.233\nhole 30.495 -17.039 2.221\npose -6.422 100.740 41.455",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1948.609663386
+  },
+  "with_random": {
+   "recovered": "base 79.880 62.526 11.045 fillet 5.035\nhole 12.182 -5.054 4.233\nhole 30.495 -17.039 2.221\npose -6.422 100.740 41.455",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1948.609663386
+  },
+  "hold_chosen": [
+   0.2931554068906831,
+   0.7860320284697508
+  ],
+  "hold_random": [
+   0.2931554068906831,
+   0.7860320284697508
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4043,
+  "truth": "base 66.000 45.900 17.100\nhole -20.700 -2.900 4.300\nlinear 2 -0.300 -0.100 0.000 9.700 2.600\ncounterbore -3.500 -10.100 2.700 5.200 7.100",
+  "two": {
+   "recovered": "base 65.877 45.716 16.905\nhole -20.677 -2.902 4.333\nlinear 2 -0.292 -0.050 0.032 9.676 2.622\ncounterbore -3.474 -10.114 2.873 5.250 7.473\npose -67.629 62.355 6.403",
+   "topology_ok": true,
+   "max_error_mm": 0.37341047346503853,
+   "pass_1": true,
+   "seconds": 1255.778191994
+  },
+  "disagreement": [
+   [
+    1,
+    3.432227111623975
+   ],
+   [
+    2,
+    4.112506184310393
+   ],
+   [
+    4,
+    6.428610512868596
+   ],
+   [
+    5,
+    0.9452995900786418
+   ],
+   [
+    6,
+    4.597967302477769
+   ],
+   [
+    7,
+    2.5028316587464743
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 65.859 45.843 16.846 fillet 0.613\nhole -20.604 -2.770 4.331\nlinear 2 -0.250 -0.000 0.036 9.703 2.617\ncounterbore -3.384 -9.979 2.927 5.211 7.491\npose -67.642 62.325 6.398",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1373.599799281
+  },
+  "with_random": {
+   "recovered": "base 65.804 45.823 16.817\nhole -20.642 -2.786 4.345\nlinear 2 -0.258 0.008 0.005 9.664 2.647\ncounterbore -3.448 -9.953 3.163 5.220 7.810\npose -67.654 62.302 6.443",
+   "topology_ok": true,
+   "max_error_mm": 0.7101953010506818,
+   "pass_1": true,
+   "seconds": 1789.322893154
+  },
+  "hold_chosen": [
+   0.6606611374378837,
+   0.7710280373831776
+  ],
+  "hold_random": [
+   0.2722697224688063,
+   0.6683035714285714
+  ],
+  "agree_chosen": false,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4045,
+  "truth": "base 53.400 49.900 15.400 chamfer 7.300\nhole 19.300 18.100 2.700\ncounterbore 4.500 12.700 2.900 4.700 3.500\nboss -4.400 1.800 5.600 7.700",
+  "two": {
+   "recovered": "base 53.349 49.827 15.300 chamfer 7.312\npose 86.216 18.673 15.716",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 106.217972745
+  },
+  "disagreement": [
+   [
+    1,
+    436.5797609395569
+   ],
+   [
+    2,
+    316.86185294481146
+   ],
+   [
+    4,
+    885.1886595167083
+   ],
+   [
+    5,
+    953.2205876512153
+   ],
+   [
+    6,
+    921.9717864742356
+   ],
+   [
+    7,
+    717.3752521631395
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 53.803 49.103 15.318 chamfer 7.264\nhole 19.509 18.015 2.694\ncounterbore 4.612 12.883 2.582 4.673 3.096\nboss -4.265 2.048 5.486 7.540\npose 86.365 18.387 16.646",
+   "topology_ok": true,
+   "max_error_mm": 0.7974971612685593,
+   "pass_1": true,
+   "seconds": 1864.707357472
+  },
+  "with_random": {
+   "recovered": "base 53.803 49.103 15.318 chamfer 7.264\nhole 19.509 18.015 2.694\ncounterbore 4.612 12.883 2.582 4.673 3.096\nboss -4.265 2.048 5.486 7.540\npose 86.365 18.387 16.646",
+   "topology_ok": true,
+   "max_error_mm": 0.7974971612685593,
+   "pass_1": true,
+   "seconds": 1864.707357472
+  },
+  "hold_chosen": [
+   9.370429499295694,
+   75.55555555555556
+  ],
+  "hold_random": [
+   9.370429499295694,
+   75.55555555555556
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4046,
+  "truth": "base 65.300 62.400 13.500\ncircular 3 13.100 -3.000 8.900 77.000 2.100\nsloty -23.300 14.100 10.800 2.900",
+  "two": {
+   "recovered": "base 65.125 62.294 13.413\ncircular 3 12.994 -2.956 8.892 76.626 2.089\nsloty -23.240 14.050 9.976 2.814\npose -55.900 -74.085 59.471",
+   "topology_ok": true,
+   "max_error_mm": 0.8236095553475185,
+   "pass_1": true,
+   "seconds": 432.156369836
+  },
+  "disagreement": [
+   [
+    1,
+    115.84797990345234
+   ],
+   [
+    2,
+    245.49602484803023
+   ],
+   [
+    4,
+    2492.8610604802234
+   ],
+   [
+    5,
+    238.77451019368397
+   ],
+   [
+    6,
+    248.33385207127841
+   ],
+   [
+    7,
+    109.02951011178178
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 65.248 62.286 13.346\ncircular 3 13.057 -2.994 8.870 76.885 2.100\nsloty -23.226 14.013 9.990 2.891\npose -55.963 -74.086 59.497",
+   "topology_ok": true,
+   "max_error_mm": 0.8103853949585389,
+   "pass_1": true,
+   "seconds": 864.188049372
+  },
+  "with_random": {
+   "recovered": "base 65.220 62.277 13.333\nlinear 2 4.507 -5.600 14.973 -3.476 2.082\ncounterbore 15.003 5.620 1.396 2.093 6.661\nsloty -23.293 14.034 9.824 2.891\npose -55.945 -74.071 59.455",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 977.181162207
+  },
+  "hold_chosen": [
+   10.237006153743824,
+   0.5361271676300579
+  ],
+  "hold_random": [
+   1.2559093109870496,
+   0.8358490566037736
+  ],
+  "agree_chosen": true,
+  "agree_random": false,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4047,
+  "truth": "base 74.900 67.400 14.400\nlinear 3 -17.800 18.800 13.900 0.000 3.500\ncounterbore -30.100 5.800 2.600 4.500 3.300",
+  "two": {
+   "recovered": "base 74.503 66.974 14.265\npose -9.935 -97.905 -186.056",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 83.445842251
+  },
+  "disagreement": [
+   [
+    1,
+    57.163810230174896
+   ],
+   [
+    2,
+    67.22645206473607
+   ],
+   [
+    4,
+    19.99890875188908
+   ],
+   [
+    5,
+    69.5626417685867
+   ],
+   [
+    6,
+    19.116441984264924
+   ],
+   [
+    7,
+    85.64186873931938
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 74.563 67.020 14.227\npose -9.890 -97.890 -186.064",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 118.587291521
+  },
+  "with_random": {
+   "recovered": "base 74.658 67.016 14.230\npose -9.847 -97.939 -186.037",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 117.410283296
+  },
+  "hold_chosen": [
+   0.8173869900520405,
+   0.8731578947368421
+  ],
+  "hold_random": [
+   1.0167670313881374,
+   0.9565656565656566
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4048,
+  "truth": "base 69.300 54.800 16.500 chamfer 6.600\nhole 3.900 21.700 3.500\nslotx 16.100 -3.000 10.400 3.900",
+  "two": {
+   "recovered": "base 69.221 54.501 16.193 chamfer 6.600\nslotx 16.144 -3.018 10.168 4.023\nboss 3.921 21.803 2.607 3.325\npose 64.482 62.982 -239.430",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 812.180581364
+  },
+  "disagreement": [
+   [
+    1,
+    105.21004886471002
+   ],
+   [
+    2,
+    124.11511650936654
+   ],
+   [
+    4,
+    93.03919222635275
+   ],
+   [
+    5,
+    308.0570123372131
+   ],
+   [
+    6,
+    84.1183650361698
+   ],
+   [
+    7,
+    57.726879429318636
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 69.313 54.693 16.136 chamfer 6.696\nhole 4.056 21.729 3.543\nslotx 16.117 -3.009 11.359 3.574\npose 64.522 63.039 -239.462",
+   "topology_ok": true,
+   "max_error_mm": 0.9586469348664064,
+   "pass_1": true,
+   "seconds": 1076.014102259
+  },
+  "with_random": {
+   "recovered": "base 69.313 54.693 16.136 chamfer 6.696\nhole 4.056 21.729 3.543\nslotx 16.117 -3.009 11.359 3.574\npose 64.522 63.039 -239.462",
+   "topology_ok": true,
+   "max_error_mm": 0.9586469348664064,
+   "pass_1": true,
+   "seconds": 1076.014102259
+  },
+  "hold_chosen": [
+   12.042390913938313,
+   3.4909090909090907
+  ],
+  "hold_random": [
+   12.042390913938313,
+   3.4909090909090907
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4049,
+  "truth": "base 85.100 67.600 14.500 chamfer 8.000\nsloty -14.900 -10.800 10.900 3.700",
+  "two": {
+   "recovered": "base 84.839 67.566 14.259 chamfer 8.026\nsloty -14.804 -11.488 13.098 3.105\npose 9.991 -99.980 -141.859",
+   "topology_ok": true,
+   "max_error_mm": 2.197767799696752,
+   "pass_1": false,
+   "seconds": 534.249113113
+  },
+  "disagreement": [
+   [
+    1,
+    378.64418388937577
+   ],
+   [
+    2,
+    170.44498319632245
+   ],
+   [
+    4,
+    880.0442413510556
+   ],
+   [
+    5,
+    1634.188235615292
+   ],
+   [
+    6,
+    1206.4378735095506
+   ],
+   [
+    7,
+    776.714148917094
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 84.950 67.552 14.258 chamfer 8.036\nsloty -14.470 -10.897 12.388 3.116\npose 10.019 -99.949 -141.840",
+   "topology_ok": true,
+   "max_error_mm": 1.4882785740646831,
+   "pass_1": false,
+   "seconds": 555.779240713
+  },
+  "with_random": {
+   "recovered": "base 84.950 67.552 14.258 chamfer 8.036\nsloty -14.470 -10.897 12.388 3.116\npose 10.019 -99.949 -141.840",
+   "topology_ok": true,
+   "max_error_mm": 1.4882785740646831,
+   "pass_1": false,
+   "seconds": 555.779240713
+  },
+  "hold_chosen": [
+   0.4798696455529209,
+   1.3266199649737302
+  ],
+  "hold_random": [
+   0.4798696455529209,
+   1.3266199649737302
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4050,
+  "truth": "base 87.700 65.300 6.900\ncircular 3 -20.200 -9.700 11.500 106.400 2.400\ncounterbore -12.500 24.300 2.500 4.700 3.200\nsloty 20.400 18.900 17.300 2.400",
+  "two": {
+   "recovered": "base 87.696 65.160 6.731\nhole -11.665 23.455 3.319\ncircular 3 -20.089 -9.776 11.501 106.531 2.321\nsloty 20.437 18.891 18.116 2.063\npose -98.682 -39.303 -19.911",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1335.240327959
+  },
+  "disagreement": [
+   [
+    1,
+    137.98115659087756
+   ],
+   [
+    2,
+    117.1823455923366
+   ],
+   [
+    4,
+    42.90796286226416
+   ],
+   [
+    5,
+    31.420638787843252
+   ],
+   [
+    6,
+    52.556523445548656
+   ],
+   [
+    7,
+    82.05932022388261
+   ]
+  ],
+  "chosen": 1,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 87.921 65.273 6.634\ncircular 3 -20.029 -9.739 11.459 106.461 2.327\ncounterbore -12.422 24.442 2.199 4.474 3.588\nsloty 20.479 19.170 17.553 2.078\npose -98.773 -39.340 -19.880",
+   "topology_ok": true,
+   "max_error_mm": 0.38807447055160793,
+   "pass_1": true,
+   "seconds": 1509.752613198
+  },
+  "with_random": {
+   "recovered": "base 87.661 65.192 6.692\ncircular 3 -20.074 -9.772 11.478 106.599 2.321\ncounterbore -12.508 24.361 2.141 4.544 3.465\nsloty 20.434 18.944 18.141 2.039\npose -98.674 -39.331 -19.917",
+   "topology_ok": true,
+   "max_error_mm": 0.8406681323506291,
+   "pass_1": true,
+   "seconds": 2007.898355915
+  },
+  "hold_chosen": [
+   0.4520550358872728,
+   0.5453125
+  ],
+  "hold_random": [
+   0.9003011409375207,
+   0.8007246376811594
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4052,
+  "truth": "base 89.000 59.700 17.300 chamfer 5.800\ncounterbore 31.500 -11.100 2.700 5.000 13.000\nboss -17.600 12.000 5.000 8.000",
+  "two": {
+   "recovered": "base 89.043 59.705 17.128 chamfer 5.900\ncounterbore 31.613 -11.104 2.671 5.027 13.074\nboss -18.030 12.024 4.985 7.953\npose 95.801 -44.739 -45.096",
+   "topology_ok": true,
+   "max_error_mm": 0.42994811460488336,
+   "pass_1": true,
+   "seconds": 1101.703747051
+  },
+  "disagreement": [
+   [
+    1,
+    1476.2090887199006
+   ],
+   [
+    2,
+    1085.3610084640566
+   ],
+   [
+    4,
+    964.912068979718
+   ],
+   [
+    5,
+    1306.1561255851586
+   ],
+   [
+    6,
+    1203.7222254645435
+   ],
+   [
+    7,
+    937.058611021854
+   ]
+  ],
+  "chosen": 1,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 89.025 59.677 17.070 chamfer 5.814\ncounterbore 31.556 -11.101 2.727 5.006 13.195\ncounterbore -21.394 12.937 2.916 5.582 6.090\npose 95.864 -44.744 -45.049",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1480.36104339
+  },
+  "with_random": {
+   "recovered": "base 89.193 59.904 17.057 chamfer 5.961\ncounterbore 31.735 -11.161 2.723 4.997 12.059\nboss -17.994 12.231 4.845 8.169\npose 95.843 -44.633 -45.121",
+   "topology_ok": true,
+   "max_error_mm": 0.9414785632733835,
+   "pass_1": true,
+   "seconds": 2177.823052691
+  },
+  "hold_chosen": [
+   0.5934130111505745,
+   0.6968390804597702
+  ],
+  "hold_random": [
+   6.379934002088919,
+   2.74507874015748
+  ],
+  "agree_chosen": false,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4053,
+  "truth": "base 61.000 62.900 7.700 chamfer 7.300\nhole -25.600 -21.100 3.400\nhole 7.800 19.200 2.700",
+  "two": {
+   "recovered": "base 61.049 62.914 7.495 chamfer 7.282\nlinear 2 -25.625 -20.766 33.556 40.091 2.700\npose -86.342 -42.821 64.215",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 650.873812191
+  },
+  "disagreement": [
+   [
+    1,
+    26.194609050305154
+   ],
+   [
+    2,
+    58.96558827334164
+   ],
+   [
+    4,
+    94.71489689979667
+   ],
+   [
+    5,
+    72.37440574304728
+   ],
+   [
+    6,
+    43.23777118309966
+   ],
+   [
+    7,
+    49.0450477581243
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 61.052 62.993 7.555 chamfer 7.364\nhole 7.928 19.344 2.686\ncounterbore -25.203 -21.027 1.886 3.229 5.756\npose -86.348 -42.813 64.190",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1337.076570827
+  },
+  "with_random": {
+   "recovered": "base 61.003 62.922 7.508 chamfer 7.352\nhole 7.906 19.322 2.709\nsloty -25.633 -20.874 2.853 2.242\npose -86.344 -42.820 64.202",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1383.911243199
+  },
+  "hold_chosen": [
+   0.4773882338858955,
+   0.43389662027833004
+  ],
+  "hold_random": [
+   0.5426486123467124,
+   0.4083011583011583
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4056,
+  "truth": "base 76.500 52.500 7.200 chamfer 7.200\ncounterbore -30.400 2.600 2.900 5.600 2.500",
+  "two": {
+   "recovered": "base 76.074 52.379 6.840 chamfer 7.009\ncounterbore -30.429 2.672 2.728 5.615 2.227\npose 26.337 -89.344 -86.225",
+   "topology_ok": true,
+   "max_error_mm": 0.4258948136108671,
+   "pass_1": true,
+   "seconds": 269.778003884
+  },
+  "disagreement": [
+   [
+    1,
+    1048.3698624648036
+   ],
+   [
+    2,
+    3146.766177350044
+   ],
+   [
+    4,
+    3134.2445780922176
+   ],
+   [
+    5,
+    1222.2250437500472
+   ],
+   [
+    6,
+    1816.925973024755
+   ],
+   [
+    7,
+    1455.3542366029837
+   ]
+  ],
+  "chosen": 2,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 76.088 52.446 6.858 chamfer 7.119\ncounterbore -30.483 2.651 2.657 5.605 2.292\npose 26.377 -89.306 -86.303",
+   "topology_ok": true,
+   "max_error_mm": 0.4122146996037941,
+   "pass_1": true,
+   "seconds": 472.928639214
+  },
+  "with_random": {
+   "recovered": "base 76.161 52.242 6.938 chamfer 7.116\ncounterbore -30.325 2.689 2.739 5.672 2.303\npose 26.291 -89.271 -86.312",
+   "topology_ok": true,
+   "max_error_mm": 0.33880832145554507,
+   "pass_1": true,
+   "seconds": 456.377652065
+  },
+  "hold_chosen": [
+   7.358414900631247,
+   0.6064102564102564
+  ],
+  "hold_random": [
+   0.9182255289726889,
+   2.0344982078853047
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4057,
+  "truth": "base 87.600 41.100 17.400\nhole -15.000 13.700 3.600\ncounterbore -17.200 -2.500 3.500 6.800 6.400",
+  "two": {
+   "recovered": "base 87.750 41.118 17.280\nhole -14.810 13.651 3.583\ncounterbore -17.340 -2.320 3.759 6.547 6.294\npose -82.527 -49.373 -64.577",
+   "topology_ok": true,
+   "max_error_mm": 0.25886751939083696,
+   "pass_1": true,
+   "seconds": 674.368224937
+  },
+  "disagreement": [
+   [
+    1,
+    0.0
+   ],
+   [
+    2,
+    0.0
+   ],
+   [
+    4,
+    0.0
+   ],
+   [
+    5,
+    0.0
+   ],
+   [
+    6,
+    0.0
+   ],
+   [
+    7,
+    0.0
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 87.631 41.085 17.292\nhole -14.910 13.670 3.573\ncounterbore -17.366 -2.201 3.748 6.568 6.177\npose -82.505 -49.436 -64.563",
+   "topology_ok": true,
+   "max_error_mm": 0.29924789567036525,
+   "pass_1": true,
+   "seconds": 649.832827431
+  },
+  "with_random": {
+   "recovered": "base 87.724 41.160 17.115 fillet 0.592\ncounterbore -17.054 -2.556 3.431 6.656 6.175\ncounterbore -14.671 13.579 0.400 3.553 8.064\npose -82.513 -49.380 -64.548",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 868.858018552
+  },
+  "hold_chosen": [
+   0.5757765956819242,
+   0.388689407540395
+  ],
+  "hold_random": [
+   0.48483988669505895,
+   0.4789156626506024
+  ],
+  "agree_chosen": true,
+  "agree_random": false,
+  "finalists": 1,
+  "error": null
+ },
+ {
+  "seed": 4060,
+  "truth": "base 79.500 62.300 10.700 chamfer 4.100\nlinear 2 -15.300 14.200 0.000 11.200 3.400\ncounterbore -32.400 8.000 2.000 3.900 2.700",
+  "two": {
+   "recovered": "base 79.554 62.428 10.439 fillet 6.247\nhole -32.235 8.281 3.854\nlinear 2 -15.174 25.568 -0.013 -11.201 3.473\npose -51.978 -83.754 -250.430",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1277.563059885
+  },
+  "disagreement": [
+   [
+    1,
+    14.822125985198348
+   ],
+   [
+    2,
+    10.807119779985147
+   ],
+   [
+    4,
+    12.852524028395429
+   ],
+   [
+    5,
+    27.583066144647475
+   ],
+   [
+    6,
+    17.867311809954394
+   ],
+   [
+    7,
+    17.072125450832637
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 79.488 62.386 10.436 chamfer 4.243\nlinear 2 -15.249 25.481 -0.003 -11.172 3.450\ncounterbore -32.331 8.074 2.258 3.919 2.689\npose -51.998 -83.725 -250.510",
+   "topology_ok": true,
+   "max_error_mm": 0.26374065726955465,
+   "pass_1": true,
+   "seconds": 2835.988499517
+  },
+  "with_random": {
+   "recovered": "base 79.488 62.386 10.436 chamfer 4.243\nlinear 2 -15.249 25.481 -0.003 -11.172 3.450\ncounterbore -32.331 8.074 2.258 3.919 2.689\npose -51.998 -83.725 -250.510",
+   "topology_ok": true,
+   "max_error_mm": 0.26374065726955465,
+   "pass_1": true,
+   "seconds": 2835.988499517
+  },
+  "hold_chosen": [
+   1.1924771060843096,
+   0.5419847328244275
+  ],
+  "hold_random": [
+   1.1924771060843096,
+   0.5419847328244275
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4063,
+  "truth": "base 84.700 49.600 14.400\nhole 1.900 4.700 2.200\nboss 0.400 -14.100 7.200 9.200\nboss 32.400 -0.100 7.000 12.000",
+  "two": {
+   "recovered": "base 84.457 49.561 14.017\nboss 32.432 -0.016 6.780 12.108\npose 53.510 75.432 -100.856",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1030.50914749
+  },
+  "disagreement": [
+   [
+    1,
+    723.1411231178912
+   ],
+   [
+    2,
+    636.803995253121
+   ],
+   [
+    4,
+    906.1447284532946
+   ],
+   [
+    5,
+    1480.2386973435441
+   ],
+   [
+    6,
+    780.5617899447408
+   ],
+   [
+    7,
+    763.4345515722946
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 84.597 49.548 14.162\nboss 32.336 -0.579 6.372 12.954\npose 53.484 75.490 -100.763",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 641.749473141
+  },
+  "with_random": {
+   "recovered": "base 84.597 49.548 14.162\nboss 32.336 -0.579 6.372 12.954\npose 53.484 75.490 -100.763",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 641.749473141
+  },
+  "hold_chosen": [
+   0.7416811976488058,
+   1.0651515151515152
+  ],
+  "hold_random": [
+   0.7416811976488058,
+   1.0651515151515152
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4064,
+  "truth": "base 61.100 52.800 13.500\ncounterbore 5.500 0.100 2.300 5.300 3.200\nboss 19.200 8.500 5.800 8.600",
+  "two": {
+   "recovered": "base 60.860 52.619 13.273\ncounterbore 5.581 0.145 2.500 5.380 3.217\nboss 18.954 8.460 5.656 8.773\npose -33.102 -78.893 -37.483",
+   "topology_ok": true,
+   "max_error_mm": 0.2456876443113103,
+   "pass_1": true,
+   "seconds": 1735.713698582
+  },
+  "disagreement": [
+   [
+    1,
+    488.72054932709057
+   ],
+   [
+    2,
+    1074.3311511922218
+   ],
+   [
+    4,
+    1559.745051800345
+   ],
+   [
+    5,
+    3362.833038573889
+   ],
+   [
+    6,
+    1314.85413015944
+   ],
+   [
+    7,
+    745.2409090617037
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 60.864 52.624 13.317\ncounterbore 5.519 0.107 2.347 5.317 3.134\nboss 19.198 8.478 5.661 8.575\npose -33.104 -78.919 -37.488",
+   "topology_ok": true,
+   "max_error_mm": 0.2356710883745734,
+   "pass_1": true,
+   "seconds": 2558.885787905
+  },
+  "with_random": {
+   "recovered": "base 60.864 52.624 13.317\ncounterbore 5.519 0.107 2.347 5.317 3.134\nboss 19.198 8.478 5.661 8.575\npose -33.104 -78.919 -37.488",
+   "topology_ok": true,
+   "max_error_mm": 0.2356710883745734,
+   "pass_1": true,
+   "seconds": 2558.885787905
+  },
+  "hold_chosen": [
+   2.0179258173448633,
+   0.7645161290322581
+  ],
+  "hold_random": [
+   2.0179258173448633,
+   0.7645161290322581
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4067,
+  "truth": "base 71.500 54.000 6.600 fillet 6.100\nslotx 2.000 -5.300 13.300 2.000",
+  "two": {
+   "recovered": "base 71.553 54.078 6.237 fillet 6.224\nslotx 2.221 -5.331 13.034 1.815\npose -84.210 45.697 -265.674",
+   "topology_ok": true,
+   "max_error_mm": 0.36315389604112447,
+   "pass_1": true,
+   "seconds": 339.606356905
+  },
+  "disagreement": [
+   [
+    1,
+    4521.464450351073
+   ],
+   [
+    2,
+    1825.815767366657
+   ],
+   [
+    4,
+    1276.9688439193078
+   ],
+   [
+    5,
+    1260.1222505185638
+   ],
+   [
+    6,
+    1764.4180269692658
+   ],
+   [
+    7,
+    1510.8106794960338
+   ]
+  ],
+  "chosen": 1,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 71.605 54.040 6.279 fillet 6.254\nslotx 2.188 -5.328 12.581 1.870\npose -84.210 45.702 -265.647",
+   "topology_ok": true,
+   "max_error_mm": 0.719441731734241,
+   "pass_1": true,
+   "seconds": 520.588182825
+  },
+  "with_random": {
+   "recovered": "base 71.551 54.073 6.318 fillet 6.242\nslotx 2.209 -5.360 12.951 1.810\npose -84.232 45.696 -265.668",
+   "topology_ok": true,
+   "max_error_mm": 0.34919823521547677,
+   "pass_1": true,
+   "seconds": 452.405599057
+  },
+  "hold_chosen": [
+   2.4371448908796465,
+   0.5132415254237288
+  ],
+  "hold_random": [
+   0.8563015400227684,
+   0.4605263157894737
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4068,
+  "truth": "base 71.800 47.600 9.400 fillet 4.400\ncounterbore -28.100 -12.100 2.900 4.700 3.000\nsloty 29.300 5.300 14.800 2.500\nboss -23.000 9.100 7.500 10.600",
+  "two": {
+   "recovered": "base 71.621 49.871 9.239 fillet 5.313\ncounterbore -13.949 -2.206 1.513 3.647 2.805\nslotx -28.881 -10.462 1.620 2.760\nsloty 29.100 6.633 13.478 2.558\nboss -23.194 12.526 6.081 10.268\npose 39.982 76.321 3.305",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1221.258028641
+  },
+  "disagreement": [
+   [
+    1,
+    87.87456715665705
+   ],
+   [
+    2,
+    132.13250391482424
+   ],
+   [
+    4,
+    146.5876498613514
+   ],
+   [
+    5,
+    114.78420246100076
+   ],
+   [
+    6,
+    102.91370891531533
+   ],
+   [
+    7,
+    108.77087085539482
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 71.728 49.926 9.448 fillet 5.892\ncounterbore -28.145 -11.173 2.162 4.417 4.550\nslotx -13.229 -1.528 4.378 2.593\nsloty 29.124 6.141 15.098 2.170\nboss -22.812 9.548 7.396 10.639\npose 40.074 76.348 3.332",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 5119.815447079
+  },
+  "with_random": {
+   "recovered": "base 71.742 49.869 9.248 fillet 5.480\nsloty 28.945 6.398 14.541 2.354\npose 40.045 76.338 3.261",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 515.213457225
+  },
+  "hold_chosen": [
+   3.4828702449686726,
+   3.023854961832061
+  ],
+  "hold_random": [
+   0.9047180113550665,
+   3.2818265682656826
+  ],
+  "agree_chosen": true,
+  "agree_random": false,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4071,
+  "truth": "base 56.500 44.800 7.100\ncircular 3 -1.500 -6.500 9.500 62.400 2.300\nslotx 2.200 13.900 12.200 2.700",
+  "two": {
+   "recovered": "base 56.314 44.610 6.971\ncircular 3 -1.551 -6.607 9.503 302.372 2.373\nslotx 2.309 13.900 12.115 2.737\npose 73.362 -30.361 -217.820",
+   "topology_ok": true,
+   "max_error_mm": 0.18984726626884907,
+   "pass_1": true,
+   "seconds": 927.618944617
+  },
+  "disagreement": [
+   [
+    1,
+    34.666909601131614
+   ],
+   [
+    2,
+    52.805528342914705
+   ],
+   [
+    4,
+    76.21515121685478
+   ],
+   [
+    5,
+    330.75258872547283
+   ],
+   [
+    6,
+    134.99558096629826
+   ],
+   [
+    7,
+    75.068677421739
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 56.362 44.707 6.922\ncircular 3 -1.350 -6.473 9.477 302.620 2.186\nslotx 2.285 13.928 11.691 2.694\npose 73.376 -30.378 -217.817",
+   "topology_ok": true,
+   "max_error_mm": 0.508887975080146,
+   "pass_1": true,
+   "seconds": 2018.726669073
+  },
+  "with_random": {
+   "recovered": "base 56.362 44.707 6.922\ncircular 3 -1.350 -6.473 9.477 302.620 2.186\nslotx 2.285 13.928 11.691 2.694\npose 73.376 -30.378 -217.817",
+   "topology_ok": true,
+   "max_error_mm": 0.508887975080146,
+   "pass_1": true,
+   "seconds": 2018.726669073
+  },
+  "hold_chosen": [
+   0.5941405942525715,
+   0.7566735112936345
+  ],
+  "hold_random": [
+   0.5941405942525715,
+   0.7566735112936345
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4072,
+  "truth": "base 50.500 38.100 7.100 fillet 7.600\nsloty -13.900 1.700 8.500 4.000",
+  "two": {
+   "recovered": "base 50.221 37.930 6.952 fillet 7.458\nsloty -13.945 1.672 8.116 4.031\npose -31.655 70.532 33.682",
+   "topology_ok": true,
+   "max_error_mm": 0.38432525263093353,
+   "pass_1": true,
+   "seconds": 1227.264460998
+  },
+  "disagreement": [
+   [
+    1,
+    405.3567310729311
+   ],
+   [
+    2,
+    1615.277568129523
+   ],
+   [
+    4,
+    673.3814305314899
+   ],
+   [
+    5,
+    5059.576990161414
+   ],
+   [
+    6,
+    486.1924304336286
+   ],
+   [
+    7,
+    450.6119233827453
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 50.360 38.003 6.942 fillet 7.713\nsloty -13.948 1.655 8.319 3.919\npose -31.676 70.539 33.695",
+   "topology_ok": true,
+   "max_error_mm": 0.18056373349616983,
+   "pass_1": true,
+   "seconds": 1234.694705346
+  },
+  "with_random": {
+   "recovered": "base 50.360 38.003 6.942 fillet 7.713\nsloty -13.948 1.655 8.319 3.919\npose -31.676 70.539 33.695",
+   "topology_ok": true,
+   "max_error_mm": 0.18056373349616983,
+   "pass_1": true,
+   "seconds": 1234.694705346
+  },
+  "hold_chosen": [
+   2.5744808177545426,
+   1.7768361581920904
+  ],
+  "hold_random": [
+   2.5744808177545426,
+   1.7768361581920904
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4075,
+  "truth": "base 75.900 67.700 16.300\ncounterbore 2.100 -23.600 2.500 5.900 5.300\nboss 24.500 16.300 6.300 5.500",
+  "two": {
+   "recovered": "base 58.516 62.151 16.572\npose -44.946 77.355 -124.010",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 278.150088697
+  },
+  "disagreement": [
+   [
+    1,
+    0.0
+   ],
+   [
+    2,
+    0.0
+   ],
+   [
+    4,
+    0.0
+   ],
+   [
+    5,
+    0.0
+   ],
+   [
+    6,
+    0.0
+   ],
+   [
+    7,
+    0.0
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 75.752 67.757 16.125\ncounterbore 2.006 -23.479 2.596 5.864 5.151\npose -42.821 86.028 -124.484",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 940.661109793
+  },
+  "with_random": {
+   "recovered": "base 75.749 67.455 16.237\ncounterbore 2.110 -23.491 2.544 5.945 5.259\npose -42.821 86.055 -124.551",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1285.168857883
+  },
+  "hold_chosen": [
+   2.984658207168197,
+   8.58165137614679
+  ],
+  "hold_random": [
+   1.9327713603970178,
+   8.478571428571428
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 1,
+  "error": null
+ },
+ {
+  "seed": 4076,
+  "truth": "base 77.000 47.700 17.600 fillet 6.800\nhole 32.700 -3.400 3.700\nlinear 2 -23.800 -9.200 15.900 0.000 2.900",
+  "two": {
+   "recovered": "base 76.957 47.603 17.411 fillet 7.053\nhole 32.909 -3.311 3.843\nlinear 2 -7.700 -9.256 -15.865 0.020 2.960\npose -25.937 -90.494 -118.285",
+   "topology_ok": true,
+   "max_error_mm": 0.2529851051856964,
+   "pass_1": true,
+   "seconds": 1110.563973857
+  },
+  "disagreement": [
+   [
+    1,
+    9.97684617289685
+   ],
+   [
+    2,
+    13.907680284352335
+   ],
+   [
+    4,
+    27.197964007976395
+   ],
+   [
+    5,
+    46.544839244391994
+   ],
+   [
+    6,
+    59.91042599798457
+   ],
+   [
+    7,
+    21.39249760464079
+   ]
+  ],
+  "chosen": 6,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 77.042 47.625 17.360 fillet 7.116\ncounterbore 32.780 -3.325 1.619 3.717 7.277\ncounterbore -7.858 -9.166 1.581 2.904 8.701\ncounterbore -23.741 -9.188 1.590 2.872 8.702\npose -25.923 -90.547 -118.111",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1982.892242819
+  },
+  "with_random": {
+   "recovered": "base 76.968 47.703 17.457 fillet 7.024\nhole 32.782 -3.366 3.691\nlinear 2 -7.851 -9.157 -15.880 0.013 2.848\npose -25.829 -90.565 -117.991",
+   "topology_ok": true,
+   "max_error_mm": 0.22394286695821375,
+   "pass_1": true,
+   "seconds": 1933.138851022
+  },
+  "hold_chosen": [
+   1.0592427397557358,
+   0.49795640326975477
+  ],
+  "hold_random": [
+   0.7145163036202412,
+   0.6235
+  ],
+  "agree_chosen": false,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4078,
+  "truth": "base 75.100 53.000 10.500\nboss 12.300 -9.700 5.900 4.600",
+  "two": {
+   "recovered": "base 74.973 52.751 10.208\nboss 12.302 -9.877 6.094 4.752\npose 88.891 14.697 -262.531",
+   "topology_ok": true,
+   "max_error_mm": 0.2918929266574004,
+   "pass_1": true,
+   "seconds": 319.976232728
+  },
+  "disagreement": [
+   [
+    1,
+    218.54004265404495
+   ],
+   [
+    2,
+    521.3041169536766
+   ],
+   [
+    4,
+    851.7228192691709
+   ],
+   [
+    5,
+    11924.404976931228
+   ],
+   [
+    6,
+    1514.4580633619235
+   ],
+   [
+    7,
+    1226.1953573924516
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 75.044 52.840 10.251\nboss 12.301 -9.493 5.840 4.595\npose 88.869 14.646 -262.523",
+   "topology_ok": true,
+   "max_error_mm": 0.24943632689447526,
+   "pass_1": true,
+   "seconds": 659.232020556
+  },
+  "with_random": {
+   "recovered": "base 75.044 52.840 10.251\nboss 12.301 -9.493 5.840 4.595\npose 88.869 14.646 -262.523",
+   "topology_ok": true,
+   "max_error_mm": 0.24943632689447526,
+   "pass_1": true,
+   "seconds": 659.232020556
+  },
+  "hold_chosen": [
+   11.581053965220123,
+   3.5183054393305437
+  ],
+  "hold_random": [
+   11.581053965220123,
+   3.5183054393305437
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4079,
+  "truth": "base 59.800 63.200 12.200\nlinear 2 1.300 21.600 15.000 0.000 2.900\nslotx 18.200 -1.900 13.800 2.100",
+  "two": {
+   "recovered": "base 59.679 62.888 11.915\nlinear 2 16.340 21.627 -14.917 -0.010 2.869\nslotx 16.067 -1.977 9.892 1.859\npose 76.360 50.478 -66.065",
+   "topology_ok": true,
+   "max_error_mm": 3.9082821946061905,
+   "pass_1": false,
+   "seconds": 1236.734563891
+  },
+  "disagreement": [
+   [
+    1,
+    4.265003087211967
+   ],
+   [
+    2,
+    2.1368979270856743
+   ],
+   [
+    4,
+    3.243637730787717
+   ],
+   [
+    5,
+    4.942118489799704
+   ],
+   [
+    6,
+    5.302998720508354
+   ],
+   [
+    7,
+    7.2779699377319895
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 59.765 62.874 11.876\nslotx 19.246 -1.947 11.372 2.051\npose 76.357 50.449 -66.066",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 623.634096884
+  },
+  "with_random": {
+   "recovered": "base 59.641 62.896 12.008\nlinear 2 16.273 21.594 -14.942 -0.014 2.884\nslotx 18.875 -2.029 12.156 2.128\npose 76.391 50.509 -66.067",
+   "topology_ok": true,
+   "max_error_mm": 1.6436320345158837,
+   "pass_1": false,
+   "seconds": 2814.042831731
+  },
+  "hold_chosen": [
+   0.24143632437028403,
+   0.8277243589743589
+  ],
+  "hold_random": [
+   0.25230927820243304,
+   0.7870370370370371
+  ],
+  "agree_chosen": false,
+  "agree_random": true,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4080,
+  "truth": "base 53.200 42.500 14.700 fillet 3.000\nslotx -0.800 7.100 13.500 3.800",
+  "two": {
+   "recovered": "base 52.870 42.318 14.620 fillet 3.053\nslotx -0.748 7.115 13.506 3.803\npose -46.792 65.697 -106.005",
+   "topology_ok": true,
+   "max_error_mm": 0.33035091809981765,
+   "pass_1": true,
+   "seconds": 503.894885019
+  },
+  "disagreement": [
+   [
+    1,
+    265.7180066659881
+   ],
+   [
+    2,
+    3519.4295752572843
+   ],
+   [
+    4,
+    317.2037503859061
+   ],
+   [
+    5,
+    224.80973474886588
+   ],
+   [
+    6,
+    237.6354651310166
+   ],
+   [
+    7,
+    105.15176580824541
+   ]
+  ],
+  "chosen": 2,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 53.025 42.469 14.568 fillet 3.104\nslotx -0.843 7.136 13.436 3.776\npose -46.753 65.655 -106.109",
+   "topology_ok": true,
+   "max_error_mm": 0.1750886255940216,
+   "pass_1": true,
+   "seconds": 733.364541118
+  },
+  "with_random": {
+   "recovered": "base 52.930 42.284 14.605 fillet 3.086\nslotx -1.063 6.584 14.087 3.306\npose -46.797 65.701 -106.013",
+   "topology_ok": true,
+   "max_error_mm": 0.5865577864567104,
+   "pass_1": true,
+   "seconds": 699.785974976
+  },
+  "hold_chosen": [
+   0.6525038789343849,
+   0.5749427917620137
+  ],
+  "hold_random": [
+   0.5948907638982087,
+   0.9974747474747475
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4082,
+  "truth": "base 73.900 46.600 13.700 chamfer 3.000\nhole -28.900 -12.600 4.300\ncounterbore -5.200 -14.200 3.300 6.600 2.800",
+  "two": {
+   "recovered": "base 73.728 46.478 13.492 chamfer 3.064\nhole -28.895 -12.647 4.355\ncounterbore -5.227 -14.245 3.411 6.648 2.773\npose -93.361 -15.517 -239.687",
+   "topology_ok": true,
+   "max_error_mm": 0.20756477671333506,
+   "pass_1": true,
+   "seconds": 1268.779436367
+  },
+  "disagreement": [
+   [
+    1,
+    238.8133852842409
+   ],
+   [
+    2,
+    520.4952454803423
+   ],
+   [
+    4,
+    636.4281037117591
+   ],
+   [
+    5,
+    650.695822957098
+   ],
+   [
+    6,
+    789.7252130667457
+   ],
+   [
+    7,
+    409.6144050276415
+   ]
+  ],
+  "chosen": 6,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 73.845 46.651 13.403 fillet 4.745\nhole -28.843 -12.491 4.359\ncounterbore -5.123 -14.100 3.411 6.622 2.703\npose -93.264 -15.554 -239.665",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 2034.099076255
+  },
+  "with_random": {
+   "recovered": "base 73.853 46.525 13.483 chamfer 3.185\nhole -28.774 -12.535 4.348\ncounterbore -5.086 -14.175 3.526 6.628 2.962\npose -93.319 -15.542 -239.650",
+   "topology_ok": true,
+   "max_error_mm": 0.22572776141587436,
+   "pass_1": true,
+   "seconds": 1488.60390948
+  },
+  "hold_chosen": [
+   1.6430246595295759,
+   2.0629960317460316
+  ],
+  "hold_random": [
+   1.1002028020868004,
+   2.168918918918919
+  ],
+  "agree_chosen": false,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4083,
+  "truth": "base 73.800 43.700 6.800\nhole 9.700 6.200 4.400\nhole 28.000 -10.500 3.500",
+  "two": {
+   "recovered": "base 73.524 43.616 6.652\npose 47.652 74.629 -184.681",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 182.01038143
+  },
+  "disagreement": [
+   [
+    1,
+    118.08919615097717
+   ],
+   [
+    2,
+    55.25344907572489
+   ],
+   [
+    4,
+    40.099489297099915
+   ],
+   [
+    5,
+    79.1786169408861
+   ],
+   [
+    6,
+    39.29144980861449
+   ],
+   [
+    7,
+    58.05655939965522
+   ]
+  ],
+  "chosen": 1,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 73.543 43.585 6.711\npose 47.658 74.643 -184.657",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 267.9886234
+  },
+  "with_random": {
+   "recovered": "base 73.572 43.590 6.634\npose 47.670 74.642 -184.651",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 248.13499805
+  },
+  "hold_chosen": [
+   1.0913377869875283,
+   0.8774725274725275
+  ],
+  "hold_random": [
+   0.8425384963232806,
+   0.7454819277108434
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4086,
+  "truth": "base 69.900 42.500 12.500 fillet 7.200\nlinear 2 -28.600 10.100 15.900 0.000 3.400\ncounterbore -0.200 -4.200 2.900 4.500 9.100",
+  "two": {
+   "recovered": "base 69.639 42.255 12.418 fillet 6.936\nhole -0.118 -4.161 4.496\nlinear 2 -28.461 10.075 15.878 0.028 3.424\npose -15.425 -90.854 -195.038",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 1126.085886084
+  },
+  "disagreement": [
+   [
+    1,
+    47.81954863189336
+   ],
+   [
+    2,
+    48.695819470095806
+   ],
+   [
+    4,
+    57.92990468529085
+   ],
+   [
+    5,
+    72.63036914570776
+   ],
+   [
+    6,
+    133.36152296277533
+   ],
+   [
+    7,
+    66.3980485729127
+   ]
+  ],
+  "chosen": 6,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 69.676 42.311 12.364 fillet 7.057\nlinear 2 -28.546 10.168 15.918 0.003 3.281\ncounterbore -0.306 -4.144 2.907 4.519 9.443\npose -15.494 -90.856 -195.067",
+   "topology_ok": true,
+   "max_error_mm": 0.34276374273406596,
+   "pass_1": true,
+   "seconds": 2674.589080933
+  },
+  "with_random": {
+   "recovered": "base 69.672 42.310 12.411 fillet 7.033\nhole -28.448 10.057 3.465\ncounterbore -12.548 10.068 2.042 3.440 7.558\ncounterbore -0.100 -4.150 3.599 4.539 9.536\npose -15.433 -90.852 -195.055",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 2222.765163309
+  },
+  "hold_chosen": [
+   1.6931275548268723,
+   1.035649819494585
+  ],
+  "hold_random": [
+   3.0606052843167757,
+   0.8761467889908257
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4087,
+  "truth": "base 79.900 68.700 13.400\nhole 2.800 23.400 2.800",
+  "two": {
+   "recovered": "base 79.723 68.556 13.225\npose 13.328 98.227 -185.563",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 198.464150173
+  },
+  "disagreement": [
+   [
+    1,
+    0.0
+   ],
+   [
+    2,
+    0.0
+   ],
+   [
+    4,
+    0.0
+   ],
+   [
+    5,
+    0.0
+   ],
+   [
+    6,
+    0.0
+   ],
+   [
+    7,
+    0.0
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 79.704 68.498 13.210\nboss 1.493 22.700 1.794 3.727\npose 13.327 98.220 -185.524",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 545.231522606
+  },
+  "with_random": {
+   "recovered": "base 79.957 68.605 13.194\npose 13.213 98.281 -185.521",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 244.271149788
+  },
+  "hold_chosen": [
+   0.4550056236578421,
+   0.7854330708661418
+  ],
+  "hold_random": [
+   0.6078207334056556,
+   0.8476953907815631
+  ],
+  "agree_chosen": false,
+  "agree_random": true,
+  "finalists": 1,
+  "error": null
+ },
+ {
+  "seed": 4090,
+  "truth": "base 55.200 49.600 8.000 fillet 3.800\nboss -9.200 8.400 8.300 9.600",
+  "two": {
+   "recovered": "base 55.107 49.897 7.549 fillet 4.026\nboss -9.106 8.650 8.363 10.266\npose -68.787 47.819 -218.716",
+   "topology_ok": true,
+   "max_error_mm": 0.6658362780787339,
+   "pass_1": true,
+   "seconds": 327.281267208
+  },
+  "disagreement": [
+   [
+    1,
+    1997.7022132393802
+   ],
+   [
+    2,
+    2815.3567048478876
+   ],
+   [
+    4,
+    4462.264143835778
+   ],
+   [
+    5,
+    2057.0783309434687
+   ],
+   [
+    6,
+    2556.674847618894
+   ],
+   [
+    7,
+    1807.4220522029457
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 55.110 49.890 7.593 fillet 4.099\nboss -9.183 8.533 8.221 9.684\npose -68.805 47.801 -218.717",
+   "topology_ok": true,
+   "max_error_mm": 0.406920029944696,
+   "pass_1": true,
+   "seconds": 342.365607125
+  },
+  "with_random": {
+   "recovered": "base 55.078 49.784 7.700 fillet 3.993\nboss -9.102 8.190 8.397 9.830\npose -68.791 47.741 -218.634",
+   "topology_ok": true,
+   "max_error_mm": 0.30040584176744023,
+   "pass_1": true,
+   "seconds": 355.988047875
+  },
+  "hold_chosen": [
+   0.8706658132395658,
+   0.5850371747211895
+  ],
+  "hold_random": [
+   2.4883567927833004,
+   0.7926565874730022
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4091,
+  "truth": "base 63.500 69.900 7.300 fillet 4.700\nhole -24.100 -13.600 4.700\nhole -15.600 -3.500 2.400",
+  "two": {
+   "recovered": "base 63.546 70.000 7.185 fillet 5.045\nhole -15.503 -3.583 2.426\ncounterbore -24.330 -13.455 3.637 4.496 3.969\npose -88.703 22.653 -147.271",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 534.800088458
+  },
+  "disagreement": [
+   [
+    1,
+    65.1647441194179
+   ],
+   [
+    2,
+    69.5731788351521
+   ],
+   [
+    4,
+    104.95740310240701
+   ],
+   [
+    5,
+    100.32224611507415
+   ],
+   [
+    6,
+    93.76295883078781
+   ],
+   [
+    7,
+    37.54926444241308
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 63.531 69.904 7.256 fillet 4.923\nhole -15.494 -3.606 2.411\nhole -23.981 -13.505 4.397\npose -88.691 22.622 -147.267",
+   "topology_ok": true,
+   "max_error_mm": 0.3027309160310869,
+   "pass_1": true,
+   "seconds": 520.631946458
+  },
+  "with_random": {
+   "recovered": "base 63.604 69.906 7.193 fillet 4.957\nhole -15.458 -3.558 2.408\nhole -24.005 -13.558 4.440\npose -88.729 22.683 -147.258",
+   "topology_ok": true,
+   "max_error_mm": 0.2599508100751784,
+   "pass_1": true,
+   "seconds": 573.179496583
+  },
+  "hold_chosen": [
+   1.9896845301888102,
+   0.7773010920436817
+  ],
+  "hold_random": [
+   0.8254822639424915,
+   0.4443877551020408
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4092,
+  "truth": "base 72.800 39.500 11.800 chamfer 6.800\ncounterbore 22.500 4.300 2.900 5.200 4.700",
+  "two": {
+   "recovered": "base 71.634 42.199 9.123 chamfer 6.717\nboss 25.247 1.368 4.290 12.808\npose -20.826 85.089 -93.401",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 130.977271625
+  },
+  "disagreement": [
+   [
+    1,
+    583.6415916127168
+   ],
+   [
+    2,
+    358.7986362494087
+   ],
+   [
+    4,
+    436.88142745388905
+   ],
+   [
+    5,
+    323.86838267091184
+   ],
+   [
+    6,
+    463.91713990316896
+   ],
+   [
+    7,
+    490.93314369246156
+   ]
+  ],
+  "chosen": 1,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 72.125 41.318 9.540 chamfer 6.557\npose -21.114 84.962 -92.834",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 135.183284958
+  },
+  "with_random": {
+   "recovered": "base 71.558 40.699 9.850 fillet 8.531\nhole 22.214 4.100 4.134\npose -21.148 85.274 -92.993",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 256.243847625
+  },
+  "hold_chosen": [
+   4.406326658497565,
+   2.5100806451612905
+  ],
+  "hold_random": [
+   1.1746174524092199,
+   1.7364603481624759
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4093,
+  "truth": "base 70.400 53.700 12.300\nhole -17.900 11.800 2.100\ncounterbore 8.900 -9.700 2.300 4.400 7.100",
+  "two": {
+   "recovered": "base 70.217 53.586 12.140\nboss 8.025 -10.346 3.859 4.086\npose -89.883 1.569 -106.229",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 159.531146083
+  },
+  "disagreement": [
+   [
+    1,
+    27.085851640453093
+   ],
+   [
+    2,
+    29.287969909622433
+   ],
+   [
+    4,
+    40.123151763284476
+   ],
+   [
+    5,
+    27.093507113206364
+   ],
+   [
+    6,
+    77.53780962894506
+   ],
+   [
+    7,
+    31.44241828556925
+   ]
+  ],
+  "chosen": 6,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 70.120 53.507 12.149\ncounterbore 8.794 -9.686 1.591 4.374 5.650\npose -89.848 1.592 -106.247",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 187.35178725
+  },
+  "with_random": {
+   "recovered": "base 70.241 53.543 12.154\nhole 8.992 -9.688 4.259\npose -89.858 1.572 -106.205",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 229.561761
+  },
+  "hold_chosen": [
+   0.5553864212712529,
+   0.7207602339181286
+  ],
+  "hold_random": [
+   0.6155506700953361,
+   0.6102783725910065
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4094,
+  "truth": "base 67.800 66.300 15.700\nlinear 2 7.200 9.200 0.000 11.000 2.600\ncircular 4 12.600 -9.900 14.200 55.100 2.000\nboss -1.200 18.500 4.300 11.800",
+  "two": {
+   "recovered": "base 67.682 66.124 15.578\nhole 7.292 9.112 2.621\ncircular 4 12.613 -9.948 14.169 145.052 2.049\nboss -1.118 18.338 4.290 11.599\nboss 6.747 21.579 1.667 7.108\npose 73.158 -57.402 -50.703",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 2760.087253708
+  },
+  "disagreement": [
+   [
+    1,
+    554.4267529806921
+   ],
+   [
+    2,
+    479.2120705002329
+   ],
+   [
+    4,
+    1241.907432594738
+   ],
+   [
+    5,
+    3466.079972736099
+   ],
+   [
+    6,
+    1487.8285876297493
+   ],
+   [
+    7,
+    1228.6126049924994
+   ]
+  ],
+  "chosen": 5,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 67.608 66.086 15.647\nlinear 2 7.270 9.124 -0.058 11.088 2.603\ncircular 4 12.582 -9.887 14.185 145.049 2.059\nboss -1.168 18.103 4.189 11.965\npose 73.109 -57.365 -50.683",
+   "topology_ok": true,
+   "max_error_mm": 0.39708697015933225,
+   "pass_1": true,
+   "seconds": 1382.60055625
+  },
+  "with_random": {
+   "recovered": "base 67.608 66.086 15.647\nlinear 2 7.270 9.124 -0.058 11.088 2.603\ncircular 4 12.582 -9.887 14.185 145.049 2.059\nboss -1.168 18.103 4.189 11.965\npose 73.109 -57.365 -50.683",
+   "topology_ok": true,
+   "max_error_mm": 0.39708697015933225,
+   "pass_1": true,
+   "seconds": 1382.60055625
+  },
+  "hold_chosen": [
+   0.601025279847619,
+   0.430019305019305
+  ],
+  "hold_random": [
+   0.601025279847619,
+   0.430019305019305
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4095,
+  "truth": "base 69.500 63.400 9.300\nhole -22.000 5.200 4.700\ncircular 5 3.300 11.100 13.000 39.100 2.200\nsloty 28.900 -14.700 15.400 3.100",
+  "two": {
+   "recovered": "base 69.548 63.353 9.091\nhole -21.991 5.210 4.102\nsloty 28.987 -14.639 15.450 3.064\nboss 1.229 -1.598 1.818 3.014\npose -59.038 80.351 22.363",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 183.490956334
+  },
+  "disagreement": [
+   [
+    1,
+    81.56965684531633
+   ],
+   [
+    2,
+    129.776794386577
+   ],
+   [
+    4,
+    84.71855582401145
+   ],
+   [
+    5,
+    82.32229663267975
+   ],
+   [
+    6,
+    38.57767986293875
+   ],
+   [
+    7,
+    21.72442446597835
+   ]
+  ],
+  "chosen": 2,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 69.471 63.392 9.095\ncircular 5 3.369 11.106 12.996 39.063 2.164\nslotx -21.843 6.026 1.785 3.231\nsloty 28.996 -14.569 14.779 2.568\npose -59.055 80.350 22.370",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 516.4699705
+  },
+  "with_random": {
+   "recovered": "base 69.490 63.340 9.074\nhole 0.030 -1.395 2.161\ncounterbore -21.700 5.433 3.920 4.404 7.082\nsloty 28.846 -14.778 14.209 2.708\nboss -8.355 10.141 1.724 3.159\npose -59.047 80.331 22.355",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 785.606715375
+  },
+  "hold_chosen": [
+   1.4448694497319141,
+   0.7473903966597077
+  ],
+  "hold_random": [
+   0.8876617023942648,
+   0.6183953033268101
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 4,
+  "error": null
+ },
+ {
+  "seed": 4096,
+  "truth": "base 54.600 56.600 13.100 fillet 7.100\nlinear 3 -4.800 3.300 9.400 0.000 2.900\ncounterbore 6.200 18.400 3.300 6.100 7.800\nsloty 19.100 -11.500 11.900 3.600",
+  "two": {
+   "recovered": "base 54.387 56.393 12.998 fillet 7.157\nhole -4.748 3.286 2.938\ncounterbore 6.105 18.114 2.887 5.962 7.775\nsloty 18.413 -11.127 13.704 2.536\npose -27.096 80.698 -188.825",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 780.027482542
+  },
+  "disagreement": [
+   [
+    1,
+    25.8467510699557
+   ],
+   [
+    2,
+    12.778243071909074
+   ],
+   [
+    4,
+    10.347353662968391
+   ],
+   [
+    5,
+    21.832774333859664
+   ],
+   [
+    6,
+    13.285532215625537
+   ],
+   [
+    7,
+    50.09027760632277
+   ]
+  ],
+  "chosen": 7,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 54.731 56.428 12.731 fillet 7.344\nlinear 3 -5.021 3.175 9.403 -0.018 2.904\ncounterbore 5.960 18.112 2.955 6.055 6.386\nsloty 18.782 -11.415 11.414 3.270\npose -27.227 80.760 -188.720",
+   "topology_ok": true,
+   "max_error_mm": 1.4136855525038063,
+   "pass_1": false,
+   "seconds": 565.825573917
+  },
+  "with_random": {
+   "recovered": "base 54.446 56.441 12.956 fillet 7.228\nlinear 2 -4.765 3.301 9.401 -0.007 2.952\ncounterbore 6.030 18.184 2.913 5.955 6.428\nsloty 19.062 -12.273 10.424 3.335\npose -27.122 80.721 -188.852",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 440.768719375
+  },
+  "hold_chosen": [
+   1.7375865992433381,
+   0.7380705394190872
+  ],
+  "hold_random": [
+   0.6549701981735039,
+   1.0027932960893855
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 2,
+  "error": null
+ },
+ {
+  "seed": 4097,
+  "truth": "base 52.200 45.200 13.000\nhole 19.000 -12.400 3.400\ncounterbore -17.700 2.800 3.000 6.300 3.300\nboss 1.800 3.200 6.600 11.200",
+  "two": {
+   "recovered": "base 52.056 44.863 12.770\npose 79.683 28.159 -109.919",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 55.522909583
+  },
+  "disagreement": [
+   [
+    1,
+    45.781385921264885
+   ],
+   [
+    2,
+    141.21313535694745
+   ],
+   [
+    4,
+    115.83307132357913
+   ],
+   [
+    5,
+    98.30609742315642
+   ],
+   [
+    6,
+    110.09465802299476
+   ],
+   [
+    7,
+    67.88078829078405
+   ]
+  ],
+  "chosen": 2,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 52.181 45.074 12.665\nhole 19.133 -12.219 3.186\nboss -14.469 1.700 4.557 8.421\npose 79.681 28.183 -109.986",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 580.427854667
+  },
+  "with_random": {
+   "recovered": "base 52.015 44.999 12.675 fillet 0.850\npose 79.679 28.232 -110.089",
+   "topology_ok": false,
+   "max_error_mm": null,
+   "pass_1": false,
+   "seconds": 163.370516125
+  },
+  "hold_chosen": [
+   3.9832122414988724,
+   0.7959770114942529
+  ],
+  "hold_random": [
+   3.6731387363561434,
+   1.5147321428571427
+  ],
+  "agree_chosen": false,
+  "agree_random": false,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4098,
+  "truth": "base 72.700 54.800 7.200 fillet 8.400\nhole -16.600 8.700 4.600\nboss 6.100 -13.300 6.500 6.900",
+  "two": {
+   "recovered": "base 72.549 54.763 7.049 fillet 8.581\nhole -16.613 8.820 4.481\nboss 5.942 -13.039 6.632 7.222\npose 6.471 96.078 -2.037",
+   "topology_ok": true,
+   "max_error_mm": 0.32189638774077256,
+   "pass_1": true,
+   "seconds": 588.767157708
+  },
+  "disagreement": [
+   [
+    1,
+    4048.891987988013
+   ],
+   [
+    2,
+    1883.4499197965183
+   ],
+   [
+    4,
+    1800.4720703418507
+   ],
+   [
+    5,
+    1580.8381413509865
+   ],
+   [
+    6,
+    1933.2020917542266
+   ],
+   [
+    7,
+    2393.538787417662
+   ]
+  ],
+  "chosen": 1,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 72.693 54.878 7.011 fillet 8.584\nhole -16.656 8.949 4.309\nboss 6.294 -12.137 6.362 8.353\npose 6.504 96.116 -2.031",
+   "topology_ok": true,
+   "max_error_mm": 1.4529321028925057,
+   "pass_1": false,
+   "seconds": 522.447525083
+  },
+  "with_random": {
+   "recovered": "base 72.591 54.765 6.919 fillet 8.550\nhole -16.726 8.885 4.324\nboss 6.559 -12.426 6.641 6.971\npose 6.491 96.053 -2.054",
+   "topology_ok": true,
+   "max_error_mm": 0.8740202973820406,
+   "pass_1": true,
+   "seconds": 489.022124208
+  },
+  "hold_chosen": [
+   3.1426489281145913,
+   2.542817679558011
+  ],
+  "hold_random": [
+   0.4253889395522678,
+   0.6996007984031936
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ },
+ {
+  "seed": 4099,
+  "truth": "base 64.100 50.300 10.900 fillet 4.200\nboss -24.700 10.300 5.200 6.100\nboss -3.800 4.500 4.400 9.800",
+  "two": {
+   "recovered": "base 64.026 50.060 10.753 fillet 4.351\nboss -24.353 10.279 5.197 6.376\nboss -3.484 4.414 4.207 9.602\npose 82.153 25.001 -264.256",
+   "topology_ok": true,
+   "max_error_mm": 0.3472276821618898,
+   "pass_1": true,
+   "seconds": 257.283969584
+  },
+  "disagreement": [
+   [
+    1,
+    194.2824801265669
+   ],
+   [
+    2,
+    265.3780004523036
+   ],
+   [
+    4,
+    639.2355885496363
+   ],
+   [
+    5,
+    416.18626448502323
+   ],
+   [
+    6,
+    301.7418195448421
+   ],
+   [
+    7,
+    327.6888179556376
+   ]
+  ],
+  "chosen": 4,
+  "random": 5,
+  "with_chosen": {
+   "recovered": "base 64.091 50.153 10.749 fillet 4.443\nboss -24.703 10.252 5.073 6.212\nboss -3.424 4.195 4.281 10.057\npose 82.111 25.020 -264.253",
+   "topology_ok": true,
+   "max_error_mm": 0.3758044554754072,
+   "pass_1": true,
+   "seconds": 468.283373292
+  },
+  "with_random": {
+   "recovered": "base 64.100 50.150 10.716 fillet 4.391\nboss -24.493 10.342 5.318 6.151\nboss -3.098 4.415 4.147 8.671\npose 82.101 24.995 -264.265",
+   "topology_ok": true,
+   "max_error_mm": 1.1290866103863966,
+   "pass_1": false,
+   "seconds": 634.349645458
+  },
+  "hold_chosen": [
+   0.35409659155851936,
+   0.40078585461689586
+  ],
+  "hold_random": [
+   0.5763278777973208,
+   1.9029850746268657
+  ],
+  "agree_chosen": true,
+  "agree_random": true,
+  "finalists": 3,
+  "error": null
+ }
+]

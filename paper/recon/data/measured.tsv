@@ -1,0 +1,212 @@
+recon.1v.p05	2	irys docs/image-to-cad.md "v1" @845f34a, docs/recon-v1-report.md (recon_v1 gate, 1 photo per part, 20 parts)
+recon.1v.p1	6	same
+recon.1v.topo	11	same
+recon.3v.p05	10	irys docs/recon-v1-3view-report.json @527f046 (recon_v1 gate --views 3, 20 parts)
+recon.3v.p1	13	same
+recon.3v.topo	15	same
+recon.3v.err_lo	0.171	same: smallest max-dimension error among parts passing at 0.5 mm
+recon.3v.err_hi	0.488	same: largest
+recon.3v.err_med	0.351	same: median
+recon.3v.pose_med	0.134	same: median of max(|dx|,|dy|) pose error on the tag plane, mm, all 20 parts
+recon.3v.yaw_max	0.065	same: worst yaw error, degrees
+recon.3v.focal_max	0.61	same: worst focal error from EXIF + tag, percent
+recon.parts	20	the gate's parts, generate::program(3000..3020)
+recon.3a.p05	10	irys docs/recon-v1-3view-ao-report.json @de62b0a (recon_v1 gate --views 3 --no-fd, AO differentiated, 20 parts)
+recon.3a.p1	15	same
+recon.3a.topo	16	same
+recon.3a.err_lo	0.157	same: smallest max-dimension error among parts passing at 0.5 mm
+recon.3a.err_hi	0.382	same: largest
+recon.3a.err_med	0.265	same: median
+recon.3a.err1_med	0.320	same: median among parts passing at 1 mm
+recon.3a.s_part	187	same: mean seconds per part (3 photos, CPU)
+recon.3v.s_part	409	docs/recon-v1-3view-report.json @527f046: mean seconds per part with forward-difference AO columns
+recon.3a.p1_ci	0.531	0.888	Wilson 95% interval for 15/20
+recon.3a.p05_ci	0.299	0.701	Wilson 95% interval for 10/20
+recon.1v.p1_ci	0.145	0.519	Wilson 95% interval for 6/20
+recon.pt.p05	11	irys docs/recon-v1-3view-pt-hybrid-report.md @e2fec74 (recon_v1 gate --views 3 --no-fd --renderer hybrid: G-buffer search, final fit through irys's path tracer; 20 parts)
+recon.pt.p1	14	same
+recon.pt.topo	16	same
+recon.g.parts	100	irys docs/recon-v1-gate100-report.md @812dc62 (recon_v1 gate --views 3 --no-fd, AO differentiated; in-grammar seeds 3000..3099; first 20 = recon.3a)
+recon.g.p05	40	same
+recon.g.p1	52	same
+recon.g.topo	60	same
+recon.g.p1_ci	0.42	0.62	same: Wilson 95%
+recon.g.p05_ci	0.31	0.50	same: Wilson 95%
+recon.g.topo_ci	0.50	0.69	same: Wilson 95%
+recon.g.new_p1	37	same: seeds 3020..3099, within 1 mm (of 80)
+recon.g.given_topo	87	same: % within 1 mm given correct topology (52/60)
+recon.g.given_topo_ci	0.76	0.93	same: Wilson 95%
+recon.g.hole_cb	19	same: parts with hole<->counterbore confusion (of 40 topology failures incl. 4 tag misses)
+recon.g.notag	4	same: parts failing before recon (no tag36h11 found in one photo)
+recon.g.med_ok	0.383	same: median worst-dimension error, mm, correct-topology parts
+recon.g.p90_ok	1.406	same: p90
+recon.g.h_bias	0.18	same: mean plate-height error, mm (low)
+recon.o.parts	24	same: out-of-grammar seeds 9000..9023, 6 kinds x 4
+recon.o.p05	5	same
+recon.o.p1	9	same
+recon.o.topo	10	same
+recon.o.p1_ci	0.21	0.57	same: Wilson 95%
+recon.sig.c	17.8	same: sigma' = c * sigma_Fisher, fitted on even seeds
+recon.sig.c_ci	12.7	21.8	same: bootstrap
+recon.sig.cov1	68	same: % of odd-seed dimensions within 1 sigma'
+recon.sig.k95	6.72	same: 95% half-width in sigma'
+recon.sig.cov95	96	same: % of odd-seed dimensions within k95 sigma'
+recon.sig.rho	-0.15	same: Spearman rank correlation of sigma_Fisher with |error|
+recon.sig.opt	6	same: median factor by which Fisher sigma is optimistic
+recon.fm.missed_hole	11	irys docs/recon-v1-gate100-report.md @812dc62, failure modes (a part can show several)
+recon.fm.cb_to_hole	10	same
+recon.fm.extra_hole	10	same
+recon.fm.hole_to_cb	9	same
+recon.fm.extra_cb	7	same
+recon.fm.sharp_to_fillet	7	same
+recon.fm.extra_boss	5	same
+recon.err.slot_len_med	0.304	irys docs/recon-v1-gate100-report.md @812dc62: |error| of slot length, correct-topology parts, median mm
+recon.err.slot_len_p90	2.454	same: p90
+recon.err.slot_len_n_over	11	same: of 29 slot lengths above 0.5 mm
+recon.err.cb_depth_med	0.228	same: counterbore depth median mm (n 22)
+recon.err.cb_depth_p90	0.780	same: p90
+recon.err.hole_r_med	0.038	same: hole radius median mm (n 37)
+recon.err.circ_r_med	0.019	same: circular-pattern hole radius median mm (n 16)
+recon.all.p1	61	same: all 124 parts within 1 mm
+recon.all.parts	124	same
+recon.g.s_part_mew	675	same: median s per part per process on mew (24 cores, 6 processes x 4 threads)
+recon.o.overlap_p1	0	same: keyhole kind, of 4
+recon.o.unround_p1	3	same: off-grid kind, of 4
+amp.a.a	0.994	irys claude/recon-amplitudes @9e335b6, examples/recon_amp a (v0 path-traced studio, 4 views, 256x192): final amplitude, start 0.5
+amp.a.err	0.024	same: worst |error| of the hole's x, y, r, mm (start 2.0, 2.0, 1.0 off)
+amp.a.steps	11	same: accepted LM steps
+amp.a.evals	108	same: renders
+amp.a.s	225	same: seconds on mew (shared, load ~45)
+amp.a.len	5.48	same: L of the hole, nats
+amp.b.a	0.014	irys claude/recon-amplitudes @9e335b6, examples/recon_amp b (no hole in target): final amplitude, start 0.5; emitted program has no hole
+amp.b.a_max0	0.030	same: amplitude where beta=0..10 settled
+amp.b.steps	8	same: accepted LM steps
+amp.b.s	246	same: seconds on mew
+amp.al.a	1.000	irys claude/recon-amplitudes @HEAD, recon_amp with AMP_LONG=1 (beta to 1e5) a: final amplitude
+amp.al.err	0.032	same: worst dim error mm
+amp.bl.a	0.000	irys claude/recon-amplitudes @HEAD, recon_amp with AMP_LONG=1 (beta to 1e5) b: final amplitude
+amp.bl.dnll	30	same: nats of residual given up between a=0.03 (75955.6) and a=0 (75985.1)
+fit.phi_pitch	-25.73	design.md L1033 @9069ea3 rose_fit --vis --iters 600, IRYS_SEC_N=4, --release
+fit.phi_roll	16.07	design.md L1033
+fit.phi_elbow	-60.23	design.md L1033
+fit.true_pitch	-25.78	design.md L719 (truth = arm::TRUE_PHI in degrees)
+fit.true_roll	16.04	design.md L719
+fit.true_elbow	-60.16	design.md L719
+fit.init_pitch	-8.6	design.md L719
+fit.init_roll	3.4	design.md L719
+fit.init_elbow	-37.2	design.md L719
+fit.alpha	0.303	design.md L1034 @9069ea3
+fit.f0_450	0.855	design.md L1034
+fit.f0_550	0.876	design.md L1034
+fit.f0_650	0.895	design.md L1034
+fit.mse	8.57e-4	design.md L1035 @9069ea3
+fit.mse_truth	8.60e-4	design.md L1035
+fit.iters	600	design.md L1163
+fit.ms_theta	111.6	design.md L1171 @9069ea3 --release
+fit.ms_edge	166.8	design.md L1171
+fit.ms_intsec	66.2	design.md L1171
+fit.seconds	244	design.md L1175
+fit.tris	2.4	design.md L683-688 (millions of triangles, whole robot)
+basin.deg	5	design.md L1008 (elbow basin half-width)
+amp.c.v1_s	448	irys claude/recon-amplitudes, recon_amp c (gate part 3016, 3 synthetic photos, photo model, Huber 1.5, beta to 1e5) on mew: v1 seconds; this run's v1 found the hole (gate run read a counterbore)
+amp.c.a_hole	1.0	same: final hole amplitude
+amp.c.a_cb	0.0	same: final counterbore amplitude
+amp.c.r	3.841	same: hole radius mm (truth 3.800)
+amp.c.pos_err	0.29	same: hole centre max |dx|,|dy| vs truth after the half turn, mm
+amp.c.s	93	same: amplitude fit seconds
+amp.c.evals	213	same: renders
+recon.n.parts	80	irys docs/recon-v1-gate100-parts.csv @812dc62, in-grammar seeds 3020..3099 only (the 80 parts never used in development)
+recon.n.p05	30	same
+recon.n.p1	37	same
+recon.n.topo	44	same
+recon.n.p05_ci	0.28	0.48	same: Wilson 95%
+recon.n.p1_ci	0.36	0.57	same: Wilson 95%
+recon.n.topo_ci	0.44	0.65	same: Wilson 95%
+recon.n.given_ci	0.71	0.92	same: Wilson 95% for 37/44
+recon.n.med_ok	0.385	same: median worst-dimension error, correct-topology parts, mm
+recon.n.p90_ok	1.374	same: p90
+recon.n.hole_cb	12	irys docs/recon-v1-gate100-report.json @812dc62 topology_failures_by_part: parts among the 80 with a hole<->counterbore mode
+recon.n.topo_fail	36	same: parts among the 80 with wrong topology (incl. 4 tag misses)
+recon.all.hole_cb	19	same: parts among all 124 with a hole<->counterbore mode
+recon.all.topo_fail	54	same: parts among all 124 with wrong topology
+recon.gi.hole_cb	15	same: among the 100 in-grammar parts (of 40 wrong)
+recon.g.s_part_med	576	irys docs/recon-v1-gate100-parts.csv @812dc62: median seconds per in-grammar part, process time, both machines
+recon.nsig.c	14.0	irys docs/recon-v1-gate100-dims.csv @812dc62, in-grammar seeds >= 3020 only: 68.27th percentile of |err|/sigma_F on even seeds (266 dims)
+recon.nsig.cov1	65	same: % of odd-seed dims (226) within 1 sigma-prime
+recon.nsig.k95	9.15	same: 95th percentile of |err|/sigma-prime on even seeds
+recon.nsig.cov95	97	same: % of odd-seed dims within k95 sigma-prime
+recon.nsig.rho	-0.12	same: Spearman of sigma_F with |err|, 492 dims
+recon.wsig.n	76	irys-assets/recon-v1-gate100/{ig-merged,ood/report}.json (irys @812dc62 gate), per-part judge sigma; seeds 3020..3099 that ran (76, 4 tag misses excluded)
+recon.wsig.tight	37	same: parts whose every mm dimension has calibrated sigma' = 17.8 sigma_F <= 1 mm
+recon.wsig.tight_wrong	17	same: of those, wrong (wrong topology or worst dimension > 1 mm)
+recon.wsig.tight_wtopo	14	same: of those, wrong topology
+recon.wsig.auc	0.58	same: AUC of a part's largest sigma for telling wrong parts from right ones (0.5 is chance)
+recon.wsig.auc_all	0.65	same over all 120 parts that ran (in and out of grammar)
+ampg.n	80	irys claude/recon-amplitudes @90b372d, recon_v1 gate --views 3 --no-fd --amp on synth3 (seeds 3000..3099), mew; greedy and amplitude finals on the same recovery: held-out seeds 3020..3099
+ampg.g_topo	44	same: greedy, right features
+ampg.a_topo	37	same: amplitude finals, right features
+ampg.g_p1	37	same: greedy, every dimension within 1 mm
+ampg.a_p1	31	same: amplitude finals, within 1 mm
+ampg.fixed	0	same: parts amplitude finals turned from wrong to right features
+ampg.broke	7	same: parts amplitude finals turned from right to wrong features
+ampg.relaxed	55	same: parts with a loose hole or counterbore to relax (of 80)
+ampg.s_med	288	same: median seconds of the amplitude finals per relaxed part
+ampg.dev_fixed	1	same, development seeds 3000..3019: fixed
+ampg.dev_broke	1	same: broke
+ampg.a_topo_ci	0.36	0.57	same: Wilson 95% for 37/80
+ampg.g_topo_ci	0.44	0.65	same: Wilson 95% for 44/80
+chk.odd.wrong	37	fresh seeds 4001-4099 odd, wrong answers
+chk.odd.right	13	fresh odd, right answers
+chk.fit.caught	4	odd wrong caught, thresholds fitted on even seeds
+chk.fit.fa	0	odd false alarms, fitted thresholds
+chk.ph.caught	14	odd wrong caught, placeholder thresholds
+chk.ph.fa	3	odd false alarms, placeholder thresholds
+fresh.parts	100	irys claude/recon-amplitudes @cb790ad runs/fresh (seeds 4000-4099, 3 photos, photo model, frozen settings)
+fresh.p1	41	same, every dimension within 1 mm
+fresh.topo	54	same, right features
+fresh.amp_p1	38	same, amplitude finals
+fresh.amp_topo	50	same
+fresh.amp_fixed	1	same
+fresh.amp_broke	4	same
+p3000.dw	2.15	irys @084d424 part 3000: plate width short, mm
+p3000.dh	1.08	same, plate height long, mm
+p3000.sig	0.11	same, largest Fisher sigma, mm
+p3000.excess	0.75	same, residual excess (1 = none)
+fresh.1v.p1	16	irys claude/recon-amplitudes @cb790ad runs/one (seeds 4000-4099, first photograph only, same settings)
+fresh.1v.topo	27	same
+fresh.1v.p1_ci	0.10	0.24	Wilson 95% interval for 16/100
+fresh.p1_ci	0.32	0.51	Wilson 95% interval for 41/100
+fresh.3over1	27	parts right with 3 photographs and wrong with 1
+fresh.1over3	2	parts right with 1 photograph and wrong with 3
+nbv.n	63	irys @c88e1b2 recon_v1 nbv, data/nbv/nbv-fresh.json (assets/bank8: seeds 4000-4099, 8 rendered views each; base views v0,v3; random third view v5); the 63 parts that finished
+nbv.two	23	same: right (right features, every dimension within 1 mm) from the two base photographs
+nbv.chosen	31	same: right with the chosen third view added
+nbv.random	32	same: right with the random third view added
+nbv.chosen_only	5	same: right with the chosen view and not the random one
+nbv.random_only	6	same: right with the random view and not the chosen one
+nbv.same	14	same: parts where the chosen view was the random one
+nbv.wrong	40	same: two-photograph answers that are wrong
+nbv.caught	30	same: of those, flagged (adding the random third photograph changes the features)
+nbv.caught_ci	0.60	0.86	Wilson 95% interval for 30/40
+nbv.right	23	same: two-photograph answers that are right
+nbv.fa	2	same: of those, flagged
+nbv.odd_caught	17	same, odd seeds: wrong answers flagged
+nbv.odd_wrong	23	same
+nbv.odd_fa	1	same, odd seeds: right answers flagged
+nbv.odd_right	8	same
+nbv.even_caught	13	same, even seeds
+nbv.even_wrong	17	same
+nbv.even_fa	1	same
+nbv.even_right	15	same
+nbv.trusted	31	same: unflagged answers
+nbv.trusted_right	21	same: of those, right (two-photograph answer)
+nbv.trusted3_right	20	same: of those, the three-photograph answer right
+nbv.hold_auc	0.51	same: AUC of the held-out view's residual excess for wrong vs right two-photograph answers (look fitted to the scored program)
+recon.wsig.auc_ci	0.45	0.71	Hanley-McNeil 95% interval for the sigma AUC (39 wrong, 37 right of 76)
+nbv.hold_auc_ci	0.36	0.66	Hanley-McNeil 95% interval for the held-out residual AUC (40 wrong, 23 right)
+fresh.topo_ci	0.44	0.63	Wilson 95% interval for 54/100
+nbv.trusted_ci	0.50	0.81	Wilson 95% interval for 21/31
+nbv.sub_right	24	the 63 nbv parts in the earlier three-photograph run (runs/fresh): right
+nbv.sub_topo	32	same: right features
+nbv.rest_right	17	the other 37 parts in that run: right
+nbv.rest_topo	22	same: right features
