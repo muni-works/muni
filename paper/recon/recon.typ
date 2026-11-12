@@ -61,7 +61,7 @@
   }))
 }
 
-#set document(title: "Tight Error Bars, Wrong Parts", author: "Cam Pedersen (Municipal Robotics)")
+#set document(title: "Seeing Is Measuring", author: "Cam Pedersen (Municipal Robotics)")
 
 #let hf-out() = { let m = page.margin; let l = if type(m) == dictionary { m.at("left", default: m.at("x", default: 0.75in)) } else { 0.75in }; calc.max(0in, l - 0.7in) }
 
@@ -74,7 +74,7 @@
   numbering: "1",
   header: context {
     if counter(page).get().first() > 1 {
-      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Tight Error Bars, Wrong Parts], caps[Municipal Robotics]))
+      pad(x: -hf-out(), grid(columns: (1fr, auto), caps[Seeing Is Measuring], caps[Municipal Robotics]))
     }
   },
   footer: context {
@@ -229,11 +229,11 @@
       line(length: 100%, stroke: 0.5pt + c-line-hi),
       caps[November 2026 · Draft])
     #v(0.35in)
-    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.2, tracking: -0.025em)[Tight Error Bars,\ Wrong Parts])
+    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.2, tracking: -0.025em)[Seeing Is\ Measuring])
     #v(0.5em)
     #line(length: 22%, stroke: 2pt + c-label)
     #v(0.7em)
-    #text(size: s-lg, fill: c-label)[A fit to photographs cannot tell you when it found the wrong CAD program]
+    #text(size: s-lg, fill: c-label)[Editable CAD programs from photographs]
     #v(0.45in)
     #grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
       caps[Cam Pedersen · Municipal Robotics],
