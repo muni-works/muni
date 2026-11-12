@@ -29,21 +29,39 @@
     image("../images/muni-logo.svg", height: 0.32in))
 }
 
-// ---- card 1: the confident wrong answer -----------------------------------------
+// ---- card 1: what we built --------------------------------------------------------
 #caps[Municipal Robotics · Research]
 #v(0.25in)
-#text(font: sans-sb, size: 34pt, tracking: -0.02em)[Every error bar\ under 0.11 mm.]
-#v(0.05in)
-#text(font: sans-sb, size: 34pt, tracking: -0.02em, fill: fault)[Wrong part.]
-#v(0.22in)
-#block(radius: 6pt, clip: true, image("../images/recon/3000-v0.jpg", width: 100%))
-#v(0.22in)
-#grid(columns: (auto, 1fr), column-gutter: 0.18in, row-gutter: 0.14in,
-  caps[Truth], text(font: mono, size: 12pt)[69.0 × 56.2 plate · *a hole* · a boss],
-  caps[Found], text(font: mono, size: 12pt, fill: fault)[66.8 × 55.7 plate · no hole · a boss],
+#text(font: sans-sb, size: 40pt, tracking: -0.025em)[Photos in.]
+#v(0.02in)
+#text(font: sans-sb, size: 40pt, tracking: -0.025em, fill: sel)[Editable CAD out.]
+#v(0.2in)
+#grid(columns: (1fr, 1fr, 1fr), column-gutter: 0.08in,
+  block(radius: 4pt, clip: true, image("../images/recon/4035-b0.jpg", width: 100%)),
+  block(radius: 4pt, clip: true, image("../images/recon/4035-b3.jpg", width: 100%)),
+  block(radius: 4pt, clip: true, image("../images/recon/4035-b5.jpg", width: 100%)),
 )
-#v(0.18in)
-#text(size: 14pt, fill: label)[Recovered from one photo. Plate 2.15 mm short, the hole at its far edge missed, a clean residual. Nothing the fit reports says it's wrong.]
+#v(0.12in)
+#align(center, text(font: mono-m, size: 18pt, fill: label)[↓])
+#v(0.08in)
+#block(width: 100%, inset: 0.2in, radius: 6pt, fill: surface, stroke: 0.6pt + line-c, {
+  set text(font: mono, size: 14pt)
+  set par(leading: 0.7em)
+  text(fill: label)[\# part 4035, recovered]
+  linebreak()
+  [base #text(fill: sel)[59.61 49.73 14.33]]
+  linebreak()
+  [boss #text(fill: sel)[18.95 −14.88 5.20 11.93]]
+  linebreak()
+  [boss #text(fill: sel)[0.22 −5.82 6.28 3.58]]
+})
+#v(0.16in)
+#grid(columns: (1fr, 1fr), column-gutter: 0.2in,
+  [#text(font: sans-sb, size: 24pt, fill: ok)[0.13 mm] \ #text(size: 12pt, fill: label)[worst error, every dimension]],
+  [#text(font: sans-sb, size: 24pt)[3 photos] \ #text(size: 12pt, fill: label)[and a printed tag. No scanner.]],
+)
+#v(0.12in)
+#text(size: 13pt, fill: label)[A program you can edit, not a mesh. Every candidate rendered and fitted through irys, our differentiable renderer. Synthetic test photos.]
 #foot
 
 #pagebreak()
@@ -51,9 +69,9 @@
 // ---- card 2: what catches it ----------------------------------------------------
 #caps[Municipal Robotics · Research]
 #v(0.25in)
-#text(font: sans-sb, size: 30pt, tracking: -0.02em)[How do you know the\ CAD is wrong?]
+#text(font: sans-sb, size: 30pt, tracking: -0.02em)[And it knows when\ it's wrong.]
 #v(0.12in)
-#text(size: 16pt, fill: label)[Recover again with one more photo. If the features change, don't trust it.]
+#text(size: 16pt, fill: label)[Error bars can't tell you. A second look can: recover with one more photo, and if the features change, flag it.]
 #v(0.18in)
 #let bar(name, k, n, col, note) = {
   grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
@@ -80,7 +98,7 @@
   align(center, caps[Two photos: plate only]),
   align(center, caps(fill: warn)[\+ third: two bosses]))
 #v(0.16in)
-#text(size: 14pt)[Part 4035 changed when the third photo arrived, so it's flagged. vcad will take three photos and only call a part trusted when both answers agree.]
+#text(size: 14pt)[Two photos missed both bosses. The third caught it, so the check flagged the first answer. Coming to vcad: three photos, and a part is trusted only when the answers agree.]
 #v(0.04in)
 #text(size: 11pt, fill: label)[Synthetic photos, 63 held-out parts.]
 #foot
