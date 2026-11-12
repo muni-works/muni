@@ -48,6 +48,7 @@ for line in lines:
         rows["irys::fdvel"], rows["irys::fdvel_rel"] = [m.group(1)], [m.group(2)]
     if m := re.search(r"render FD \(h (\S+) mm.*?\):\s+(\S+)\s+rel (\S+)", line):
         rows["irys::render_h"], rows["irys::render"], rows["irys::render_rel"] = [m.group(1)], [m.group(2)], [m.group(3)]
+        rows[f"irys::render_sweep::{m.group(1)}"] = [m.group(2)]
     if m := re.search(r"segs=\s*(\d+) nodes=\s*(\d+): capture\s+(\S+)\s+seam\s+(\S+)\s+pullback\s+(\S+)", line):
         rows[f"m10::timing::{m.group(1)}"] = list(m.groups()[1:])
     if m := re.search(r"(rounded cube|flywheel)\s+segs=\s*(\d+) nodes=\s*(\d+) topo-verts=\s*(\d+): naive\s+(\S+)\s+grid\s+(\S+)", line):

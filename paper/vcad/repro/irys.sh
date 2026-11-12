@@ -5,7 +5,7 @@
 set -euo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd)
 WORK=${1:-$HERE/work}
-IRYS_REV=103e3da807f6f33b96daa70d0da817897c496e21
+IRYS_REV=5e09686360bf58749c9af689215da11f2d0d0e22
 ROSE_REV=832192f32a1634ea856e0a8ded40eacd84e9d9e7
 mkdir -p "$WORK"
 [ -d "$WORK/irys/.git" ] || git clone -q https://github.com/muni-works/irys.git "$WORK/irys"
@@ -13,5 +13,10 @@ mkdir -p "$WORK"
 git -C "$WORK/irys" checkout -q --force "$IRYS_REV"
 git -C "$WORK/rose" checkout -q --force "$ROSE_REV"
 cd "$WORK/irys"
-ROSE="$WORK/rose" LIN=1 N=100000 SEEDS=8 H=0.1 K=16 \
-  cargo run --release -p irys-diff --example rose_brep 2>&1 | tee "$HERE/../data/raw/irys.log"
+# The render-FD step sweep: the table reports h = 0.1 mm (the last run); the other two bound the
+# render FD's own step error.
+: > "$HERE/../data/raw/irys.log"
+for H in 0.02 0.05 0.1; do
+  ROSE="$WORK/rose" LIN=1 N=100000 SEEDS=8 H=$H K=16 \
+    cargo run --release -p irys-diff --example rose_brep 2>&1 | tee -a "$HERE/../data/raw/irys.log"
+done

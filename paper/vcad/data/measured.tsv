@@ -2138,6 +2138,8 @@ cbox::surface_only	-4.1421356237309517e-4
 cbox::fd::-4	-4.6392463079239477e-4
 cbox::fd::-3	-4.63943695170604e-4
 cbox::fd::-2	-4.639385885662258e-4
+brep.nodes	4942
+brep.tris	9932
 irys::nodes	4942
 irys::samples	100000
 irys::seeds	8
@@ -2150,3 +2152,13 @@ irys::fdvel_rel	4.27e-5
 irys::render_h	0.1
 irys::render	+4.001440e1
 irys::render_rel	3.85e-3
+irys::render_sweep::0.02	+4.035312e1
+brep.pull	4.016863735090903e1
+brep.pull_se	2.2638672671327457e-2
+brep.fwd_rel	1.240775729709184e-15
+brep.fd	4.017028482437577e1
+brep.fd_rel	4.2749867504325455e-5
+brep.e2e	4.001439824415229e1
+brep.e2e_rel	3.8545901856535184e-3
+irys::render_sweep::0.05	+4.043696e1
+irys::render_sweep::0.1	+4.001440e1
