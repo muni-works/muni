@@ -96,3 +96,7 @@ sec.share1	13.24	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); phase
 sec.share2	34.05	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); same, φ1
 sec.share3	23.13	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); same, φ2
 mega.chunks	9	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); phase2c::megapixel_in_one_call "1024² × 4 spp in 9 chunks"
+rel.fwd_med	0.8247	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2c::nee_throughput
+rel.grad_med	1.098	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2c::nee_throughput
+rel.fwd_nee_med	1.654	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2c::nee_throughput
+rel.grad_nee_med	3.876	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); median of 4 runs of phase2c::nee_throughput
