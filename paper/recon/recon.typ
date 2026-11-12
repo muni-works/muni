@@ -228,26 +228,20 @@
       line(length: 100%, stroke: 0.5pt + c-line-hi),
       caps[November 2026 · Draft])
     #v(0.35in)
-    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.2, tracking: -0.025em)[Seeing Is\ Measuring])
+    #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.2, tracking: -0.025em)[Tight Error Bars,\ Wrong Parts])
     #v(0.5em)
     #line(length: 22%, stroke: 2pt + c-label)
     #v(0.7em)
-    #text(size: s-lg, fill: c-label)[Editable CAD programs from photographs]
+    #text(size: s-lg, fill: c-label)[A fit to photographs cannot tell you when it found the wrong CAD program]
     #v(0.45in)
     #grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
       caps[Cam Pedersen · Municipal Robotics],
       image("images/muni-logo.svg", width: 0.7in))
-    #v(0.2in)
-    #text(size: s-xs, fill: c-label)[Cover: a printed enclosure with a rounded shell, a recessed bezel, a speaker grille and two round ports. Today's grammar cannot write it down (@sec:real).]
   ]
 ]}
 
 #let abstract-text = [
-  A photograph of a part shows which features the part has and how large they are. We recover both as an editable CAD program, a plate and a list of holes, counterbores, slots, bosses and patterns, each with its dimensions, from three photographs beside a printed tag. Every photograph in this paper is synthetic, rendered with a phone camera model. We have not yet tested real photographs. We score a program by its description length in nats, which adds the residual, the parameter cost and the program length in one unit. The search keeps an edit that adds a feature only if the feature shortens the total. Inside each edit, Levenberg–Marquardt fits the dimensions with a Jacobian from irys's edge-sampling estimator. The companion paper describes that renderer.
-
-  On #V("recon.n.parts") held-out synthetic parts drawn from the grammar, the recovery reads every dimension to within 1 mm on #V("recon.n.p1") (#calc.round(100 * V("recon.n.p1") / V("recon.n.parts"))%, Wilson 95% interval #ci("recon.n.p1_ci")%). Most misses are wrong features: the recovery finds the right features on #V("recon.n.topo") parts, and #V("recon.n.p1") of those measure within 1 mm. A hole read as a counterbore, or the reverse, appears in #V("recon.n.hole_cb") of the #V("recon.n.topo_fail") parts with wrong features. The Fisher error bars are too small by a median factor of #V("recon.sig.opt") and do not rank the errors. One empirical scale restores coverage on average but is not a per-dimension error bar.
-
-  A greedy search decides each feature with one yes-or-no comparison. We propose *feature amplitudes*, a continuous relaxation over which features a program has. Each optional feature gets an amplitude $a in [0, 1]$. The image blends the renders without and with the feature, the derivative with respect to $a$ is exact, and the description length charges $a L$. An anneal drives every amplitude to 0 or 1, and the fit then emits the ordinary program. On three small problems it fits a hole from a start 2 mm off to within 0.03 mm, removes a hole the target does not have once the anneal is long enough, and chooses the hole over the counterbore on one part. On the 80 held-out parts, making the final choice this way is worse than the greedy search: it finds the right features on 37 parts against 44, fixing none and breaking seven, because the anneal deletes features whose alternatives split the evidence. We report it as a negative result with its cause. The last section lists what the grammar needs before it can describe a real printed enclosure.
+  We recover editable CAD programs (a plate with holes, counterbores, slots, bosses and patterns, each with its dimensions) from photographs by analysis by synthesis: a search over programs scored by description length, with every candidate's dimensions fitted through a differentiable renderer. Such a fit reports a Fisher error bar for every dimension. We ask whether those error bars, or the fit's residuals, tell a right answer from a wrong one. On held-out synthetic parts they do not. Among #V("recon.wsig.n") parts, #V("recon.wsig.tight_wrong") of the #V("recon.wsig.tight") whose every error bar is under 1 mm are wrong, and the largest error bar separates wrong answers from right ones with an area under the ROC curve of #F("recon.wsig.auc", 2). Four image-based checks (residual on the part against the table, outline offset, unexplained residual blobs, score margin to the runner-up) do little better: with thresholds fitted on half of #V("fresh.parts") fresh parts, they flag #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers on the other half. Most wrong answers explain the photographs. The one reliable signal is outside the fit: the number of photographs. We report the recovery's accuracy plainly (#V("fresh.p1") of #V("fresh.parts") fresh parts within 1 mm on every dimension) and a continuous relaxation over features that made identification worse. Every photograph is synthetic.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -265,250 +259,86 @@
 
 = Introduction
 
-To measure a part, you usually touch it with calipers, a coordinate-measuring machine or a gauge pin. A photograph touches nothing, yet it already contains the part's dimensions, mixed up with its pose, its finish, the light in the room and the lens. Inverse rendering separates them by finding the parameters whose rendering matches the photograph. For an engineered object those parameters are not free-form vertices or a neural field. They are the dimensions in a CAD model, the angles of a mechanism's joints and the finish of its surfaces. If a renderer can recover them, and say how well it knows each one, it is a measuring instrument.
+A drawing of a part is a short program: "a 69 by 56 by 7 mm plate, chamfered, with a 2.6 mm hole and a boss" is a dozen numbers. Recovering that program from photographs takes two steps. *Identification* decides which features the part has. *Measurement* decides their dimensions. Analysis by synthesis does both by rendering candidate programs and keeping the one whose render best explains the photographs @kulkarni2015picture @ellis2018graphics. With a differentiable renderer @li2018edge the measurement step is a least-squares fit, and least squares gives every dimension an error bar from the Fisher information.
 
-An instrument has two obligations. It must be *exact*, so the same input gives the same reading. It must be *precise*, so its error is small and known. The companion paper @pedersen2026irys makes the renderer exact. Its replay is bit-identical to its forward pass, and its gradients match central differences down to the dimensions of a BRep. This paper measures precision, first on a model we already have (@sec:warmup), then on a model we must find.
+A user who gets back a program with every dimension at ±0.1 mm will trust it. This paper is about why they should not. The Fisher error bar is the curvature of the score at the answer the search found. It says how well that answer is pinned if the model is right, and nothing about whether the right features were found @white1982misspecified. A plate 2 mm too short with its hole missed can sit in a basin as narrow as the true one.
 
-A drawing of a part is a short program. "A 74 by 67 by 17 mm plate with three 3 mm holes on a 17 mm circle" is a dozen numbers and a few words, and anyone can make the part from it. A photograph of the same part is millions of pixels. Turning the photograph back into the program takes two steps. *Identification* finds which features the part has. *Measurement* finds their dimensions. Measurement is continuous and has gradients. Identification is discrete and has none.
+We measure how often this happens and whether anything computed from the fit can catch it. Our contributions are:
 
-irys supplies the gradients for measurement. vcad, our BRep CAD kernel @pedersen2026vcad, builds each program's solid. This paper adds identification. We search over editable CAD programs, fit each candidate's dimensions through irys's estimator, and choose between candidates by *description length* @rissanen1978mdl @grunwald2007mdl. The description length is the number of nats needed to encode the photographs given the program, plus the program and its parameters. The search adds a feature only when the feature shortens that total.
+- *A recovery pipeline* that searches CAD programs by description length @rissanen1978mdl through a differentiable renderer, as a testbed (@sec:method).
+- *A held-out measurement of when its error bars mislead.* On fresh synthetic parts, tight error bars are nearly uninformative about whether the answer is right (@sec:sigma).
+- *A negative result for post-hoc checks.* Four residual-based checks, with thresholds fitted on one half of fresh parts and tested on the other, catch few wrong answers. Part 3000 shows why: its wrong answer leaves a clean residual (@sec:check).
+- *What does help.* More photographs. One photograph per part is far worse than three, and a photo-count rule is the only check we keep (@sec:views).
 
-On parts the grammar can describe, measurement works and identification often fails. On #V("recon.n.parts") held-out synthetic parts, the recovery identifies the features correctly on #V("recon.n.topo") (#calc.round(100 * V("recon.n.topo") / V("recon.n.parts"))%), and #V("recon.n.p1") of those #V("recon.n.topo") measure within 1 mm. The largest single group of failures is a confusion between a hole and a counterbore. A greedy search decides each edit from one fit, and these two candidates render almost the same image. The photographs barely show a counterbore's floor, so a counterbore looks like a hole of its outer radius.
-
-The second half of the paper gives that decision a gradient. *Feature amplitudes* relax the choice of features to a continuous one. Each optional feature gets an amplitude $a in [0, 1]$. The model image is the render without the feature plus $a$ times the difference the feature makes. The description length charges $a L$, and an anneal drives each amplitude to 0 or 1. The derivative with respect to an amplitude is exact and costs one extra render, with no edge sampling. We expect it to choose well among features that something else has proposed, the hole-or-counterbore choice in particular, since a counterbore of depth zero is a hole. We expect it to discover poorly. An amplitude placed away from every real feature gets no gradient toward one.
-
-Our contributions are:
-
-- *A warm-up with a known model.* Three joint angles and an anodised finish of a robot arm read from one render, to #fx(max-deg-err, 2)° and #fx(theta-err, 3) (@sec:warmup).
-- *Recovery by description length through a differentiable renderer.* A search over a CAD grammar whose every candidate is fitted by Levenberg–Marquardt with an edge-sampled Jacobian and scored in nats, with three photographs and a printed tag as the only input (@sec:method).
-- *A held-out test.* A development set of #V("recon.parts") parts, then #V("recon.n.parts") new in-grammar parts and #V("recon.o.parts") out-of-grammar parts run once with every setting frozen, with per-feature error, failure modes and a check of the error bars against the actual errors (@sec:results).
-- *Feature amplitudes*, a continuous relaxation over the discrete part of a CAD program, with a continuous description length. We test it on three small problems and on the 80 held-out parts, where as specified it is worse than the greedy search, and we trace why (@sec:amp, @sec:amp-results).
-
-== Scope and limits
-
-- *The photographs are synthetic.* irys's OpenPBR scene kernel renders them with a phone camera model. No number in this paper comes from a real photograph (@sec:real). The targets and the final path-traced fit share a renderer, so the results exclude every error a real camera, print and room would add. The search itself fits a cheaper photo model, which differs from the renderer that made the targets (@sec:method).
-- *The grammar is a plate.* One extruded block with a corner treatment and features cut into or standing on its top face. The out-of-grammar parts of @tab:gate test its edges, not a different family.
-- *The search is the method's weakest part.* The amplitude relaxation improves how it chooses between proposals and does not change what it proposes.
-- *The arm fit is one run.* It converges from a start 23° off at the elbow. Under sky-only light the image loss along the elbow has a basin only about ±#V("basin.deg")° wide, and a fit without the sun stopped in a local minimum. We have not measured convergence over starts or seeds.
-- *The search is not deterministic across machines.* One part gave a different program on a second run (@sec:amp-results). We have not measured this variance.
-- *Compute.* A part takes about ten minutes of CPU time (@sec:results). Only the final path-traced fit uses the companion paper's GPU path.
-
-= Related work
-
-*Inverse CAD and program synthesis.* Recovering an editable CAD description is usually posed as program synthesis. CSGNet parses shapes into CSG programs with a recurrent network @sharma2018csgnet; InverseCSG converts meshes to compact CSG trees with a solver-based synthesizer @du2018inversecsg; Szalinski rewrites flat CSG into programs with loops by equality saturation @nandi2020szalinski; DeepCAD generates sketch-and-extrude sequences @wu2021deepcad; ShapeAssembly writes part-assembly programs @jones2020shapeassembly; Point2CAD recovers BRep surfaces from point clouds @liu2024point2cad, and CAD-Recode writes CAD code from point clouds with a language model @rukhovich2024cadrecode. Ellis et al. infer graphics programs from images by proposing primitives and synthesizing a program over them @ellis2018graphics, and DreamCoder learns a library of program components alongside the search @ellis2021dreamcoder. Learned systems train on construction sequences such as the Fusion 360 Gallery @willis2021fusion360, and Point2Cyl segments point clouds into extrusion cylinders @uy2022point2cyl. Tian et al. infer and execute 3D shape programs @tian2019shapeprograms, and Ellis et al. guide program search by executing partial programs @ellis2019repl. These methods take meshes, point clouds or clean drawings, or learn a prior from a dataset. Ours starts from photographs and scores each candidate by rendering it. We do not compare against any of them in this draft (@sec:limits).
-
-*Analysis by synthesis.* Fitting a generative graphics model to an image is an old idea. Picture expresses it as a probabilistic program over scenes @kulkarni2015picture, and Cascaval et al. differentiate CAD programs so that edits to the shape move the parameters @cascaval2022bidirectional. Leclerc used description length to choose among image descriptions @leclerc1989mdl, and the Bayesian information criterion @schwarz1978bic is the usual simpler penalty that our Laplace term refines.
-
-*Measurement from images.* Close-range photogrammetry measures manufactured objects from calibrated images, usually by triangulating targets or features and adjusting cameras and points together @luhmann2019photogrammetry. We share its tools (a calibration target, bundle-adjustment-style least squares, Fisher-information error estimates) but fit a parametric model of the whole part to its pixels rather than to sparse points, so a hole's diameter is read from its outline and shading rather than from markers.
-
-*Relaxing discrete structure.* Continuous relaxations of a discrete choice are common where the choice has no gradient. DARTS mixes candidate operations with softmax weights and anneals to one @liu2019darts; the Gumbel-softmax samples from a relaxed categorical @jang2017gumbel; DiffCSG differentiates CSG by rasterization so the boolean structure can be optimized @yuan2024diffcsg. The amplitude's length term $a L$ is an $ell_1$ penalty on a selection variable @tibshirani1996lasso, and the anneal $beta a (1 - a)$ is the concave penalty that topology optimisation uses to push densities to 0 or 1 @bendsoe2003topology and that $L_0$ relaxations approximate @louizos2018l0. The blend is a linear interpolation of two images, so its derivative is elementary. None of these parts is new. What we add is their use to choose CAD features. Two things make that use convenient. A feature's effect on the render is local and nearly additive, so the blend factors per feature and its gradient is exact. The description length sets the penalty's weight in the same unit as the residual, so there is no weight to tune.
-
-*Differentiable rendering.* Edge sampling @li2018edge and path replay @vicini2021prb, and their implementation in irys, are described in the companion paper @pedersen2026irys. Mitsuba 3 @jakob2022mitsuba3 is the closest general system. Reparameterisation @loubet2019reparam and warped-area sampling @bangaru2020warped handle the same visibility discontinuities without sampling edges. The vcad BRep kernel differentiates CAD parameters upstream of the mesh @pedersen2026vcad.
-
-= A model you already have <sec:warmup>
-
-We first recover the parameters of a model we already have. irys reads our humanoid's left arm, with its joints, from its CAD source. The unknowns are three joint angles and the finish of the anodised links, and the photograph is a path-traced render with fresh noise. Nothing in this problem is discrete, so it tests the continuous fit alone.
-
-#figure(fig-rosefit(),
-  caption: [#lead[Recovering three joint angles and a finish from a render.] The left arm of our humanoid robot, in context, 192×192, 8 samples per pixel, path depth 5 with next-event estimation. (a) The worst of the three joint errors for four configurations: all terms for 600 iterations, the arm alone in frame (the control), without secondary edges, and with a coarse-to-fine pyramid schedule. The last two diverge and leave the top of the plot within 50 iterations, so we keep secondary edges and drop the pyramid. (b) The all-terms run's joint angles against the truth (dashed). One run per configuration. `data/rose-fit.csv`, from irys `docs/phase2f-rose-loss.csv`.]) <fig:rose>
-
-The target is the arm at shoulder pitch, shoulder roll and elbow (#V("fit.true_pitch"), #V("fit.true_roll"), #V("fit.true_elbow"))° with a bead-blasted clear-anodised finish $theta = (0.30, 0.86, 0.88, 0.90)$. From (#V("fit.init_pitch"), #V("fit.init_roll"), #V("fit.init_elbow"))° and a default finish, Adam on the image MSE for #V("fit.iters") iterations reaches (#V("fit.phi_pitch"), #V("fit.phi_roll"), #V("fit.phi_elbow"))°, an error of at most #fx(max-deg-err, 2)°, and $theta = (#V("fit.alpha"), #V("fit.f0_450"), #V("fit.f0_550"), #V("fit.f0_650"))$, within #fx(theta-err, 3) of the truth. The final MSE, #E("fit.mse"), equals that of the true parameters re-rendered with fresh noise (#E("fit.mse_truth")), so the fit has converged to the noise floor. An iteration costs #F("fit.ms_theta", 0) ms for the material gradient on the GPU, #F("fit.ms_edge", 0) ms for the primary edge term and #F("fit.ms_intsec", 0) ms for the interior and secondary terms on the CPU; the run takes #V("fit.seconds") s. The three terms sum to 345 ms per iteration, 207 s of the 244 s, and the rest is the forward render and bookkeeping. This is one run. We have not measured convergence over seeds or starting points. 
-
-This run started 23° from the answer at the elbow and converged. That is not general. With the sun removed, the image loss along the elbow has a basin about ±#V("basin.deg")° wide, and a fit stopped in a local minimum at −20°. A continuous fit needs a start inside its basin, and the discrete search in the next section has to supply one.
+Every photograph here is rendered, so every result excludes what a real camera, print and room would add. The claim is about the fit's self-assessment, which synthetic data tests cleanly, because the truth is known exactly.
 
 = The recovery <sec:method>
 
-== Programs and their description length
+A program is a plate (width, depth, height, and a sharp, filleted or chamfered corner) with an ordered list of features on its top face (through-holes, counterbores, slots, bosses, linear and circular hole patterns) and its pose on the table. We score a program in nats,
 
-A program is a plate (width, depth, height and a corner treatment: sharp, a fillet or a chamfer) and an ordered list of features on its top face: through-holes, counterbores, through-slots along either axis, bosses, linear hole patterns and circular hole patterns, each with its centre and dimensions, plus the part's pose on the table, $(x, y, "yaw")$. The program is built by the vcad kernel and tessellated for rendering. We score a program by its description length in nats,
+$ "score" = underbrace(-log p("photos" | "render"("program", theta)), "residual") + underbrace(1/2 log det F(theta), "parameters") + underbrace(-log p("program"), "program"), $
 
-$ "score"("program", theta) = underbrace(-log p("photos" | "render"("program", theta)), "residual") + underbrace(1/2 log det F(theta), "parameters") + underbrace(-log p("program"), "program") $
+with a Huber noise model, a Laplace parameter cost from the Fisher information $F = J^top Sigma^(-1) J$ @schwarz1978bic @grunwald2007mdl, and a uniform grammar prior. The noise variance is scaled by the residual's autocorrelation area, measured on the open table, so smooth shading errors are not counted as independent pixels.
 
-the residual under a robust (Huber) noise model, a Laplace parameter cost from the Fisher information $F = J^top Sigma^(-1) J$, and the program's own length under a uniform grammar prior, a few nats for each feature and its kind. Every term is in nats, so the score has no weight between fit and complexity. The method still has settings: the Huber threshold, the noise scaling below, a beam of two, four finalists, and for amplitudes a freeze threshold and an anneal schedule. We fixed all of them on the development set, except the anneal schedule, which we extended after a failure (@sec:amp-results). The parameter term uses the Fisher information, which @sec:results shows is miscalibrated by a factor of about #V("recon.sig.c"), or $ln #V("recon.sig.c") approx 2.9$ nats per parameter. That is as large as a feature's program length, so the score's choices between programs with different parameter counts are biased by a comparable amount. We have not corrected for it. A feature that explains ten pixels of noise costs more in program and parameters than it saves in residual, so the search refuses it.
+The search starts from a box, proposes edits (add a feature at a residual blob, remove one, turn a hole into a counterbore or slot, merge holes into a pattern, change the corner), fits each by Levenberg–Marquardt and keeps a beam of two. The best four distinct programs are refitted at full resolution and the lowest score wins. The Jacobian comes from edge sampling @li2018edge in irys @pedersen2026irys, through a deterministic photo model (closed-form shading, spherical-harmonic light, one key light with soft shadows, and ambient occlusion whose derivative we take by treating its 16 fixed rays as directional lights). A printed AprilTag @olson2011apriltag fixes each camera and the metric scale.
 
-The noise model matters to the score more than to the fit. The residual of a good fit is not white. The appearance model cannot reproduce a window's reflection, interreflection or a tone curve, and those errors are smooth across many pixels. Counting those pixels as independent overcounts the nats, and the search then adds features to explain shading. We scale the noise variance by the residual's integrated autocorrelation area, which is the number of pixels per independent pixel, measured on the table away from the part.
+Test photographs are irys path-traced renders of a part in PLA of one of six colours beside the tag, under a random environment or a synthetic room, at 2016×1512, passed through a phone camera model (defocus, shot and read noise, tone curve, JPEG). Parts are drawn from the grammar's generator. Every setting was frozen on a 20-part development set before any held-out run.
 
-== Search
-
-The search starts from a box. One silhouette cannot separate a plate's depth from its height, so the search fits one box per band of heights, fits each one's lighting and dimensions on the image, and keeps the box with the lowest robust cost. It then proposes edits: add a feature at a blob of the residual, remove a feature, turn a hole into a counterbore or a slot, merge holes into a pattern, or change the corner treatment. The search fits and scores each edit and keeps a beam of two. It refits the best four distinct programs at full resolution and makes the final choice there. It keeps an edit only if the edit shortens the description (@fig:recon). When no edit does, the search stops and reports the dimensions with their error bars.
-
-#figure(fig-recon(),
-  caption: [#lead[The recovery loop.] The recovery edits an editable CAD program, fits each edit's dimensions with irys's edge-sampling Jacobian, scores it in nats, and keeps it only if the description of the photographs gets shorter. Bar lengths are schematic.],
-) <fig:recon>
-
-== Fitting the dimensions
-
-Inside each edit, Levenberg–Marquardt fits the continuous parameters (dimensions and pose) over a short blur homotopy, with a silhouette-distance term at the coarse levels and a chromatic coverage term at every level. The coverage term projects each pixel's colour onto the line between the backdrop's colour and the part's, which gives an observed coverage that shading does not change. The Jacobian is irys's primary edge-sampling estimator applied to every vertex's velocity under each parameter, the same estimator the companion paper validates against central differences, plus the moving-shadow (secondary) term for the key light.
-
-The renderer inside the search is not the path tracer. A search makes thousands of fits, so it uses a deterministic *photo model*, which is a G-buffer with closed-form OpenPBR shading, spherical-harmonic environment light, one fitted key light with soft shadows, and ambient occlusion from 16 fixed rays per point. It is noise-free and about six times cheaper per evaluation. After the search, we refit the appearance under the path tracer and run the final fit on the path-traced residual, with path replay for the radiance and per-vertex edge sampling for the geometry, so in that configuration the reported program, score and dimensions are the path tracer's. We ran it only on the development set (@tab:dev, last column). The held-out results use the photo model throughout.
-
-== A derivative the search was missing
-
-With three photographs the main remaining error on the development set was a confusion between holes and counterbores. We traced one case. The correct program reached the full-resolution finalists and lost by 27 nats to a counterbore whose depth never moved from its starting value. A counterbore's step shows in a photograph mostly as ambient occlusion on its floor. The photo model computed occlusion from a fixed set of 16 rays per point, which is a step function of the geometry with zero derivative almost everywhere. On a flat receiver those 16 directions are fixed in the world, so each is a directional light of weight $1 \/ 16$, and its derivative is the moving-shadow term the key light already had, with the receiver allowed to move too (a counterbore's floor moves with its depth). With that term the Jacobian's column for a counterbore's depth goes from cosine 0.88 against central differences to 0.97, every other column improves or holds, and the search no longer needs finite-difference columns for occluded parameters. The development set then reaches #V("recon.3a.p1") of #V("recon.parts") parts within 1 mm with no finite differences at all, in #V("recon.3a.s_part") s per part against #V("recon.3v.s_part") s.
-
-== Camera and photographs
-
-A printed AprilTag @olson2011apriltag (family tag36h11) beside the part fixes each camera's pose, its focal length (with the EXIF 35 mm-equivalent focal as a 2% prior) and the metric scale. We refine the tag's corners on linear light, because on sRGB values the edge shifts toward the dark side. The photographs share the part's pose, and each photograph gets its own appearance. The test photographs are synthetic. irys's OpenPBR scene kernel renders each part in PLA of one of six colours beside the tag sheet on grey paper, under a captured environment turned at random or a synthetic room with a window and a ceiling panel, plus a key light, at 2016×1512. A camera model then adds defocus, shot and read noise, a tone curve and JPEG compression, and writes an EXIF focal length.
-
-= Feature amplitudes <sec:amp>
-
-The search above is greedy over a discrete space. For every edit it fits the candidate, compares two scores and keeps one program. When two candidates explain the photographs almost equally well, the winner depends on where each fit started and stopped, and the search discards the loser. This section makes the choice continuous, so the fit that measures the features also chooses them.
-
-== The relaxation
-
-Let a program be a base $P_0$ (the plate, its pose and any features already settled) and $K$ optional features $f_1, dots, f_K$ with dimensions $theta_k$. Give each optional feature an amplitude $a_k in [0, 1]$ and render
-
-$ I(a, theta) = I_0(theta_0) + sum_(k=1)^K a_k thin (I_k (theta_0, theta_k) - I_0 (theta_0)) $
-
-where $I_0$ is the render of the base and $I_k$ the render of the base with feature $k$ added. At $a_k in {0, 1}$ the blend is exactly the render of an ordinary program whenever the features' effects on the image do not overlap, which is the usual case for cuts on a plate. Two holes far apart change disjoint pixels, and the change one makes does not depend on the other. Between the endpoints the blend is not the render of any solid. It only has to connect two programs with a path along which we can differentiate the score. The silhouette (coverage) channels blend the same way.
-
-== Gradients
-
-The derivative with respect to an amplitude is the difference the feature makes,
-
-$ (partial I) / (partial a_k) = I_k - I_0, $
-
-which is exact and needs only the two renders the blend already uses, with no edge sampling, finite difference or step size. The dimensions' columns are the blend of the ordinary Jacobians,
-
-$ (partial I) / (partial theta_k) = a_k thin (partial I_k) / (partial theta_k), quad (partial I) / (partial theta_0) = (1 - sum_k a_k) (partial I_0) / (partial theta_0) + sum_k a_k thin (partial I_k) / (partial theta_0), $
-
-each from irys's edge-sampling estimator in its own branch. The image therefore constrains a feature's dimensions only in proportion to its amplitude, and at $a_k = 0$ their column is zero. We freeze a feature's dimensions when its amplitude is below 0.02.
-
-== A continuous description length
-
-The score of @sec:method charges each feature its program length and its parameter cost. On the relaxation the charge becomes linear in the amplitude,
-
-$ cal(S)(a, theta) = -log p("photos" | I(a, theta)) + sum_k a_k L_k + beta sum_k a_k (1 - a_k), $
-
-where $L_k$ is the feature's description length (its kind and its parameters, in nats) and the last term is an anneal. At $beta = 0$ the problem is a smooth fit of amplitudes and dimensions together, in which a feature's amplitude grows when the nats it saves in residual exceed the nats it costs. This is the discrete score's comparison in continuous form. As $beta$ grows, the concave penalty makes every interior amplitude cost more than either endpoint and drives the amplitudes to 0 or 1. The fit emits the base plus every feature whose amplitude rounds to 1. The search then refits and scores that program as an ordinary program, so the exact score still makes the final decision.
-
-== Alternatives on one face
-
-The commonest failure in @sec:results is a choice between two alternatives at one place, a hole or a counterbore. Their effects overlap, so the blend does not factor between them. We keep their amplitudes on the simplex $a_"hole" + a_"cbore" <= 1$, and the blend interpolates between the base, the hole and the counterbore. The counterbore's own dimensions give a second relaxation. A counterbore whose depth is zero, or whose outer radius equals its inner radius, is a hole, so the hole lies on the boundary of the counterbore's parameter domain. A fit that drives the depth to its bound has chosen the hole. The amplitude decides whether the step is worth its nats, and the depth decides where the step is.
-
-== What it should and should not do
-
-The relaxation should be good at *choosing*. Given candidate features from the search or from a network, it fits them jointly with the base and with each other, and the residual's gradient decides which ones stay. It should be poor at *discovery*. An amplitude for a hole placed where the part has none makes the residual worse, so it goes to 0, which is correct. An amplitude for a hole placed a few radii from a real hole also goes to 0, because the two holes' edges do not overlap in the image and the edge term cannot move one onto the other. Amplitudes therefore need seeds, either the residual blobs the greedy search already uses or a learned proposer. A seed that does not pay goes to 0, but every seed costs one more render per evaluation.
-
-#figure(fig-amp(),
-  caption: [#lead[Feature amplitudes.] The model image blends the render of the program without a feature and with it. The amplitude's derivative is the difference of the two renders, which is exact and needs no edge sampling. irys's edge-sampling estimator fits the feature's dimensions through the $a = 1$ branch. Schematic.],
-) <fig:amp>
-
-The implementation is a new module of the recovery crate (`crates/irys-recon/src/amp.rs`). It renders $I_0$ and each $I_k$ with their Jacobians, assembles the blended residual and Jacobian with the robust weights of the ordinary fit, adds the length and anneal terms to the gradient (the anneal is concave and left out of the Gauss–Newton matrix), and runs damped Levenberg–Marquardt with the amplitudes clamped to $[0, 1]$ over a schedule $beta in {0, 10, 100, 1000}$ nats, extended to $10^4$ and $10^5$ in the runs reported last in @sec:amp-results.
-
-= Results <sec:results>
-
-== Development set
-
-We developed the method on #V("recon.parts") parts drawn from the grammar, each recovered independently from one photograph or from three photographs taken from different directions (@tab:dev). Errors are the worst dimension of each part, after the plate's quarter-turn symmetry.
+= Accuracy <sec:acc>
 
 #figure(
   table(
-    columns: (1.9fr, 0.8fr, 0.8fr, 1fr, 1.1fr),
-    align: (left, right, right, right, right),
-    table.header([*Recovered*], [*1 photo*], [*3 photos*], [*+ AO grad*], [*+ path-traced fit*]),
-    [every dimension within 0.5 mm], [#V("recon.1v.p05")/#V("recon.parts")], [#V("recon.3v.p05")/#V("recon.parts")], [#V("recon.3a.p05")/#V("recon.parts")], [#V("recon.pt.p05")/#V("recon.parts")],
-    [every dimension within 1 mm], [#V("recon.1v.p1")/#V("recon.parts")], [#V("recon.3v.p1")/#V("recon.parts")], [*#V("recon.3a.p1")/#V("recon.parts")*], [#V("recon.pt.p1")/#V("recon.parts")],
-    [the right features (topology)], [#V("recon.1v.topo")/#V("recon.parts")], [#V("recon.3v.topo")/#V("recon.parts")], [#V("recon.3a.topo")/#V("recon.parts")], [#V("recon.pt.topo")/#V("recon.parts")],
+    columns: (2fr, 1fr, 1fr),
+    align: (left, right, right),
+    table.header([*Set (3 photos each)*], [*within 1 mm*], [*right features*]),
+    [held-out parts, first run (#V("recon.n.parts"))], [#V("recon.n.p1") #text(size: 0.85em)[(#ci("recon.n.p1_ci")%)]], [#V("recon.n.topo") #text(size: 0.85em)[(#ci("recon.n.topo_ci")%)]],
+    [fresh parts, seeds 4000–4099 (#V("fresh.parts"))], [#V("fresh.p1")], [#V("fresh.topo")],
   ),
-  caption: [#lead[The development set: dimensions from synthetic photographs], per part, worst dimension. With #V("recon.parts") parts the counts are coarse. The Wilson 95% interval on #V("recon.3a.p1")/#V("recon.parts") is #ci("recon.3a.p1_ci")%, against #ci("recon.1v.p1_ci")% for one photograph. "+ AO grad" differentiates the photo model's ambient occlusion instead of estimating those columns by finite differences. In that column the parts that pass at 0.5 mm have worst-dimension errors from #F("recon.3a.err_lo", 2) to #F("recon.3a.err_hi", 2) mm (median #F("recon.3a.err_med", 2)). The last column runs the final fit through irys's path tracer. It gains one part at 0.5 mm and loses one at 1 mm, which at 20 parts is no measurable difference. Across all parts the pose on the tag plane is recovered to a median #F("recon.3v.pose_med", 2) mm and yaw within #F("recon.3v.yaw_max", 2)°, and the focal length within #F("recon.3v.focal_max", 1)%.],
-) <tab:dev>
+  caption: [#lead[Recovery accuracy on held-out synthetic parts.] Worst dimension per part, after the plate's quarter-turn symmetry. Wilson 95% intervals in parentheses. Most failures are wrong features, chiefly a hole read as a counterbore or the reverse; among parts with the right features the median worst-dimension error is #F("recon.n.med_ok", 2) mm. `data/measured.tsv`.],
+) <tab:acc>
 
-A single photograph cannot separate a plate's height from a boss's, and it does not show the floor of a counterbore. Three photographs usually resolve both. @fig:examples shows three of the parts with their photographs, the fit's overlay and the programs.
+About two in five parts come back within 1 mm on every dimension, and about half with the right features (@tab:acc). We compare against no other method; the point of this paper is not the accuracy but what the fit says about it.
 
-#figure(fig-recon-examples(),
-  caption: [#lead[Three parts, three photographs each.] Left, the synthetic photographs the recovery sees, each beside the printed tag. Right, the fit's overlay, which draws the recovered part's outline on the crop and the residual (red brighter, blue darker than the model). Part 3009 passes at 0.16 mm and 3012, with a four-hole circle and a counterbore, at 0.32 mm. A circle of four holes repeats every 90°, so 3012's recovered phase of 120.8° is the true 30.8°. Part 3016 fails. The recovery reads its first hole as a counterbore whose outer radius is the hole's, and @sec:amp-results returns to this part. Programs are in millimetres, a plate `base w d h` and then each feature with its centre and radii. FOUND omits the pose. `data/recon-examples.json`.],
-) <fig:examples>
+= Error bars do not flag wrong answers <sec:sigma>
 
-== Held-out parts
+The Fisher standard deviations are too small by a median factor of #V("recon.sig.opt") and do not rank the errors (Spearman $rho = #V("recon.sig.rho")$). One scale, $sigma' = #V("recon.sig.c") sigma_F$, fitted on even seeds restores 68% coverage on odd seeds, as any fitted scale must; because $sigma_F$ does not rank errors, $sigma'$ is an average error with a unit, not a per-dimension error bar. The cause we suspect is bias from the appearance model, which moves an edge the same way in every photograph, so more pixels shrink $sigma_F$ without shrinking the error.
 
-A development set overstates a method's accuracy, because the method was tuned on it. With every setting frozen, we ran the recovery once on #V("recon.n.parts") new grammar parts and on #V("recon.o.parts") parts outside the grammar. @tab:gate reports the new parts alone, and also all #V("recon.g.parts") grammar parts including the #V("recon.parts") development parts. An out-of-grammar part's truth is still a program in our language, one the generator never draws, so "topology" means the same feature list as that program. The held-out runs use the photo model, with no final path-traced fit. The outside parts are six kinds of four: holes closer to the edge than the generator allows, keyholes (two holes cut into each other), diagonal patterns, dense circles of small holes, every dimension off the 0.1 mm grid, and plates thicker than any in the grammar's range (@tab:gate).
+The worse failure is that $sigma$ is conditional on the features being right. Among the #V("recon.wsig.n") held-out parts, #V("recon.wsig.tight") have $sigma' <= 1$ mm on every dimension, and #V("recon.wsig.tight_wrong") of those are wrong, #V("recon.wsig.tight_wtopo") with the wrong features. As a test for a wrong answer, a part's largest $sigma$ has an area under the ROC curve of #F("recon.wsig.auc", 2), where 0.5 is chance. This is the gap between aleatoric and model uncertainty @kendall2017uncertainties, in a setting where the model is a discrete program.
 
-#figure(
-  table(
-    columns: (1.5fr, 1fr, 1fr, 1fr, 1fr),
-    align: (left, right, right, right, right),
-    table.header([*Set*], [*≤ 0.5 mm*], [*≤ 1 mm*], [*topology*], [*≤ 1 mm \ given topology*]),
-    [*new in-grammar parts (#V("recon.n.parts"))*], [#V("recon.n.p05")/#V("recon.n.parts") #text(size: 0.85em)[(#ci("recon.n.p05_ci"))]], [*#V("recon.n.p1")/#V("recon.n.parts")* #text(size: 0.85em)[(#ci("recon.n.p1_ci"))]], [#V("recon.n.topo")/#V("recon.n.parts") #text(size: 0.85em)[(#ci("recon.n.topo_ci"))]], [#V("recon.n.p1")/#V("recon.n.topo") #text(size: 0.85em)[(#ci("recon.n.given_ci"))]],
-    [with the 20 development parts (#V("recon.g.parts"))], [#V("recon.g.p05")% #text(size: 0.85em)[(#ci("recon.g.p05_ci"))]], [#V("recon.g.p1")% #text(size: 0.85em)[(#ci("recon.g.p1_ci"))]], [#V("recon.g.topo")% #text(size: 0.85em)[(#ci("recon.g.topo_ci"))]], [#V("recon.g.given_topo")% #text(size: 0.85em)[(#ci("recon.g.given_topo_ci"))]],
-    [out of grammar (#V("recon.o.parts"))], [#V("recon.o.p05")/#V("recon.o.parts")], [#V("recon.o.p1")/#V("recon.o.parts")], [#V("recon.o.topo")/#V("recon.o.parts")], [#V("recon.o.p1")/#V("recon.o.topo")],
-  ),
-  caption: [#lead[Held-out results.] Three photographs, ambient occlusion differentiated, no finite differences, every setting frozen before the run. Wilson 95% intervals, in percent, in parentheses. The first row is the held-out result. The second adds the 20 development parts, which score 15 of 20 and so were a favourable draw. Among the new parts with the right topology the worst dimension has a median error of #F("recon.n.med_ok", 2) mm (90th percentile #F("recon.n.p90_ok", 2)). The last column conditions on the parts the search got right, so it describes the fit and not the method. Out of grammar, off-grid dimensions pass (#V("recon.o.unround_p1") of 4 within 1 mm) and keyholes never do (#V("recon.o.overlap_p1") of 4). `data/measured.tsv`.],
-) <tab:gate>
+= Residual checks do not either <sec:check>
 
-Within 1 mm falls from #V("recon.3a.p1") of #V("recon.parts") on the development set to #V("recon.n.p1") of #V("recon.n.parts") on the new parts. Wrong features account for most of the fall: #V("recon.n.topo_fail") of the #V("recon.n.parts") new parts have wrong features, and #(V("recon.n.topo") - V("recon.n.p1")) more have the right features and a dimension off by more than 1 mm. #V("recon.g.notag") of the new parts fail before the search because the detector finds no tag in one of their photographs, on clean synthetic images, and they count as failures. The plate's height comes back #F("recon.g.h_bias", 2) mm low on average, in 91% of parts, a bias we have not traced. A 1 mm threshold on plates of about 60 mm with 2 to 5 mm holes is loose for metrology, and we report no trivial baseline such as the grammar's mean part.
+If the error bars cannot see a wrong program, perhaps the residual can. A missing or misplaced feature should leave residual on the part that the open table does not have. We computed four signals on each finished recovery:
 
-#figure(
-  table(
-    columns: (2fr, 0.7fr, 2.4fr),
-    align: (left, right, left),
-    table.header([*Failure*], [*Parts*], [*Our reading (untested)*]),
-    [missed hole], [#V("recon.fm.missed_hole")], [a hole beside a larger feature, its residual merged into the other's],
-    [counterbore read as hole], [#V("recon.fm.cb_to_hole")], [the step's floor is shading the model gets least right],
-    [extra hole], [#V("recon.fm.extra_hole")], [a highlight or reflection explained as a cut],
-    [hole read as counterbore], [#V("recon.fm.hole_to_cb")], [a counterbore at the hole's radius, its inner hole too small],
-    [extra counterbore], [#V("recon.fm.extra_cb")], [as for extra holes, with the step buying shading],
-    [sharp corner read as fillet], [#V("recon.fm.sharp_to_fillet")], [a small fillet pays for a soft silhouette],
-    [extra boss], [#V("recon.fm.extra_boss")], [a highlight on the top face],
-  ),
-  caption: [#lead[How identification fails.] The commonest modes among the #V("recon.all.topo_fail") parts with wrong features, counted over all #V("recon.all.parts") parts (the new parts, the development parts and the out-of-grammar parts). A part can show several. A hole and counterbore confusion in either direction appears in #V("recon.all.hole_cb") of the #V("recon.all.topo_fail"), and in #V("recon.n.hole_cb") of the #V("recon.n.topo_fail") wrong among the #V("recon.n.parts") new in-grammar parts. The last column is our interpretation and has not been tested.],
-) <tab:failures>
+- *residual excess*: mean robust residual near the part over the same on the open table;
+- *outline offset*: mean disagreement between the model's silhouette and the segmented part, in pixels;
+- *unexplained blob*: the largest residual blob left on the top face, as an equivalent radius;
+- *finalist margin*: the score gap in nats from the winner to the runner-up program.
 
-When the features are right, accuracy varies by feature. The recovery reads hole radii to a median #F("recon.err.hole_r_med", 3) mm and the radii in circular patterns to #F("recon.err.circ_r_med", 3) mm, because a pattern's holes share one radius and pool their evidence. The worst dimension is a slot's length (median #F("recon.err.slot_len_med", 2) mm, 90th percentile #F("recon.err.slot_len_p90", 2), #V("recon.err.slot_len_n_over") of 29 above 0.5 mm). A slot's ends are short arcs seen obliquely, and nothing else constrains them along the slot's axis. Counterbore depths are next (median #F("recon.err.cb_depth_med", 2) mm, 90th percentile #F("recon.err.cb_depth_p90", 2)).
+On #V("fresh.parts") fresh parts we fitted thresholds on the even seeds, allowing at most 20% false alarms, and tested on the odd seeds. The fitted rule caught #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers with #V("chk.fit.fa") false alarms among #V("chk.odd.right") right ones. Looser hand-set thresholds caught #V("chk.ph.caught") of #V("chk.odd.wrong") at #V("chk.ph.fa") of #V("chk.odd.right") false alarms. Neither is a usable trust signal. (The odd half happens to be harder, #V("chk.odd.wrong") wrong of 50 against 22 on the even half, so these rates are noisy.)
 
-== Error bars
+Part 3000 shows why. Its recovered plate is #F("p3000.dw", 2) mm too narrow and #F("p3000.dh", 2) mm too tall, and its hole is missing. Every Fisher $sigma$ is at most #F("p3000.sig", 2) mm, the residual on the part is #F("p3000.excess", 2) times the table's (that is, no excess), and no blob remains. From its photographs' viewpoints the wrong program explains the images. No function of the residual can flag an answer that leaves no residual.
 
-The Fisher information gives each dimension a standard deviation. On these parts those are optimistic by a median factor of #V("recon.sig.opt") and do not rank the errors (Spearman $rho = #V("recon.sig.rho")$). The Fisher $sigma$ propagates the photographs' noise through the fit. The appearance model's bias dominates the error, and it moves an edge the same way in every photograph. One scale corrects the average coverage. Fitted on the even seeds of all 124 parts, $sigma' = #V("recon.sig.c") sigma_F$ (bootstrap #F("recon.sig.c_ci", 1)–#F("recon.sig.c_ci", 1, i: 1)) covers #V("recon.sig.cov1")% of the odd seeds' dimensions at $1 sigma'$, and the errors' heavy tails put the 95% interval at $plus.minus #F("recon.sig.k95", 2) sigma'$, which covers #V("recon.sig.cov95")%. That split includes the development parts. On the #V("recon.n.parts") new in-grammar parts alone the same procedure gives a scale of #F("recon.nsig.c", 1), #V("recon.nsig.cov1")% coverage at $1 sigma'$ and a 95% interval of $plus.minus #F("recon.nsig.k95", 2) sigma'$ (#V("recon.nsig.cov95")% coverage), with $rho = #V("recon.nsig.rho")$. The scale is therefore known only to within about 14 to 18.
+= Photographs do <sec:views>
 
-A tight $sigma$ does not mean a right answer. $sigma$ is the curvature of the score at the answer the search found: it says how well that answer is pinned if it is the right one, and nothing about whether it is. A plate of the wrong size, a quarter-turned plate or a missed hole sits in a basin as narrow as the right one. Among the #V("recon.wsig.n") new parts that ran, #V("recon.wsig.tight") have $sigma' <= 1$ mm on every dimension, and #V("recon.wsig.tight_wrong") of those are wrong, #V("recon.wsig.tight_wtopo") of them with the wrong features. As a test for a wrong answer, a part's largest $sigma$ has an area under the ROC curve of #F("recon.wsig.auc", 2), where 0.5 is chance. Every $sigma$ in this paper is therefore conditional on the features being right. A separate check is needed to say when they are not, and we could not build one from the images. We measured four signals on a finished recovery: the residual on the part over the residual on the open table, the outline offset, the largest unexplained blob on the top face, and the score margin to the runner-up program. On 100 fresh parts we fitted thresholds on the even seeds and tested on the odd ones. The fitted thresholds caught #V("chk.fit.caught") of the #V("chk.odd.wrong") wrong answers with #V("chk.fit.fa") false alarms among #V("chk.odd.right") right ones; looser thresholds caught #V("chk.ph.caught") with #V("chk.ph.fa") false alarms. Most wrong answers explain the photographs. The only rule we keep is about the photographs themselves: fewer than three, and an answer is not trusted.
+What separates part 3000's answer from the truth is a view the photographs did not take. On the 20-part development set, one photograph per part put #V("recon.1v.p1") within 1 mm and three photographs #V("recon.3v.p1"); the features were right on #V("recon.1v.topo") against #V("recon.3v.topo"). #todo[same comparison on the fresh parts, 1 photo vs 3, run in progress on mew (runs/one).] The only check we keep in the released code flags any recovery from fewer than three photographs.
 
-This is a weak result, and it limits the instrument claim. A scale fitted to give 68% coverage gives about 68% coverage on parts from the same distribution by construction. Because $sigma_F$ does not rank the errors, $sigma'$ does not tell a well-measured dimension from a poorly measured one. It is an average error with a unit, not an error bar. We suspect the cause is bias from the appearance model, since a fit to a target rendered by the photo model itself recovers the plate height to 0.04 mm, but we have not tested that on these parts.
+= A relaxation that made identification worse <sec:amp>
 
-== Feature amplitudes: the smallest experiments <sec:amp-results>
+Since most failures are a hole-or-counterbore choice, we tried making that choice continuous. Each loose hole or counterbore became a pair of alternatives with amplitudes $a in [0, 1]$ on a simplex; the model image blends renders without and with each, $I = I_0 + sum_k a_k (I_k - I_0)$, whose derivative in $a_k$ is exact; the score charges $a_k L_k$ plus an anneal $beta a (1 - a)$ that drives amplitudes to 0 or 1 @liu2019darts @louizos2018l0. On three small problems it behaved. On the #V("ampg.n") held-out parts, paired against the greedy choice on the same recoveries, it found the right features on #V("ampg.a_topo") against #V("ampg.g_topo"), fixing #V("ampg.fixed") and breaking #V("ampg.broke"); on the fresh parts, #V("fresh.amp_topo") against #V("fresh.topo"), fixing #V("fresh.amp_fixed") and breaking #V("fresh.amp_broke"). The main cause is the anneal: a real hole whose two alternatives split the evidence near 0.45 each loses both. Annealing presence and choice separately ($a_"hole" = p q$, $a_"cbore" = p(1-q)$) is the obvious fix and is untested.
 
-We test the relaxation on three small problems of increasing difficulty. Each is a single run, so none of them gives a rate.
+= Limitations
 
-*(a) A feature that is there.* A 60×40×8 mm plate with one 4 mm-radius through-hole, rendered by the path tracer in four known views (the sim-to-sim setting of the recovery's first version). The fit starts with the right plate and an optional hole at amplitude 0.5, 2 mm off in each coordinate and 1 mm small. It passes if the amplitude goes to 1 and every dimension ends within 0.5 mm. It passes. The amplitude rises in the first four steps while the $a$-weighted edge term moves the hole's position and radius to the target. The amplitude ends at #V("amp.a.a") with every dimension within #F("amp.a.err", 3) mm, in #V("amp.a.steps") accepted steps and #V("amp.a.evals") renders (#V("amp.a.s") s on a shared machine). The amplitude stops 0.6% short of 1, because at $beta lt.eq 1000$ nats the last 0.6% costs more in residual than the anneal's $beta a (1 - a)$ saves. Rounding emits the program.
-
-*(b) A feature that is not.* The same start against a plate with no hole. It passes if the amplitude goes to 0. The emitted program is right (the plate alone, its dimensions within 0.01 mm), but the amplitude does not reach 0, so the run fails our criterion. It falls from 0.5 to #F("amp.b.a_max0", 2) in the first step and stays there at $beta lt.eq 10$. A hole at 3% amplitude is a faint grey disc, and the disc lowers the residual by about ten nats. The model's noise differs from the target's (the target is rendered at 64 samples per pixel, the model at 16), and the disc fits part of that difference. The anneal at $beta = 1000$ lowers the amplitude to #F("amp.b.a", 3), and rounding emits no hole. The same failure can occur at any scale. Between the endpoints the blend adds a free image component, and the fit uses it to explain whatever the model cannot. We then extended the anneal to $beta = 10^4$ and $10^5$ nats. This changes the schedule after seeing a failure, on the same two problems, so it is a fix and not a test. With it, (b)'s amplitude reaches #F("amp.bl.a", 1) at $beta = 10^4$, giving up about #V("amp.bl.dnll") nats of residual, and (a)'s reaches #F("amp.al.a", 2) with every dimension within #F("amp.al.err", 3) mm. Both runs then meet the criteria. The anneal must reach the size of the residual that a partial feature can absorb, which here is larger than the feature's description length.
-
-*(c) Hole or counterbore.* Part 3016 of the development set, which the greedy search got wrong in the run of @fig:examples: its 3.8 mm hole is recovered as a counterbore whose outer radius is the hole's and whose inner hole is too small. We take the search's own program, replace that counterbore by two alternatives at amplitudes 0.5 and 0.5 on the simplex, a through-hole of the counterbore's outer radius and the counterbore as found, and let the relaxation choose, using the photo model, robust noise model and appearance of the search's final fit. The relaxation chooses the hole. Its amplitude goes to #F("amp.c.a_hole", 0) and the counterbore's to #F("amp.c.a_cb", 0), with the hole's radius at #F("amp.c.r", 2) mm against the true 3.80 and its centre within #F("amp.c.pos_err", 2) mm, in #V("amp.c.s") s and #V("amp.c.evals") renders. The emitted program has the right topology. One caveat limits what this shows. On this run the greedy search found the hole itself (#V("amp.c.v1_s") s), although the earlier run on another machine had read a counterbore. We therefore built the alternative from the earlier run's wrong reading, a counterbore of the hole's outer radius with that run's inner radius and depth. So the greedy answer differs between two runs on the same photographs, and we have not measured how often. The relaxation is meant to remove that instability, but this experiment does not show that it does. It shows one hand-built choice on one development part.
-
-*On the held-out parts it makes things worse.* We then let amplitudes make the final choice on every part of @tab:gate. After the greedy search, every loose hole or counterbore in its program becomes the pair \{hole, counterbore\} on its own simplex at 0.5/0.5, the fit runs with the anneal to $10^5$ nats, and the emitted program is refitted. Greedy and amplitude results come from the same recovery of the same photographs, so the comparison is paired. On the #V("ampg.n") held-out parts the relaxation changed the program of all #V("ampg.relaxed") it could relax and made identification worse: the right features on #V("ampg.a_topo") parts against #V("ampg.g_topo") for greedy (Wilson #ci("ampg.a_topo_ci")% against #ci("ampg.g_topo_ci")%), within 1 mm on #V("ampg.a_p1") against #V("ampg.g_p1"). It turned #V("ampg.fixed") wrong parts right and #V("ampg.broke") right parts wrong. On the development parts it fixed #V("ampg.dev_fixed") and broke #V("ampg.dev_broke").
-
-The broken parts show three failures, all of the relaxation as specified here and not of the image term. Three parts lost a real hole altogether (3026, 3055, 3081): its two alternatives split the evidence near 0.45 each, and the anneal, which pushes every amplitude below 0.5 toward 0, removed both. The anneal acts on each amplitude, when it should act on whether the feature exists and, separately, on which alternative it is; with $a_"hole" = p q$ and $a_"cbore" = p (1 - q)$, presence $p$ and choice $q$ would each be annealed on their own. Two parts swapped a true counterbore for a hole (3005, 3020). This is the imitation of experiment (c) run the other way: a counterbore's outer radius matches the hole's and its floor is barely seen, and the 2-nat difference in length cannot separate them. One part kept both alternatives at the same place (3084). The relaxation adds a median #V("ampg.s_med") s per part. #todo[presence–choice parameterisation with a proper Laplace parameter cost, rerun on the fresh parts (seeds 4000–4099, rendered, not yet looked at).]
-
-= Toward real objects (not yet done) <sec:real>
-
-Every result above compares the recovery with a known program, because we rendered the photographs from the programs we try to recover. The next reference is a printed part measured with calipers. The kit for that experiment exists (a 50 mm tag sheet, five test parts exported for printing, and shooting and caliper instructions), and we have not run it. #todo[print at least 20 parts, photograph each three times with a phone, recover, and compare with calipers.]
-
-Real objects also need a larger grammar. The cover shows a 3D-printed enclosure for a small screen. To describe it, a program needs:
-
-- *A shell.* A box whose edges each have their own radius (large on the top and front, small on the base), hollowed to a wall thickness. The plate grammar has one corner treatment for four vertical edges.
-- *Features on any face.* The bezel, the grille and the ports are on the front, not the top. Every feature needs a host face and a frame on that face, and the search needs proposals for every visible face.
-- *A recess feature.* The screen sits in a rectangular pocket with its own corner radius and depth, which is a counterbore generalized to a rounded rectangle.
-- *Patterns as one feature.* The grille is about 150 small holes on a staggered grid. Written as 150 holes it costs 150 times the program length of one hole, more than it saves in residual. Written as one pattern (pitch, stagger, extent, hole radius) it costs a few nats, and its holes share one radius, as the circular patterns' holes already do (@sec:results).
-- *Masks for what the model cannot render.* The screen is a black mirror that reflects the room, and the shading model has no texture for the print's layer lines and seams. The recovery should down-weight such regions, as it already does for the tag, with a weight it estimates from the residual's local dispersion or the material's glossiness.
-
-A larger grammar produces more proposals per round and more near-ties between them, such as a recess or a through-cut, or a grille of round holes or of hexagons. A greedy search fails on near-ties, and a relaxation that fits the alternatives together should not. Amplitudes do not help discovery, which is the larger problem on a real object. The search must first propose a feature on the right face before an amplitude can choose it.
-
-= Limitations <sec:limits>
-
-- *Synthetic photographs.* The only photographs in this paper are rendered, by the renderer the method is built on (@sec:real).
-- *No baselines.* We compare against no other method: not a BIC-scored search, a silhouette-only fit, multi-view stereo followed by primitive fitting, or a learned image-to-CAD model. We also do not ablate the noise scaling, the beam width or the program prior beyond the columns of @tab:dev.
-- *One family of parts.* The out-of-grammar parts are small departures from it. Keyholes, which no single feature describes, fail every time.
-- *Identification is weak.* The features are right on #V("recon.n.topo") of the #V("recon.n.parts") held-out parts, and the amplitude relaxation, as specified here, makes that worse (@sec:amp-results).
-- *The error bars are not yet error bars.* The Fisher $sigma$ does not rank the errors, and one empirical scale fixes only the average coverage (@sec:results). The same Fisher term biases the score.
-- *Bias.* The plate's height comes back #F("recon.g.h_bias", 2) mm low on average for a reason we have not found.
-- *Compute.* On the development set a part took a mean of #V("recon.3a.s_part") s on a 16-core laptop with the machine to itself. The 100 in-grammar parts took a median of #V("recon.g.s_part_med") s of process time each, most of them on a 24-core machine running six processes of four threads at once, which is about two minutes of wall time per part there. The relaxation adds one render per optional feature to every evaluation.
-
-= Reproducibility <sec:repro>
-
-The recovery is the `irys-recon` crate of irys, open source under Apache-2.0. Each row of `data/measured.tsv` names the irys report and commit that produced it. The 124-part run is irys commit `812dc62` (`docs/recon-v1-gate100-report.md` and its CSVs), regenerated by `scripts/recon_gate_stats.py`. The amplitude experiments are `examples/recon_amp.rs` on irys branch `claude/recon-amplitudes`, run once each on a 24-core Linux machine. They write their traces to `out/recon_amp/`, which we copied to `data/amp-*.json`.
+- *Synthetic photographs.* Rendered by the renderer the method is built on. Real photographs add appearance error, which we expect to make error bars less informative, not more.
+- *One family of parts*, a plate with top-face features.
+- *No baselines.* The accuracy in @tab:acc is not compared with any other method.
+- *Single runs.* The greedy search is not deterministic across machines, and we have not measured that variance.
 
 = Conclusion
 
-The recovery measures well when it identifies the features, so identification is the next problem. On #V("recon.n.parts") held-out synthetic parts, a description-length search through a differentiable renderer reads every dimension of #V("recon.n.p1") parts to within a millimetre. It finds the right features on #V("recon.n.topo"), and #V("recon.n.p1") of those measure within a millimetre. The largest group of wrong features is a hole confused with a counterbore (#V("recon.n.hole_cb") of #V("recon.n.topo_fail") failures), and on one such part the greedy search gave different answers in two runs. Feature amplitudes give that choice a gradient, and on three small problems they behave. On the held-out parts they do not: annealing each amplitude on its own deletes features whose alternatives split the evidence, and identification gets worse. The paper still needs that relaxation reparameterised and retested, baselines, error bars that rank the errors, and photographs of real parts.
+In analysis-by-synthesis recovery of CAD programs, the fit's own error bars and residuals say little about whether the program is right. On held-out synthetic parts, tight error bars are wrong almost as often as loose ones, and residual checks fitted on one half catch few wrong answers on the other, because most wrong answers explain the photographs they were fitted to. What does help is evidence the fit has not seen: more photographs. A system that reports CAD dimensions with error bars should say plainly that those bars assume the features are right.
+
+The code is the `irys-recon` crate of irys (Apache-2.0); each row of `data/measured.tsv` names the commit and run that produced it.
+
 
 #heading(outlined: true, numbering: none)[References]
 #show bibliography: it => { show "?.": "?"; show "!.": "!"; it }

@@ -161,3 +161,14 @@ chk.fit.caught	4	odd wrong caught, thresholds fitted on even seeds
 chk.fit.fa	0	odd false alarms, fitted thresholds
 chk.ph.caught	14	odd wrong caught, placeholder thresholds
 chk.ph.fa	3	odd false alarms, placeholder thresholds
+fresh.parts	100	irys claude/recon-amplitudes @cb790ad runs/fresh (seeds 4000-4099, 3 photos, photo model, frozen settings)
+fresh.p1	41	same, every dimension within 1 mm
+fresh.topo	54	same, right features
+fresh.amp_p1	38	same, amplitude finals
+fresh.amp_topo	50	same
+fresh.amp_fixed	1	same
+fresh.amp_broke	4	same
+p3000.dw	2.15	irys @084d424 part 3000: plate width short, mm
+p3000.dh	1.08	same, plate height long, mm
+p3000.sig	0.11	same, largest Fisher sigma, mm
+p3000.excess	0.75	same, residual excess (1 = none)
