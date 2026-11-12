@@ -1,6 +1,6 @@
 # Seeing Is Measuring
 
-Draft preprint on image-to-CAD recovery: three phone photographs and a printed tag in, an editable
+Preprint on image-to-CAD recovery: three phone photographs and a printed tag in, an editable
 CAD program out. Built on irys (`paper/irys`, the companion paper), split out of its former
 "Dimensions from photographs" section on 2026-11-10. Same preamble, fonts and provenance pattern as
 `paper/irys`, so the two read as siblings.
@@ -23,18 +23,14 @@ programs from photographs".
 
 ## Status
 
-Draft. A blind review on 2026-11-10 returned "reject"; the text-level points are fixed (below) and
-the rest is the experiment list. Three amplitude experiments (a)-(c) are done, one run each
-(`data/amp-*.json`, `amp.*` rows).
+A short note (the long draft is `recon-long.typ`). Every number in the text is measured; there
+are no pending results. The claim: on held-out synthetic parts the fit's error bars and residual
+checks say little about whether the recovered program is right, and more photographs help
+(fresh seeds 4000-4099: 16/100 within 1 mm from one photograph, 41/100 from three).
 
-Fixed in the text after the review: the headline is now the 80 new parts only (37/80 within 1 mm,
-44/80 topology), not the 100 that include the 20 development parts; "phone photographs" is
-"synthetic photographs"; the sigma scale is reported as an average-coverage fix, not an error bar,
-with a clean-split check (c = 14.0 on the 80 new parts vs 17.8 on all 124); the Fisher term's bias
-on the score is stated; the arm's "±5° basin" no longer contradicts its 23° start; hole/counterbore
-is 12 of 36 failures on the new parts (19 of 54 over all 124; the earlier "19 of 100" was wrong);
-no-baselines and non-determinism are listed as limits; figures and cover repaired; 11 references
-added (written from memory: verify each before submission).
+Not in the note, and the work that would make it a full paper: real printed parts measured with
+calipers, a baseline method, the presence-and-choice amplitude parameterisation, and error bars
+that rank errors.
 
 ## What the paper needs, in order
 

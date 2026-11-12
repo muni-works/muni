@@ -3,7 +3,7 @@
 // former "Dimensions from photographs" section (2026-11-10); same treatment and preamble as irys.typ.
 // One source, two outputs: `--features html --format html --input target=html` builds the web post.
 // Every measured number is read from data/measured.tsv; each row names the irys report and commit
-// that produced it. DRAFT: pending experiments are marked TODO in the text and in README.md.
+// that produced it.
 
 #let web = sys.inputs.at("target", default: "pdf") == "html"
 // inside a drawn figure the equation is already part of an SVG (figures set alt "in-frame"), so leave it alone there
@@ -227,7 +227,7 @@
     #grid(columns: (auto, 1fr, auto), column-gutter: 0.8em, align: horizon,
       caps(fill: c-text)[Municipal Robotics · Research],
       line(length: 100%, stroke: 0.5pt + c-line-hi),
-      caps[November 2026 · Draft])
+      caps[November 2026])
     #v(0.35in)
     #move(dx: -0.045 * s-display, text(font: sans-sb, size: s-display * 1.2, tracking: -0.025em)[Seeing Is\ Measuring])
     #v(0.5em)
@@ -242,7 +242,7 @@
 ]}
 
 #let abstract-text = [
-  We recover editable CAD programs (a plate with holes, counterbores, slots, bosses and patterns, each with its dimensions) from photographs by analysis by synthesis: a search over programs scored by description length, with every candidate's dimensions fitted through a differentiable renderer. Such a fit reports a Fisher error bar for every dimension. We ask whether those error bars, or the fit's residuals, tell a right answer from a wrong one. On held-out synthetic parts they do not. Among #V("recon.wsig.n") parts, #V("recon.wsig.tight_wrong") of the #V("recon.wsig.tight") whose every error bar is under 1 mm are wrong, and the largest error bar separates wrong answers from right ones with an area under the ROC curve of #F("recon.wsig.auc", 2). Four image-based checks (residual on the part against the table, outline offset, unexplained residual blobs, score margin to the runner-up) do little better: with thresholds fitted on half of #V("fresh.parts") fresh parts, they flag #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers on the other half. Most wrong answers explain the photographs. The one reliable signal is outside the fit: the number of photographs. We report the recovery's accuracy plainly (#V("fresh.p1") of #V("fresh.parts") fresh parts within 1 mm on every dimension) and a continuous relaxation over features that made identification worse. Every photograph is synthetic.
+  We recover editable CAD programs (a plate with holes, counterbores, slots, bosses and patterns, each with its dimensions) from photographs by analysis by synthesis: a search over programs scored by description length, with every candidate's dimensions fitted through a differentiable renderer. Such a fit reports a Fisher error bar for every dimension. We ask whether those error bars, or the fit's residuals, tell a right answer from a wrong one. On held-out synthetic parts they do not. Among #V("recon.wsig.n") parts, #V("recon.wsig.tight_wrong") of the #V("recon.wsig.tight") whose every error bar is under 1 mm are wrong, and the largest error bar separates wrong answers from right ones with an area under the ROC curve of #F("recon.wsig.auc", 2). Four image-based checks (residual on the part against the table, outline offset, unexplained residual blobs, score margin to the runner-up) do little better: with thresholds fitted on half of #V("fresh.parts") fresh parts, they flag #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers on the other half. Most wrong answers explain the photographs. The one reliable signal is outside the fit: the number of photographs. From one photograph #V("fresh.1v.p1") of the fresh parts come back within 1 mm, from three #V("fresh.p1"). We also report a continuous relaxation over features that made identification worse. Every photograph is synthetic.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -337,7 +337,7 @@ Part 3000 shows why. Its recovered plate is #F("p3000.dw", 2) mm too narrow and 
 
 = Photographs do <sec:views>
 
-What separates part 3000's answer from the truth is a view the photographs did not take. On the 20-part development set, one photograph per part put #V("recon.1v.p1") within 1 mm and three photographs #V("recon.3v.p1")\; the features were right on #V("recon.1v.topo") against #V("recon.3v.topo"). #todo[same comparison on the fresh parts, 1 photo vs 3, run in progress on mew (runs/one).] The only check we keep in the released code flags any recovery from fewer than three photographs.
+What separates part 3000's answer from the truth is a view the photographs did not take. On the 20-part development set, one photograph per part put #V("recon.1v.p1") within 1 mm and three photographs #V("recon.3v.p1")\; the features were right on #V("recon.1v.topo") against #V("recon.3v.topo"). On the #V("fresh.parts") fresh parts, with the same settings and only the first photograph of each, #V("fresh.1v.p1") came back within 1 mm (#ci("fresh.1v.p1_ci")%) against #V("fresh.p1") with three (#ci("fresh.p1_ci")%), and #V("fresh.1v.topo") had the right features against #V("fresh.topo"). Paired, #V("fresh.3over1") parts were right with three photographs and wrong with one, and #V("fresh.1over3") the other way. The only check we keep in the released code flags any recovery from fewer than three photographs.
 
 = A relaxation that made identification worse <sec:amp>
 

@@ -172,3 +172,9 @@ p3000.dw	2.15	irys @084d424 part 3000: plate width short, mm
 p3000.dh	1.08	same, plate height long, mm
 p3000.sig	0.11	same, largest Fisher sigma, mm
 p3000.excess	0.75	same, residual excess (1 = none)
+fresh.1v.p1	16	irys claude/recon-amplitudes @cb790ad runs/one (seeds 4000-4099, first photograph only, same settings)
+fresh.1v.topo	27	same
+fresh.1v.p1_ci	0.10	0.24	Wilson 95% interval for 16/100
+fresh.p1_ci	0.32	0.51	Wilson 95% interval for 41/100
+fresh.3over1	27	parts right with 3 photographs and wrong with 1
+fresh.1over3	2	parts right with 1 photograph and wrong with 3
