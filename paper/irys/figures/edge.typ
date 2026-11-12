@@ -77,9 +77,6 @@
   lbl(add(O, (0, 1.55)), [INSET · ε = 10#super[−3] PX])
   lbl(add(O, (0, -1.55)), [OWN TRIANGLE: SLIVER < ε])
   lbl(P(0.25, -0.98), [COPLANAR NEIGHBOUR], size: 5.5pt)
-  // the estimator
-  content((5.8, -0.75), text(font: sans, size: 8.5pt, fill: c-text,
-    $(partial I_p) / (partial phi) supset.eq integral_E (f(s - epsilon n) - f(s + epsilon n)) thin v_n thin dif ell$))
   let fx = 7.45
   note((fx, 3.9), [Moving #text(fill: c-sel)[E] to #text(fill: c-sel)[E′] changes which pixels are covered. The change is a jump, invisible to derivatives of shading at fixed rays; only rays either side of a sampled point on E measure it.], width: 3.6cm)
   note((fx, 1.55), [CAD tessellations are full of slivers thinner than ε. The inner ray counts as inside on the edge's own triangle or a coplanar neighbour of the same face.], width: 3.6cm)
