@@ -178,3 +178,27 @@ fresh.1v.p1_ci	0.10	0.24	Wilson 95% interval for 16/100
 fresh.p1_ci	0.32	0.51	Wilson 95% interval for 41/100
 fresh.3over1	27	parts right with 3 photographs and wrong with 1
 fresh.1over3	2	parts right with 1 photograph and wrong with 3
+nbv.n	63	irys @c88e1b2 recon_v1 nbv, out/nbv-100 (assets/bank8: seeds 4000-4099, 8 rendered views each; base views v0,v3; random third view v5); the 63 parts that finished
+nbv.two	23	same: right (right features, every dimension within 1 mm) from the two base photographs
+nbv.chosen	31	same: right with the chosen third view added
+nbv.random	32	same: right with the random third view added
+nbv.chosen_only	5	same: right with the chosen view and not the random one
+nbv.random_only	6	same: right with the random view and not the chosen one
+nbv.same	14	same: parts where the chosen view was the random one
+nbv.wrong	40	same: two-photograph answers that are wrong
+nbv.caught	30	same: of those, flagged (adding the random third photograph changes the features)
+nbv.caught_ci	0.60	0.86	Wilson 95% interval for 30/40
+nbv.right	23	same: two-photograph answers that are right
+nbv.fa	2	same: of those, flagged
+nbv.odd_caught	17	same, odd seeds: wrong answers flagged
+nbv.odd_wrong	23	same
+nbv.odd_fa	1	same, odd seeds: right answers flagged
+nbv.odd_right	8	same
+nbv.even_caught	13	same, even seeds
+nbv.even_wrong	17	same
+nbv.even_fa	1	same
+nbv.even_right	15	same
+nbv.trusted	31	same: unflagged answers
+nbv.trusted_right	21	same: of those, right (two-photograph answer)
+nbv.trusted3_right	20	same: of those, the three-photograph answer right
+nbv.hold_auc	0.51	same: AUC of the held-out view's residual excess for wrong vs right two-photograph answers (look fitted to the scored program)

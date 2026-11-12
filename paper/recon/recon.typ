@@ -242,7 +242,7 @@
 ]}
 
 #let abstract-text = [
-  We recover editable CAD programs (a plate with holes, counterbores, slots, bosses and patterns, each with its dimensions) from photographs by analysis by synthesis: a search over programs scored by description length, with every candidate's dimensions fitted through a differentiable renderer. Such a fit reports a Fisher error bar for every dimension. We ask whether those error bars, or the fit's residuals, tell a right answer from a wrong one. On held-out synthetic parts they do not. Among #V("recon.wsig.n") parts, #V("recon.wsig.tight_wrong") of the #V("recon.wsig.tight") whose every error bar is under 1 mm are wrong, and the largest error bar separates wrong answers from right ones with an area under the ROC curve of #F("recon.wsig.auc", 2). Four image-based checks (residual on the part against the table, outline offset, unexplained residual blobs, score margin to the runner-up) do little better: with thresholds fitted on half of #V("fresh.parts") fresh parts, they flag #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers on the other half. Most wrong answers explain the photographs. The one reliable signal is outside the fit: the number of photographs. From one photograph #V("fresh.1v.p1") of the fresh parts come back within 1 mm, from three #V("fresh.p1"). We also report a continuous relaxation over features that made identification worse. Every photograph is synthetic.
+  We recover editable CAD programs (a plate with holes, counterbores, slots, bosses and patterns, each with its dimensions) from photographs by analysis by synthesis: a search over programs scored by description length, with every candidate's dimensions fitted through a differentiable renderer. Such a fit reports a Fisher error bar for every dimension. We ask whether those error bars, or the fit's residuals, tell a right answer from a wrong one. On held-out synthetic parts they do not. Among #V("recon.wsig.n") parts, #V("recon.wsig.tight_wrong") of the #V("recon.wsig.tight") whose every error bar is under 1 mm are wrong, and the largest error bar separates wrong answers from right ones with an area under the ROC curve of #F("recon.wsig.auc", 2). Four image-based checks (residual on the part against the table, outline offset, unexplained residual blobs, score margin to the runner-up) do little better: with thresholds fitted on half of #V("fresh.parts") fresh parts, they flag #V("chk.fit.caught") of #V("chk.odd.wrong") wrong answers on the other half. Most wrong answers explain the photographs they were fitted to. A photograph the fit has not seen does better, used the right way. Recovering again with one more photograph and flagging the part when its features change catches #V("nbv.caught") of #V("nbv.wrong") wrong answers on #V("nbv.n") fresh parts, with #V("nbv.fa") false alarms among #V("nbv.right") right ones, and it works as well on either half of the parts. Scoring the first answer's residual in that photograph does not (area under the curve #F("nbv.hold_auc", 2)), and choosing which photograph to add, where the finalist programs disagree most, is no better than a random one. We also report a continuous relaxation over features that made identification worse. Every photograph is synthetic.
 ]
 #if web {
   html.elem("section", attrs: (class: "abstract", id: "abstract"), {
@@ -269,7 +269,7 @@ We measure how often this happens and whether anything computed from the fit can
 - *A recovery pipeline* that searches CAD programs by description length @rissanen1978mdl through a differentiable renderer, as a testbed (@sec:method).
 - *A held-out measurement of when its error bars mislead.* On fresh synthetic parts, tight error bars are nearly uninformative about whether the answer is right (@sec:sigma).
 - *A negative result for post-hoc checks.* Four residual-based checks, with thresholds fitted on one half of fresh parts and tested on the other, catch few wrong answers. Part 3000 shows why: its wrong answer leaves a clean residual (@sec:check).
-- *What does help.* More photographs. One photograph per part is far worse than three, and a photo-count rule is the only check we keep (@sec:views).
+- *What does help.* More photographs, and a check that uses one: recover again with one more photograph and flag the part if its features change. It catches three in four wrong answers with few false alarms (@sec:views, @sec:agree).
 
 Every photograph here is rendered, so every result excludes what a real camera, print and room would add. The claim is about the fit's self-assessment, which synthetic data tests cleanly, because the truth is known exactly.
 
@@ -337,7 +337,32 @@ Part 3000 shows why. Its recovered plate is #F("p3000.dw", 2) mm too narrow and 
 
 = Photographs do <sec:views>
 
-What separates part 3000's answer from the truth is a view the photographs did not take. On the 20-part development set, one photograph per part put #V("recon.1v.p1") within 1 mm and three photographs #V("recon.3v.p1")\; the features were right on #V("recon.1v.topo") against #V("recon.3v.topo"). On the #V("fresh.parts") fresh parts, with the same settings and only the first photograph of each, #V("fresh.1v.p1") came back within 1 mm (#ci("fresh.1v.p1_ci")%) against #V("fresh.p1") with three (#ci("fresh.p1_ci")%), and #V("fresh.1v.topo") had the right features against #V("fresh.topo"). Paired, #V("fresh.3over1") parts were right with three photographs and wrong with one, and #V("fresh.1over3") the other way. The only check we keep in the released code flags any recovery from fewer than three photographs.
+What separates part 3000's answer from the truth is a view the photographs did not take. On the 20-part development set, one photograph per part put #V("recon.1v.p1") within 1 mm and three photographs #V("recon.3v.p1")\; the features were right on #V("recon.1v.topo") against #V("recon.3v.topo"). On the #V("fresh.parts") fresh parts, with the same settings and only the first photograph of each, #V("fresh.1v.p1") came back within 1 mm (#ci("fresh.1v.p1_ci")%) against #V("fresh.p1") with three (#ci("fresh.p1_ci")%), and #V("fresh.1v.topo") had the right features against #V("fresh.topo"). Paired, #V("fresh.3over1") parts were right with three photographs and wrong with one, and #V("fresh.1over3") the other way. A third photograph helps accuracy. The next section uses it to say when an answer is wrong.
+
+= A held-out photograph flags wrong answers <sec:agree>
+
+Part 3000 suggests the test: a wrong program that explains two photographs need not explain a third. We tried three ways of using the third photograph, on fresh parts rendered from eight directions each. Every part is recovered from two base views, then again with a third view added. #V("nbv.n") parts finished before we stopped the run; the counts below are on those.
+
+#figure(
+  table(
+    columns: (2.2fr, 1fr, 1fr),
+    align: (left, right, right),
+    table.header([*Check on the two-photograph answer*], [*wrong caught*], [*right flagged*]),
+    [features change with a third photograph], [*#V("nbv.caught")/#V("nbv.wrong")*], [#V("nbv.fa")/#V("nbv.right")],
+    [#h(1em) even seeds], [#V("nbv.even_caught")/#V("nbv.even_wrong")], [#V("nbv.even_fa")/#V("nbv.even_right")],
+    [#h(1em) odd seeds], [#V("nbv.odd_caught")/#V("nbv.odd_wrong")], [#V("nbv.odd_fa")/#V("nbv.odd_right")],
+    [residual checks on the same photographs (@sec:check, odd seeds)], [#V("chk.fit.caught")/#V("chk.odd.wrong")], [#V("chk.fit.fa")/#V("chk.odd.right")],
+  ),
+  caption: [#lead[Flagging wrong answers.] A part is flagged when recovering it again with one more photograph changes its features. The last row is the best in-sample check of @sec:check, on a different run of the fresh parts, for comparison. `data/measured.tsv`.],
+) <tab:agree>
+
+*Does the answer change?* Flag the part if the recovery with the third photograph has different features from the recovery without it. This flags (@tab:agree) #V("nbv.caught") of the #V("nbv.wrong") wrong two-photograph answers (#ci("nbv.caught_ci")%) and #V("nbv.fa") of the #V("nbv.right") right ones. It has no threshold to fit, so we report both halves of the parts: on the even seeds it flags #V("nbv.even_caught") of #V("nbv.even_wrong") wrong answers and #V("nbv.even_fa") of #V("nbv.even_right") right ones, on the odd seeds #V("nbv.odd_caught") of #V("nbv.odd_wrong") and #V("nbv.odd_fa") of #V("nbv.odd_right"). Among the #V("nbv.trusted") parts it does not flag, #V("nbv.trusted_right") of the two-photograph answers are right, against #V("nbv.right") of #V("nbv.n") overall. It cannot catch an error that the third photograph repeats, which is why a third of the unflagged answers are still wrong.
+
+*The residual in the third photograph.* Render the two-photograph answer in the third view, fit that view's light to its own geometry with the geometry held fixed, and measure the residual excess as in @sec:check. As a test for a wrong answer it has an area under the curve of #F("nbv.hold_auc", 2): no better than chance. The light absorbs most of what the wrong geometry gets wrong.
+
+*Choosing the third photograph.* Render the search's finalist programs from each candidate camera and take the view where they disagree most, using only the candidate's camera, not its pixels. With the chosen view #V("nbv.chosen") parts come back right, with a fixed random view #V("nbv.random"). The chosen view fixed #V("nbv.chosen_only") parts the random one missed and missed #V("nbv.random_only") it fixed; in #V("nbv.same") parts it chose the random view. Adding a view helps; choosing it, this way, does not.
+
+The rule we ship follows: take three photographs, recover from two and from all three, and return the program as trusted only if both have the same features; otherwise ask for another photograph.
 
 = A relaxation that made identification worse <sec:amp>
 
@@ -348,11 +373,11 @@ Since most failures are a hole-or-counterbore choice, we tried making that choic
 - *Synthetic photographs.* Rendered by the renderer the method is built on. Real photographs add appearance error, which we expect to make error bars less informative, not more.
 - *One family of parts*, a plate with top-face features.
 - *No baselines.* The accuracy in @tab:acc is not compared with any other method.
-- *Single runs.* The greedy search is not deterministic across machines, and we have not measured that variance.
+- *Single runs.* The greedy search is not deterministic across machines, and we have not measured that variance. The agreement check is measured on the #V("nbv.n") of 100 fresh parts that finished.
 
 = Conclusion
 
-In analysis-by-synthesis recovery of CAD programs, the fit's own error bars and residuals say little about whether the program is right. On held-out synthetic parts, tight error bars are wrong almost as often as loose ones, and residual checks fitted on one half catch few wrong answers on the other, because most wrong answers explain the photographs they were fitted to. What does help is evidence the fit has not seen: more photographs. A system that reports CAD dimensions with error bars should say plainly that those bars assume the features are right.
+In analysis-by-synthesis recovery of CAD programs, the fit's own error bars and residuals say little about whether the program is right. On held-out synthetic parts, tight error bars are wrong almost as often as loose ones, and residual checks fitted on one half catch few wrong answers on the other, because most wrong answers explain the photographs they were fitted to. What does help is evidence the fit has not seen, used as a test of stability rather than of fit: recovering again with one more photograph and asking whether the features change catches three in four wrong answers with few false alarms. A system that reports CAD dimensions with error bars should say plainly that those bars assume the features are right, and should run that check before it does.
 
 The code is the `irys-recon` crate of irys (Apache-2.0); each row of `data/measured.tsv` names the commit and run that produced it.
 

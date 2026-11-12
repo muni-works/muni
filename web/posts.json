@@ -37,7 +37,7 @@
     "subtitle": "Editable CAD programs from photographs",
     "date": "2026-11-12",
     "author": "Cam Pedersen",
-    "description": "Editable CAD programs recovered from photographs through irys, and a measurement of when to trust them: on held-out synthetic parts, tight error bars are wrong almost as often as loose ones, residual checks catch few wrong answers, and only more photographs help.",
+    "description": "Editable CAD programs recovered from photographs through irys, and when to trust them. On held-out synthetic parts the fit's error bars and residual checks barely tell right answers from wrong ones; recovering again with one more photograph and flagging the part when its features change catches three in four wrong answers with few false alarms.",
     "root": "../paper/recon",
     "source": "recon.typ",
     "cover": "deciding"
