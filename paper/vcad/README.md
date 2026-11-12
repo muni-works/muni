@@ -24,14 +24,6 @@ Design notes the text draws on live in the vcad repo: `docs/differentiable-seam-
 `-m11.md` and `docs/differentiable-seam-closeout.md`. The architecture section follows the
 vcad/phyz/tang plan (`docs/launch/full-tang.html` in vcad); none of its gates is claimed as a result.
 
-## Open items before submission
-
-- The two disagreements with finite differences an earlier draft reported (fillet-radius and s_x
-  gradient on the filleted, drilled box; the filleted cube's second derivative) were seam bugs,
-  fixed in vcad PR 1080; the paper pins that commit and describes both (§9.4).
-  The run was made at the PR's head, 7af5dce; main has it squash-merged as a3ad5ec with an
-  identical tree, which is the commit `repro.sh` and the paper name.
-- A blind referee review (November 2026) drove the current revision: rebuild FD, step sweeps, the
-  polygonization study, optimizer baselines, costs, plan radius, segment-count jumps and the
-  filleted-box contact rollout are in repro/paper_experiments.rs and paper_contact_fillet.rs.
-- Product names stay brand-coloured in the PDF, at Cam's request; a journal submission may want them plain.
+The two disagreements with finite differences an earlier draft reported were seam bugs, fixed in
+vcad PR 1080 and described in §9.4. The measured run was made at the PR's head, 7af5dce; main has
+it squash-merged as a3ad5ec with an identical tree, which is the commit `repro.sh` pins.
