@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { Deciding } from "./Deciding";
 import { Pavilion } from "./Pavilion";
 import { FlashTiles } from "./FlashTiles";
 import { PinnedRows } from "./PinnedRows";
@@ -21,6 +22,7 @@ export const COVERS: Record<string, Cover> = {
   "plasma-torus": { Art: PlasmaTorus, rail: { top: "r", bottom: "R", variant: "seam" } },
   pavilion: { Art: Pavilion, rail: { top: "Pixels", bottom: "Parameters", variant: "orbit" }, textClass: "is-left" },
   "flash-tiles": { Art: FlashTiles, rail: { top: "Query", bottom: "Key", variant: "flash" } },
+  deciding: { Art: Deciding, rail: { top: "a = 0.5", bottom: "a = 1", variant: "gate" }, textClass: "is-left" },
   "pinned-rows": { Art: PinnedRows, rail: { top: "g = 0.9", bottom: "g = 1", variant: "gate" } },
 };
 
