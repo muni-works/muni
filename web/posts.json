@@ -35,7 +35,7 @@
     "slug": "irys",
     "title": "Differentiable Rendering with Exact Replay",
     "subtitle": "irys, an open-source spectral path tracer",
-    "date": "2026-11-06",
+    "date": "2026-11-12",
     "author": "Cam Pedersen",
     "description": "irys is an open-source spectral path tracer. Its backward pass replays the forward pass bit for bit, so two runs give identical gradients. We check those gradients against an f64 reference, and vcad's BRep kernel pulls them back to the dimensions of a CAD part.",
     "root": "../paper/irys",

@@ -1,136 +1,91 @@
-p1.cd_frozen_lo	1.6e-10	design.md L220 @70e2c0b phase1::gradient_matches_central_differences_frozen_sampler (debug)
-p1.cd_frozen_hi	1.9e-9	design.md L220 @70e2c0b
-p1.c_vs_interp	9.4e-7	design.md L222 @70e2c0b phase1::compiled_matches_interpreter
-hero.words_4l	63.1	design.md L267 @ce6c360
-hero.var_total	7.4	design.md L264 @ce6c360 phase1::hero_wavelengths_cut_colour_noise
-hero.var_chroma	28.7	design.md L264 @ce6c360
-hero.cd_frozen	6.1e-10	design.md L265 @ce6c360
-gpu.replay_lanes	65536	design.md L310 @00fabd6 phase2a::gpu_replay_is_bit_exact
-gpu.l_median	1.2e-7	design.md L311 @00fabd6 phase2a::gpu_gradient_matches_cpu_f64
-gpu.l_p99	1.5e-4	design.md L311 @00fabd6
-gpu.loss_rel	5.8e-7	design.md L311 @00fabd6
-gpu.dtheta_max	3.5e-4	design.md L311 @00fabd6
-nee.cpu_cd_max	3.1e-9	design.md L535 @8306d62 phase2c::nee_cpu_gradient_matches_central_differences
-nee.gpu_l_p99	4.1e-6	design.md L536 @8306d62 phase2c::nee_gpu_matches_cpu_f64
-nee.gpu_dtheta_max	3.6e-6	design.md L536 @8306d62
-nee.var_ratio	4.5	design.md L538 @8306d62 phase2c::nee_cuts_variance_at_equal_spp
-rel.fwd_ms	0.87	design.md L539 @8306d62 phase2c::nee_throughput --release, NEE off, 96x96x8 depth 4
-rel.fwd_nee_ms	1.21	design.md L539 @8306d62 --release, NEE on
-rel.grad_ms	7.5	design.md L539 @8306d62 --release, NEE off
-rel.grad_nee_ms	14.9	design.md L539 @8306d62 --release, NEE on
-rel.cpu_grad_lo	116	design.md L361 @e9165f9 phase2a::gpu_throughput --release, CPU compiled C
-rel.cpu_grad_hi	129	design.md L361 @e9165f9
-rel.gpu_grad_lo	7.0	design.md L361 @e9165f9 --release device-scored
-rel.gpu_grad_hi	7.8	design.md L361 @e9165f9
-mega.lanes	16777216	design.md L542 @8306d62 phase2c::megapixel_in_one_call
-edge.host_ms	102.5	design.md L884 @7755a45 phase2e::gpu_tier::edge_term_timing --release
-edge.dev_ms	3.0	design.md L884 @7755a45
-edge.total_before_ms	105	design.md L884 @7755a45
-edge.total_after_ms	7.4	design.md L884 @7755a45
-edge.box_z1	3.3	design.md L710 @d6ee82c phase2d::box_silhouette_gradient_matches_central_differences
-edge.box_z2	0.8	design.md L710
-edge.box_z3	1.3	design.md L710
-edge.dev_vs_cpu	1.8e-6	design.md L712 @d6ee82c phase2d::gpu_tier::gpu_edge_term_matches_cpu
-int.dual_vs_fwd	9.3e-15	design.md L819 @d891aa9 phase2e::dual_trace_values_are_the_forward_pass
-idbuf.var	1.9	design.md L849 @2d41804 phase2e::visibility_importance_cuts_variance_without_bias
-sec.floor_z1	0.77	design.md L1094 @9069ea3 phase2f::shaded_arm_on_a_floor_with_secondary_edges --release
-sec.floor_z2	-1.07	design.md L1094
-sec.floor_z3	0.06	design.md L1094
-sec.no_sec_z1	3.8	design.md L1094 (2e terms alone)
-sec.no_sec_z2	-3.9	design.md L1094
-sec.no_sec_z3	3.4	design.md L1094
-sec.var_vs_warp	14	design.md L1086 @9069ea3 phase2f::secondary_estimators_compared (lower bound of 14-19x)
-fit.phi_pitch	-25.73	design.md L1033 @9069ea3 rose_fit --vis --iters 600, IRYS_SEC_N=4, --release
-fit.phi_roll	16.07	design.md L1033
-fit.phi_elbow	-60.23	design.md L1033
+p1.cd_frozen_lo	5.058614936633509e-11	repro irys 9155391
+p1.cd_frozen_hi	8.429724073441472e-10	repro irys 9155391
+p1.c_vs_interp	9.40336482057523e-7	repro irys 9155391
+hero.words_4l	7.1125e1	repro irys 9155391
+hero.var_total	7.421099887626074e0	repro irys 9155391
+hero.var_chroma	2.8694923272751947e1	repro irys 9155391
+hero.cd_frozen	8.429724073441472e-10	repro irys 9155391
+gpu.replay_lanes	65536	repro irys 9155391
+gpu.l_median	1.1776723275893811e-7	repro irys 9155391
+gpu.l_p99	9.798275770084484e-6	repro irys 9155391
+gpu.loss_rel	7.219658272343206e-7	repro irys 9155391
+gpu.dtheta_max	1.7079183264888457e-4	repro irys 9155391
+nee.cpu_cd_max	1.4280788832580697e-9	repro irys 9155391
+nee.gpu_l_p99	3.915188158617212e-6	repro irys 9155391
+nee.gpu_dtheta_max	2.8201306391761402e-5	repro irys 9155391
+nee.var_ratio	7.520595385997226e0	repro irys 9155391
+rel.fwd_ms	8.201932000000001e-1	repro irys 9155391
+rel.fwd_nee_ms	1.2604924e0	repro irys 9155391
+rel.grad_ms	1.0992276e0	repro irys 9155391
+rel.grad_nee_ms	2.612904e0	repro irys 9155391
+rel.cpu_grad_lo	550.8	repro irys 9155391
+rel.cpu_grad_hi	608.1	repro irys 9155391
+rel.gpu_grad_lo	0.9898	repro irys 9155391
+rel.gpu_grad_hi	4.745	repro irys 9155391
+mega.lanes	16777216	repro irys 9155391
+edge.host_ms	2.695433254e2	repro irys 9155391
+edge.dev_ms	1.0222896800000001e1	repro irys 9155391
+edge.total_before_ms	2.7312411280000003e2	repro irys 9155391
+edge.total_after_ms	1.5291284000000001e1	repro irys 9155391
+edge.box_z1	3.405101999508819e0	repro irys 9155391
+edge.box_z2	2.918103722825879e-1	repro irys 9155391
+edge.box_z3	3.8685553804481077e-2	repro irys 9155391
+edge.dev_vs_cpu	1.1318047170196532e-5	repro irys 9155391
+int.dual_vs_fwd	7.707213298164677e-15	repro irys 9155391
+idbuf.var	2.010137143081447e0	repro irys 9155391
+sec.floor_z1	2.3207027983459624e-1	repro irys 9155391
+sec.floor_z2	-7.142199510236578e-1	repro irys 9155391
+sec.floor_z3	3.933076545017241e-1	repro irys 9155391
+sec.no_sec_z1	3.558878817786134e0	repro irys 9155391
+sec.no_sec_z2	-4.706496321653445e0	repro irys 9155391
+sec.no_sec_z3	3.7140943399166075e0	repro irys 9155391
+sec.var_vs_warp	2.106149857815294e1	repro irys 9155391
+fit.phi_pitch	-8.97434263421384e0	repro irys 9155391
+fit.phi_roll	6.422070978675698e1	repro irys 9155391
+fit.phi_elbow	1.4158337831800488e1	repro irys 9155391
 fit.true_pitch	-25.78	design.md L719 (truth = arm::TRUE_PHI in degrees)
 fit.true_roll	16.04	design.md L719
 fit.true_elbow	-60.16	design.md L719
 fit.init_pitch	-8.6	design.md L719
 fit.init_roll	3.4	design.md L719
 fit.init_elbow	-37.2	design.md L719
-fit.alpha	0.303	design.md L1034 @9069ea3
-fit.f0_450	0.855	design.md L1034
-fit.f0_550	0.876	design.md L1034
-fit.f0_650	0.895	design.md L1034
-fit.mse	8.57e-4	design.md L1035 @9069ea3
-fit.mse_truth	8.60e-4	design.md L1035
-fit.iters	600	design.md L1163
-fit.ms_theta	111.6	design.md L1171 @9069ea3 --release
-fit.ms_edge	166.8	design.md L1171
-fit.ms_intsec	66.2	design.md L1171
-fit.seconds	244	design.md L1175
+fit.alpha	2.8558295284723245e-1	repro irys 9155391
+fit.f0_450	8.273348509099846e-1	repro irys 9155391
+fit.f0_550	8.430455939124187e-1	repro irys 9155391
+fit.f0_650	8.5941660103642e-1	repro irys 9155391
+fit.mse	4.724400814867729e-3	repro irys 9155391
+fit.mse_truth	4.1887718947324304e-4	repro irys 9155391
+fit.iters	600	repro irys 9155391
+fit.ms_theta	2.0622706631666667e1	repro irys 9155391
+fit.ms_edge	7.305251537983332e2	repro irys 9155391
+fit.ms_intsec	2.8277769661499997e2	repro irys 9155391
+fit.seconds	8.99016791386e2	repro irys 9155391
 fit.tris	2.4	design.md L683-688 (millions of triangles, whole robot)
 basin.deg	5	design.md L1008 (elbow basin half-width)
-brep.pull	40.16864	irys 103e3da examples/rose_brep (LIN=1 N=100000 SEEDS=8 H=0.1 K=16) --release
-brep.pull_se	0.0226	irys 103e3da
-brep.fwd_rel	1.06e-15	irys 103e3da
-brep.fd	40.17028	irys 103e3da
-brep.fd_rel	4.27e-5	irys 103e3da
-brep.e2e	40.0144	irys 103e3da
-brep.e2e_rel	3.85e-3	irys 103e3da
-brep.nodes	4942	irys 103e3da
-brep.tris	9932	irys 103e3da
-recon.1v.p05	2	irys docs/image-to-cad.md "v1" @845f34a, docs/recon-v1-report.md (recon_v1 gate, 1 photo per part, 20 parts)
-recon.1v.p1	6	same
-recon.1v.topo	11	same
-recon.3v.p05	10	irys docs/recon-v1-3view-report.json @527f046 (recon_v1 gate --views 3, 20 parts)
-recon.3v.p1	13	same
-recon.3v.topo	15	same
-recon.3v.err_lo	0.171	same: smallest max-dimension error among parts passing at 0.5 mm
-recon.3v.err_hi	0.488	same: largest
-recon.3v.err_med	0.351	same: median
-recon.3v.pose_med	0.134	same: median of max(|dx|,|dy|) pose error on the tag plane, mm, all 20 parts
-recon.3v.yaw_max	0.065	same: worst yaw error, degrees
-recon.3v.focal_max	0.61	same: worst focal error from EXIF + tag, percent
-recon.parts	20	the gate's parts, generate::program(3000..3020)
-recon.3a.p05	10	irys docs/recon-v1-3view-ao-report.json @de62b0a (recon_v1 gate --views 3 --no-fd, AO differentiated, 20 parts)
-recon.3a.p1	15	same
-recon.3a.topo	16	same
-recon.3a.err_lo	0.157	same: smallest max-dimension error among parts passing at 0.5 mm
-recon.3a.err_hi	0.382	same: largest
-recon.3a.err_med	0.265	same: median
-recon.3a.err1_med	0.320	same: median among parts passing at 1 mm
-recon.3a.s_part	187	same: mean seconds per part (3 photos, CPU)
-recon.3v.s_part	409	docs/recon-v1-3view-report.json @527f046: mean seconds per part with forward-difference AO columns
-recon.3a.p1_ci	0.531	0.888	Wilson 95% interval for 15/20
-recon.3a.p05_ci	0.299	0.701	Wilson 95% interval for 10/20
-recon.1v.p1_ci	0.145	0.519	Wilson 95% interval for 6/20
-recon.pt.p05	11	irys docs/recon-v1-3view-pt-hybrid-report.md @e2fec74 (recon_v1 gate --views 3 --no-fd --renderer hybrid: G-buffer search, final fit through irys's path tracer; 20 parts)
-recon.pt.p1	14	same
-recon.pt.topo	16	same
-recon.g.parts	100	irys docs/recon-v1-gate100-report.md @812dc62 (recon_v1 gate --views 3 --no-fd, AO differentiated; in-grammar seeds 3000..3099; first 20 = recon.3a)
-recon.g.p05	40	same
-recon.g.p1	52	same
-recon.g.topo	60	same
-recon.g.p1_ci	0.42	0.62	same: Wilson 95%
-recon.g.p05_ci	0.31	0.50	same: Wilson 95%
-recon.g.topo_ci	0.50	0.69	same: Wilson 95%
-recon.g.new_p1	37	same: seeds 3020..3099, within 1 mm (of 80)
-recon.g.given_topo	87	same: % within 1 mm given correct topology (52/60)
-recon.g.given_topo_ci	0.76	0.93	same: Wilson 95%
-recon.g.hole_cb	19	same: parts with hole<->counterbore confusion (of 40 topology failures incl. 4 tag misses)
-recon.g.notag	4	same: parts failing before recon (no tag36h11 found in one photo)
-recon.g.med_ok	0.383	same: median worst-dimension error, mm, correct-topology parts
-recon.g.p90_ok	1.406	same: p90
-recon.g.h_bias	0.18	same: mean plate-height error, mm (low)
-recon.o.parts	24	same: out-of-grammar seeds 9000..9023, 6 kinds x 4
-recon.o.p05	5	same
-recon.o.p1	9	same
-recon.o.topo	10	same
-recon.o.p1_ci	0.21	0.57	same: Wilson 95%
-recon.sig.c	17.8	same: sigma' = c * sigma_Fisher, fitted on even seeds
-recon.sig.c_ci	12.7	21.8	same: bootstrap
-recon.sig.cov1	68	same: % of odd-seed dimensions within 1 sigma'
-recon.sig.k95	6.72	same: 95% half-width in sigma'
-recon.sig.cov95	96	same: % of odd-seed dimensions within k95 sigma'
-recon.sig.rho	-0.15	same: Spearman rank correlation of sigma_Fisher with |error|
-recon.sig.opt	6	same: median factor by which Fisher sigma is optimistic
-ext.diff.cd	1.0e-9	irys docs/design.md "The paper's limits, overcome (2026-11-10)" @f8b9070 (branch claude/irys-landing-6d5530), RTX 3090 Vulkan; crates/irys-diff/tests/diffuse.rs @6c279d4: diffuse albedo, CPU f64 vs central differences, worst of three bands (6.0e-10, 6.3e-10, 1.0e-9), Cornell box with NEE and a quad emitter
-ext.diff.gpu	2.4e-6	same, @12174b4: GPU f32 vs CPU f64, worst of three bands (4.9e-7, 1.0e-6, 2.4e-6)
-ext.diff.lanes	65536	same: replay bit-identical lanes (of 65536); two replays give bitwise-equal gradients
-ext.splat.cd	5.1e-4	irys docs/design.md "The paper's limits, overcome (2026-11-10)" @f8b9070 (branch claude/irys-landing-6d5530), RTX 3090 Vulkan; crates/irys-diff/tests/splats.rs @1603172: splat colour and opacity, CPU vs central differences, worst (f32 parameters, h = 3e-3; colours about 1e-5), garden scene
-ext.splat.gpu	5.0e-5	same, @0ce7385: GPU f32 vs CPU f64 on the 16 largest gradients; 0 records dropped
-ext.splat.lanes	65536	same: replay bit-identical lanes (of 65536); two replays give bitwise-equal gradients
+brep.pull	4.016863735090903e1	repro irys 9155391
+brep.pull_se	2.2638672671327457e-2	repro irys 9155391
+brep.fwd_rel	1.240775729709184e-15	repro irys 9155391
+brep.fd	4.017028482437577e1	repro irys 9155391
+brep.fd_rel	4.2749867504325455e-5	repro irys 9155391
+brep.e2e	4.001439824415229e1	repro irys 9155391
+brep.e2e_rel	3.8545901856535184e-3	repro irys 9155391
+brep.nodes	4942	repro irys 9155391
+brep.tris	9932	repro irys 9155391
+ext.diff.cd	1.0e-9	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/diffuse.rs diffuse_cpu_gradient_matches_central_differences: worst of three bands (6.0e-10, 6.3e-10, 1.0e-9)
+ext.diff.gpu	1.8e-6	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/diffuse.rs gpu_tier::diffuse_gpu_matches_cpu_f64: worst of three bands (4.1e-7, 1.1e-6, 1.8e-6)
+ext.diff.lanes	65536	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/diffuse.rs gpu_tier::diffuse_replay_is_bit_exact: 65536 of 65536 lanes bit-identical
+ext.splat.cd	5.1e-4	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/splats.rs splat_cpu_gradient_matches_central_differences: worst rel (f32 parameters, h = 3e-3)
+ext.splat.gpu	5.1e-5	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/splats.rs gpu_tier::splat_gpu_matches_cpu_f64: worst rel over the 16 largest; records dropped 0
+ext.splat.lanes	65536	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/splats.rs gpu_tier::splat_replay_is_bit_exact: 65536 of 65536 lanes bit-identical
 ext.splat.cap	256	same: splat records per path slot on the GPU replay
-ext.emit.gates	16	irys docs/design.md "The paper's limits, overcome (2026-11-10)" @f8b9070 (branch claude/irys-landing-6d5530), RTX 3090 Vulkan; crates/irys-diff/tests/phase3.rs: emitter (NEE + MIS) gates passing on Vulkan, of 16
+ext.emit.gates	16	repro irys 9155391, RTX 4090 Vulkan (data/raw/tests.log); tests/phase3.rs: 16 passed, 0 failed
+rel.gpu_grad_ms	1.0335916e0	repro irys 9155391
+rel.cpu_grad_ms	5.54075869e2	repro irys 9155391
+rel.fwd_lo	0.8065	repro irys 9155391
+rel.fwd_hi	2.437	repro irys 9155391
+rel.grad_lo	1.056	repro irys 9155391
+rel.grad_hi	4.665	repro irys 9155391
+rel.fwd_nee_lo	1.26	repro irys 9155391
+rel.fwd_nee_hi	2.655	repro irys 9155391
+rel.grad_nee_lo	2.613	repro irys 9155391
+rel.grad_nee_hi	5.508	repro irys 9155391

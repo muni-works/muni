@@ -12,7 +12,7 @@
 #let c-warn    = rgb("#ffd400")   // tang's colour
 #let c-fault   = rgb("#ff2052")   // vcad's colour
 #let c-info    = rgb("#00f0ff")   // geometry, rays
-#let c-irys    = rgb("#b48cff")   // irys's colour
+#let c-irys    = rgb("#ff2bd6")   // irys's colour
 #let sans    = ("IBM Plex Sans",)
 #let mono-m  = ("IBM Plex Mono Medm", "IBM Plex Sans Medm")
 #let s-xs = 6.5pt

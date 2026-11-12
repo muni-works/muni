@@ -29,7 +29,7 @@
 // product names in their landing-page color
 #let brand-names = (("irys", "irys"), ("vcad", "vcad"), ("tang", "tang"), ("phyz", "phyz"))
 // each product in its landing-page color (web/src/app/page.tsx), not its family
-#let fam-color = (irys: rgb("#b48cff"), vcad: rgb("#ff2052"), tang: rgb("#ffd400"), phyz: rgb("#00f0ff"))
+#let fam-color = (irys: rgb("#ff2bd6"), vcad: rgb("#ff2052"), tang: rgb("#ffd400"), phyz: rgb("#00f0ff"))
 #let brand-re = regex("(?i)\\b(irys|vcad|tang|phyz)\\b")
 #metadata(brand-names) <brand-names>
 #let brand-family(name) = brand-names.find(n => n.at(0) == lower(name)).at(1)
@@ -388,7 +388,7 @@ This paper describes irys, the renderer behind vcad and our robotics tools, and 
 - *Materials.* The differentiable materials are a GGX conductor with a three-band spectral Fresnel, a diffuse surface's three-band spectral albedo, and each Gaussian splat's DC colour and base opacity (@sec:ext). irys does not differentiate the environment or a splat's position or shape. On the GPU a replay records at most #V("ext.splat.cap") splat crossings per path.
 - *Lights.* The emitters are the environment (a sky and a von Mises–Fisher sun lobe) and area emitters, sampled with next-event estimation and multiple importance sampling on both tiers.
 - *Pose parameters are rigid.* Joint angles and the camera move instances rigidly. Non-rigid shape change enters only through the BRep pullback of @sec:brep.
-- *Hardware.* The GPU tier runs on Metal and on Vulkan (checked on an NVIDIA RTX 3090). All timings come from one Apple M-series machine through Metal; the source logs did not record the exact chip, and we have not yet regenerated this draft's timings on a single pinned machine (@sec:repro).
+- *Hardware.* The GPU tier runs on Metal and on Vulkan. Every number in this paper comes from one run on one machine: an NVIDIA RTX 4090 through Vulkan, with 12 vCPUs of an AMD EPYC 7K62 for the CPU tier (@sec:repro). We have not measured timings on other GPUs.
 
 = Background and related work
 
@@ -471,7 +471,7 @@ over the projected edges $E$, where $n$ is the edge's outward normal and $v_n$ t
 
 = Results <sec:results>
 
-Unless stated, we check gradients against central differences (CD) of the same estimator with common random numbers; "frozen" means the random numbers are fixed so the CD is noise-free. Monte Carlo comparisons report a z-score, the difference over its standard error. Timings are release builds on the M-series machine above. The number in each table is read from `data/measured.tsv`, whose rows give the source test and commit.
+Unless stated, we check gradients against central differences (CD) of the same estimator with common random numbers; "frozen" means the random numbers are fixed so the CD is noise-free. Monte Carlo comparisons report a z-score, the difference over its standard error. Timings are release builds on the RTX 4090 machine above. The number in each table is read from `data/measured.tsv`, whose rows give the source test and commit.
 
 == Correctness of the material gradient
 
@@ -508,7 +508,7 @@ The same replay differentiates two more kinds of parameter. A Lambertian BSDF is
     [diffuse albedo, three bands], [#E("ext.diff.cd")], [#E("ext.diff.gpu")], [#V("ext.diff.lanes") / #V("ext.diff.lanes")],
     [splat colour and opacity], [#E("ext.splat.cd")], [#E("ext.splat.gpu")], [#V("ext.splat.lanes") / #V("ext.splat.lanes")],
   ),
-  caption: [#lead[Diffuse and splat gradients], the worst disagreement each test reports, on an NVIDIA RTX 3090 through Vulkan. Diffuse: a Cornell box with next-event estimation and a quad emitter. Splats: the garden scene; the splat parameters are f32 and the central-difference step is $3 times 10^(-3)$, which sets the first column, and the GPU column compares the 16 largest gradients, with no records dropped. Two replays give bitwise-equal gradients in both cases. `data/measured.tsv`.],
+  caption: [#lead[Diffuse and splat gradients], the worst disagreement each test reports. Diffuse: a Cornell box with next-event estimation and a quad emitter. Splats: the garden scene; the splat parameters are f32 and the central-difference step is $3 times 10^(-3)$, which sets the first column, and the GPU column compares the 16 largest gradients, with no records dropped. Two replays give bitwise-equal gradients in both cases. `data/measured.tsv`.],
 ) <tab:ext>
 
 == Pose gradients
@@ -544,13 +544,13 @@ A finite difference that rebuilds the part is not a usable reference here. Rebui
 
 *The f64 reference.* Running the same tang graph in f64 on the CPU separates three error sources that are otherwise entangled: estimator bias (CPU against frozen CD), device rounding (GPU against CPU), and Monte Carlo noise (live sampler against CD over seeds).
 
-*Future work: from photographs to CAD programs.* This paper validates gradients; it does not use them to recover anything. Their use is in inverse problems, and the hardest is recovering the model itself. Given a few photographs of a part, the task is to find the editable CAD program, its features and their dimensions, with error bars. irys's gradients make the dimensions tractable inside such a search, and a printed tag fixes the camera and the scale. The open problem is topology, meaning which features the part has. We take that up in a companion paper @pedersen2026recon, with a held-out evaluation and a continuous relaxation over a program's optional features.
+*Future work: from photographs to CAD programs.* This paper validates gradients; it does not use them to recover anything. Their use is in inverse problems, and the hardest is recovering the model itself. Given a few photographs of a part, the task is to find the editable CAD program, its features and their dimensions. irys's gradients make the dimensions tractable inside such a search, and a printed tag fixes the camera and the scale. The open problem is topology, meaning which features the part has. We take that up in a companion paper @pedersen2026recon, which evaluates the search on held-out parts and reports where it fails: one photograph is often not enough, and a small residual does not mean the features are right.
 
-*Remaining gaps.* The secondary term runs on the CPU in f64 and costs about a quarter of an iteration; its estimate is heavy-tailed, and the rose check passes at 64 seeds but not at 256. The device edge sampler is biased low on the robot by a few percent for a cause we have not found, so the robot checks use host samples. The adjoint's reduction is not fused. Splat gradients cover colour and opacity only, and the GPU replay sums their records on the host. The look renderer's hair tests fail on Vulkan; they are not on the differentiable path. Timings are from Apple hardware only.
+*Remaining gaps.* The secondary term runs on the CPU in f64 and costs about a quarter of an iteration; its estimate is heavy-tailed, and the rose check passes at 64 seeds but not at 256. The device edge sampler is biased low on the robot by a few percent for a cause we have not found, so the robot checks use host samples. The adjoint's reduction is not fused. Splat gradients cover colour and opacity only, and the GPU replay sums their records on the host. The look renderer's hair tests fail on Vulkan; they are not on the differentiable path. Timings are from one GPU only.
 
 = Reproducibility <sec:repro>
 
-irys is open source under Apache-2.0. Each row of `data/measured.tsv` names the test or example in `crates/irys-diff` that measures it and the commit that introduced it; the robot-arm checks and the BRep benchmark need the rose CAD checkout. We collected this draft's rows from irys's design log at the commits listed and measured them on different days. Every timing quoted is a release build. Before submission a script in `paper/irys/repro` will regenerate them in one pass on one recorded machine, as for the companion paper.
+irys is open source under Apache-2.0, and its crates are on crates.io. `paper/irys/repro/repro.sh` clones irys and the rose CAD at pinned commits, runs every gate test and the two robot-arm examples in the release profile, and writes `data/measured.tsv`; each row names the test or example that measured it. Every number in this paper comes from one such run at irys `9155391` on 2026-11-12, on the machine in `data/env.tsv`. The raw log is `data/raw/tests.log`.
 
 = Conclusion
 
