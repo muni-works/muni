@@ -245,14 +245,76 @@
   ))))
 }
 
-// The cover: the object the grammar cannot yet say. Cam's photo of a printed retro enclosure.
-#let fig-cover(width: 21.59) = {
-  let height = width * 1600 / 1200
-  cetz.canvas(length: 1cm, {
-    import cetz.draw: *
-    content((0, 0), anchor: "south-west", image("images/enclosure.jpg", width: width * 1cm))
-    rect((0, 0), (width, height * 0.62), stroke: none,
-      fill: gradient.linear(c-bg.transparentize(100%), c-bg.transparentize(8%), c-bg, c-bg, angle: 90deg))
+// The cover: the web cover's last frame (web/src/components/blog/covers/Deciding.tsx). Test part
+// 3007 in the view of one of its photographs, each undecided hole drawn as the alternative its fit
+// chose, with the amplitudes, residual insets and the program written out. Frames and numbers are
+// images/cover/, written by web/scripts/recon-cover-data.py; nothing is drawn by hand.
+#let cover = json("images/cover/cover.json")
+#let fig-cover(width: 21.59, height: 17.5) = {
+  let (w, h) = cover.size
+  let k = height / h                       // cm per frame pixel
+  let ox = width * 0.56 - 1500 * k          // keep the features right of centre
+  let P(x, y) = (dx: ox * 1cm + x * k * 1cm, dy: y * k * 1cm)
+  let px(n) = n * k * 1cm
+  let mono-px(n, body, fill: c-text) = text(font: mono, size: px(n) * 0.95, tracking: px(2.5), fill: fill, body)
+  let fin = cover.steps.last().a
+  let f2(x) = { let r = str(calc.round(x * 100) / 100); if not r.contains(".") { r += ".00" } else if r.split(".").at(1).len() == 1 { r += "0" }; r }
+  let amp(k) = calc.min(calc.max(fin.at(k), 0), 1)
+  let order = range(cover.groups.len()).sorted(key: i => cover.groups.at(i).centre.at(0))
+  let BLOCK = 380
+  let INSET = 150
+  let ly = h * 0.15
+  let insetY = ly + 168
+  block(width: width * 1cm, height: height * 1cm, clip: true, {
+    place(..P(0, 0), image("images/cover/base.jpg", width: px(w)))
+    for g in cover.groups {
+      for o in g.options {
+        if amp(o.k) > 0.5 { place(..P(g.box.at(0), g.box.at(1)), image("images/cover/opt" + str(o.k) + ".png", width: px(g.box.at(2)))) }
+      }
+    }
+    place(rect(width: 100%, height: 100%, fill: c-bg.transparentize(42%), stroke: none))
+    place(bottom, rect(width: 100%, height: 45%, stroke: none,
+      fill: gradient.linear(c-bg.transparentize(100%), c-bg.transparentize(30%), c-bg, angle: 90deg)))
+    for (row, gi) in order.enumerate() {
+      let g = cover.groups.at(gi)
+      let (cx, cy) = g.centre
+      let bx = w * (0.47 + 0.235 * row)
+      let am = g.options.map(o => amp(o.k))
+      let win = if am.at(0) >= am.at(1) { 0 } else { 1 }
+      let dim = g.options.at(win).dim
+      let tx(x) = ox + x * k
+      place(curve(stroke: 2.4 * k * 1cm + c-sel.transparentize(10%),
+        curve.move((tx(g.rim.at(0).at(0)) * 1cm, g.rim.at(0).at(1) * k * 1cm)),
+        ..g.rim.slice(1).map(p => curve.line((tx(p.at(0)) * 1cm, p.at(1) * k * 1cm))), curve.close()))
+      place(line(start: (tx(cx) * 1cm, cy * k * 1cm), end: (tx(bx + INSET / 2) * 1cm, (insetY + INSET + 12) * k * 1cm), stroke: 1.6 * k * 1cm + c-sel.transparentize(10%)))
+      place(..P(cx - 5, cy - 5), circle(radius: px(5), fill: c-sel, stroke: none))
+      for (i, o) in g.options.enumerate() {
+        let y = ly + 26 + i * 44
+        let col = if i == win { c-sel } else { c-text.transparentize(55%) }
+        place(..P(bx, y - 20), mono-px(22, upper(o.kind), fill: col))
+        place(..P(bx, y - 20), box(width: px(262), align(right, mono-px(22, f2(am.at(i)), fill: col))))
+        place(..P(bx + 276, y - 9), line(length: px(BLOCK - 276), stroke: px(2) + c-text.transparentize(82%)))
+        if am.at(i) > 0 { place(..P(bx + 276, y - 9), line(length: px((BLOCK - 276) * am.at(i)), stroke: px(2) + col)) }
+      }
+      place(..P(bx, insetY - 34), mono-px(18, "RESIDUAL", fill: c-label))
+      let sc = INSET / calc.max(g.box.at(2), g.box.at(3))
+      let o = g.options.at(win)
+      place(..P(bx, insetY), box(width: px(INSET), height: px(INSET), clip: true, radius: px(2), stroke: px(1.5) + c-sel.transparentize(20%),
+        place(dx: px((INSET - g.box.at(2) * sc) / 2), dy: px((INSET - g.box.at(3) * sc) / 2),
+          image("images/cover/res-opt" + str(o.k) + ".png", width: px(g.box.at(2) * sc)))))
+      place(..P(bx + INSET + 20, insetY + 6), mono-px(22, "DIA " + f2(dim.d)))
+      place(..P(bx + INSET + 20, insetY + 36), mono-px(22, if "depth" in dim { "DEPTH " + f2(dim.depth) } else { "THROUGH" }))
+    }
+    // the program the fit wrote
+    let prog = cover.base.map(l => text(fill: c-label, l)) + order.map(gi => {
+      let g = cover.groups.at(gi)
+      let am = g.options.map(o => amp(o.k))
+      text(fill: c-text, g.options.at(if am.at(0) >= am.at(1) { 0 } else { 1 }).line)
+    })
+    place(bottom + left, dx: 0.75in, dy: -3.6cm, text(font: mono, size: 6.5pt, tracking: 0.04em, stack(spacing: 0.75em, ..prog)))
+    place(bottom + right, dx: -0.75in, dy: -3.6cm, align(right, stack(spacing: 0.5em,
+      caps(fill: c-text)[Decided · #cover.nSteps steps · #cover.evals renders],
+      caps[Test part #cover.seed · irys renders blended by amplitude · a recorded fit])))
   })
 }
 

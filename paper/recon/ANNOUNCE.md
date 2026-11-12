@@ -2,20 +2,18 @@ Draft announcement for "Seeing Is Measuring" (muni.works/research/seeing-is-meas
 
 ---
 
-Part 3000 came back with every dimension at ±0.1 mm. The plate was 2.15 mm short and its hole was missing.
+We built image-to-CAD.
 
-That's the problem with reading CAD from photos. The fit tells you how sure it is, and it's sure about the wrong part too.
+You take three photos of a part next to a printed tag, and you get back an editable CAD program. It has the plate and every hole, counterbore, slot and boss, each with dimensions you can change. It's a program, not a mesh.
 
-So we measured it. We recover editable CAD programs - a plate, its holes, counterbores, slots, bosses - from photographs, through irys. Then we asked whether anything the fit reports can tell a right answer from a wrong one.
+Part 4035 is two bosses on a plate. We recovered it to within 0.13 mm on every dimension.
 
-The error bars can't. 17 of the 37 parts with every bar under 1 mm were wrong. Residual checks can't either - they caught 4 of 37 wrong answers on held-out parts. Most wrong answers explain the photos they were fitted to.
+It runs on irys, our differentiable renderer. irys renders each candidate program, fits it to the pixels, and scores it by how short a description of the photos it gives. A feature goes in only if it shortens that description.
 
-What works: recover the part again with one more photo, and flag it if the features change. That caught 30 of 40 wrong answers, with 2 false alarms in 23 right ones. Choosing which photo to take didn't beat a random one.
+Knowing when the answer is wrong was harder. The fit can return a wrong part with ±0.1 mm error bars. We measured how well those error bars separate right answers from wrong ones, and they scored 0.58 where chance is 0.5. So we built a check that works. We recover the part again with one more photo, and if the features change, we flag it. That caught 30 of 40 wrong answers, with 2 false alarms in 23 right ones.
 
-So vcad will take three photos, recover from two and from all three, and only call a part trusted when they agree.
+This is coming to vcad. You'll take three photos, get a part you can edit, and see whether to trust it.
 
-Every photo in the paper is synthetic, and there's a confound we haven't ruled out yet - it's all in the paper.
+So far every photo is synthetic. Next we print parts and check them with calipers.
 
 Paper: muni.works/research/seeing-is-measuring
-
-Let me know what you think.
