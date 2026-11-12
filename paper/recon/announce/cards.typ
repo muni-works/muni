@@ -58,10 +58,10 @@
 #v(0.16in)
 #grid(columns: (1fr, 1fr), column-gutter: 0.2in,
   [#text(font: sans-sb, size: 24pt, fill: ok)[0.13 mm] \ #text(size: 12pt, fill: label)[worst error, every dimension]],
-  [#text(font: sans-sb, size: 24pt)[3 photos] \ #text(size: 12pt, fill: label)[and a printed tag. No scanner.]],
+  [#text(font: sans-sb, size: 24pt)[3 photos] \ #text(size: 12pt, fill: label)[and a printed tag, no scanner]],
 )
 #v(0.12in)
-#text(size: 13pt, fill: label)[A program you can edit, not a mesh. Every candidate rendered and fitted through irys, our differentiable renderer. Synthetic test photos.]
+#text(size: 13pt, fill: label)[You get a program you can edit, not a mesh. irys, our differentiable renderer, renders and fits every candidate. The test photos are synthetic.]
 #foot
 
 #pagebreak()
@@ -71,7 +71,7 @@
 #v(0.25in)
 #text(font: sans-sb, size: 30pt, tracking: -0.02em)[And it knows when\ it's wrong.]
 #v(0.12in)
-#text(size: 16pt, fill: label)[Error bars can't tell you. A second look can: recover with one more photo, and if the features change, flag it.]
+#text(size: 16pt, fill: label)[Error bars can't tell you. Recover the part again with one more photo, and flag it if the features change.]
 #v(0.18in)
 #let bar(name, k, n, col, note) = {
   grid(columns: (1fr, auto), align: (left + bottom, right + bottom),
@@ -98,7 +98,7 @@
   align(center, caps[Two photos: plate only]),
   align(center, caps(fill: warn)[\+ third: two bosses]))
 #v(0.16in)
-#text(size: 14pt)[Two photos missed both bosses. The third caught it, so the check flagged the first answer. Coming to vcad: three photos, and a part is trusted only when the answers agree.]
+#text(size: 14pt)[Two photos missed both bosses. The third photo showed them, so the check flagged the first answer. In vcad, a part will count as trusted only when both answers agree.]
 #v(0.04in)
 #text(size: 11pt, fill: label)[Synthetic photos, 63 held-out parts.]
 #foot
