@@ -493,6 +493,43 @@ html.post-rail-on::-webkit-scrollbar { display: none; }
 @keyframes post-scroll-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 @media (prefers-reduced-motion: reduce) { .post-cover-scroll svg { animation: none; } }
 
+/* irys cover: the render and its joint overlay share one box, shifted right of the title */
+.irys-cover { overflow: hidden; }
+.irys-cover-art { position: absolute; inset: 0; transform: none; }
+.irys-cover .irys-cover-art img, .irys-cover .irys-cover-art svg { position: absolute; inset: 0; width: 100% !important; height: 100% !important; max-width: none !important; object-fit: cover; object-position: 50% 50%; display: block; }
+.irys-cover-scrim { position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    linear-gradient(90deg, #0b0907 0%, rgba(11, 9, 7, 0.82) 22%, rgba(11, 9, 7, 0.35) 46%, rgba(11, 9, 7, 0) 62%),
+    linear-gradient(0deg, #0b0907 0%, rgba(11, 9, 7, 0) 28%); }
+.irys-cover-count { position: absolute; right: 1.5rem; bottom: 1.4rem; text-align: right; font-family: var(--p-mono); font-size: 0.66rem; letter-spacing: 0.12em; color: #e8e1d2; }
+.irys-cover-count span { display: block; color: #a08d70; margin-top: 0.3rem; }
+.irys-joint, .irys-callout { opacity: 0; animation: irys-in 0.6s ease-out forwards; }
+@keyframes irys-in { to { opacity: 1; } }
+.irys-joint { cursor: pointer; outline: none; transition: opacity 0.25s; }
+.irys-joint line { stroke: #00f0ff; stroke-opacity: 0.8; stroke-width: 2.2; transition: stroke 0.2s, stroke-width 0.2s; }
+.irys-joint .irys-pivot { fill: #00f0ff; transition: r 0.2s, fill 0.2s; }
+.irys-joint .irys-hit { fill: transparent; }
+.irys-joint.is-dim { opacity: 0.35 !important; }
+.irys-joint.is-on line { stroke: #e8e1d2; stroke-width: 3.5; stroke-opacity: 1; }
+.irys-joint.is-on .irys-pivot { fill: #ff5f00; r: 7; }
+.irys-joint:focus-visible .irys-hit { stroke: #e8e1d2; stroke-width: 2; }
+.irys-arc polyline { fill: none; stroke: #ff5f00; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: irys-sweep 0.9s ease-out forwards; }
+.irys-arc circle { fill: #ff5f00; }
+@keyframes irys-sweep { to { stroke-dashoffset: 0; } }
+.irys-callout { cursor: pointer; }
+.irys-callout polyline { stroke: #e8e1d2; stroke-opacity: 0.6; stroke-width: 1.6; }
+.irys-callout circle { stroke: #e8e1d2; stroke-width: 2; }
+.irys-callout text { fill: #e8e1d2; font-size: 22px; font-family: var(--p-mono); letter-spacing: 2.5px; }
+.irys-callout text.irys-sub { fill: #a08d70; font-size: 20px; letter-spacing: 2px; }
+.irys-callout.is-on polyline { stroke: #ff5f00; stroke-opacity: 1; }
+.irys-callout.is-on circle { stroke: #ff5f00; }
+.irys-callout.is-on text:first-of-type { fill: #ff5f00; }
+@media (prefers-reduced-motion: reduce) { .irys-joint, .irys-callout { animation: none; opacity: 1; } }
+@media (max-width: 48rem) { .irys-callout { display: none; } .irys-cover-art { transform: translateX(8%) scale(1.5); } }
+.post-cover-text.is-left { margin: 0; max-width: min(36rem, 42vw); padding-left: clamp(1.25rem, 6vw, 6rem); text-align: left; }
+.post-cover-text.is-left .post-subtitle { margin-left: 0; }
+.post-cover-text.is-left .post-byline { justify-content: flex-start; }
+@media (max-width: 48rem) { .post-cover-text.is-left { max-width: none; padding-right: 1.25rem; } }
 /* ---- the derivation lab (tang post) ---------------------------------------------------- */
 .derive-lab { margin: 2.6rem 0; padding: 1.1rem 1.2rem 0.9rem; border: 1px solid var(--p-line-hi); background: var(--p-surface); border-radius: 3px; font-family: var(--p-sans); }
 .derive-lab button { font: inherit; cursor: pointer; }
