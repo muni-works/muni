@@ -3,6 +3,7 @@ import { BVR1Showcase } from "./compositions/bvr1-showcase";
 import { SHOWCASE_CONFIG } from "./compositions/bvr1-showcase/config";
 import { HypeReel } from "./compositions/hype-reel";
 import { REEL_CONFIG } from "./compositions/hype-reel/config";
+import { Yurei, YUREI } from "./compositions/yurei";
 import "./styles/global.css";
 
 export const RemotionRoot: React.FC = () => {
@@ -30,6 +31,11 @@ export const RemotionRoot: React.FC = () => {
           height={REEL_CONFIG.height}
           defaultProps={{}}
         />
+      </Folder>
+
+      <Folder name="vcad">
+        <Composition id="Yurei" component={Yurei} durationInFrames={YUREI.frames} fps={YUREI.fps} width={1920} height={1080} defaultProps={{}} />
+        <Composition id="YureiVertical" component={Yurei} durationInFrames={YUREI.frames} fps={YUREI.fps} width={1080} height={1920} defaultProps={{}} />
       </Folder>
     </>
   );
