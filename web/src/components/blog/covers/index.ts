@@ -3,6 +3,7 @@ import { Deciding } from "./Deciding";
 import { Pavilion } from "./Pavilion";
 import { FlashTiles } from "./FlashTiles";
 import { PinnedRows } from "./PinnedRows";
+import { PlasmaTorus } from "./PlasmaTorus";
 import { Ridgelines } from "./Ridgelines";
 import { SolarSystem } from "./SolarSystem";
 
@@ -18,6 +19,7 @@ export interface Cover {
 export const COVERS: Record<string, Cover> = {
   "solar-system": { Art: SolarSystem, rail: { top: "Earth", bottom: "Sun", variant: "orbit" } },
   ridgelines: { Art: Ridgelines, rail: { top: "Text", bottom: "Audio", variant: "voice" } },
+  "plasma-torus": { Art: PlasmaTorus, rail: { top: "r", bottom: "R", variant: "seam" } },
   pavilion: { Art: Pavilion, rail: { top: "Pixels", bottom: "Parameters", variant: "orbit" }, textClass: "is-left" },
   "flash-tiles": { Art: FlashTiles, rail: { top: "Query", bottom: "Key", variant: "flash" } },
   deciding: { Art: Deciding, rail: { top: "a = 0.5", bottom: "a = 1", variant: "gate" }, textClass: "is-left" },

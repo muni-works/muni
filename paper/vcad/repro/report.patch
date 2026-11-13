@@ -1,0 +1,741 @@
+diff --git a/crates/vcad-eval/tests/document_gradient.rs b/crates/vcad-eval/tests/document_gradient.rs
+index 8982a2cc1..e31e6ee6c 100644
+--- a/crates/vcad-eval/tests/document_gradient.rs
++++ b/crates/vcad-eval/tests/document_gradient.rs
+@@ -117,6 +117,9 @@ fn parametric_document_cylinder_gradient() {
+         g.properties.volume
+     );
+     let rel = (g.derivative.volume - dv_exact).abs() / dv_exact;
++    eprintln!("PAPER\tdocument_gradient::ir::dv\t{:e}", g.derivative.volume);
++    eprintln!("PAPER\tdocument_gradient::parametric_document_cylinder_gradient@L119::dv_exact\t{:e}", (dv_exact) as f64);
++    eprintln!("PAPER\tdocument_gradient::parametric_document_cylinder_gradient@L119::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= 1e-9,
+         "dV/dr {} vs closed form {dv_exact} (rel {rel:.3e})",
+@@ -138,6 +141,9 @@ fn parametric_document_cylinder_gradient() {
+     let minus = oracle_props(&parametric_cylinder_doc(R0 - h), DENSITY);
+     let fd_izz = (plus.inertia_origin[2][2] - minus.inertia_origin[2][2]) / (2.0 * h);
+     let rel_izz = (g.derivative.inertia_origin[2][2] - fd_izz).abs() / fd_izz.abs();
++    eprintln!("PAPER\tdocument_gradient::ir::dizz\t{:e}", g.derivative.inertia_origin[2][2]);
++    eprintln!("PAPER\tdocument_gradient::parametric_document_cylinder_gradient@L140::fd_izz\t{:e}", (fd_izz) as f64);
++    eprintln!("PAPER\tdocument_gradient::parametric_document_cylinder_gradient@L140::rel_izz\t{:e}", (rel_izz) as f64);
+     assert!(
+         rel_izz <= 1e-6,
+         "dIzz/dr {} vs rebuild FD {fd_izz} (rel {rel_izz:.3e})",
+@@ -167,6 +173,9 @@ fn qoi_gradient_matches_central_finite_differences() {
+     // Analytic dVolume/dr vs central FD of the bundle's own volume.
+     let fd_dv = (plus[0].volume - minus[0].volume) / (2.0 * h);
+     let rel = (g.d_volume - fd_dv).abs() / fd_dv.abs();
++    eprintln!("PAPER\tdocument_gradient::sens::dv\t{:e}", g.d_volume);
++    eprintln!("PAPER\tdocument_gradient::qoi_gradient_matches_central_finite_differences@L169::fd_dv\t{:e}", (fd_dv) as f64);
++    eprintln!("PAPER\tdocument_gradient::qoi_gradient_matches_central_finite_differences@L169::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= 1e-4,
+         "dVolume/dr {} vs central FD {fd_dv} (rel {rel:.3e})",
+@@ -249,6 +258,9 @@ fn loon_authored_document_gradient() {
+     let dv = grads[0].derivative.volume;
+     let dv_exact = 2.0 * kfac() * R0 * HEIGHT;
+     let rel = (dv - dv_exact).abs() / dv_exact;
++    eprintln!("PAPER\tdocument_gradient::loon_authored_document_gradient@L251::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tdocument_gradient::loon_authored_document_gradient@L251::dv_exact\t{:e}", (dv_exact) as f64);
++    eprintln!("PAPER\tdocument_gradient::loon_authored_document_gradient@L251::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= 1e-9,
+         "loon-authored dV/dr {dv} vs closed form {dv_exact} (rel {rel:.3e})"
+@@ -279,6 +291,9 @@ fn defparam_makes_the_gradient_reachable_without_hand_binding() {
+     let dv = grads[0].derivative.volume;
+     let dv_exact = 2.0 * kfac() * R0 * HEIGHT;
+     let rel = (dv - dv_exact).abs() / dv_exact;
++    eprintln!("PAPER\tdocument_gradient::defparam_makes_the_gradient_reachable_without_hand_binding@L281::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tdocument_gradient::defparam_makes_the_gradient_reachable_without_hand_binding@L281::dv_exact\t{:e}", (dv_exact) as f64);
++    eprintln!("PAPER\tdocument_gradient::defparam_makes_the_gradient_reachable_without_hand_binding@L281::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= 1e-9,
+         "defparam-authored dV/dr {dv} vs closed form {dv_exact} (rel {rel:.3e})"
+diff --git a/crates/vcad-kernel-diff/tests/m0_extrude_volume.rs b/crates/vcad-kernel-diff/tests/m0_extrude_volume.rs
+index 045dbcadb..2f357781a 100644
+--- a/crates/vcad-kernel-diff/tests/m0_extrude_volume.rs
++++ b/crates/vcad-kernel-diff/tests/m0_extrude_volume.rs
+@@ -70,6 +70,9 @@ fn m0_extrude_volume_derivative_matches_analytic_and_fd() {
+     let a_exact = WIDTH * HEIGHT;
+     assert!((v - v_exact).abs() / v_exact < 1e-12);
+     let rel_analytic = (dv - a_exact).abs() / a_exact;
++    eprintln!("PAPER\tm0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L72::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L72::a_exact\t{:e}", (a_exact) as f64);
++    eprintln!("PAPER\tm0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L72::rel_analytic\t{:e}", (rel_analytic) as f64);
+     assert!(
+         rel_analytic <= GATE,
+         "seam dV/dd = {dv} vs analytic {a_exact} (rel err {rel_analytic:.3e})"
+@@ -78,6 +81,10 @@ fn m0_extrude_volume_derivative_matches_analytic_and_fd() {
+     // FD oracle gate on the QoI.
+     let dv_fd = fd_volume_derivative(build, D0, H, &plan).expect("fd volume");
+     let rel_fd = (dv - dv_fd).abs() / a_exact;
++    eprintln!("PAPER\tm0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L80::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L80::dv_fd\t{:e}", (dv_fd) as f64);
++    eprintln!("PAPER\tm0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L80::a_exact\t{:e}", (a_exact) as f64);
++    eprintln!("PAPER\tm0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd@L80::rel_fd\t{:e}", (rel_fd) as f64);
+     assert!(
+         rel_fd <= GATE,
+         "seam dV/dd = {dv} vs FD {dv_fd} (rel err {rel_fd:.3e})"
+@@ -86,6 +93,7 @@ fn m0_extrude_volume_derivative_matches_analytic_and_fd() {
+     // FD oracle gate node-wise: every node's dx/dd.
+     let fd = fd_velocities(build, D0, H, &plan).expect("fd velocities");
+     let cmp = compare_velocities(&seam.velocities, &fd);
++    eprintln!("PAPER\tm0_extrude_volume::m0_extrude_volume_derivative_matches_analytic_and_fd::cmp.max_rel_err\t{:e}", (cmp.max_rel_err) as f64);
+     assert!(
+         cmp.max_rel_err <= GATE,
+         "node dx/dd max rel err {:.3e} at node {} (velocity scale {:.3})",
+diff --git a/crates/vcad-kernel-diff/tests/m10_second_order.rs b/crates/vcad-kernel-diff/tests/m10_second_order.rs
+index c371a9a1b..43e299ffa 100644
+--- a/crates/vcad-kernel-diff/tests/m10_second_order.rs
++++ b/crates/vcad-kernel-diff/tests/m10_second_order.rs
+@@ -130,6 +130,9 @@ fn m10_hole_second_derivative_matches_closed_form_and_fd() {
+         "dV {dv} vs {dv_exact}"
+     );
+     let rel_closed = (ddv - ddv_exact).abs() / ddv_exact.abs();
++    eprintln!("PAPER\tm10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::ddv\t{:e}", (ddv) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::ddv_exact\t{:e}", (ddv_exact) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L132::rel_closed\t{:e}", (rel_closed) as f64);
+     assert!(
+         rel_closed <= 1e-9,
+         "d²V/dr² {ddv} vs closed form {ddv_exact} (rel {rel_closed:.3e})"
+@@ -138,6 +141,9 @@ fn m10_hole_second_derivative_matches_closed_form_and_fd() {
+     // Central FD of the analytic dV/dr at h = 1e-6.
+     let fd = fd_of_analytic_dv(&build_hole, &hole_seeding, r0, 1e-6, &params);
+     let rel_fd = (ddv - fd).abs() / ddv_exact.abs();
++    eprintln!("PAPER\tm10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::ddv\t{:e}", (ddv) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_hole_second_derivative_matches_closed_form_and_fd@L140::rel_fd\t{:e}", (rel_fd) as f64);
+     eprintln!(
+         "hole d²V/dr²: analytic {ddv:.6} closed {ddv_exact:.6} FD {fd:.6} (rel_fd {rel_fd:.3e})"
+     );
+@@ -282,6 +288,9 @@ fn m10_rounded_cube_second_derivative_matches_fd() {
+     // second derivative. Gated at 5e-3, well inside the 1e-3-scale residual.
+     let fd = fd_of_analytic_dv(&build_rc, &rc_seeding, r0, 1e-3, &params);
+     let rel = (ddv - fd).abs() / fd.abs().max(1.0);
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::ddv\t{:e}", (ddv) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_fd@L284::rel\t{:e}", (rel) as f64);
+     eprintln!(
+         "rounded cube: dV/dr {dv:.6}, d²V/dr² analytic {ddv:.6} vs FD {fd:.6} (rel {rel:.3e})"
+     );
+@@ -353,6 +362,9 @@ fn m10_cone_half_angle_second_derivative_matches_closed_form() {
+         "dV/dα {dv} vs {dv_exact}"
+     );
+     let rel = (ddv - ddv_exact).abs() / ddv_exact.abs();
++    eprintln!("PAPER\tm10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::ddv\t{:e}", (ddv) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::ddv_exact\t{:e}", (ddv_exact) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L355::rel\t{:e}", (rel) as f64);
+     eprintln!("cone d²V/dα²: analytic {ddv:.6} vs closed {ddv_exact:.6} (rel {rel:.3e})");
+     assert!(
+         rel <= 1e-9,
+@@ -368,6 +380,9 @@ fn m10_cone_half_angle_second_derivative_matches_closed_form() {
+         &params,
+     );
+     let rel_fd = (ddv - fd).abs() / ddv_exact.abs();
++    eprintln!("PAPER\tm10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L370::ddv\t{:e}", (ddv) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L370::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_cone_half_angle_second_derivative_matches_closed_form@L370::rel_fd\t{:e}", (rel_fd) as f64);
+     assert!(
+         rel_fd <= 1e-5,
+         "cone d²V/dα² {ddv} vs FD {fd} (rel {rel_fd:.3e})"
+@@ -442,6 +457,9 @@ fn m10_torus_minor_radius_second_derivative() {
+     // truncation term is negligible (V is cubic in r, d³V/dr³ ≈ 2πk·6).
+     let fd = fd_of_analytic_dv(&build, &seeding, TORUS_MINOR, 1e-4, &params);
+     let rel = (ddv - fd).abs() / ddv.abs();
++    eprintln!("PAPER\tm10_second_order::m10_torus_minor_radius_second_derivative@L444::ddv\t{:e}", (ddv) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_torus_minor_radius_second_derivative@L444::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_torus_minor_radius_second_derivative@L444::rel\t{:e}", (rel) as f64);
+     eprintln!("torus d²V/dr²: analytic {ddv:.6} vs FD {fd:.6} (rel {rel:.3e}), dV/dr {dv:.6}");
+     assert!(
+         rel <= 1e-5,
+@@ -502,7 +520,13 @@ fn m10_torus_nonlinear_field_chain_rule() {
+     let dv_expected = dv_dr * 2.0 * theta0;
+     let ddv_expected = ddv_drr * (2.0 * theta0) * (2.0 * theta0) + dv_dr * 2.0;
+     let rel1 = (dv_dtheta - dv_expected).abs() / dv_expected.abs();
++    eprintln!("PAPER\tm10_second_order::m10_torus_nonlinear_field_chain_rule@L504::dv_dtheta\t{:e}", (dv_dtheta) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_torus_nonlinear_field_chain_rule@L504::dv_expected\t{:e}", (dv_expected) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_torus_nonlinear_field_chain_rule@L504::rel1\t{:e}", (rel1) as f64);
+     let rel2 = (ddv_dthth - ddv_expected).abs() / ddv_expected.abs();
++    eprintln!("PAPER\tm10_second_order::m10_torus_nonlinear_field_chain_rule@L505::ddv_dthth\t{:e}", (ddv_dthth) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_torus_nonlinear_field_chain_rule@L505::ddv_expected\t{:e}", (ddv_expected) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_torus_nonlinear_field_chain_rule@L505::rel2\t{:e}", (rel2) as f64);
+     eprintln!(
+         "torus chain rule: dV/dθ {dv_dtheta:.6} vs {dv_expected:.6} (rel {rel1:.3e}), \
+          d²V/dθ² {ddv_dthth:.6} vs {ddv_expected:.6} (rel {rel2:.3e})"
+@@ -820,6 +844,9 @@ fn m10_gauss_newton_hessian_matches_full_hessian_near_optimum() {
+     let tr_gn: f64 = ev_gn.iter().sum();
+     let tr_full: f64 = ev_full.iter().sum();
+     let rel_trace = (tr_gn - tr_full).abs() / tr_gn.abs();
++    eprintln!("PAPER\tm10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::tr_gn\t{:e}", (tr_gn) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::tr_full\t{:e}", (tr_full) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L822::rel_trace\t{:e}", (rel_trace) as f64);
+     eprintln!("trace: GN {tr_gn:.5e} vs full {tr_full:.5e} (rel {rel_trace:.3e})");
+     assert!(
+         rel_trace < 0.02,
+@@ -837,6 +864,9 @@ fn m10_gauss_newton_hessian_matches_full_hessian_near_optimum() {
+         }
+     }
+     let rel_frob = (num / den).sqrt();
++    eprintln!("PAPER\tm10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::num\t{:e}", (num) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::den\t{:e}", (den) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_gauss_newton_hessian_matches_full_hessian_near_optimum@L839::rel_frob\t{:e}", (rel_frob) as f64);
+     eprintln!("relative Frobenius ‖H_GN − H_full‖/‖H_GN‖ = {rel_frob:.3e}");
+     assert!(
+         rel_frob < 0.15,
+@@ -874,6 +904,9 @@ fn m10_rounded_cube_second_derivative_matches_same_plan_stencil() {
+     let five =
+         (-v(2.0 * h) + 16.0 * v(h) - 30.0 * v(0.0) + 16.0 * v(-h) - v(-2.0 * h)) / (12.0 * h * h);
+     let rel = (ddv - five).abs() / five.abs();
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::ddv\t{:e}", (ddv) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::five\t{:e}", (five) as f64);
++    eprintln!("PAPER\tm10_second_order::m10_rounded_cube_second_derivative_matches_same_plan_stencil@L876::rel\t{:e}", (rel) as f64);
+     eprintln!("rounded cube same-plan d²V/dr²: seam {ddv:.6} vs 5-point {five:.6} (rel {rel:.3e})");
+     assert!(
+         rel < 1e-5,
+diff --git a/crates/vcad-kernel-diff/tests/m1_frozen_lift.rs b/crates/vcad-kernel-diff/tests/m1_frozen_lift.rs
+index 1d2347bc9..a8249d97b 100644
+--- a/crates/vcad-kernel-diff/tests/m1_frozen_lift.rs
++++ b/crates/vcad-kernel-diff/tests/m1_frozen_lift.rs
+@@ -88,6 +88,7 @@ fn m1_cylinder_interior_samples_match_fd() {
+     // FD oracle over the whole mesh (interior samples included).
+     let fd = fd_velocities(build, R0, H, &plan).expect("fd velocities");
+     let cmp = compare_velocities(&seam.velocities, &fd);
++    eprintln!("PAPER\tm1_frozen_lift::m1_cylinder_interior_samples_match_fd::cmp.max_rel_err\t{:e}", (cmp.max_rel_err) as f64);
+     assert!(
+         cmp.max_rel_err <= GATE,
+         "dx/dr max rel err {:.3e} at node {}",
+@@ -128,6 +129,7 @@ fn m1_plane_offset_interior_samples_match_fd() {
+             let minus = build_plane(theta0 - H).evaluate(uv);
+             let fd = (plus - minus) / (2.0 * H);
+             let rel = (vel - fd).norm() / fd.norm().max(1e-12);
++            eprintln!("PAPER\tm1_frozen_lift::m1_plane_offset_interior_samples_match_fd@L130::rel\t{:e}", (rel) as f64);
+             max_rel = max_rel.max(rel);
+         }
+     }
+diff --git a/crates/vcad-kernel-diff/tests/m2_boolean_hole.rs b/crates/vcad-kernel-diff/tests/m2_boolean_hole.rs
+index 7a4b11a99..0a7b66714 100644
+--- a/crates/vcad-kernel-diff/tests/m2_boolean_hole.rs
++++ b/crates/vcad-kernel-diff/tests/m2_boolean_hole.rs
+@@ -109,6 +109,9 @@ fn m2_through_hole_dv_dr_matches_closed_form_and_fd() {
+     let (v, dv) = vcad_kernel_diff::volume_with_derivative(&seam);
+     assert!((v - v_exact).abs() / v_exact < 1e-12);
+     let rel_closed = (dv - dv_exact).abs() / dv_exact.abs();
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::dv_exact\t{:e}", (dv_exact) as f64);
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L111::rel_closed\t{:e}", (rel_closed) as f64);
+     assert!(
+         rel_closed <= GATE,
+         "seam dV/dr = {dv} vs discrete closed form {dv_exact} (rel err {rel_closed:.3e})"
+@@ -117,6 +120,9 @@ fn m2_through_hole_dv_dr_matches_closed_form_and_fd() {
+     // Gate 2: seam dV/dr vs the FD oracle under the same frozen plan.
+     let dv_fd = fd_volume_derivative(build, R0, H, &plan).expect("fd volume");
+     let rel_fd = (dv - dv_fd).abs() / dv_exact.abs();
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::dv_fd\t{:e}", (dv_fd) as f64);
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L119::rel_fd\t{:e}", (rel_fd) as f64);
+     assert!(
+         rel_fd <= GATE,
+         "seam dV/dr = {dv} vs FD {dv_fd} (rel err {rel_fd:.3e})"
+@@ -127,6 +133,9 @@ fn m2_through_hole_dv_dr_matches_closed_form_and_fd() {
+     // within 10% slack of the leading term x²/6, x = 2π/N.
+     let dv_continuum = -2.0 * std::f64::consts::PI * R0 * T;
+     let gap = (dv - dv_continuum).abs() / dv_continuum.abs();
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::dv_continuum\t{:e}", (dv_continuum) as f64);
++    eprintln!("PAPER\tm2_boolean_hole::m2_through_hole_dv_dr_matches_closed_form_and_fd@L129::gap\t{:e}", (gap) as f64);
+     let bound = sector.powi(2) / 6.0;
+     assert!(
+         gap <= bound * 1.1,
+@@ -170,6 +179,7 @@ fn m2_rim_nodes_implicit_diff_matches_fd() {
+             radial
+         );
+         let rel = (seam.velocities[i] - fd[i]).norm() / fd[i].norm();
++        eprintln!("PAPER\tm2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd@L172::rel\t{:e}", (rel) as f64);
+         assert!(
+             rel <= GATE,
+             "rim node {i}: implicit vs FD rel err {rel:.3e}"
+@@ -184,6 +194,7 @@ fn m2_rim_nodes_implicit_diff_matches_fd() {
+     // And the whole mesh — interior wall samples (Pillar 2) included —
+     // passes the node-wise gate.
+     let cmp = compare_velocities(&seam.velocities, &fd);
++    eprintln!("PAPER\tm2_boolean_hole::m2_rim_nodes_implicit_diff_matches_fd::cmp.max_rel_err\t{:e}", (cmp.max_rel_err) as f64);
+     assert!(
+         cmp.max_rel_err <= GATE,
+         "dx/dr max rel err {:.3e} at node {}",
+diff --git a/crates/vcad-kernel-diff/tests/m3_boundary_trim.rs b/crates/vcad-kernel-diff/tests/m3_boundary_trim.rs
+index ecc579eed..ae452210a 100644
+--- a/crates/vcad-kernel-diff/tests/m3_boundary_trim.rs
++++ b/crates/vcad-kernel-diff/tests/m3_boundary_trim.rs
+@@ -110,12 +110,19 @@ fn boundary_nodes_track_a_moving_plane_trim() {
+     let (v, dv) = vcad_kernel_diff::volume_with_derivative(&seam);
+     assert!((v - area * H0).abs() / (area * H0) < 1e-9);
+     let rel_closed = (dv - area).abs() / area;
++    eprintln!("PAPER\tm3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L112::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L112::area\t{:e}", (area) as f64);
++    eprintln!("PAPER\tm3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L112::rel_closed\t{:e}", (rel_closed) as f64);
+     assert!(
+         rel_closed <= GATE,
+         "seam dV/dh = {dv} vs closed form {area} (rel err {rel_closed:.3e})"
+     );
+     let dv_fd = fd_volume_derivative(build, H0, H_FD, &plan).expect("fd volume");
+     let rel_fd = (dv - dv_fd).abs() / area;
++    eprintln!("PAPER\tm3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L118::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L118::dv_fd\t{:e}", (dv_fd) as f64);
++    eprintln!("PAPER\tm3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L118::area\t{:e}", (area) as f64);
++    eprintln!("PAPER\tm3_boundary_trim::boundary_nodes_track_a_moving_plane_trim@L118::rel_fd\t{:e}", (rel_fd) as f64);
+     assert!(
+         rel_fd <= GATE,
+         "seam dV/dh = {dv} vs FD {dv_fd} (rel err {rel_fd:.3e})"
+@@ -124,6 +131,7 @@ fn boundary_nodes_track_a_moving_plane_trim() {
+     // Node-wise gate over the whole mesh.
+     let fd = fd_velocities(build, H0, H_FD, &plan).expect("fd velocities");
+     let cmp = compare_velocities(&seam.velocities, &fd);
++    eprintln!("PAPER\tm3_boundary_trim::boundary_nodes_track_a_moving_plane_trim::cmp.max_rel_err\t{:e}", (cmp.max_rel_err) as f64);
+     assert!(
+         cmp.max_rel_err <= GATE,
+         "dx/dh max rel err {:.3e} at node {}",
+diff --git a/crates/vcad-kernel-diff/tests/m3_flywheel_optimize.rs b/crates/vcad-kernel-diff/tests/m3_flywheel_optimize.rs
+index f8b5da437..1210f7092 100644
+--- a/crates/vcad-kernel-diff/tests/m3_flywheel_optimize.rs
++++ b/crates/vcad-kernel-diff/tests/m3_flywheel_optimize.rs
+@@ -149,6 +149,9 @@ fn flywheel_hits_target_inertia_with_less_mass() {
+             minus[k] -= h;
+             let fd = (j_of(&plus) - j_of(&minus)) / (2.0 * h);
+             let rel = (g0[k] - fd).abs() / fd.abs().max(1e-3);
++            eprintln!("PAPER\tm3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::k\t{:e}", (k) as f64);
++            eprintln!("PAPER\tm3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::fd\t{:e}", (fd) as f64);
++            eprintln!("PAPER\tm3_flywheel_optimize::flywheel_hits_target_inertia_with_less_mass@L151::rel\t{:e}", (rel) as f64);
+             assert!(
+                 rel <= GATE,
+                 "dJ/dθ{k} = {} vs FD {fd} (rel {rel:.3e})",
+@@ -185,6 +188,7 @@ fn flywheel_hits_target_inertia_with_less_mass() {
+         }
+     }
+     eprintln!("stop: {:?}", result.stop);
++    for (n, it) in result.history.iter().enumerate() { eprintln!("PAPER\tm3_flywheel::iter::{}\t{:e}\t{:e}\t{:e}", n, it.theta[0], it.theta[1], it.objective); }
+ 
+     // The loop must have actually descended, monotonically, and recovered
+     // most of the achievable improvement: J at the known-good design θ* is
+diff --git a/crates/vcad-kernel-diff/tests/m3_mass_properties.rs b/crates/vcad-kernel-diff/tests/m3_mass_properties.rs
+index a6f7985e4..8fdff58e1 100644
+--- a/crates/vcad-kernel-diff/tests/m3_mass_properties.rs
++++ b/crates/vcad-kernel-diff/tests/m3_mass_properties.rs
+@@ -61,6 +61,8 @@ fn extrude_inertia_derivative_matches_closed_form_and_fd() {
+     // Analytic derivative gate.
+     let dizz_exact = RHO * w * l * (w * w + l * l) / 12.0;
+     let rel = (dprops.inertia_centroid[2][2] - dizz_exact).abs() / dizz_exact;
++    eprintln!("PAPER\tm3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L63::dizz_exact\t{:e}", (dizz_exact) as f64);
++    eprintln!("PAPER\tm3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L63::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= GATE,
+         "dIzz/dd = {} vs closed form {dizz_exact} (rel {rel:.3e})",
+@@ -78,6 +80,9 @@ fn extrude_inertia_derivative_matches_closed_form_and_fd() {
+     let fd_check = |dual: f64, plus: f64, minus: f64, what: &str| {
+         let fd = (plus - minus) / (2.0 * H);
+         let rel = (dual - fd).abs() / fd.abs().max(1.0);
++        eprintln!("PAPER\tm3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L80::dual\t{:e}", (dual) as f64);
++        eprintln!("PAPER\tm3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L80::fd\t{:e}", (fd) as f64);
++        eprintln!("PAPER\tm3_mass_properties::extrude_inertia_derivative_matches_closed_form_and_fd@L80::rel\t{:e}", (rel) as f64);
+         assert!(
+             rel <= GATE,
+             "{what}: dual {dual} vs fd {fd} (rel {rel:.3e})"
+@@ -127,6 +132,9 @@ fn cylinder_radius_inertia_derivatives_match_fd() {
+     let fd_check = |dual: f64, plus: f64, minus: f64, what: &str| {
+         let fd = (plus - minus) / (2.0 * H);
+         let rel = (dual - fd).abs() / fd.abs().max(1.0);
++        eprintln!("PAPER\tm3_mass_properties::cylinder_radius_inertia_derivatives_match_fd@L129::dual\t{:e}", (dual) as f64);
++        eprintln!("PAPER\tm3_mass_properties::cylinder_radius_inertia_derivatives_match_fd@L129::fd\t{:e}", (fd) as f64);
++        eprintln!("PAPER\tm3_mass_properties::cylinder_radius_inertia_derivatives_match_fd@L129::rel\t{:e}", (rel) as f64);
+         assert!(
+             rel <= GATE,
+             "{what}: dual {dual} vs fd {fd} (rel {rel:.3e})"
+diff --git a/crates/vcad-kernel-diff/tests/m4_fillet_radius.rs b/crates/vcad-kernel-diff/tests/m4_fillet_radius.rs
+index 555624c3a..b935b4588 100644
+--- a/crates/vcad-kernel-diff/tests/m4_fillet_radius.rs
++++ b/crates/vcad-kernel-diff/tests/m4_fillet_radius.rs
+@@ -130,6 +130,9 @@ fn m4_fillet_radius_derivative_matches_fd_and_continuum() {
+     let (v, dv) = volume_with_derivative(&seam);
+     let dv_fd = fd_volume_derivative(build1, R0, H, &plan).expect("fd volume");
+     let rel_fd = (dv - dv_fd).abs() / dv_fd.abs();
++    eprintln!("PAPER\tm4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L132::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L132::dv_fd\t{:e}", (dv_fd) as f64);
++    eprintln!("PAPER\tm4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L132::rel_fd\t{:e}", (rel_fd) as f64);
+     assert!(
+         rel_fd <= GATE,
+         "seam dV/dr = {dv} vs FD {dv_fd} (rel err {rel_fd:.3e})"
+@@ -138,6 +141,7 @@ fn m4_fillet_radius_derivative_matches_fd_and_continuum() {
+     // Gate 2: node-wise dx/dr across the whole mesh.
+     let fd = fd_velocities(build1, R0, H, &plan).expect("fd velocities");
+     let cmp = compare_velocities(&seam.velocities, &fd);
++    eprintln!("PAPER\tm4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum::cmp.max_rel_err\t{:e}", (cmp.max_rel_err) as f64);
+     assert!(
+         cmp.max_rel_err <= GATE,
+         "dx/dr max rel err {:.3e} at node {}",
+@@ -193,6 +197,9 @@ fn m4_fillet_radius_derivative_matches_fd_and_continuum() {
+         (minkowski(R0 + h) - minkowski(R0 - h)) / (2.0 * h)
+     };
+     let gap = (dv - dmink).abs() / dmink.abs();
++    eprintln!("PAPER\tm4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L195::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L195::dmink\t{:e}", (dmink) as f64);
++    eprintln!("PAPER\tm4_fillet_radius::m4_fillet_radius_derivative_matches_fd_and_continuum@L195::gap\t{:e}", (gap) as f64);
+     assert!(
+         gap < 0.10,
+         "continuum gap {gap:.3} exceeds the documented polygonization band"
+@@ -252,6 +259,8 @@ fn m4_fillet_radius_optimized_to_target_volume() {
+     .expect("optimize");
+ 
+     assert!(result.stop != StopReason::MaxIters, "failed to converge");
++    eprintln!("PAPER\tm4_fillet_radius::optimize::r\t{:e}", result.theta[0]);
++    eprintln!("PAPER\tm4_fillet_radius::optimize::iters\t{:e}", result.history.len() as f64);
+     assert!(
+         (result.theta[0] - r_star).abs() < 1e-3,
+         "found r = {} vs target r* = {r_star}",
+diff --git a/crates/vcad-kernel-diff/tests/m5_reverse_mode.rs b/crates/vcad-kernel-diff/tests/m5_reverse_mode.rs
+index 2058bc850..65575d659 100644
+--- a/crates/vcad-kernel-diff/tests/m5_reverse_mode.rs
++++ b/crates/vcad-kernel-diff/tests/m5_reverse_mode.rs
+@@ -55,6 +55,8 @@ fn pullback_vs_forward(
+ 
+ fn assert_agree(fwd: f64, rev: f64, what: &str) {
+     let scale = fwd.abs().max(1.0);
++    eprintln!("PAPER\tm5_reverse_mode::agree::{}::fwd\t{:e}", what, fwd);
++    eprintln!("PAPER\tm5_reverse_mode::agree::{}::rev\t{:e}", what, rev);
+     assert!(
+         (fwd - rev).abs() / scale <= AGREE,
+         "{what}: forward {fwd} vs reverse {rev}"
+@@ -309,7 +311,13 @@ fn m5_one_pullback_prices_every_fillet_cube_parameter() {
+     let fd_a = fd_volume_derivative(|a| build_rc(&[a, R0]), A0, H, &plan).expect("fd a");
+     let fd_r = fd_volume_derivative(|r| build_rc(&[A0, r]), R0, H, &plan).expect("fd r");
+     let rel_a = (dv_da_rev - fd_a).abs() / fd_a.abs();
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L311::dv_da_rev\t{:e}", (dv_da_rev) as f64);
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L311::fd_a\t{:e}", (fd_a) as f64);
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L311::rel_a\t{:e}", (rel_a) as f64);
+     let rel_r = (dv_dr_rev - fd_r).abs() / fd_r.abs();
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L312::dv_dr_rev\t{:e}", (dv_dr_rev) as f64);
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L312::fd_r\t{:e}", (fd_r) as f64);
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L312::rel_r\t{:e}", (rel_r) as f64);
+     assert!(rel_a <= FD_GATE, "dV/da reverse {dv_da_rev} vs FD {fd_a}");
+     assert!(rel_r <= FD_GATE, "dV/dr reverse {dv_dr_rev} vs FD {fd_r}");
+ 
+@@ -319,5 +327,8 @@ fn m5_one_pullback_prices_every_fillet_cube_parameter() {
+     let s = A0 - 2.0 * R0;
+     let dv_da_cont = 3.0 * s * s + 12.0 * s * R0 + 3.0 * std::f64::consts::PI * R0 * R0;
+     let gap = (dv_da_rev - dv_da_cont).abs() / dv_da_cont;
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L321::dv_da_rev\t{:e}", (dv_da_rev) as f64);
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L321::dv_da_cont\t{:e}", (dv_da_cont) as f64);
++    eprintln!("PAPER\tm5_reverse_mode::m5_one_pullback_prices_every_fillet_cube_parameter@L321::gap\t{:e}", (gap) as f64);
+     assert!(gap < 0.10, "continuum gap {gap:.3}");
+ }
+diff --git a/crates/vcad-kernel-diff/tests/m6_synthesized_seeding.rs b/crates/vcad-kernel-diff/tests/m6_synthesized_seeding.rs
+index 377ab769a..c1211e095 100644
+--- a/crates/vcad-kernel-diff/tests/m6_synthesized_seeding.rs
++++ b/crates/vcad-kernel-diff/tests/m6_synthesized_seeding.rs
+@@ -97,11 +97,17 @@ fn m2_hole_radius_synthesized() {
+     let dv_closed = -n * (2.0 * PI / n).sin() * M2_R0 * M2_T;
+     let dv_fd = fd_volume_derivative(build_m2, M2_R0, H, &plan).expect("fd");
+ 
++    eprintln!("PAPER\tm6_synthesized_seeding::m2_hole_radius_synthesized::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::m2_hole_radius_synthesized::dv_closed\t{:e}", (dv_closed) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::m2_hole_radius_synthesized::rel_dv_vs_dv_closed\t{:e}", (rel(dv, dv_closed)) as f64);
+     assert!(
+         rel(dv, dv_closed) <= FD_GATE,
+         "synth dV/dr {dv} vs closed form {dv_closed} (rel {:.3e})",
+         rel(dv, dv_closed)
+     );
++    eprintln!("PAPER\tm6_synthesized_seeding::m2_hole_radius_synthesized::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::m2_hole_radius_synthesized::dv_fd\t{:e}", (dv_fd) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::m2_hole_radius_synthesized::rel_dv_vs_dv_fd\t{:e}", (rel(dv, dv_fd)) as f64);
+     assert!(
+         rel(dv, dv_fd) <= FD_GATE,
+         "synth dV/dr {dv} vs FD {dv_fd} (rel {:.3e})",
+@@ -148,11 +154,17 @@ fn m3_cylinder_height_synthesized() {
+     let area = 0.5 * n * (2.0 * PI / n).sin() * M3_R * M3_R;
+     let dv_fd = fd_volume_derivative(build_m3, M3_H0, H, &plan).expect("fd");
+ 
++    eprintln!("PAPER\tm6_synthesized_seeding::m3_cylinder_height_synthesized::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::m3_cylinder_height_synthesized::area\t{:e}", (area) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::m3_cylinder_height_synthesized::rel_dv_vs_area\t{:e}", (rel(dv, area)) as f64);
+     assert!(
+         rel(dv, area) <= FD_GATE,
+         "synth dV/dh {dv} vs N-gon area {area} (rel {:.3e})",
+         rel(dv, area)
+     );
++    eprintln!("PAPER\tm6_synthesized_seeding::m3_cylinder_height_synthesized::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::m3_cylinder_height_synthesized::dv_fd\t{:e}", (dv_fd) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::m3_cylinder_height_synthesized::rel_dv_vs_dv_fd\t{:e}", (rel(dv, dv_fd)) as f64);
+     assert!(
+         rel(dv, dv_fd) <= FD_GATE,
+         "synth dV/dh {dv} vs FD {dv_fd} (rel {:.3e})",
+@@ -331,11 +343,17 @@ fn rounded_cube_both_parameters_synthesized() {
+             .1;
+ 
+     // Gate 3a: synthesized vs hand seedings.
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_da_syn\t{:e}", (dv_da_syn) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_da_hand\t{:e}", (dv_da_hand) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_da_syn_vs_dv_da_hand\t{:e}", (rel(dv_da_syn, dv_da_hand)) as f64);
+     assert!(
+         rel(dv_da_syn, dv_da_hand) <= AGREE,
+         "dV/da synth {dv_da_syn} vs hand {dv_da_hand} (rel {:.3e})",
+         rel(dv_da_syn, dv_da_hand)
+     );
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_dr_syn\t{:e}", (dv_dr_syn) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_dr_hand\t{:e}", (dv_dr_hand) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_dr_syn_vs_dv_dr_hand\t{:e}", (rel(dv_dr_syn, dv_dr_hand)) as f64);
+     assert!(
+         rel(dv_dr_syn, dv_dr_hand) <= AGREE,
+         "dV/dr synth {dv_dr_syn} vs hand {dv_dr_hand} (rel {:.3e})",
+@@ -345,11 +363,17 @@ fn rounded_cube_both_parameters_synthesized() {
+     // Gate 3b: synthesized vs FD oracle.
+     let fd_a = fd_volume_derivative(|a| build_rc(&[a, RC_R0]), RC_A0, H, &plan).expect("fd a");
+     let fd_r = fd_volume_derivative(|r| build_rc(&[RC_A0, r]), RC_R0, H, &plan).expect("fd r");
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_da_syn\t{:e}", (dv_da_syn) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::fd_a\t{:e}", (fd_a) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_da_syn_vs_fd_a\t{:e}", (rel(dv_da_syn, fd_a)) as f64);
+     assert!(
+         rel(dv_da_syn, fd_a) <= FD_GATE,
+         "dV/da synth {dv_da_syn} vs FD {fd_a} (rel {:.3e})",
+         rel(dv_da_syn, fd_a)
+     );
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_dr_syn\t{:e}", (dv_dr_syn) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::fd_r\t{:e}", (fd_r) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_dr_syn_vs_fd_r\t{:e}", (rel(dv_dr_syn, fd_r)) as f64);
+     assert!(
+         rel(dv_dr_syn, fd_r) <= FD_GATE,
+         "dV/dr synth {dv_dr_syn} vs FD {fd_r} (rel {:.3e})",
+@@ -363,10 +387,16 @@ fn rounded_cube_both_parameters_synthesized() {
+     let cots = evaluate_with_pullback(&canonical, &plan, &w).expect("pullback");
+     let dv_da_rev = cots.contract(syn_a);
+     let dv_dr_rev = cots.contract(syn_r);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_da_rev\t{:e}", (dv_da_rev) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_da_syn\t{:e}", (dv_da_syn) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_da_rev_vs_dv_da_syn\t{:e}", (rel(dv_da_rev, dv_da_syn)) as f64);
+     assert!(
+         rel(dv_da_rev, dv_da_syn) <= AGREE,
+         "dV/da reverse {dv_da_rev} vs forward {dv_da_syn}"
+     );
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_dr_rev\t{:e}", (dv_dr_rev) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::dv_dr_syn\t{:e}", (dv_dr_syn) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::rounded_cube_both_parameters_synthesized::rel_dv_dr_rev_vs_dv_dr_syn\t{:e}", (rel(dv_dr_rev, dv_dr_syn)) as f64);
+     assert!(
+         rel(dv_dr_rev, dv_dr_syn) <= AGREE,
+         "dV/dr reverse {dv_dr_rev} vs forward {dv_dr_syn}"
+@@ -454,6 +484,9 @@ fn cone_and_torus_parameters_synthesized() {
+     let seam = evaluate_with_sensitivity(&base, &plan, &seeding).expect("seam cone");
+     let (_, dv) = volume_with_derivative(&seam);
+     let fd = fd_volume_derivative(|a| build_cone(&[a]), alpha0, H, &plan).expect("fd cone");
++    eprintln!("PAPER\tm6_synthesized_seeding::cone_and_torus_parameters_synthesized::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::cone_and_torus_parameters_synthesized::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::cone_and_torus_parameters_synthesized::rel_dv_vs_fd\t{:e}", (rel(dv, fd)) as f64);
+     assert!(
+         rel(dv, fd) <= FD_GATE,
+         "cone half-angle: synthesized {dv} vs FD {fd}"
+@@ -476,6 +509,9 @@ fn cone_and_torus_parameters_synthesized() {
+     let seam = evaluate_with_sensitivity(&base, &plan, &seeding).expect("seam torus");
+     let (_, dv) = volume_with_derivative(&seam);
+     let fd = fd_volume_derivative(|r| build_torus(&[r]), r0, H, &plan).expect("fd torus");
++    eprintln!("PAPER\tm6_synthesized_seeding::cone_and_torus_parameters_synthesized::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::cone_and_torus_parameters_synthesized::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm6_synthesized_seeding::cone_and_torus_parameters_synthesized::rel_dv_vs_fd\t{:e}", (rel(dv, fd)) as f64);
+     assert!(
+         rel(dv, fd) <= FD_GATE,
+         "torus minor radius: synthesized {dv} vs FD {fd}"
+diff --git a/crates/vcad-kernel-diff/tests/m7_cone_torus.rs b/crates/vcad-kernel-diff/tests/m7_cone_torus.rs
+index 09748d7dc..8c3a70946 100644
+--- a/crates/vcad-kernel-diff/tests/m7_cone_torus.rs
++++ b/crates/vcad-kernel-diff/tests/m7_cone_torus.rs
+@@ -154,6 +154,9 @@ fn cone_half_angle_derivative() {
+         * sec2;
+     let dv_closed = CONE_H0 * k / 3.0 * dcoef;
+     let rel_closed = (dv - dv_closed).abs() / dv_closed.abs();
++    eprintln!("PAPER\tm7_cone_torus::cone_half_angle_derivative@L156::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm7_cone_torus::cone_half_angle_derivative@L156::dv_closed\t{:e}", (dv_closed) as f64);
++    eprintln!("PAPER\tm7_cone_torus::cone_half_angle_derivative@L156::rel_closed\t{:e}", (rel_closed) as f64);
+     assert!(
+         rel_closed <= GATE,
+         "cone dV/dα = {dv} vs closed {dv_closed} (rel {rel_closed:.3e})"
+@@ -161,6 +164,9 @@ fn cone_half_angle_derivative() {
+ 
+     let dv_fd = fd_volume_derivative(build_cone_alpha, alpha0, H_FD, &plan).expect("fd vol");
+     let rel_fd = (dv - dv_fd).abs() / dv.abs();
++    eprintln!("PAPER\tm7_cone_torus::cone_half_angle_derivative@L163::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm7_cone_torus::cone_half_angle_derivative@L163::dv_fd\t{:e}", (dv_fd) as f64);
++    eprintln!("PAPER\tm7_cone_torus::cone_half_angle_derivative@L163::rel_fd\t{:e}", (rel_fd) as f64);
+     assert!(
+         rel_fd <= GATE,
+         "cone dV/dα = {dv} vs FD {dv_fd} (rel {rel_fd:.3e})"
+@@ -168,6 +174,7 @@ fn cone_half_angle_derivative() {
+ 
+     let fd = fd_velocities(build_cone_alpha, alpha0, H_FD, &plan).expect("fd vel");
+     let cmp = compare_velocities(&seam.velocities, &fd);
++    eprintln!("PAPER\tm7_cone_torus::cone_half_angle_derivative::cmp.max_rel_err\t{:e}", (cmp.max_rel_err) as f64);
+     assert!(
+         cmp.max_rel_err <= GATE,
+         "cone dx/dα max rel err {:.3e} at node {}",
+@@ -199,6 +206,9 @@ fn cone_height_derivative() {
+     let rt = (APEX_Z - CONE_H0) * TAN_A0; // = 3
+     let dv_closed = ngon_area(SEGMENTS, rt);
+     let rel_closed = (dv - dv_closed).abs() / dv_closed;
++    eprintln!("PAPER\tm7_cone_torus::cone_height_derivative@L201::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm7_cone_torus::cone_height_derivative@L201::dv_closed\t{:e}", (dv_closed) as f64);
++    eprintln!("PAPER\tm7_cone_torus::cone_height_derivative@L201::rel_closed\t{:e}", (rel_closed) as f64);
+     assert!(
+         rel_closed <= GATE,
+         "cone dV/dh = {dv} vs closed {dv_closed} (rel {rel_closed:.3e})"
+@@ -206,10 +216,14 @@ fn cone_height_derivative() {
+ 
+     let dv_fd = fd_volume_derivative(build_cone_height, CONE_H0, H_FD, &plan).expect("fd vol");
+     let rel_fd = (dv - dv_fd).abs() / dv.abs();
++    eprintln!("PAPER\tm7_cone_torus::cone_height_derivative@L208::dv\t{:e}", (dv) as f64);
++    eprintln!("PAPER\tm7_cone_torus::cone_height_derivative@L208::dv_fd\t{:e}", (dv_fd) as f64);
++    eprintln!("PAPER\tm7_cone_torus::cone_height_derivative@L208::rel_fd\t{:e}", (rel_fd) as f64);
+     assert!(rel_fd <= GATE, "cone dV/dh = {dv} vs FD {dv_fd}");
+ 
+     let fd = fd_velocities(build_cone_height, CONE_H0, H_FD, &plan).expect("fd vel");
+     let cmp = compare_velocities(&seam.velocities, &fd);
++    eprintln!("PAPER\tm7_cone_torus::cone_height_derivative::cmp.max_rel_err\t{:e}", (cmp.max_rel_err) as f64);
+     assert!(
+         cmp.max_rel_err <= GATE,
+         "cone dx/dh max rel err {:.3e} at node {}",
+@@ -267,6 +281,9 @@ fn torus_gate(
+ 
+     let dv_fd = fd_volume_derivative(build, theta0, H_FD, plan).expect("fd vol");
+     let rel_fd = (dv - dv_fd).abs() / dv.abs().max(1.0);
++    eprintln!("PAPER\tm7_cone_torus::torus_gate@L269::{}::dv\t{:e}", label, (dv) as f64);
++    eprintln!("PAPER\tm7_cone_torus::torus_gate@L269::{}::dv_fd\t{:e}", label, (dv_fd) as f64);
++    eprintln!("PAPER\tm7_cone_torus::torus_gate@L269::{}::rel_fd\t{:e}", label, (rel_fd) as f64);
+     assert!(
+         rel_fd <= GATE,
+         "{label}: dV/dθ = {dv} vs FD {dv_fd} (rel {rel_fd:.3e})"
+@@ -274,6 +291,7 @@ fn torus_gate(
+ 
+     let fd = fd_velocities(build, theta0, H_FD, plan).expect("fd vel");
+     let cmp = compare_velocities(&seam.velocities, &fd);
++    eprintln!("PAPER\tm7_cone_torus::torus_gate::{}::cmp.max_rel_err\t{:e}", label, (cmp.max_rel_err) as f64);
+     assert!(
+         cmp.max_rel_err <= GATE,
+         "{label}: dx/dθ max rel err {:.3e} at node {}",
+diff --git a/crates/vcad-kernel-diff/tests/m9_many_parameters.rs b/crates/vcad-kernel-diff/tests/m9_many_parameters.rs
+index fd6dde063..a2f971fba 100644
+--- a/crates/vcad-kernel-diff/tests/m9_many_parameters.rs
++++ b/crates/vcad-kernel-diff/tests/m9_many_parameters.rs
+@@ -452,6 +452,8 @@ fn m9_reverse_matches_forward_and_fd() {
+     );
+     for k in 0..5 {
+         let rel = (gf[k] - gr[k]).abs() / gf[k].abs().max(1.0);
++        eprintln!("PAPER\tm9_many_parameters::m9_reverse_matches_forward_and_fd@L454::k\t{:e}", (k) as f64);
++        eprintln!("PAPER\tm9_many_parameters::m9_reverse_matches_forward_and_fd@L454::rel\t{:e}", (rel) as f64);
+         eprintln!(
+             "k{k}: forward {:+.10} reverse {:+.10} rel {:.2e}",
+             gf[k], gr[k], rel
+@@ -488,6 +490,9 @@ fn m9_reverse_matches_forward_and_fd() {
+         minus[k] -= FD_GATE_H;
+         let fd = (j_of(&plus) - j_of(&minus)) / (2.0 * FD_GATE_H);
+         let rel = (gr[k] - fd).abs() / fd.abs().max(1e-3);
++        eprintln!("PAPER\tm9_many_parameters::m9_reverse_matches_forward_and_fd@L490::k\t{:e}", (k) as f64);
++        eprintln!("PAPER\tm9_many_parameters::m9_reverse_matches_forward_and_fd@L490::fd\t{:e}", (fd) as f64);
++        eprintln!("PAPER\tm9_many_parameters::m9_reverse_matches_forward_and_fd@L490::rel\t{:e}", (rel) as f64);
+         eprintln!(
+             "FD k{k}: reverse {:+.8} fd {:+.8} rel {:.2e}",
+             gr[k], fd, rel
+@@ -584,6 +589,8 @@ fn m9_lbfgs_recovers_theta_star() {
+     };
+     let gd = minimize(&build_gd, &seeding_for, &fwd, &THETA0, &tess(), &options()).expect("gd");
+     let gd_evals = gd_evals.get();
++    for (n, it) in lbfgs.history.iter().enumerate() { eprintln!("PAPER\tm9::lbfgs::J::{}\t{:e}", n, it.objective); }
++    for (n, it) in gd.history.iter().enumerate() { eprintln!("PAPER\tm9::gd::J::{}\t{:e}", n, it.objective); }
+     eprintln!(
+         "GD:     stop {:?}, iters {}, evals {}, J {:.3e}, ||theta-theta*||inf {:.3e}",
+         gd.stop,
+diff --git a/crates/vcad-kernel-physics/tests/m11_adjoint_rollout.rs b/crates/vcad-kernel-physics/tests/m11_adjoint_rollout.rs
+index 07985098f..d53cb10c8 100644
+--- a/crates/vcad-kernel-physics/tests/m11_adjoint_rollout.rs
++++ b/crates/vcad-kernel-physics/tests/m11_adjoint_rollout.rs
+@@ -197,6 +197,9 @@ fn adjoint_matches_fd_path() {
+         "flywheel J: adjoint {j_adj} vs fd-path {j_fd}"
+     );
+     let rel = (g_adj[0] - g_fd[0]).abs() / g_fd[0].abs();
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L199::g_adj\t{:e}", (g_adj[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L199::g_fd\t{:e}", (g_fd[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L199::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= 1e-5,
+         "flywheel dJ/dr: adjoint {} vs fd-path {} (rel {rel:.3e})",
+@@ -218,6 +221,9 @@ fn adjoint_matches_fd_path() {
+         "pendulum J: adjoint {j_adj} vs fd-path {j_fd}"
+     );
+     let rel = (g_adj[0] - g_fd[0]).abs() / g_fd[0].abs();
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L220::g_adj\t{:e}", (g_adj[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L220::g_fd\t{:e}", (g_fd[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_fd_path@L220::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= 1e-5,
+         "pendulum dJ/dr: adjoint {} vs fd-path {} (rel {rel:.3e})",
+@@ -247,6 +253,9 @@ fn adjoint_matches_end_to_end_fd() {
+     let (_, g) = rollout_gradient_adjoint(&bodies, &flywheel_spec(), &[R0]).expect("adjoint");
+     let fd = e2e(&flywheel_rollout);
+     let rel = (g[0] - fd).abs() / fd.abs();
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::g\t{:e}", (g[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L249::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= GATE,
+         "flywheel dω/dr: adjoint {} vs end-to-end fd {fd} (rel {rel:.3e})",
+@@ -257,6 +266,9 @@ fn adjoint_matches_end_to_end_fd() {
+     let (_, g) = rollout_gradient_adjoint(&bodies, &pendulum_spec(), &[R0]).expect("adjoint");
+     let fd = e2e(&pendulum_rollout);
+     let rel = (g[0] - fd).abs() / fd.abs();
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::g\t{:e}", (g[0]) as f64);
++    eprintln!("PAPER\tm11_adjoint_rollout::adjoint_matches_end_to_end_fd@L259::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= GATE,
+         "pendulum dq(T)/dr: adjoint {} vs end-to-end fd {fd} (rel {rel:.3e})",
+diff --git a/crates/vcad-kernel-physics/tests/m11_contact_gradient.rs b/crates/vcad-kernel-physics/tests/m11_contact_gradient.rs
+index 3cb3a7291..75881cedb 100644
+--- a/crates/vcad-kernel-physics/tests/m11_contact_gradient.rs
++++ b/crates/vcad-kernel-physics/tests/m11_contact_gradient.rs
+@@ -165,6 +165,9 @@ fn contact_chain_matches_end_to_end_fd() {
+     };
+     let fd = (j_at(R0 + H_THETA) - j_at(R0 - H_THETA)) / (2.0 * H_THETA);
+     let rel = (grad[0] - fd).abs() / fd.abs();
++    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::grad\t{:e}", (grad[0]) as f64);
++    eprintln!("PAPER\tm11_contact_gradient::contact_chain_matches_end_to_end_fd@L167::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= GATE,
+         "dJ/dr: chain {} vs end-to-end fd {fd} (rel {rel:.3e})",
+diff --git a/crates/vcad-kernel-physics/tests/m8_rollout_gradient.rs b/crates/vcad-kernel-physics/tests/m8_rollout_gradient.rs
+index 31f33e327..ced55a0d1 100644
+--- a/crates/vcad-kernel-physics/tests/m8_rollout_gradient.rs
++++ b/crates/vcad-kernel-physics/tests/m8_rollout_gradient.rs
+@@ -157,6 +157,9 @@ fn mass_property_chain_isolation() {
+ 
+     let check = |dual: f64, fd: f64, what: &str| {
+         let rel = (dual - fd).abs() / fd.abs().max(1.0);
++        eprintln!("PAPER\tm8_rollout_gradient::mass_property_chain_isolation@L159::dual\t{:e}", (dual) as f64);
++        eprintln!("PAPER\tm8_rollout_gradient::mass_property_chain_isolation@L159::fd\t{:e}", (fd) as f64);
++        eprintln!("PAPER\tm8_rollout_gradient::mass_property_chain_isolation@L159::rel\t{:e}", (rel) as f64);
+         assert!(
+             rel <= GATE,
+             "{what}: seam {dual} vs fd {fd} (rel {rel:.3e})"
+@@ -201,6 +204,9 @@ fn flywheel_spinup_gradient_matches_end_to_end_fd() {
+     };
+     let fd = (j_at(R0 + H_THETA) - j_at(R0 - H_THETA)) / (2.0 * H_THETA);
+     let rel = (grad[0] - fd).abs() / fd.abs().max(1.0);
++    eprintln!("PAPER\tm8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::grad\t{:e}", (grad[0]) as f64);
++    eprintln!("PAPER\tm8_rollout_gradient::flywheel_spinup_gradient_matches_end_to_end_fd@L203::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= GATE,
+         "dω/dr: adapter {} vs end-to-end fd {fd} (rel {rel:.3e}); J = {j}",
+@@ -238,6 +244,9 @@ fn gravity_pendulum_gradient_matches_end_to_end_fd() {
+     };
+     let fd = (j_at(R0 + H_THETA) - j_at(R0 - H_THETA)) / (2.0 * H_THETA);
+     let rel = (grad[0] - fd).abs() / fd.abs().max(1.0);
++    eprintln!("PAPER\tm8_rollout_gradient::gravity_pendulum_gradient_matches_end_to_end_fd@L240::fd\t{:e}", (fd) as f64);
++    eprintln!("PAPER\tm8_rollout_gradient::gravity_pendulum_gradient_matches_end_to_end_fd@L240::grad\t{:e}", (grad[0]) as f64);
++    eprintln!("PAPER\tm8_rollout_gradient::gravity_pendulum_gradient_matches_end_to_end_fd@L240::rel\t{:e}", (rel) as f64);
+     assert!(
+         rel <= GATE,
+         "dq(T)/dr: adapter {} vs end-to-end fd {fd} (rel {rel:.3e})",
