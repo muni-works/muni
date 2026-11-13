@@ -35,7 +35,7 @@
     "slug": "vcad",
     "title": "Exact Gradients Through a BRep Kernel",
     "subtitle": "Differentiating CAD parameters through tessellation, fillets, mass properties and contact",
-    "date": "2026-11-12",
+    "date": "2026-11-13",
     "author": "Cam Pedersen",
     "description": "Derivatives of CAD parameters, fillet radii included, through vcad's BRep kernel: the tessellation's topology is frozen and its node positions differentiated, with second order, a transposed pass and a rigid-body adjoint with contact. Checked against finite differences of fresh rebuilds, with the polygonization gap measured and the two seam errors those checks found described.",
     "root": "../paper/vcad",
