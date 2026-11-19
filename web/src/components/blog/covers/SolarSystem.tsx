@@ -155,7 +155,7 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
       const narrow = w < 640;
       const u = Math.min(w / (narrow ? 6.4 : 9.5), h / 5.2);
       const cx = w * 0.5 - pointer.x * 10;
-      const cy = h * 0.66 - pointer.y * 6;
+      const cy = h * (narrow ? 0.72 : 0.66) - pointer.y * 6; // lower on a phone, clear of the byline
       const tilt = TILT + pointer.y * 0.06;
       const yaw = pointer.x * 0.08;
       const P = (r: number, a: number): [number, number] => [cx + u * r * Math.cos(a + yaw), cy - u * tilt * r * Math.sin(a + yaw)];
@@ -483,6 +483,7 @@ export function SolarSystem({ og = false }: { og?: boolean }) {
       // flight-control annotations: a reticle on each body, a leader, and a callout
       const mono = "'IBM Plex Mono', ui-monospace, monospace";
       const callout = ([x, y]: [number, number], lines: string[], col: string, big = 7) => {
+        if (x < 0 || x > w) return; // a body off the side would leave its label clipped at the edge
         const side = x > w - 170 ? -1 : 1;
         ctx.strokeStyle = col;
         ctx.lineWidth = 1;
